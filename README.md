@@ -42,6 +42,10 @@ The main goal is to compare the effectiveness of different machine learning appr
 - Implements traditional graph algorithms for domination number calculation
 - Serves as the baseline for comparison with ML approaches
 
+### Current Graph Types
+- **Erdos-Renyi Random Graphs**: Current research focuses on these classical random graph models
+- **Graph Properties**: Various sizes and edge probabilities to test model robustness
+
 ## Key Findings
 
 The research investigates:
@@ -69,10 +73,12 @@ This project contributes to the growing field of applying machine learning to co
 ## Future Work
 
 Potential extensions include:
+- **Graph Type Expansion**: Extending the research beyond Erdos-Renyi random graphs to include scale-free graphs (like social networks, biological networks, and the internet) which have power-law degree distributions and would provide more realistic test cases for real-world applications.
 - Testing on larger and more complex graph datasets
 - Exploring other graph properties beyond domination number
 - Investigating hybrid approaches combining ML and classical algorithms
 - Performance optimization for real-world applications
+- Comparative analysis of model performance across different graph topologies
 
 ---
 
