@@ -1,0 +1,130 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
+import { useAuth } from './contexts/AuthContext'
+import Login from './components/Login'
+import SignUp from './components/SignUp'
+import SignUpSuccess from './components/SignUpSuccess'
+import Dashboard from './components/Dashboard'
+import Week1Budgeting from './components/Week1Budgeting'
+
+// Sample data for Overview component
+const sampleData = {
+  todaysClasses: [
+    {
+      id: 1,
+      title: "Budgeting Basics",
+      time: "9:30 - 11:00",
+      room: "Online Session 1",
+      instructor: "Dr. Sarah Johnson"
+    },
+    {
+      id: 2,
+      title: "Investment Strategies",
+      time: "11:10 - 12:40",
+      room: "Online Session 2",
+      instructor: "Prof. Michael Chen"
+    },
+    {
+      id: 3,
+      title: "Debt Management",
+      time: "12:45 - 13:45",
+      room: "Online Session 3",
+      instructor: "Dr. Emily Rodriguez"
+    }
+  ],
+  todoList: [
+    {
+      id: 1,
+      task: "Complete Budget Assessment",
+      dueDate: "by Tomorrow",
+      completed: false
+    },
+    {
+      id: 2,
+      task: "Submit Investment Plan",
+      dueDate: "by 15 Jul",
+      completed: false
+    },
+    {
+      id: 3,
+      task: "Review Credit Score Module",
+      dueDate: "by Today",
+      completed: true
+    }
+  ],
+  upcomingDeadlines: [
+    {
+      id: 1,
+      title: "Monthly Budget Review",
+      type: "Assignment",
+      dueTime: "23:59",
+      dueDate: "2 Jul, 2024"
+    },
+    {
+      id: 2,
+      title: "Investment Portfolio",
+      type: "Project",
+      dueTime: "23:59",
+      dueDate: "11 Jul, 2024"
+    },
+    {
+      id: 3,
+      title: "Debt Management Quiz",
+      type: "Quiz",
+      dueTime: "23:59",
+      dueDate: "15 Jul, 2024"
+    }
+  ]
+};
+
+// Overview wrapper component
+const OverviewWrapper = () => (
+  <Overview
+    todaysClasses={sampleData.todaysClasses}
+    todoList={sampleData.todoList}
+    upcomingDeadlines={sampleData.upcomingDeadlines}
+  />
+);
+
+// Temporarily commented out for development
+// function ProtectedRoute({ children }) {
+//   const { user, loading } = useAuth()
+  
+//   if (loading) {
+//     return (
+//       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+//         <div className="text-center">
+//           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0d1a4b] mx-auto"></div>
+//           <p className="mt-4 text-[#0d1a4b]">Loading...</p>
+//         </div>
+//       </div>
+//     )
+//   }
+  
+//   if (!user) {
+//     return <Navigate to="/" />
+//   }
+
+//   return children
+// }
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signup-success" element={<SignUpSuccess />} />
+          <Route path="/dashboard/*" element={<Dashboard />}>
+            <Route index element={<Navigate to="/dashboard/excel/week-1" replace />} />
+            <Route path="excel/week-1/*" element={<Week1Budgeting />} />
+            {/* Add routes for other weeks here as they are created */}
+          </Route>
+        </Routes>
+      </AuthProvider>
+    </Router>
+  )
+}
+
+export default App
