@@ -16,7 +16,7 @@ export default function SignUpSuccess() {
             className="object-contain"
           />
           
-          <div className="flex flex-col items-center border-t-2 border-b-2 border-[#A4907C] py-4 px-4">
+          <div className="flex flex-col items-center border-t-2 border-b-2 border-[#0d1a4b] py-4 px-4">
             <div className="flex flex-col items-center" style={{ marginBottom: '-1.5rem' }}>
               <img 
                 src={logo} 

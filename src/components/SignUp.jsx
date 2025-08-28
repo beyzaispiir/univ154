@@ -8,7 +8,10 @@ export default function SignUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [passwordRequirements, setPasswordRequirements] = useState({
     length: false,
@@ -21,7 +24,7 @@ export default function SignUp() {
   const { signUp } = useAuth()
 
   const validateEmail = (email) => {
-    const riceEmailRegex = /@rice\.edu$/
+    const riceEmailRegex = /@(rice\.edu|alumni\.rice\.edu)$/
     return riceEmailRegex.test(email)
   }
 
@@ -48,7 +51,7 @@ export default function SignUp() {
     setError('')
 
     if (!validateEmail(email)) {
-      setError('Please use your Rice University email address')
+      setError('Please use your Rice University email address (@rice.edu or @alumni.rice.edu)')
       return
     }
 
@@ -64,24 +67,34 @@ export default function SignUp() {
 
     try {
       setLoading(true)
-      const { error } = await signUp(email, password)
+      const { data, error } = await signUp(email, password)
       
       if (error) {
+        console.log('SignUp error details:', error)
         throw error
       }
+
+      console.log('SignUp success data:', data)
 
       // Success - show confirmation message and redirect to login
       navigate('/signup-success')
     } catch (error) {
-      setError(error.message || 'Failed to create an account')
+      console.log('SignUp catch error:', error)
+      if (error.message.includes('User already registered')) {
+        setError('An account with this email already exists. Please sign in instead.')
+      } else if (error.message.includes('already registered')) {
+        setError('An account with this email already exists. Please sign in instead.')
+      } else {
+        setError(error.message || 'Failed to create an account')
+      }
     }
 
     setLoading(false)
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-[400px] space-y-6 bg-white p-8 rounded-lg shadow-sm px-6">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
+      <div className="w-full max-w-[400px] space-y-6 bg-white p-8 rounded-lg shadow-sm px-6" style={{ marginTop: '2rem' }}>
         {/* Logo and Title Section */}
         <div className="flex flex-col items-center">
           <img 
@@ -91,7 +104,7 @@ export default function SignUp() {
             className="object-contain"
           />
           
-          <div className="flex flex-col items-center border-t-2 border-b-2 border-[#A4907C] py-4 px-4">
+          <div className="flex flex-col items-center border-t-2 border-b-2 border-[#0d1a4b] py-4 px-4">
             <div className="flex flex-col items-center" style={{ marginBottom: '-1.5rem' }}>
               <img 
                 src={logo} 
@@ -113,64 +126,88 @@ export default function SignUp() {
           </div>
         </div>
 
-        {/* Spacer */}
-        <div style={{ height: '25px' }}></div>
+        <div style={{ height: '1px' }}></div>
         
         {/* Welcome Text */}
-        <div className="text-center space-y-2" style={{ marginTop: '20px' }}>
+        <div className="text-center space-y-2" style={{ marginTop: '25px', marginBottom: '25px' }}>
           <h2 className="text-base text-[#0d1a4b]" style={{ fontSize: '16px' }}>Create your account</h2>
         </div>
 
         {/* Form */}
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-0" onSubmit={handleSubmit}>
           {error && (
-            <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
-              {error}
+            <div className="p-3 mb-4 text-red-500 bg-red-50 rounded-md" style={{ fontSize: '14px', marginBottom: '10px' }}>
+              ⚠️ {error}
+            </div>
+          )}
+          {message && (
+            <div className="p-3 mb-4 text-green-500 bg-green-50 rounded-md" style={{ fontSize: '14px', marginBottom: '10px' }}>
+              ✅ {message}
             </div>
           )}
 
           {/* Email Input */}
-          <div>
-            <label className="block font-medium text-[#0d1a4b]" style={{ fontSize: '14px' }}>Rice Email Address</label>
-            <div className="relative">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="username@rice.edu"
-                pattern=".*@rice\.edu$"
-                title="Please use your Rice University email address"
-                style={{ height: '30px', fontSize: '14px' }}
-                className="w-full px-3 border border-gray-100 rounded-md text-[#0d1a4b] 
-                placeholder-gray-400 transition-colors duration-200
-                hover:border-[#fdb913] focus:border-[#fdb913]
-                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
-              />
-            </div>
+          <div style={{ marginBottom: '15px', width: '100%' }}>
             {email && !validateEmail(email) && (
-              <p className="mt-1 text-sm text-red-500">
-                Please use your Rice University email address
+              <p className="text-red-500" style={{ fontSize: '14px', marginBottom: '10px' }}>
+                ⚠️ Please use your Rice University email address
               </p>
             )}
+            <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Rice Email Address</label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="username@rice.edu or username@alumni.rice.edu"
+                              pattern=".*@(rice\.edu|alumni\.rice\.edu)$"
+                title="Please use your Rice University email address (@rice.edu or @alumni.rice.edu)"
+              style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
+              className="px-3 border border-gray-100 text-[#0d1a4b] 
+              placeholder-gray-400 transition-colors duration-200
+              hover:border-[#fdb913] focus:border-[#fdb913]
+              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
+            />
           </div>
 
           {/* Password Input */}
-          <div>
-            <label className="block font-medium text-[#0d1a4b]" style={{ fontSize: '14px' }}>Password</label>
+          <div style={{ marginBottom: '15px', width: '100%' }}>
+            <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Password</label>
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Create a password"
-                style={{ height: '30px', fontSize: '14px' }}
-                className="w-full px-3 border border-gray-100 rounded-md text-[#0d1a4b] 
+                style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
+                className="px-3 border border-gray-100 text-[#0d1a4b] 
                 placeholder-gray-400 transition-colors duration-200
                 hover:border-[#fdb913] focus:border-[#fdb913]
                 focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{ 
+                  position: 'absolute',
+                  right: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontSize: '13px',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  color: '#0d1a4b',
+                  fontWeight: '500',
+                  zIndex: 10
+                }}
+                onMouseOver={(e) => e.target.style.color = '#162456'}
+                onMouseOut={(e) => e.target.style.color = '#0d1a4b'}
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
             </div>
             {/* Password Requirements */}
             <div className="mt-2 space-y-1">
@@ -196,43 +233,67 @@ export default function SignUp() {
           </div>
 
           {/* Confirm Password Input */}
-          <div>
-            <label className="block font-medium text-[#0d1a4b]" style={{ fontSize: '14px' }}>Confirm Password</label>
+          <div style={{ marginBottom: '15px', width: '100%' }}>
+            <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Confirm Password</label>
             <div className="relative">
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your password"
-                style={{ height: '30px', fontSize: '14px' }}
-                className="w-full px-3 border border-gray-100 rounded-md text-[#0d1a4b] 
+                style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
+                className="px-3 border border-gray-100 text-[#0d1a4b] 
                 placeholder-gray-400 transition-colors duration-200
                 hover:border-[#fdb913] focus:border-[#fdb913]
                 focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                style={{ 
+                  position: 'absolute',
+                  right: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontSize: '13px',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  color: '#0d1a4b',
+                  fontWeight: '500',
+                  zIndex: 10
+                }}
+                onMouseOver={(e) => e.target.style.color = '#162456'}
+                onMouseOut={(e) => e.target.style.color = '#0d1a4b'}
+              >
+                {showConfirmPassword ? 'Hide' : 'Show'}
+              </button>
             </div>
           </div>
 
           {/* Sign Up Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ height: '30px', marginTop: '0.5rem', fontSize: '14px' }}
-            className="w-full bg-[#A4907C] text-white px-4 rounded-md font-semibold
-            shadow-sm hover:bg-[#8B7355] focus:outline-none focus:ring-2 focus:ring-[#A4907C] 
-            focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5
-            disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Creating account...' : 'Create Account'}
-          </button>
+          <div style={{ marginTop: '15px', marginBottom: '15px', width: '100%' }}>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-3 py-1.5 border border-gray-100 text-[#0d1a4b] bg-white
+              hover:border-[#fdb913] focus:border-[#fdb913] transition-colors duration-200
+              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none
+              text-sm font-medium"
+              style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
+            >
+              {loading ? 'Creating account...' : 'Create Account'}
+            </button>
+          </div>
         </form>
 
         {/* Sign In Link */}
-        <div className="text-center pt-4">
+        <div className="text-center mt-8">
           <p className="text-[#0d1a4b]" style={{ fontSize: '14px' }}>
             Already have an account?{' '}
-            <Link to="/" className="text-[#A4907C] hover:text-[#8B7355]" style={{ fontSize: '14px' }}>
+            <Link to="/" className="text-[#0d1a4b] hover:text-[#162456]" style={{ fontSize: '14px' }}>
               Sign in
             </Link>
           </p>

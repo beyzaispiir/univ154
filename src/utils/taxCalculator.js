@@ -1,4 +1,5 @@
 import { taxData2025 } from '../data/taxData.js';
+import stateTaxData from '../data/stateTaxData';
 
 /**
  * Calculates the Standard Deduction based on user's filing status, age, and blindness.
@@ -105,9 +106,10 @@ function calculateFederalIncomeTax(taxableIncome) {
  * Calculates all taxes and the final after-tax income.
  * @param {number} preTaxIncome - The income before any taxes or deductions.
  * @param {object} userDeductionChoices - Choices for calculating the standard deduction.
+ * @param {string} state - The selected state abbreviation (e.g., 'TX').
  * @returns {object} An object containing all calculated financial figures.
  */
-export function calculateFinancials(preTaxIncome, userDeductionChoices) {
+export function calculateFinancials(preTaxIncome, userDeductionChoices, state) {
   if (isNaN(preTaxIncome) || preTaxIncome < 0) {
     preTaxIncome = 0;
   }
@@ -122,8 +124,20 @@ export function calculateFinancials(preTaxIncome, userDeductionChoices) {
 
   const medicareTax = taxableIncome * taxData2025.medicare.rate;
 
-  // State tax is not yet implemented.
-  const stateIncomeTax = 0;
+  // State income tax calculation (progressive)
+  let stateIncomeTax = 0;
+  if (state) {
+    const brackets = stateTaxData.filter(row => row.state === state).sort((a, b) => a.lowerBound - b.lowerBound);
+    let remainingIncome = taxableIncome;
+    for (let i = brackets.length - 1; i >= 0; i--) {
+      const bracket = brackets[i];
+      if (remainingIncome > bracket.lowerBound) {
+        const incomeInBracket = remainingIncome - bracket.lowerBound;
+        stateIncomeTax += incomeInBracket * bracket.rate;
+        remainingIncome = bracket.lowerBound;
+      }
+    }
+  }
 
   const totalTax = federalIncomeTax + socialSecurityTax + medicareTax + stateIncomeTax;
   

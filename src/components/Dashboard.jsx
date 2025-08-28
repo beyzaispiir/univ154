@@ -11,6 +11,8 @@ import LectureNotes from './LectureNotes'
 import Overview from './pages/Overview'
 import BudgetPlanner from './pages/BudgetPlanner'
 import Analytics from './pages/Analytics'
+import { BudgetProvider } from '../contexts/BudgetContext'
+import { WeekAccessProvider, useWeekAccess } from '../contexts/WeekAccessContext'
 
 // Import icons
 import { MdDashboard, MdSchool, MdInsertChart, MdChat, MdNotifications, MdUpload, MdDownload, MdBook, MdCheckCircle, MdBarChart, MdAccountBalance, MdTimeline, MdCalendarToday, MdAssignment, MdTrendingUp } from 'react-icons/md'
@@ -110,8 +112,9 @@ const PathConnector = ({ isActive }) => (
   </div>
 )
 
-export default function Dashboard() {
+function DashboardContent() {
   const { user, signOut } = useAuth()
+  const navigate = useNavigate()
   const [activeModule, setActiveModule] = useState(null)
   const [activeView, setActiveView] = useState('dashboard')
   const [isEditingName, setIsEditingName] = useState(false)
@@ -125,6 +128,9 @@ export default function Dashboard() {
   
   // Use the centralized admin check
   const isAdmin = isUserAdmin(user?.email)
+  
+  // Use week access context
+  const { isWeekAccessible, isLoading: weekAccessLoading } = useWeekAccess()
 
   // Animation effect on component mount
   useEffect(() => {
@@ -231,6 +237,17 @@ export default function Dashboard() {
       saveDisplayName()
     } else if (e.key === 'Escape') {
       setIsEditingName(false)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOut()
+      navigate('/')
+    } catch (error) {
+      console.error('Error during logout:', error)
+      // Even if there's an error, navigate to login page
+      navigate('/')
     }
   }
 
@@ -530,6 +547,35 @@ export default function Dashboard() {
 
         {/* Navigation Sections */}
         <nav className="flex-1 space-y-2">
+          {/* Admin Section */}
+          {isAdmin && (
+            <div className={`py-[10px] transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="flex items-center gap-3 pl-6 mb-[20px]">
+                <div className={`p-2 rounded-lg bg-red-100 transition-all duration-500 ${isLoaded ? 'scale-100' : 'scale-0'}`}> 
+                  <FaChalkboardTeacher className="w-[22px] h-[22px] text-red-600" />
+                </div>
+                <span className="font-semibold text-red-600" style={{ fontSize: '16px' }}>Admin Panel</span>
+              </div>
+              
+              <div className="px-[16px] space-y-[10px]">
+                <SidebarLink
+                  href="/dashboard/admin/week-access"
+                  delay={0}
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: 'normal'
+                  }}
+                  text={
+                    <span className="flex items-center">
+                      <FaChalkboardTeacher color="#dc2626" className="w-4 h-4" />
+                      <span style={{marginLeft: '8px', color: '#dc2626'}}>Week Access Management</span>
+                    </span>
+                  }
+                />
+              </div>
+            </div>
+          )}
+
           {/* Excel Workshop Section with new WeekCard design */}
           <div className={`py-[10px] transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <div className="flex items-center gap-3 pl-6 mb-[20px]">
@@ -540,23 +586,73 @@ export default function Dashboard() {
               </div>
               
               <div className="px-[16px] space-y-[10px]">
-                  {[...Array(10)].map((_, i) => (
+                  {[...Array(10)].map((_, i) => {
+                    const weekId = `week-${i+1}`;
+                    const isAccessible = isWeekAccessible(weekId);
+                    let weekLabel = `Week ${i+1}`;
+                    let weekText = null;
+                    if (i === 0) weekLabel = 'Week 1 - Budgeting';
+                    if (i === 5) {
+                      weekText = (
+                        <span className="flex flex-col items-start">
+                          <span style={{display:'flex', alignItems:'center'}}>
+                            <FaFileExcel color={isAccessible ? "#0d1a4b" : "#9ca3af"} className="w-4 h-4" />
+                            <span style={{marginLeft: '8px', color: isAccessible ? '#0d1a4b' : '#9ca3af'}}>Week 6 - Retirement</span>
+                          </span>
+                          <span style={{ fontSize: '13px', marginLeft: '85px', lineHeight: 1.1, color: isAccessible ? '#0d1a4b' : '#9ca3af' }}>Planning</span>
+                        </span>
+                      );
+                    }
+                    
+                    if (!isAccessible && !isAdmin) {
+                      return (
+                        <div
+                          key={`excel-week-${i+1}`}
+                          className="flex items-center px-[16px] py-[12px] rounded-lg bg-gray-50 cursor-not-allowed opacity-60"
+                          style={{
+                            fontSize: '14px',
+                            fontWeight: 'normal'
+                          }}
+                        >
+                          <span className="flex items-center">
+                            <FaFileExcel color="#9ca3af" className="w-4 h-4" />
+                            <span style={{marginLeft: '8px', color: '#9ca3af'}}>
+                              {i === 5 ? (
+                                <span className="flex flex-col items-start">
+                                  <span style={{display:'flex', alignItems:'center'}}>
+                                    <FaFileExcel color="#9ca3af" className="w-4 h-4" />
+                                    <span style={{marginLeft: '8px'}}>Week 6 - Retirement</span>
+                                  </span>
+                                  <span style={{ fontSize: '13px', marginLeft: '85px', lineHeight: 1.1 }}>Planning</span>
+                                </span>
+                              ) : weekLabel}
+                            </span>
+                            <span className="ml-auto text-xs text-gray-400">🔒</span>
+                          </span>
+                        </div>
+                      );
+                    }
+                    
+                    return (
                     <SidebarLink
                       key={`excel-week-${i+1}`}
-                      href={`/dashboard/excel/week-${i+1}`}
+                      href={isAccessible ? `/dashboard/excel/${weekId}` : '#'}
                       delay={i}
                       style={{
                         fontSize: '14px',
                         fontWeight: 'normal'
                       }}
                       text={
-                        <span className="flex items-center gap-3">
-                          <FaFileExcel color="#0d1a4b" className="w-4 h-4" />
-                          <span>Week {i+1}</span>
+                          i === 5 ? weekText : (
+                            <span className="flex items-center">
+                          <FaFileExcel color={isAccessible ? "#0d1a4b" : "#9ca3af"} className="w-4 h-4" />
+                              <span style={{marginLeft: '8px', color: isAccessible ? '#0d1a4b' : '#9ca3af'}}>{weekLabel}</span>
                         </span>
+                          )
                       }
                     />
-                  ))}
+                    );
+                  })}
               </div>
           </div>
         </nav>
@@ -575,7 +671,7 @@ export default function Dashboard() {
           <div className="border-t border-gray-100 bg-gray-50/50">
             <div className="p-4">
               <button
-                onClick={signOut}
+                onClick={handleLogout}
                 style={{ 
                   height: '37px',
                   fontSize: '14px',
@@ -761,9 +857,19 @@ export default function Dashboard() {
           */}
 
           {/* Render nested routes */}
-          <Outlet />
+          <BudgetProvider>
+            <Outlet />
+          </BudgetProvider>
         </div>
       </div>
     </div>
+  )
+}
+
+export default function Dashboard() {
+  return (
+    <WeekAccessProvider>
+      <DashboardContent />
+    </WeekAccessProvider>
   )
 } 

@@ -37,11 +37,27 @@ export function AuthProvider({ children }) {
         if (user && !isValidRiceEmail(user.email)) {
           // Sign out the user if not a Rice email
           await supabase.auth.signOut()
-          throw new Error('Please use your Rice University email address')
+          console.error('Non-Rice email attempted to sign in:', user.email)
+          // Don't throw error here as it might cause issues with the auth flow
+          setUser(null)
+          return
         }
 
         setUser(user)
       } else if (event === 'SIGNED_OUT') {
+        setUser(null)
+        // Don't clear remember me data on sign out
+        // This allows the user to stay logged in if they chose "Remember me"
+        // Only clear if it's a manual sign out (not session expiry)
+      } else if (event === 'TOKEN_REFRESHED') {
+        // Update user data when token is refreshed
+        if (session?.user) {
+          setUser(session.user)
+        }
+      } else if (event === 'TOKEN_REFRESHED_FAILED') {
+        // If token refresh fails, clear remember me data
+        localStorage.removeItem('rememberMe')
+        localStorage.removeItem('savedEmail')
         setUser(null)
       }
       setLoading(false)
@@ -54,6 +70,8 @@ export function AuthProvider({ children }) {
 
   const signUp = async (email, password) => {
     try {
+      console.log('AuthContext signUp called with:', { email, password: '***' })
+      
       if (!isValidRiceEmail(email)) {
         throw new Error('Please use your Rice University email address')
       }
@@ -63,15 +81,43 @@ export function AuthProvider({ children }) {
         password,
       })
 
-      if (error) throw error
+      console.log('Supabase signUp response:', { data, error })
+      console.log('User data details:', {
+        user: data?.user,
+        email_confirmed_at: data?.user?.email_confirmed_at,
+        created_at: data?.user?.created_at,
+        updated_at: data?.user?.updated_at
+      })
+
+      if (error) {
+        console.log('Supabase signUp error details:', error)
+        throw error
+      }
+
+      // Check if this is an existing user by comparing created_at with current date
+      if (data?.user?.created_at) {
+        const createdDate = new Date(data.user.created_at)
+        const currentDate = new Date()
+        const timeDiff = currentDate.getTime() - createdDate.getTime()
+        const daysDiff = timeDiff / (1000 * 3600 * 24)
+        
+        console.log('Days since user creation:', daysDiff)
+        
+        // If user was created more than 1 day ago, it's an existing user
+        if (daysDiff > 1) {
+          console.log('This is an existing user, not a new signup')
+          throw new Error('An account with this email already exists. Please sign in instead.')
+        }
+      }
 
       return { data, error: null }
     } catch (error) {
+      console.error('AuthContext signUp error:', error)
       return { data: null, error }
     }
   }
 
-  const signIn = async (email, password) => {
+  const signIn = async (email, password, rememberMe = false) => {
     try {
       if (!isValidRiceEmail(email)) {
         throw new Error('Please use your Rice University email address')
@@ -80,9 +126,22 @@ export function AuthProvider({ children }) {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
+        options: {
+          // If rememberMe is true, set a longer session duration
+          // If false, use default session duration
+          persistSession: true, // Always persist session
+        }
       })
 
       if (error) throw error
+
+      // If rememberMe is false, we could set a shorter session duration
+      // But Supabase handles this automatically based on user activity
+      if (!rememberMe) {
+        // For non-remember me, we could implement additional logic
+        // like setting a shorter session timeout, but Supabase handles this well
+        console.log('User chose not to remember login')
+      }
 
       return { data, error: null }
     } catch (error) {
@@ -98,7 +157,8 @@ export function AuthProvider({ children }) {
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
-            hosted_domain: ['rice.edu', 'alumni.rice.edu'], // Correct way to specify multiple domains
+            hosted_domain: 'rice.edu', // Restrict to rice.edu domain only
+            hd: 'rice.edu', // Additional hosted domain parameter
           },
           redirectTo: `${window.location.origin}/dashboard`
         },
@@ -134,6 +194,10 @@ export function AuthProvider({ children }) {
     try {
       const { error } = await supabase.auth.signOut()
       if (error) throw error
+      
+      // Only clear remember me data if user explicitly wants to forget
+      // This allows the "Remember me" feature to work properly
+      // User can manually clear this by unchecking the checkbox
     } catch (error) {
       console.error('Error signing out:', error)
     }
@@ -151,7 +215,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   )
 } 

@@ -6,9 +6,18 @@ import logo from '../assets/logo with name for univ154.png'
 import riceLogo from '../assets/rice-logo.png'
 
 export default function Login() {
-  const [rememberMe, setRememberMe] = useState(false)
-  const [email, setEmail] = useState('')
+  const [rememberMe, setRememberMe] = useState(() => {
+    // Check if user previously chose to remember login
+    return localStorage.getItem('rememberMe') === 'true'
+  })
+  const [email, setEmail] = useState(() => {
+    // Pre-fill email if user chose to remember
+    const shouldRemember = localStorage.getItem('rememberMe') === 'true'
+    const savedEmail = localStorage.getItem('savedEmail')
+    return shouldRemember && savedEmail ? savedEmail : ''
+  })
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -16,7 +25,7 @@ export default function Login() {
   const { signIn, signInWithGoogle, resetPassword } = useAuth()
 
   const validateEmail = (email) => {
-    const riceEmailRegex = /@rice\.edu$/
+    const riceEmailRegex = /@(rice\.edu|alumni\.rice\.edu)$/
     return riceEmailRegex.test(email)
   }
 
@@ -26,29 +35,27 @@ export default function Login() {
     setLoading(true)
 
     try {
-      // First check if the account exists
-      const { data: user } = await supabase
-        .from('auth.users')
-        .select('email')
-        .eq('email', email)
-        .single()
-
-      if (!user) {
-        setError('No account found with this email. Please sign up first.')
-        setLoading(false)
-        return
-      }
-
-      // If account exists, proceed with login
-      const { error: signInError } = await signIn(email, password)
+      // Proceed directly with login - Supabase will handle authentication
+      const { error: signInError } = await signIn(email, password, rememberMe)
       
       if (signInError) {
         if (signInError.message.includes('Invalid login credentials')) {
-          setError('Incorrect password. Please try again.')
+          setError('Incorrect email or password. Please try again.')
+        } else if (signInError.message.includes('Email not confirmed')) {
+          setError('Please check your email and click the confirmation link before signing in.')
         } else {
           setError(signInError.message)
         }
       } else {
+        // Save remember me preference and email if checked
+        if (rememberMe) {
+          localStorage.setItem('rememberMe', 'true')
+          localStorage.setItem('savedEmail', email)
+        } else {
+          localStorage.removeItem('rememberMe')
+          localStorage.removeItem('savedEmail')
+        }
+        
         navigate('/dashboard')
       }
     } catch (error) {
@@ -68,6 +75,8 @@ export default function Login() {
         console.error('Google sign in error:', error)
         if (error.message.includes('Rice University email address')) {
           setError('Please use your Rice University email address (@rice.edu)')
+        } else if (error.message.includes('hosted_domain')) {
+          setError('Please use your Rice University email address (@rice.edu) for Google sign-in')
         } else {
           setError(error.message || 'Failed to sign in with Google')
         }
@@ -89,19 +98,7 @@ export default function Login() {
     }
 
     try {
-      // First check if the account exists
-      const { data: user } = await supabase
-        .from('auth.users')
-        .select('email')
-        .eq('email', email)
-        .single()
-
-      if (!user) {
-        setError('No account found with this email. Please sign up first.')
-        return
-      }
-
-      const { error } = await supabase.auth.resetPasswordForEmail(email)
+      const { error } = await resetPassword(email)
       
       if (error) {
         setError(error.message)
@@ -121,9 +118,11 @@ export default function Login() {
     }
   }
 
+
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-[400px] space-y-6 bg-white p-8 rounded-lg shadow-sm px-6">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
+      <div className="w-full max-w-[400px] space-y-6 bg-white p-8 rounded-lg shadow-sm px-6" style={{ marginTop: '2rem' }}>
         {/* Logo and Title Section */}
         <div className="flex flex-col items-center">
           <img 
@@ -167,55 +166,79 @@ export default function Login() {
         {/* Form */}
         <form className="space-y-0" onSubmit={handleSubmit}>
           {error && (
-            <div className="p-3 mb-4 text-sm text-red-500 bg-red-50 rounded-md">
-              {error}
+            <div className="p-3 mb-4 text-red-500 bg-red-50 rounded-md" style={{ fontSize: '14px', marginBottom: '10px' }}>
+              ⚠️ {error}
             </div>
           )}
           {message && (
-            <div className="p-3 mb-4 text-sm text-green-500 bg-green-50 rounded-md">
-              {message}
+            <div className="p-3 mb-4 text-green-500 bg-green-50 rounded-md" style={{ fontSize: '14px', marginBottom: '10px' }}>
+              ✅ {message} Please check your inbox and spam folder.
             </div>
           )}
 
           {/* Email Input */}
           <div style={{ marginBottom: '15px', width: '100%' }}>
+            {email && !validateEmail(email) && (
+              <p className="text-red-500" style={{ fontSize: '14px', marginBottom: '10px' }}>
+                ⚠️ Please use your Rice University email address (@rice.edu or @alumni.rice.edu)
+              </p>
+            )}
             <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Rice Email Address</label>
             <input
               type="email"
               required
               value={email}
               onChange={handleEmailChange}
-              placeholder="username@rice.edu"
-              pattern=".*@rice\.edu$"
-              title="Please use your Rice University email address"
+              placeholder="username@rice.edu or username@alumni.rice.edu"
+              pattern=".*@(rice\.edu|alumni\.rice\.edu)$"
+              title="Please use your Rice University email address (@rice.edu or @alumni.rice.edu)"
               style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
               className="px-3 border border-gray-100 text-[#0d1a4b] 
               placeholder-gray-400 transition-colors duration-200
               hover:border-[#fdb913] focus:border-[#fdb913]
               focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
             />
-            {email && !validateEmail(email) && (
-              <p className="mt-1 text-sm text-red-500">
-                Please use your Rice University email address
-              </p>
-            )}
           </div>
 
           {/* Password Input */}
           <div style={{ marginBottom: '15px', width: '100%' }}>
             <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Password</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
-              className="px-3 border border-gray-100 text-[#0d1a4b] 
-              placeholder-gray-400 transition-colors duration-200
-              hover:border-[#fdb913] focus:border-[#fdb913]
-              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
+                className="px-3 border border-gray-100 text-[#0d1a4b] 
+                placeholder-gray-400 transition-colors duration-200
+                hover:border-[#fdb913] focus:border-[#fdb913]
+                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{ 
+                  position: 'absolute',
+                  right: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontSize: '13px',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  color: '#0d1a4b',
+                  fontWeight: '500',
+                  zIndex: 10
+                }}
+                onMouseOver={(e) => e.target.style.color = '#162456'}
+                onMouseOut={(e) => e.target.style.color = '#0d1a4b'}
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
           </div>
 
           {/* Remember Me and Forgot Password */}
@@ -225,7 +248,15 @@ export default function Login() {
                 id="remember-me"
                 type="checkbox"
                 checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+                onChange={(e) => {
+                  const checked = e.target.checked
+                  setRememberMe(checked)
+                  // If unchecked, clear saved data immediately
+                  if (!checked) {
+                    localStorage.removeItem('rememberMe')
+                    localStorage.removeItem('savedEmail')
+                  }
+                }}
                 className="h-4 w-4 border-gray-300 rounded text-[#0d1a4b]"
               />
               <label htmlFor="remember-me" className="ml-2 text-[#0d1a4b]" style={{ fontSize: '14px' }}>
@@ -233,6 +264,7 @@ export default function Login() {
               </label>
             </div>
             <button
+              type="button"
               onClick={handleForgotPassword}
               className="text-[#0d1a4b] hover:text-[#162456]"
               style={{ fontSize: '14px' }}
@@ -289,6 +321,8 @@ export default function Login() {
             </Link>
           </p>
         </div>
+
+
       </div>
     </div>
   )

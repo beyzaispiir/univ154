@@ -23,10 +23,24 @@ export const BudgetProvider = ({ children }) => {
     qualifyingSurvivingSpouse: 'no',
   });
 
+  // New: Retirement plan user inputs (shared between Week 1 and Week 6)
+  const [retirementInputs, setRetirementInputs] = useState({
+    retirement_traditional_401k: '',
+    retirement_roth_401k: '',
+    retirement_traditional_ira: '',
+    retirement_roth_ira: '',
+    retirement_simple_ira: '',
+    retirement_403b: '',
+    retirement_457b: '',
+    retirement_thrift: '',
+    retirement_private_db: '',
+    retirement_gov_db: '',
+  });
+
   const financialCalculations = useMemo(() => {
     const preTax = parseFloat(topInputs.preTaxIncome) || 0;
-    return calculateFinancials(preTax, deductionChoices);
-  }, [topInputs.preTaxIncome, deductionChoices]);
+    return calculateFinancials(preTax, deductionChoices, topInputs.location);
+  }, [topInputs.preTaxIncome, deductionChoices, topInputs.location]);
 
   const value = {
     topInputs,
@@ -34,6 +48,8 @@ export const BudgetProvider = ({ children }) => {
     deductionChoices,
     setDeductionChoices,
     financialCalculations,
+    retirementInputs,
+    setRetirementInputs,
   };
 
   return (

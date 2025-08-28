@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { calculateFinancials } from '../utils/taxCalculator';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { BudgetProvider } from '../contexts/BudgetContext';
 import BudgetForm from './BudgetForm';
 import CalculationDetails from './CalculationDetails';
 
@@ -46,7 +45,89 @@ const budgetConfig = {
         { id: 'internet', label: 'Internet', recommendedPercent: 0.0080 },
         { id: 'miscellaneous', label: 'Miscellaneous', recommendedPercent: 0.0040 },
       ]
-    }
+    },
+    {
+      title: 'Food',
+      items: [
+        { id: 'groceries', label: 'Groceries', recommendedPercent: 0.6 },
+        { id: 'diningOut', label: 'Dining Out', recommendedPercent: 0.25 },
+        { id: 'takeoutDelivery', label: 'Takeout/Delivery', recommendedPercent: 0.1 },
+        { id: 'foodMisc', label: 'Miscellaneous', recommendedPercent: 0.05 },
+      ]
+    },
+    {
+      title: 'Transportation',
+      items: [
+        { id: 'carPayment', label: 'Car Payment', recommendedPercent: 0.5 },
+        { id: 'gasoline', label: 'Gasoline/Fuel', recommendedPercent: 0.2 },
+        { id: 'carMaintenance', label: 'Car Maintenance (Oil, Tires)', recommendedPercent: 0.1 },
+        { id: 'rideshare', label: 'Rideshare (Uber/Lyft)', recommendedPercent: 0.1 },
+        { id: 'publicTransit', label: 'Public Transit Passes', recommendedPercent: 0.025 },
+        { id: 'carRegistration', label: 'Car Registration', recommendedPercent: 0.025 },
+        { id: 'parkingFees', label: 'Parking Fees', recommendedPercent: 0.025 },
+        { id: 'transportMisc', label: 'Miscellaneous', recommendedPercent: 0.025 },
+      ]
+    },
+    {
+      title: 'Insurance/Health',
+      items: [
+        { id: 'healthInsurance', label: 'Health Insurance', recommendedPercent: 0.35 },
+        { id: 'lifeInsurance', label: 'Life Insurance', recommendedPercent: 0.05 },
+        { id: 'autoInsurance', label: 'Auto Insurance', recommendedPercent: 0.15 },
+        { id: 'homeInsurance', label: 'Home Insurance', recommendedPercent: 0.05 },
+        { id: 'disabilityInsurance', label: 'Disability Insurance', recommendedPercent: 0.05 },
+        { id: 'otcMedications', label: 'Over-the-Counter Medications', recommendedPercent: 0.05 },
+        { id: 'therapy', label: 'Therapy or Mental Health', recommendedPercent: 0.1 },
+        { id: 'gym', label: 'Gym Membership', recommendedPercent: 0.1 },
+        { id: 'healthMisc', label: 'Miscellaneous', recommendedPercent: 0.1 },
+      ]
+    },
+    {
+      title: 'Retirement Contributions',
+      items: [
+        {
+          id: 'traditional401k',
+          label: 'Traditional 401(k) Plan',
+          recommendedPercent: ({ afterTaxIncome, housingCosts }) => getRetirementPercents(afterTaxIncome, housingCosts).traditional401k
+        },
+        {
+          id: 'roth401k',
+          label: 'Roth 401(k) Plan',
+          recommendedPercent: ({ afterTaxIncome, housingCosts }) => getRetirementPercents(afterTaxIncome, housingCosts).roth401k
+        },
+        {
+          id: 'ira',
+          label: 'Traditional IRA Plan',
+          recommendedPercent: ({ afterTaxIncome, housingCosts }) => getRetirementPercents(afterTaxIncome, housingCosts).ira
+        },
+        {
+          id: 'rothira',
+          label: 'Roth IRA Plan',
+          recommendedPercent: ({ afterTaxIncome, housingCosts }) => getRetirementPercents(afterTaxIncome, housingCosts).rothira
+        },
+        {
+          id: 'simple401k',
+          label: 'SIMPLE 401(k) Plan',
+          recommendedPercent: ({ afterTaxIncome, housingCosts }) => getRetirementPercents(afterTaxIncome, housingCosts).simple401k
+        },
+        { id: 'plan403b', label: '403(b) Plan', recommendedPercent: () => 0 },
+        { id: 'plan457b', label: '457(b) Plan', recommendedPercent: () => 0 },
+        { id: 'thrift', label: 'Thrift Savings Plan', recommendedPercent: () => 0 },
+        { id: 'privateDb', label: 'Private-Sector DB Plan', recommendedPercent: () => 0 },
+        { id: 'govDb', label: 'Government DB Plan', recommendedPercent: () => 0 },
+        {
+          id: 'retirementTotal',
+          label: 'Total Retirement Contributions',
+          recommendedPercent: ({ housingCosts }) => {
+            let basePercent = 0;
+            if (housingCosts === 'Low') basePercent = 0.215 * 0.25;
+            if (housingCosts === 'Medium') basePercent = 0.20 * 0.25;
+            if (housingCosts === 'High') basePercent = 0.185 * 0.25;
+            return basePercent;
+          }
+        }
+      ]
+    },
   ]
 };
 
@@ -162,6 +243,41 @@ const styles = {
   }
 };
 
+// Replace the helper function with the correct Excel logic (no normalization)
+function getRetirementPercents(afterTaxIncome, housingCosts) {
+  let F123 = 0;
+  if (housingCosts === 'Low') F123 = 0.215 * 0.25;
+  if (housingCosts === 'Medium') F123 = 0.20 * 0.25;
+  if (housingCosts === 'High') F123 = 0.185 * 0.25;
+
+  // Roth 401k Plan (F127)
+  let F127 = 0.2;
+  let E127 = (afterTaxIncome * F127 * 0.2 > 23500) ? 23500 / afterTaxIncome : F127 * 0.2;
+
+  // Traditional IRA Plan (F129)
+  let F129 = 0.1;
+  let E129 = (afterTaxIncome * F129 * 0.1 > 7000) ? 7000 / afterTaxIncome : F129 * 0.1;
+
+  // Roth IRA Plan (F131)
+  let E131 = (afterTaxIncome * F123 * 0.2 > 7000) ? 7000 / afterTaxIncome : F123 * 0.2;
+
+  // SIMPLE 401k Plan (F133) - Excel'de genelde 0, burada örnek olarak ekliyoruz
+  let E133 = 0;
+
+  // Traditional 401k Plan (F125)
+  let F125 = F123 - E131 - E127 - E129 - E133;
+  let F125Capped = ((F125 * afterTaxIncome) < 23500) ? F125 : 23500 / afterTaxIncome;
+
+  return {
+    traditional401k: F125Capped,
+    roth401k: E127,
+    ira: E129,
+    rothira: E131,
+    simple401k: E133,
+    sectionTotal: F123
+  };
+}
+
 const Week1BudgetingWrapper = () => {
     const location = useLocation();
     
@@ -208,7 +324,7 @@ const Week1BudgetingWrapper = () => {
 
 export default function Week1Budgeting() {
   return (
-    <BudgetProvider>
+    <>
       {/* Modern info alert for editable fields - guaranteed right top corner */}
       <div style={{
         position: 'fixed',
@@ -232,6 +348,6 @@ export default function Week1Budgeting() {
         You can only enter data in the open (yellow) fields.
       </div>
       <Week1BudgetingWrapper />
-    </BudgetProvider>
+    </>
   );
 } 

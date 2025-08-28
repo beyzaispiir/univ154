@@ -1,11 +1,15 @@
+// Force deploy - Netlify cache fix
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { useAuth } from './contexts/AuthContext'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
 import SignUpSuccess from './components/SignUpSuccess'
+import UpdatePassword from './components/UpdatePassword'
 import Dashboard from './components/Dashboard'
 import Week1Budgeting from './components/Week1Budgeting'
+import Week6Retirement from './components/Week6Retirement'
+import WeekAccessAdmin from './components/WeekAccessAdmin'
 
 // Sample data for Overview component
 const sampleData = {
@@ -116,9 +120,12 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signup-success" element={<SignUpSuccess />} />
+          <Route path="/update-password" element={<UpdatePassword />} />
           <Route path="/dashboard/*" element={<Dashboard />}>
             <Route index element={<Navigate to="/dashboard/excel/week-1" replace />} />
             <Route path="excel/week-1/*" element={<Week1Budgeting />} />
+            <Route path="excel/week-6/*" element={<Week6Retirement />} />
+            <Route path="admin/week-access" element={<WeekAccessAdmin />} />
             {/* Add routes for other weeks here as they are created */}
           </Route>
         </Routes>
