@@ -1,0 +1,348 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure full height for all root elements */
+html,
+body,
+#root {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Excel-specific styles */
+.excel-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+/* Menu bar styles */
+.excel-menu {
+  background-color: #f3f2f1;
+  border-bottom: 1px solid #e1dfdd;
+  padding: 4px 8px;
+}
+
+.excel-menu button,
+.excel-menu label {
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #323130;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.excel-menu button:hover,
+.excel-menu label:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: #e1dfdd;
+}
+
+/* Sidebar styles */
+.file-sidebar {
+  width: 250px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e1dfdd;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.file-sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid #e1dfdd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.file-item:hover {
+  background-color: #f0f0f0;
+}
+
+.file-item.active {
+  background-color: #e6f4ff;
+}
+
+.file-item-icon {
+  margin-right: 8px;
+  color: #666;
+}
+
+.file-item-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-item-actions {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.file-item:hover .file-item-actions {
+  opacity: 1;
+}
+
+/* Ribbon styles */
+.excel-ribbon {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e1dfdd;
+  padding: 4px 8px;
+}
+
+.excel-ribbon .toolbar-button {
+  padding: 6px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background-color: transparent;
+  color: #323130;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.excel-ribbon .toolbar-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: #e1dfdd;
+}
+
+.excel-ribbon .toolbar-button.active {
+  background-color: #edebe9;
+  border-color: #c8c6c4;
+}
+
+/* Formula bar styles */
+.formula-bar {
+  height: 28px;
+  border-bottom: 1px solid #e1dfdd;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  background-color: #ffffff;
+  gap: 8px;
+}
+
+.formula-bar input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  font-family: 'Calibri', sans-serif;
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* Grid styles */
+.excel-grid {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.excel-grid table {
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.excel-grid th,
+.excel-grid td {
+  border: 1px solid #e1dfdd;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.excel-grid th {
+  background-color: #f3f2f1;
+  text-align: center;
+  padding: 0 4px;
+  min-width: 48px;
+  height: 20px;
+  line-height: 20px;
+}
+
+.excel-grid td {
+  min-width: 64px;
+  height: 20px;
+  padding: 0;
+}
+
+.excel-grid td input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0 4px;
+  font-family: 'Calibri', sans-serif;
+  font-size: 14px;
+}
+
+/* Active cell styles */
+.active-cell {
+  border: 2px solid #217346 !important;
+  padding: 0 !important;
+}
+
+/* Dropdown styles */
+.excel-dropdown {
+  height: 24px;
+  border: 1px solid #e1dfdd;
+  border-radius: 2px;
+  padding: 0 4px;
+  font-size: 14px;
+  background-color: #ffffff;
+  min-width: 80px;
+}
+
+.excel-dropdown:hover {
+  border-color: #c8c6c4;
+}
+
+.excel-dropdown:focus {
+  outline: none;
+  border-color: #0078d4;
+}
+
+/* Font family dropdown */
+select[value="Calibri"] {
+  min-width: 120px;
+}
+
+/* Status bar */
+.status-bar {
+  height: 22px;
+  background-color: #f3f2f1;
+  border-top: 1px solid #e1dfdd;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  color: #605e5c;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3f2f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c8c6c4;
+  border: 3px solid #f3f2f1;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a19f9d;
+}
+
+/* Prevent text selection */
+.excel-grid th,
+.excel-menu,
+.excel-ribbon,
+.status-bar {
+  user-select: none;
+}
+
+/* Prevent browser zoom on mobile devices */
+@media screen and (max-width: 768px) {
+  body {
+    touch-action: pan-x pan-y;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* Excel Editor Styles */
+.excel-editor table {
+  border-collapse: collapse;
+  width: 100%;
+  background: white;
+}
+
+.excel-editor td {
+  border: 1px solid #e2e8f0;
+  padding: 8px;
+  position: relative;
+}
+
+.excel-editor input {
+  width: 100%;
+  border: none;
+  padding: 4px;
+  font-size: 14px;
+  background: transparent;
+}
+
+.excel-editor input:focus {
+  outline: 2px solid #0d1a4b;
+  background: white;
+}
+
+.excel-editor .header-cell {
+  background: #f8fafc;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Excel toolbar */
+.excel-toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.excel-toolbar button {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Scrollable table container */
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
