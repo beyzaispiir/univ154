@@ -25,8 +25,8 @@ export default function Login() {
   const { signIn, signInWithGoogle, resetPassword } = useAuth()
 
   const validateEmail = (email) => {
-    const riceEmailRegex = /@(rice\.edu|alumni\.rice\.edu)$/
-    return riceEmailRegex.test(email)
+    const validEmailRegex = /@(rice\.edu|alumni\.rice\.edu|gmail\.com)$/
+    return validEmailRegex.test(email)
   }
 
   const handleSubmit = async (e) => {
@@ -180,7 +180,7 @@ export default function Login() {
           <div style={{ marginBottom: '15px', width: '100%' }}>
             {email && !validateEmail(email) && (
               <p className="text-red-500" style={{ fontSize: '14px', marginBottom: '10px' }}>
-                ⚠️ Please use your Rice University email address (@rice.edu or @alumni.rice.edu)
+                ⚠️ Please use your Rice University email address (@rice.edu or @alumni.rice.edu) or Gmail address (@gmail.com)
               </p>
             )}
             <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Rice Email Address</label>
@@ -189,9 +189,9 @@ export default function Login() {
               required
               value={email}
               onChange={handleEmailChange}
-              placeholder="username@rice.edu or username@alumni.rice.edu"
-              pattern=".*@(rice\.edu|alumni\.rice\.edu)$"
-              title="Please use your Rice University email address (@rice.edu or @alumni.rice.edu)"
+              placeholder="username@rice.edu, username@alumni.rice.edu, or username@gmail.com"
+              pattern=".*@(rice\.edu|alumni\.rice\.edu|gmail\.com)$"
+              title="Please use your Rice University email address (@rice.edu or @alumni.rice.edu) or Gmail address (@gmail.com)"
               style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
               className="px-3 border border-gray-100 text-[#0d1a4b] 
               placeholder-gray-400 transition-colors duration-200
