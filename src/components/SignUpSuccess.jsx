@@ -45,7 +45,7 @@ export default function SignUpSuccess() {
               Registration Successful!
             </h2>
             <p className="text-green-700 text-sm">
-              Please check your Rice email for a confirmation link. You'll need to verify your email before signing in.
+              Your account has been created successfully! You can now sign in with your email and password.
             </p>
           </div>
           
