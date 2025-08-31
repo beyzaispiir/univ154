@@ -28,8 +28,7 @@ export default function CalculationDetails() {
     socialSecurityTax,
     medicareTax,
     stateIncomeTax,
-    afterTaxIncome,
-    totalTax
+    afterTaxIncome
   } = financialCalculations;
 
   return (

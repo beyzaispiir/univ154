@@ -9,11 +9,11 @@ export const useWeekAccess = () => {
 };
 
 export const WeekAccessProvider = ({ children }) => {
-  const [weekAccess, setWeekAccess] = useState({});
+  const [globalWeekSettings, setGlobalWeekSettings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  // Fetch user and week access data
+  // Fetch user and global week settings data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,45 +22,47 @@ export const WeekAccessProvider = ({ children }) => {
         setUser(user);
 
         if (user) {
-          // Check if user is admin
-          const isAdmin = isUserAdmin(user.email);
-          
-          if (isAdmin) {
-            // Admins have access to all weeks
-            const allWeeksAccess = {};
-            for (let i = 1; i <= 10; i++) {
-              allWeeksAccess[`week-${i}`] = true;
-            }
-            setWeekAccess(allWeeksAccess);
-          } else {
-                         // Fetch week access for regular users
-             const { data, error } = await supabase
-               .from('week_access')
-               .select('week_id, is_available, release_date')
-               .eq('user_email', user.email);
+          // Fetch global week settings
+          const { data: globalSettings, error: globalError } = await supabase
+            .from('global_week_settings')
+            .select('week_id, is_globally_available, release_date');
 
-                          if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned"
-               console.error('Error fetching week access:', error);
-               // Default to only week 1 available
-               setWeekAccess({ 'week-1': true });
-             } else {
-               const accessMap = {};
-               if (data && data.length > 0) {
-                 data.forEach(item => {
-                   accessMap[item.week_id] = item.is_available;
-                 });
-               } else {
-                 // If no data found, default to week 1
-                 accessMap['week-1'] = true;
-               }
-               setWeekAccess(accessMap);
-             }
+          if (globalError) {
+            console.error('Error fetching global week settings:', globalError);
+          } else {
+            const globalMap = {};
+            if (globalSettings && globalSettings.length > 0) {
+              globalSettings.forEach(item => {
+                globalMap[item.week_id] = {
+                  isAvailable: item.is_globally_available,
+                  releaseDate: item.release_date
+                };
+              });
+            } else {
+              // Initialize with default settings if none exist
+              for (let i = 1; i <= 10; i++) {
+                const weekId = `week-${i}`;
+                globalMap[weekId] = {
+                  isAvailable: i === 1, // Only week 1 available by default
+                  releaseDate: null
+                };
+              }
+            }
+            setGlobalWeekSettings(globalMap);
           }
         }
       } catch (error) {
         console.error('Error in fetchData:', error);
-        // Default to only week 1 available
-        setWeekAccess({ 'week-1': true });
+        // Initialize with default settings on error
+        const defaultSettings = {};
+        for (let i = 1; i <= 10; i++) {
+          const weekId = `week-${i}`;
+          defaultSettings[weekId] = {
+            isAvailable: i === 1,
+            releaseDate: null
+          };
+        }
+        setGlobalWeekSettings(defaultSettings);
       } finally {
         setIsLoading(false);
       }
@@ -73,7 +75,7 @@ export const WeekAccessProvider = ({ children }) => {
   const isWeekAccessible = (weekId) => {
     if (!user) return false;
     if (isUserAdmin(user.email)) return true;
-    return weekAccess[weekId] === true;
+    return globalWeekSettings[weekId]?.isAvailable === true;
   };
 
   // Get all accessible weeks
@@ -82,90 +84,90 @@ export const WeekAccessProvider = ({ children }) => {
     if (isUserAdmin(user.email)) {
       return Array.from({ length: 10 }, (_, i) => `week-${i + 1}`);
     }
-    return Object.keys(weekAccess).filter(weekId => weekAccess[weekId]);
+    return Object.keys(globalWeekSettings).filter(weekId => 
+      globalWeekSettings[weekId]?.isAvailable === true
+    );
   };
 
-  // Admin function to update week access
-  const updateWeekAccess = async (weekId, isAvailable, releaseDate = null) => {
+  // Admin function to update global week settings
+  const updateGlobalWeekSettings = async (weekId, isAvailable, releaseDate = null) => {
     if (!isUserAdmin(user?.email)) {
-      throw new Error('Only admins can update week access');
-    }
-
-    if (!user?.email) {
-      throw new Error('User email not available');
+      throw new Error('Only admins can update global week settings');
     }
 
     try {
-      // Update in database
+      // UPDATE instead of INSERT - this is the fix!
       const { error } = await supabase
-        .from('week_access')
-        .upsert({
-          user_email: user.email,
-          week_id: weekId,
-          is_available: isAvailable,
+        .from('global_week_settings')
+        .update({
+          is_globally_available: isAvailable,
           release_date: releaseDate,
           updated_at: new Date().toISOString()
-        });
+        })
+        .eq('week_id', weekId); // WHERE clause
 
       if (error) throw error;
 
       // Update local state
-      setWeekAccess(prev => ({
+      setGlobalWeekSettings(prev => ({
         ...prev,
-        [weekId]: isAvailable
+        [weekId]: {
+          isAvailable,
+          releaseDate
+        }
       }));
 
       return { success: true };
     } catch (error) {
-      console.error('Error updating week access:', error);
+      console.error('Error updating global week settings:', error);
       throw error;
     }
   };
 
-  // Admin function to bulk update week access
-  const bulkUpdateWeekAccess = async (updates) => {
+  // Admin function to bulk update global week settings
+  const bulkUpdateGlobalWeekSettings = async (updates) => {
     if (!isUserAdmin(user?.email)) {
-      throw new Error('Only admins can update week access');
-    }
-
-    if (!user?.email) {
-      throw new Error('User email not available');
+      throw new Error('Only admins can update global week settings');
     }
 
     try {
-      const updatesArray = Object.entries(updates).map(([weekId, isAvailable]) => ({
-        user_email: user.email,
-        week_id: weekId,
-        is_available: isAvailable,
-        updated_at: new Date().toISOString()
-      }));
+      // Use UPDATE for each week instead of UPSERT to avoid duplicate key errors
+      for (const [weekId, isAvailable] of Object.entries(updates)) {
+        const { error } = await supabase
+          .from('global_week_settings')
+          .update({
+            is_globally_available: isAvailable,
+            updated_at: new Date().toISOString()
+          })
+          .eq('week_id', weekId);
 
-      const { error } = await supabase
-        .from('week_access')
-        .upsert(updatesArray);
-
-      if (error) throw error;
+        if (error) throw error;
+      }
 
       // Update local state
-      setWeekAccess(prev => ({
-        ...prev,
-        ...updates
-      }));
+      const newGlobalSettings = { ...globalWeekSettings };
+      Object.entries(updates).forEach(([weekId, isAvailable]) => {
+        newGlobalSettings[weekId] = {
+          isAvailable,
+          releaseDate: newGlobalSettings[weekId]?.releaseDate || null
+        };
+      });
+      setGlobalWeekSettings(newGlobalSettings);
 
       return { success: true };
     } catch (error) {
-      console.error('Error bulk updating week access:', error);
+      console.error('Error bulk updating global week settings:', error);
       throw error;
     }
   };
 
   const value = {
-    weekAccess,
+    globalWeekSettings,
     isLoading,
     isWeekAccessible,
     getAccessibleWeeks,
-    updateWeekAccess,
-    bulkUpdateWeekAccess,
+    updateGlobalWeekSettings,
+    bulkUpdateGlobalWeekSettings,
     isAdmin: isUserAdmin(user?.email)
   };
 

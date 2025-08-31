@@ -11,7 +11,6 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [passwordRequirements, setPasswordRequirements] = useState({
     length: false,
@@ -138,11 +137,6 @@ export default function SignUp() {
           {error && (
             <div className="p-3 mb-4 text-red-500 bg-red-50 rounded-md" style={{ fontSize: '14px', marginBottom: '10px' }}>
               ⚠️ {error}
-            </div>
-          )}
-          {message && (
-            <div className="p-3 mb-4 text-green-500 bg-green-50 rounded-md" style={{ fontSize: '14px', marginBottom: '10px' }}>
-              ✅ {message}
             </div>
           )}
 

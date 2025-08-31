@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MdAdd, MdEdit, MdDelete, MdSave, MdPieChart, MdTrendingUp } from 'react-icons/md';
 
 const BudgetPlanner = () => {
-  const [categories, setCategories] = useState([
+  const [categories] = useState([
     { id: 1, name: 'Housing', budget: 1200, spent: 1150 },
     { id: 2, name: 'Transportation', budget: 300, spent: 250 },
     { id: 3, name: 'Food', budget: 500, spent: 480 },

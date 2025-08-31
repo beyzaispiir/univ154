@@ -44,7 +44,6 @@ const FileCardLink = ({ icon: Icon, title, to, color, hoverColor }) => (
 
 const ModuleView = () => {
   const [selectedModule, setSelectedModule] = useState(null);
-  const [activeSection, setActiveSection] = useState(null);
 
   const modules = [
     {
@@ -323,11 +322,6 @@ const ModuleView = () => {
 
   const handleModuleClick = (moduleId) => {
     setSelectedModule(selectedModule === moduleId ? null : moduleId);
-    setActiveSection(null);
-  };
-
-  const handleSectionClick = (sectionIndex) => {
-    setActiveSection(activeSection === sectionIndex ? null : sectionIndex);
   };
 
   return (

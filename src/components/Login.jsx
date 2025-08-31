@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { supabase } from '../lib/supabaseClient'
 import logo from '../assets/logo with name for univ154.png'
 import riceLogo from '../assets/rice-logo.png'
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabaseClient'
 import { isUserAdmin } from '../utils/adminEmails'
 import logo from '../assets/logo with name for univ154.png'
 import riceLogo from '../assets/rice-logo.png'
@@ -21,7 +20,7 @@ import { FaChalkboardTeacher } from 'react-icons/fa'
 import { FaFileExcel } from 'react-icons/fa'
 
 // Avatar component with initials fallback
-const Avatar = ({ url, name, color, size = 40 }) => {
+const Avatar = ({ url, name }) => {
   const initial = name ? name.charAt(0).toUpperCase() : '?'
   
   if (url) {
@@ -46,9 +45,11 @@ const Avatar = ({ url, name, color, size = 40 }) => {
 }
 
 // Enhanced SidebarLink with better hover effects and animations
-const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0 }) => {
+const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdminLink = false }) => {
   const location = useLocation();
-  const isActive = location.pathname === href || (href === '/dashboard' && location.pathname === '/dashboard/');
+  const isActive = location.pathname === href || 
+                   (href === '/dashboard' && location.pathname === '/dashboard/') ||
+                   (href === '/dashboard/admin/week-access' && location.pathname.startsWith('/dashboard/admin/'));
 
   return (
     <Link
@@ -57,9 +58,12 @@ const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0 }) => {
         flex items-center px-[16px] py-[12px] transition-all duration-300 ease-out rounded-lg no-underline
         transform hover:scale-[1.02] hover:-translate-y-0.5
         ${isActive 
-          ? 'bg-[#fffde7] text-[#0d1a4b] font-medium shadow-md border-l-4 border-[#0d1a4b]' 
-          : 'bg-white text-[#0d1a4b]/80 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-[#0d1a4b] hover:shadow-sm hover:border-l-4 hover:border-[#fdb913]/30'
+          ? isAdminLink 
+            ? 'bg-red-100 text-[#0d1a4b] font-medium shadow-md' 
+            : 'bg-[#fffde7] text-[#0d1a4b] font-medium shadow-md border-l-4 border-[#0d1a4b]'
+          : 'bg-white text-[#0d1a4b]/80 hover:shadow-sm'
         }
+        ${isAdminLink ? 'bg-[#fffde7] text-[#0d1a4b]' : 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-[#0d1a4b]'}
         animate-fadeInUp
       `}
       style={{
@@ -71,10 +75,10 @@ const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0 }) => {
         {Icon && (typeof Icon === 'function' ? <Icon className="w-[18px] h-[18px] mr-3" /> : Icon)}
         <span className="font-medium text-[15px] transition-colors duration-300" style={style}>{text}</span>
       </span>
-      {subText && <span className="text-[12px] text-gray-500 transition-colors duration-300">{subText}</span>}
+      {subText && <span className="text-xs text-gray-500 transition-colors duration-300">{subText}</span>}
       {/* Active indicator */}
       {isActive && (
-        <div className="w-2 h-2 bg-[#fdb913] rounded-full animate-pulse ml-auto" />
+        <div className={`w-2 h-2 rounded-full animate-pulse ml-auto ${isAdminLink ? 'bg-[#dc2626]' : 'bg-[#0d1a4b]'}`} />
       )}
     </Link>
   );
@@ -115,22 +119,13 @@ const PathConnector = ({ isActive }) => (
 function DashboardContent() {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
-  const [activeModule, setActiveModule] = useState(null)
-  const [activeView, setActiveView] = useState('dashboard')
-  const [isEditingName, setIsEditingName] = useState(false)
-  const [displayName, setDisplayName] = useState('')
-  const [isSaving, setIsSaving] = useState(false)
-  const [avatarUrl, setAvatarUrl] = useState(null)
-  const [avatarColor, setAvatarColor] = useState('#0d1a4b')
-  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
-  const location = useLocation()
   
   // Use the centralized admin check
   const isAdmin = isUserAdmin(user?.email)
   
   // Use week access context
-  const { isWeekAccessible, isLoading: weekAccessLoading } = useWeekAccess()
+  const { isWeekAccessible } = useWeekAccess()
 
   // Animation effect on component mount
   useEffect(() => {
@@ -139,106 +134,6 @@ function DashboardContent() {
     }, 100);
     return () => clearTimeout(timer);
   }, []);
-
-  // Fetch user profile data
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (user?.email) {
-        const { data, error } = await supabase
-          .from('user_profiles')
-          .select('display_name, avatar_url, avatar_color')
-          .eq('email', user.email)
-          .single()
-
-        if (!error && data) {
-          setDisplayName(data.display_name || '')
-          setAvatarUrl(data.avatar_url)
-          setAvatarColor(data.avatar_color)
-        }
-      }
-    }
-
-    fetchProfile()
-  }, [user?.email])
-
-  // Save display name
-  const saveDisplayName = async () => {
-    if (!user?.email || !displayName.trim()) return
-
-    setIsSaving(true)
-    try {
-      const { error } = await supabase
-        .from('user_profiles')
-        .upsert({ 
-          email: user.email,
-          display_name: displayName.trim(),
-          updated_at: new Date().toISOString()
-        }, {
-          onConflict: 'email',
-          returning: 'minimal'
-        })
-
-      if (error) throw error
-      
-      // Only update UI state after successful save
-      if (!error) {
-        setIsEditingName(false)
-        setDisplayName(displayName.trim())
-      }
-    } catch (error) {
-      console.error('Error saving display name:', error)
-      // Optionally show an error message to the user
-    } finally {
-      setIsSaving(false)
-    }
-  }
-
-  // Handle avatar upload
-  const handleAvatarUpload = async (event) => {
-    try {
-      setIsUploadingAvatar(true)
-      const file = event.target.files?.[0]
-      if (!file) return
-
-      // Upload image to Supabase Storage
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${user.email}-${Math.random()}.${fileExt}`
-      const { error: uploadError, data } = await supabase.storage
-        .from('avatars')
-        .upload(fileName, file)
-
-      if (uploadError) throw uploadError
-
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(fileName)
-
-      // Update profile with new avatar URL
-      const { error: updateError } = await supabase
-        .from('user_profiles')
-        .upsert({ 
-          email: user.email,
-          avatar_url: publicUrl,
-          updated_at: new Date().toISOString()
-        })
-
-      if (updateError) throw updateError
-      setAvatarUrl(publicUrl)
-    } catch (error) {
-      console.error('Error uploading avatar:', error)
-    } finally {
-      setIsUploadingAvatar(false)
-    }
-  }
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      saveDisplayName()
-    } else if (e.key === 'Escape') {
-      setIsEditingName(false)
-    }
-  }
 
   const handleLogout = async () => {
     try {
@@ -250,256 +145,6 @@ function DashboardContent() {
       navigate('/')
     }
   }
-
-  // Sample data - would be dynamic in production
-  const currentGPA = 4.6
-  const completionRate = 18
-
-  const todaysClasses = [
-    {
-      id: 1,
-      title: "Budgeting Basics",
-      time: "9:30 - 11:00",
-      room: "Online Session 1",
-      instructor: "Dr. Sarah Johnson"
-    },
-    {
-      id: 2,
-      title: "Investment Strategies",
-      time: "11:10 - 12:40",
-      room: "Online Session 2",
-      instructor: "Prof. Michael Chen"
-    },
-    {
-      id: 3,
-      title: "Debt Management",
-      time: "12:45 - 13:45",
-      room: "Online Session 3",
-      instructor: "Dr. Emily Rodriguez"
-    }
-  ]
-
-  const todoList = [
-    {
-      id: 1,
-      task: "Complete Budget Assessment",
-      dueDate: "by Tomorrow",
-      completed: false
-    },
-    {
-      id: 2,
-      task: "Submit Investment Plan",
-      dueDate: "by 15 Jul",
-      completed: false
-    },
-    {
-      id: 3,
-      task: "Review Credit Score Module",
-      dueDate: "by Today",
-      completed: true
-    }
-  ]
-
-  const upcomingDeadlines = [
-    {
-      id: 1,
-      title: "Monthly Budget Review",
-      type: "Assignment",
-      dueTime: "23:59",
-      dueDate: "2 Jul, 2024"
-    },
-    {
-      id: 2,
-      title: "Investment Portfolio",
-      type: "Project",
-      dueTime: "23:59",
-      dueDate: "11 Jul, 2024"
-    },
-    {
-      id: 3,
-      title: "Debt Management Quiz",
-      type: "Quiz",
-      dueTime: "23:59",
-      dueDate: "15 Jul, 2024"
-    }
-  ]
-
-  const modules = [
-    {
-      id: 1,
-      title: "Budgeting & Money Management",
-      description: "Learn fundamental budgeting principles and essential money management skills",
-      progress: 0,
-      dependencies: [],
-      sections: [
-        "Creating a Personal Budget",
-        "Tracking Expenses",
-        "Setting Financial Goals",
-        "Digital Banking Tools",
-        "Money Management Strategies"
-      ]
-    },
-    {
-      id: 2,
-      title: "Savings & Emergency Funds",
-      description: "Build your financial safety net and develop saving habits",
-      progress: 0,
-      dependencies: ["Budgeting & Money Management"],
-      sections: [
-        "Emergency Fund Basics",
-        "Saving Strategies",
-        "High-Yield Savings Accounts",
-        "Automating Your Savings",
-        "Setting Savings Goals"
-      ]
-    },
-    {
-      id: 3,
-      title: "Credit & Debt Management",
-      description: "Understanding credit scores and managing debt effectively",
-      progress: 0,
-      dependencies: ["Budgeting & Money Management"],
-      sections: [
-        "Understanding Credit Scores",
-        "Types of Debt",
-        "Debt Repayment Strategies",
-        "Credit Cards Management",
-        "Building Good Credit"
-      ]
-    },
-    {
-      id: 4,
-      title: "Income & Taxes",
-      description: "Learn about income sources and tax management",
-      progress: 0,
-      dependencies: ["Budgeting & Money Management"],
-      sections: [
-        "Income Types",
-        "Tax Basics",
-        "Tax Filing",
-        "Tax Deductions",
-        "Income Planning"
-      ]
-    },
-    {
-      id: 5,
-      title: "Real Estate & Homeownership",
-      description: "Navigate the path to homeownership and real estate investment",
-      progress: 0,
-      dependencies: ["Credit & Debt Management", "Savings & Emergency Funds"],
-      sections: [
-        "First-Time Homebuying",
-        "Mortgages",
-        "Property Investment",
-        "Real Estate Market",
-        "Property Management"
-      ]
-    },
-    {
-      id: 6,
-      title: "Retirement Planning",
-      description: "Plan for a secure retirement and long-term financial stability",
-      progress: 0,
-      dependencies: ["Investing Basics"],
-      sections: [
-        "Retirement Accounts",
-        "Social Security",
-        "Pension Plans",
-        "Retirement Calculators",
-        "Retirement Strategies"
-      ]
-    },
-    {
-      id: 7,
-      title: "Insurance & Risk Management",
-      description: "Protect your assets and manage financial risks",
-      progress: 0,
-      dependencies: ["Budgeting & Money Management"],
-      sections: [
-        "Types of Insurance",
-        "Health Insurance",
-        "Life Insurance",
-        "Property Insurance",
-        "Risk Assessment"
-      ]
-    },
-    {
-      id: 8,
-      title: "Understanding Financial Markets",
-      description: "Learn how financial markets work and their impact on your investments",
-      progress: 0,
-      dependencies: ["Investing Basics"],
-      sections: [
-        "Market Basics",
-        "Stock Market",
-        "Bonds Market",
-        "Market Analysis",
-        "Global Markets"
-      ]
-    },
-    {
-      id: 9,
-      title: "Investing Basics",
-      description: "Start your investment journey with fundamental concepts",
-      progress: 0,
-      dependencies: ["Savings & Emergency Funds"],
-      sections: [
-        "Investment Types",
-        "Risk and Return",
-        "Portfolio Management",
-        "Investment Strategies",
-        "Market Research"
-      ]
-    },
-    {
-      id: 10,
-      title: "Financial Scams & Charitable Giving",
-      description: "Protect yourself from scams and make informed charitable decisions",
-      progress: 0,
-      dependencies: ["Budgeting & Money Management"],
-      sections: [
-        "Common Scams",
-        "Fraud Prevention",
-        "Safe Banking",
-        "Charitable Giving",
-        "Due Diligence"
-      ]
-    },
-    {
-      id: 11,
-      title: "Financial Decisions for Life Events",
-      description: "Navigate financial aspects of major life events",
-      progress: 0,
-      dependencies: ["Budgeting & Money Management", "Insurance & Risk Management"],
-      sections: [
-        "Marriage & Finance",
-        "Education Planning",
-        "Career Changes",
-        "Family Planning",
-        "Estate Basics"
-      ]
-    },
-    {
-      id: 12,
-      title: "Final Financial Plan",
-      description: "Create your comprehensive financial plan",
-      progress: 0,
-      dependencies: [
-        "Budgeting & Money Management",
-        "Savings & Emergency Funds",
-        "Credit & Debt Management",
-        "Investing Basics",
-        "Insurance & Risk Management"
-      ],
-      sections: [
-        "Goal Assessment",
-        "Plan Development",
-        "Implementation Strategy",
-        "Monitoring Progress",
-        "Plan Adjustment"
-      ]
-    }
-  ]
 
   return (
     <div className="h-screen w-screen flex bg-gray-50 overflow-hidden">
@@ -550,27 +195,22 @@ function DashboardContent() {
           {/* Admin Section */}
           {isAdmin && (
             <div className={`py-[10px] transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <div className="flex items-center gap-3 pl-6 mb-[20px]">
-                <div className={`p-2 rounded-lg bg-red-100 transition-all duration-500 ${isLoaded ? 'scale-100' : 'scale-0'}`}> 
-                  <FaChalkboardTeacher className="w-[22px] h-[22px] text-red-600" />
-                </div>
-                <span className="font-semibold text-red-600" style={{ fontSize: '16px' }}>Admin Panel</span>
-              </div>
-              
-              <div className="px-[16px] space-y-[10px]">
+              <div className="flex justify-center">
                 <SidebarLink
                   href="/dashboard/admin/week-access"
                   delay={0}
+                  icon={FaChalkboardTeacher}
+                  text="Admin Panel"
                   style={{
-                    fontSize: '14px',
-                    fontWeight: 'normal'
+                    fontSize: '16px',
+                    fontWeight: 'semibold',
+                    color: '#0d1a4b',
+                    textAlign: 'center',
+                    justifyContent: 'center',
+                    width: '100%'
                   }}
-                  text={
-                    <span className="flex items-center">
-                      <FaChalkboardTeacher color="#dc2626" className="w-4 h-4" />
-                      <span style={{marginLeft: '8px', color: '#dc2626'}}>Week Access Management</span>
-                    </span>
-                  }
+                  className="justify-center text-center w-full"
+                  isAdminLink={true}
                 />
               </div>
             </div>
@@ -638,6 +278,7 @@ function DashboardContent() {
                       key={`excel-week-${i+1}`}
                       href={isAccessible ? `/dashboard/excel/${weekId}` : '#'}
                       delay={i}
+                      isAdminLink={false}
                       style={{
                         fontSize: '14px',
                         fontWeight: 'normal'

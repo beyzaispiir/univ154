@@ -1,14 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useWeekAccess } from '../contexts/WeekAccessContext';
-import { useAuth } from '../contexts/AuthContext';
-import { isUserAdmin } from '../utils/adminEmails';
+import { MdSettings, MdPublic, MdCheckCircle, MdCancel, MdWarning } from 'react-icons/md';
+
+// Import the same styles from Week1Budgeting
+const styles = {
+  // Main table
+  table: { 
+    width: '100%', 
+    borderCollapse: 'separate',
+    borderSpacing: 0,
+    marginTop: 20, 
+    borderRadius: '12px',
+    overflow: 'hidden',
+    border: '1px solid #e0e0e0'
+  },
+  th: { 
+    backgroundColor: '#002060',
+    color: 'white', 
+    padding: '12px', 
+    borderBottom: '1px solid #e0e0e0',
+    textAlign: 'center', 
+    fontWeight: '600' 
+  },
+  td: { 
+    border: '1px solid #e0e0e0',
+    padding: '10px 12px', 
+    verticalAlign: 'middle' 
+  },
+  
+  // Table row types
+  sectionHeader: { 
+    fontWeight: '600',
+    backgroundColor: '#f5f5f5',
+    color: '#333'
+  },
+  totalRow: { 
+    backgroundColor: '#f5f5f5',
+    fontWeight: '600' 
+  },
+
+  // Main container
+  container: { 
+    fontSize: '14px',
+    maxWidth: 900, 
+    margin: '0 auto', 
+    padding: 24, 
+    backgroundColor: '#fdfdfd',
+    color: '#333'
+  },
+  
+  // Header
+  header: { 
+    fontSize: '14px', 
+    fontWeight: '600',
+    margin: '20px 0 10px 0', 
+    color: '#333' 
+  }
+};
 
 export default function WeekAccessAdmin() {
-  const { user } = useAuth();
   const { 
-    weekAccess, 
-    updateWeekAccess, 
-    bulkUpdateWeekAccess, 
+    globalWeekSettings,
+    updateGlobalWeekSettings,
+    bulkUpdateGlobalWeekSettings,
     isAdmin,
     isLoading 
   } = useWeekAccess();
@@ -21,9 +75,12 @@ export default function WeekAccessAdmin() {
   // Check if user is admin
   if (!isAdmin) {
     return (
-      <div className="p-8 text-center">
-        <h2 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h2>
-        <p className="text-gray-600">You don't have permission to access this page.</p>
+      <div style={styles.container}>
+        <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+          <MdWarning style={{ fontSize: '48px', color: '#ef4444', marginBottom: '16px' }} />
+          <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#ef4444', marginBottom: '16px' }}>Access Denied</h2>
+          <p style={{ color: '#666' }}>You don't have permission to access this page.</p>
+        </div>
       </div>
     );
   }
@@ -57,7 +114,7 @@ export default function WeekAccessAdmin() {
     setSelectedWeeks([]);
   };
 
-  const handleBulkUpdate = async (isAvailable) => {
+  const handleGlobalBulkUpdate = async (isAvailable) => {
     if (selectedWeeks.length === 0) {
       setMessage('Please select at least one week.');
       setMessageType('error');
@@ -73,29 +130,29 @@ export default function WeekAccessAdmin() {
         updates[weekId] = isAvailable;
       });
 
-      await bulkUpdateWeekAccess(updates);
+      await bulkUpdateGlobalWeekSettings(updates);
       
-      setMessage(`Successfully ${isAvailable ? 'enabled' : 'disabled'} access for ${selectedWeeks.length} week(s).`);
+      setMessage(`Successfully ${isAvailable ? 'enabled' : 'disabled'} access for ${selectedWeeks.length} week(s) for all users.`);
       setMessageType('success');
       setSelectedWeeks([]);
     } catch (error) {
-      setMessage(`Error updating week access: ${error.message}`);
+      setMessage(`Error updating week settings: ${error.message}`);
       setMessageType('error');
     } finally {
       setIsUpdating(false);
     }
   };
 
-  const handleIndividualUpdate = async (weekId, isAvailable) => {
+  const handleGlobalIndividualUpdate = async (weekId, isAvailable) => {
     setIsUpdating(true);
     setMessage('');
 
     try {
-      await updateWeekAccess(weekId, isAvailable);
-      setMessage(`Successfully ${isAvailable ? 'enabled' : 'disabled'} access for ${weekLabels[weekId]}.`);
+      await updateGlobalWeekSettings(weekId, isAvailable);
+      setMessage(`Successfully ${isAvailable ? 'enabled' : 'disabled'} access for ${weekLabels[weekId]} for all users.`);
       setMessageType('success');
     } catch (error) {
-      setMessage(`Error updating week access: ${error.message}`);
+      setMessage(`Error updating week settings: ${error.message}`);
       setMessageType('error');
     } finally {
       setIsUpdating(false);
@@ -104,122 +161,267 @@ export default function WeekAccessAdmin() {
 
   if (isLoading) {
     return (
-      <div className="p-8 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0d1a4b] mx-auto"></div>
-        <p className="mt-4 text-gray-600">Loading week access data...</p>
+      <div style={styles.container}>
+        <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+          <div style={{ 
+            display: 'inline-block',
+            width: '48px', 
+            height: '48px', 
+            border: '4px solid #f3f3f3',
+            borderTop: '4px solid #002060',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            marginBottom: '16px'
+          }}></div>
+          <p style={{ color: '#666' }}>Loading week access data...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h1 className="text-3xl font-bold text-[#0d1a4b] mb-6">Week Access Management</h1>
-        
-        {message && (
-          <div className={`p-4 mb-6 rounded-lg ${
-            messageType === 'success' 
-              ? 'bg-green-100 text-green-800 border border-green-200' 
-              : 'bg-red-100 text-red-800 border border-red-200'
-          }`}>
-            {message}
-          </div>
-        )}
+    <div style={styles.container}>
+      {/* Header */}
+      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '8px' }}>
+          <MdSettings style={{ fontSize: '32px', color: '#002060' }} />
+          <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#002060', margin: 0 }}>Week Access Management</h1>
+        </div>
+        <p style={{ color: '#666', margin: 0 }}>Manage week availability for all users</p>
+      </div>
+      
+      {/* Message Display */}
+      {message && (
+        <div style={{
+          padding: '12px 16px',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginBottom: '20px',
+          ...(messageType === 'success' 
+            ? { backgroundColor: '#f0fdf4', color: '#166534', border: '1px solid #bbf7d0' }
+            : { backgroundColor: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca' }
+          )
+        }}>
+          {messageType === 'success' ? <MdCheckCircle style={{ fontSize: '20px' }} /> : <MdCancel style={{ fontSize: '20px' }} />}
+          <span style={{ fontSize: '14px' }}>{message}</span>
+        </div>
+      )}
 
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-[#0d1a4b] mb-4">Bulk Operations</h2>
-          <div className="flex gap-4 mb-4">
-            <button
-              onClick={handleSelectAll}
-              className="px-4 py-2 bg-[#0d1a4b] text-white rounded-lg hover:bg-[#162456] transition-colors"
-            >
-              Select All
-            </button>
-            <button
-              onClick={handleDeselectAll}
-              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
-            >
-              Deselect All
-            </button>
-          </div>
+      {/* Week Availability Management */}
+      <div>
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#002060', marginBottom: '8px' }}>Classroom Week Availability</h2>
+          <p style={{ color: '#666', fontSize: '14px', margin: 0 }}>
+            Control week availability for all users. Changes here affect the entire classroom.
+          </p>
+        </div>
+        
+        {/* Bulk Actions */}
+        <div style={{ 
+          display: 'flex', 
+          flexWrap: 'wrap', 
+          gap: '12px', 
+          justifyContent: 'center',
+          marginBottom: '20px'
+        }}>
+          <button
+            onClick={handleSelectAll}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#002060',
+              color: 'white',
+              borderRadius: '6px',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: '500',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseOver={(e) => e.target.style.backgroundColor = '#001a4d'}
+            onMouseOut={(e) => e.target.style.backgroundColor = '#002060'}
+          >
+            Select All
+          </button>
+          <button
+            onClick={handleDeselectAll}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#6b7280',
+              color: 'white',
+              borderRadius: '6px',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: '500',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseOver={(e) => e.target.style.backgroundColor = '#4b5563'}
+            onMouseOut={(e) => e.target.style.backgroundColor = '#6b7280'}
+          >
+            Deselect All
+          </button>
           
           {selectedWeeks.length > 0 && (
-            <div className="flex gap-4">
+            <>
               <button
-                onClick={() => handleBulkUpdate(true)}
+                onClick={() => handleGlobalBulkUpdate(true)}
                 disabled={isUpdating}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#059669',
+                  color: 'white',
+                  borderRadius: '6px',
+                  border: 'none',
+                  cursor: isUpdating ? 'not-allowed' : 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  opacity: isUpdating ? 0.5 : 1,
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseOver={(e) => !isUpdating && (e.target.style.backgroundColor = '#047857')}
+                onMouseOut={(e) => !isUpdating && (e.target.style.backgroundColor = '#059669')}
               >
                 {isUpdating ? 'Updating...' : `Enable Access (${selectedWeeks.length})`}
               </button>
               <button
-                onClick={() => handleBulkUpdate(false)}
+                onClick={() => handleGlobalBulkUpdate(false)}
                 disabled={isUpdating}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#dc2626',
+                  color: 'white',
+                  borderRadius: '6px',
+                  border: 'none',
+                  cursor: isUpdating ? 'not-allowed' : 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  opacity: isUpdating ? 0.5 : 1,
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseOver={(e) => !isUpdating && (e.target.style.backgroundColor = '#b91c1c')}
+                onMouseOut={(e) => !isUpdating && (e.target.style.backgroundColor = '#dc2626')}
               >
                 {isUpdating ? 'Updating...' : `Disable Access (${selectedWeeks.length})`}
               </button>
-            </div>
+            </>
           )}
         </div>
 
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-[#0d1a4b] mb-4">Individual Week Control</h2>
-          
-          {Object.entries(weekLabels).map(([weekId, label]) => (
-            <div key={weekId} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-              <div className="flex items-center gap-4">
-                <input
-                  type="checkbox"
-                  checked={selectedWeeks.includes(weekId)}
-                  onChange={() => handleWeekToggle(weekId)}
-                  className="w-4 h-4 text-[#0d1a4b] border-gray-300 rounded focus:ring-[#0d1a4b]"
-                />
-                <div>
-                  <h3 className="font-medium text-[#0d1a4b]">{label}</h3>
-                  <p className="text-sm text-gray-600">Week ID: {weekId}</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-4">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  weekAccess[weekId] 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-red-100 text-red-800'
-                }`}>
-                  {weekAccess[weekId] ? 'Enabled' : 'Disabled'}
-                </span>
-                
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleIndividualUpdate(weekId, true)}
-                    disabled={isUpdating || weekAccess[weekId]}
-                    className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors disabled:opacity-50"
-                  >
-                    Enable
-                  </button>
-                  <button
-                    onClick={() => handleIndividualUpdate(weekId, false)}
-                    disabled={isUpdating || !weekAccess[weekId]}
-                    className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors disabled:opacity-50"
-                  >
-                    Disable
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Week Table */}
+        <table style={styles.table}>
+          <thead>
+            <tr>
+              <th style={{...styles.th, width: '50px'}}>Select</th>
+              <th style={{...styles.th, textAlign: 'left'}}>Week</th>
+              <th style={{...styles.th, width: '150px'}}>Status</th>
+              <th style={{...styles.th, width: '200px'}}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(weekLabels).map(([weekId, label]) => {
+              const isGloballyAvailable = globalWeekSettings[weekId]?.isAvailable ?? false;
+              return (
+                <tr key={weekId}>
+                  <td style={{...styles.td, textAlign: 'center'}}>
+                    <input
+                      type="checkbox"
+                      checked={selectedWeeks.includes(weekId)}
+                      onChange={() => handleWeekToggle(weekId)}
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                        accentColor: '#002060'
+                      }}
+                    />
+                  </td>
+                  <td style={{...styles.td, textAlign: 'left'}}>
+                    <div>
+                      <div style={{ fontWeight: '500', color: '#002060' }}>{label}</div>
+                      <div style={{ fontSize: '12px', color: '#666' }}>Week ID: {weekId}</div>
+                    </div>
+                  </td>
+                  <td style={{...styles.td, textAlign: 'center'}}>
+                    <span style={{
+                      padding: '4px 12px',
+                      borderRadius: '12px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      ...(isGloballyAvailable
+                        ? { backgroundColor: '#dcfce7', color: '#166534' }
+                        : { backgroundColor: '#fee2e2', color: '#dc2626' }
+                      )
+                    }}>
+                      {isGloballyAvailable ? 'Access Enabled' : 'Access Disabled'}
+                    </span>
+                  </td>
+                  <td style={{...styles.td, textAlign: 'center'}}>
+                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                      <button
+                        onClick={() => handleGlobalIndividualUpdate(weekId, true)}
+                        disabled={isUpdating || isGloballyAvailable}
+                        style={{
+                          padding: '6px 12px',
+                          backgroundColor: '#059669',
+                          color: 'white',
+                          borderRadius: '4px',
+                          border: 'none',
+                          cursor: (isUpdating || isGloballyAvailable) ? 'not-allowed' : 'pointer',
+                          fontSize: '12px',
+                          fontWeight: '500',
+                          opacity: (isUpdating || isGloballyAvailable) ? 0.5 : 1,
+                          transition: 'background-color 0.2s'
+                        }}
+                        onMouseOver={(e) => !(isUpdating || isGloballyAvailable) && (e.target.style.backgroundColor = '#047857')}
+                        onMouseOut={(e) => !(isUpdating || isGloballyAvailable) && (e.target.style.backgroundColor = '#059669')}
+                      >
+                        Enable
+                      </button>
+                      <button
+                        onClick={() => handleGlobalIndividualUpdate(weekId, false)}
+                        disabled={isUpdating || !isGloballyAvailable}
+                        style={{
+                          padding: '6px 12px',
+                          backgroundColor: '#dc2626',
+                          color: 'white',
+                          borderRadius: '4px',
+                          border: 'none',
+                          cursor: (isUpdating || !isGloballyAvailable) ? 'not-allowed' : 'pointer',
+                          fontSize: '12px',
+                          fontWeight: '500',
+                          opacity: (isUpdating || !isGloballyAvailable) ? 0.5 : 1,
+                          transition: 'background-color 0.2s'
+                        }}
+                        onMouseOver={(e) => !(isUpdating || !isGloballyAvailable) && (e.target.style.backgroundColor = '#b91c1c')}
+                        onMouseOut={(e) => !(isUpdating || !isGloballyAvailable) && (e.target.style.backgroundColor = '#dc2626')}
+                      >
+                        Disable
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
-        <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <h3 className="font-semibold text-blue-800 mb-2">Instructions:</h3>
-          <ul className="text-blue-700 text-sm space-y-1">
-            <li>• Use bulk operations to enable/disable multiple weeks at once</li>
-            <li>• Individual controls allow fine-grained access management</li>
-            <li>• Changes take effect immediately for all students</li>
-            <li>• Week 1 is enabled by default for all new users</li>
-          </ul>
-        </div>
+      {/* Instructions */}
+      <div style={{
+        marginTop: '32px',
+        padding: '16px',
+        backgroundColor: '#eff6ff',
+        border: '1px solid #bfdbfe',
+        borderRadius: '8px'
+      }}>
+        <h3 style={{ fontWeight: '600', color: '#1e40af', marginBottom: '8px', fontSize: '14px' }}>Instructions:</h3>
+        <ul style={{ color: '#1e40af', fontSize: '12px', margin: 0, paddingLeft: '16px' }}>
+          <li style={{ marginBottom: '4px' }}><strong>Classroom Management:</strong> Changes affect the entire classroom.</li>
+          <li style={{ marginBottom: '4px' }}><strong>Bulk Operations:</strong> Select multiple weeks and enable/disable them all at once.</li>
+          <li style={{ marginBottom: '4px' }}><strong>Week 1:</strong> Enabled by default for all new users.</li>
+          <li><strong>Admins:</strong> Always have access to all weeks regardless of settings.</li>
+        </ul>
       </div>
     </div>
   );

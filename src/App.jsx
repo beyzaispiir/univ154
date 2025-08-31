@@ -1,7 +1,6 @@
 // Force deploy - Netlify cache fix
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
-import { useAuth } from './contexts/AuthContext'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
 import SignUpSuccess from './components/SignUpSuccess'
@@ -10,6 +9,7 @@ import Dashboard from './components/Dashboard'
 import Week1Budgeting from './components/Week1Budgeting'
 import Week6Retirement from './components/Week6Retirement'
 import WeekAccessAdmin from './components/WeekAccessAdmin'
+import Overview from './components/pages/Overview'
 
 // Sample data for Overview component
 const sampleData = {

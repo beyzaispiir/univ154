@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabaseClient'
 import logo from '../assets/logo with name for univ154.png'
 import riceLogo from '../assets/rice-logo.png'
@@ -45,7 +44,6 @@ export default function UpdatePassword() {
   useEffect(() => {
     const urlParams = new URLSearchParams(location.hash.substring(1))
     const error = urlParams.get('error')
-    const errorDescription = urlParams.get('error_description')
     
 
     
