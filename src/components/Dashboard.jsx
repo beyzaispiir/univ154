@@ -124,8 +124,31 @@ function DashboardContent() {
   // Use the centralized admin check
   const isAdmin = isUserAdmin(user?.email)
   
+  console.log('DashboardContent: User:', user);
+  console.log('DashboardContent: User email:', user?.email);
+  console.log('DashboardContent: Is admin?', isAdmin);
+  
+  return (
+    <WeekAccessProvider user={user}>
+      <DashboardContentInner />
+    </WeekAccessProvider>
+  )
+}
+
+function DashboardContentInner() {
+  const { user, signOut } = useAuth()
+  const navigate = useNavigate()
+  const [isLoaded, setIsLoaded] = useState(false)
+  
+  // Use the centralized admin check
+  const isAdmin = isUserAdmin(user?.email)
+  
   // Use week access context
   const { isWeekAccessible } = useWeekAccess()
+  
+  console.log('DashboardContentInner: User:', user);
+  console.log('DashboardContentInner: User email:', user?.email);
+  console.log('DashboardContentInner: Is admin?', isAdmin);
 
   // Animation effect on component mount
   useEffect(() => {
@@ -234,44 +257,55 @@ function DashboardContent() {
                     if (i === 0) weekLabel = 'Week 1 - Budgeting';
                     if (i === 5) {
                       weekText = (
-                        <span className="flex flex-col items-start">
-                          <span style={{display:'flex', alignItems:'center'}}>
-                            <FaFileExcel color={isAccessible ? "#0d1a4b" : "#9ca3af"} className="w-4 h-4" />
-                            <span style={{marginLeft: '8px', color: isAccessible ? '#0d1a4b' : '#9ca3af'}}>Week 6 - Retirement</span>
+                        <span className="flex items-start">
+                          <FaFileExcel
+                            color={isAccessible ? "#0d1a4b" : "#9ca3af"}
+                            className="w-4 h-4 mt-[2px]"
+                          />
+                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
+                            <span>Week 6 - Retirement</span>
+                            <span className="block text-[14px] leading-[1.1] pl-6">
+                              Planning
+                            </span>
+
                           </span>
-                          <span style={{ fontSize: '13px', marginLeft: '85px', lineHeight: 1.1, color: isAccessible ? '#0d1a4b' : '#9ca3af' }}>Planning</span>
                         </span>
                       );
+                      
                     }
                     
                     if (!isAccessible && !isAdmin) {
                       return (
                         <div
-                          key={`excel-week-${i+1}`}
+                          key={`excel-week-${i + 1}`}
                           className="flex items-center px-[16px] py-[12px] rounded-lg bg-gray-50 cursor-not-allowed opacity-60"
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: 'normal'
-                          }}
+                          style={{ fontSize: 14, fontWeight: 'normal' }}
                         >
-                          <span className="flex items-center">
-                            <FaFileExcel color="#9ca3af" className="w-4 h-4" />
-                            <span style={{marginLeft: '8px', color: '#9ca3af'}}>
-                              {i === 5 ? (
-                                <span className="flex flex-col items-start">
-                                  <span style={{display:'flex', alignItems:'center'}}>
-                                    <FaFileExcel color="#9ca3af" className="w-4 h-4" />
-                                    <span style={{marginLeft: '8px'}}>Week 6 - Retirement</span>
+                          <span className="flex items-center w-full">
+                            {i === 5 ? (
+                              // Week 6: tek ikon + iki satır
+                              <span className="flex items-start">
+                                <FaFileExcel color="#9ca3af" className="w-4 h-4 mt-[2px]" />
+                                <span className="ml-2 text-gray-400">
+                                  <span>Week 6 - Retirement</span>
+                                  <span className="block text-[13px] leading-[1.1] pl-6">
+                                    Planning
                                   </span>
-                                  <span style={{ fontSize: '13px', marginLeft: '85px', lineHeight: 1.1 }}>Planning</span>
                                 </span>
-                              ) : weekLabel}
-                            </span>
+                              </span>
+                            ) : (
+                              // Diğer haftalar: tek satır
+                              <span className="flex items-center">
+                                <FaFileExcel color="#9ca3af" className="w-4 h-4" />
+                                <span className="ml-2 text-gray-400">{weekLabel}</span>
+                              </span>
+                            )}
                             <span className="ml-auto text-xs text-gray-400">🔒</span>
                           </span>
                         </div>
                       );
                     }
+                    
                     
                     return (
                     <SidebarLink
@@ -509,8 +543,6 @@ function DashboardContent() {
 
 export default function Dashboard() {
   return (
-    <WeekAccessProvider>
-      <DashboardContent />
-    </WeekAccessProvider>
+    <DashboardContent />
   )
 } 

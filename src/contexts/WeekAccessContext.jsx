@@ -8,19 +8,16 @@ export const useWeekAccess = () => {
   return useContext(WeekAccessContext);
 };
 
-export const WeekAccessProvider = ({ children }) => {
+export const WeekAccessProvider = ({ children, user }) => {
   const [globalWeekSettings, setGlobalWeekSettings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState(null);
 
-  // Fetch user and global week settings data
+  // Fetch global week settings data when user changes
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Get current user
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
-
+        console.log('WeekAccessContext: User changed:', user);
+        console.log('WeekAccessContext: User email:', user?.email);
         if (user) {
           // Fetch global week settings
           const { data: globalSettings, error: globalError } = await supabase
@@ -50,6 +47,10 @@ export const WeekAccessProvider = ({ children }) => {
             }
             setGlobalWeekSettings(globalMap);
           }
+        } else {
+          // Clear settings when no user
+          console.log('WeekAccessContext: No user, clearing settings');
+          setGlobalWeekSettings({});
         }
       } catch (error) {
         console.error('Error in fetchData:', error);
@@ -69,7 +70,7 @@ export const WeekAccessProvider = ({ children }) => {
     };
 
     fetchData();
-  }, []);
+  }, [user]);
 
   // Check if a specific week is accessible
   const isWeekAccessible = (weekId) => {

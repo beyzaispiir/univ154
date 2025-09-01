@@ -30,8 +30,15 @@ export function AuthProvider({ children }) {
 
     // Listen for changes on auth state (signed in, signed out, etc.)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state change event:', event);
+      console.log('Auth state change session:', session);
+      console.log('Auth state change user:', session?.user);
+      
       if (event === 'SIGNED_IN') {
         const user = session?.user
+        
+        console.log('User signed in:', user);
+        console.log('User email:', user?.email);
         
         // Check if the email is from Rice University or Gmail
         if (user && !isValidEmail(user.email)) {
@@ -45,6 +52,7 @@ export function AuthProvider({ children }) {
 
         setUser(user)
       } else if (event === 'SIGNED_OUT') {
+        console.log('User signed out');
         setUser(null)
         // Don't clear remember me data on sign out
         // This allows the user to stay logged in if they chose "Remember me"
@@ -52,6 +60,7 @@ export function AuthProvider({ children }) {
       } else if (event === 'TOKEN_REFRESHED') {
         // Update user data when token is refreshed
         if (session?.user) {
+          console.log('Token refreshed, updating user:', session.user);
           setUser(session.user)
         }
       } else if (event === 'TOKEN_REFRESHED_FAILED') {
@@ -151,20 +160,27 @@ export function AuthProvider({ children }) {
 
   const signInWithGoogle = async () => {
     try {
+      console.log('Starting Google OAuth sign in...');
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
-            hosted_domain: 'rice.edu', // Restrict to rice.edu domain only
-            hd: 'rice.edu', // Additional hosted domain parameter
+            // Removed hosted_domain and hd restrictions to allow Gmail accounts
+            // hosted_domain: 'rice.edu', // Restrict to rice.edu domain only
+            // hd: 'rice.edu', // Additional hosted domain parameter
           },
           redirectTo: `${window.location.origin}/dashboard`
         },
       })
 
-      if (error) throw error
+      if (error) {
+        console.error('Google OAuth error:', error);
+        throw error;
+      }
+      
+      console.log('Google OAuth initiated successfully:', data);
       return { data, error: null }
     } catch (error) {
       console.error('Google sign in error:', error)
