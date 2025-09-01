@@ -16,8 +16,14 @@ export const WeekAccessProvider = ({ children, user }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('WeekAccessContext: User changed:', user);
-        console.log('WeekAccessContext: User email:', user?.email);
+        console.log('=== WeekAccessContext useEffect Debug ===');
+        console.log('User prop received:', user);
+        console.log('User email:', user?.email);
+        console.log('User email type:', typeof user?.email);
+        console.log('User email length:', user?.email?.length);
+        console.log('User email trimmed:', user?.email?.trim());
+        console.log('========================================');
+        
         if (user) {
           // Fetch global week settings
           const { data: globalSettings, error: globalError } = await supabase

@@ -124,24 +124,33 @@ function DashboardContent() {
   // Use the centralized admin check
   const isAdmin = isUserAdmin(user?.email)
   
-  console.log('DashboardContent: User:', user);
-  console.log('DashboardContent: User email:', user?.email);
-  console.log('DashboardContent: Is admin?', isAdmin);
+  // Clear OAuth progress flag when dashboard loads
+  useEffect(() => {
+    if (user) {
+      localStorage.removeItem('oauthInProgress');
+      console.log('Dashboard loaded, cleared OAuth progress flag');
+    }
+  }, [user]);
+  
+  console.log('=== DashboardContent Debug ===');
+  console.log('User object:', user);
+  console.log('User email:', user?.email);
+  console.log('User ID:', user?.id);
+  console.log('User created_at:', user?.created_at);
+  console.log('Is admin?', isAdmin);
+  console.log('Admin check function result:', isUserAdmin(user?.email));
+  console.log('=============================');
   
   return (
     <WeekAccessProvider user={user}>
-      <DashboardContentInner />
+      <DashboardContentInner isAdmin={isAdmin} user={user} signOut={signOut} />
     </WeekAccessProvider>
   )
 }
 
-function DashboardContentInner() {
-  const { user, signOut } = useAuth()
+function DashboardContentInner({ isAdmin, user, signOut }) {
   const navigate = useNavigate()
   const [isLoaded, setIsLoaded] = useState(false)
-  
-  // Use the centralized admin check
-  const isAdmin = isUserAdmin(user?.email)
   
   // Use week access context
   const { isWeekAccessible } = useWeekAccess()

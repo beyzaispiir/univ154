@@ -30,15 +30,28 @@ export function AuthProvider({ children }) {
 
     // Listen for changes on auth state (signed in, signed out, etc.)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state change event:', event);
-      console.log('Auth state change session:', session);
-      console.log('Auth state change user:', session?.user);
+      console.log('=== Auth State Change Debug ===');
+      console.log('Event:', event);
+      console.log('Session:', session);
+      console.log('Session user:', session?.user);
+      console.log('Session user email:', session?.user?.email);
+      console.log('Session user ID:', session?.user?.id);
+      console.log('Session user created_at:', session?.user?.created_at);
+      console.log('Session user updated_at:', session?.user?.updated_at);
+      console.log('Session user email_confirmed_at:', session?.user?.email_confirmed_at);
+      console.log('OAuth in progress flag:', localStorage.getItem('oauthInProgress'));
+      console.log('================================');
       
       if (event === 'SIGNED_IN') {
         const user = session?.user
         
-        console.log('User signed in:', user);
+        console.log('=== User Signed In Debug ===');
+        console.log('User object:', user);
         console.log('User email:', user?.email);
+        console.log('User email type:', typeof user?.email);
+        console.log('User email length:', user?.email?.length);
+        console.log('User email trimmed:', user?.email?.trim());
+        console.log('================================');
         
         // Check if the email is from Rice University or Gmail
         if (user && !isValidEmail(user.email)) {
@@ -50,10 +63,22 @@ export function AuthProvider({ children }) {
           return
         }
 
+        console.log('Setting user in AuthContext:', user);
         setUser(user)
+        
+        // Clear the OAuth in progress flag
+        localStorage.removeItem('oauthInProgress');
+        
+        // Add a small delay to ensure the session is fully established
+        setTimeout(() => {
+          console.log('OAuth session establishment delay completed');
+        }, 1000);
+        
       } else if (event === 'SIGNED_OUT') {
         console.log('User signed out');
         setUser(null)
+        // Clear OAuth progress flag on sign out
+        localStorage.removeItem('oauthInProgress');
         // Don't clear remember me data on sign out
         // This allows the user to stay logged in if they chose "Remember me"
         // Only clear if it's a manual sign out (not session expiry)
@@ -68,6 +93,7 @@ export function AuthProvider({ children }) {
         localStorage.removeItem('rememberMe')
         localStorage.removeItem('savedEmail')
         setUser(null)
+        localStorage.removeItem('oauthInProgress');
       }
       setLoading(false)
     })
@@ -161,6 +187,10 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = async () => {
     try {
       console.log('Starting Google OAuth sign in...');
+      
+      // Set a flag to indicate OAuth is in progress
+      localStorage.setItem('oauthInProgress', 'true');
+      
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -171,19 +201,26 @@ export function AuthProvider({ children }) {
             // hosted_domain: 'rice.edu', // Restrict to rice.edu domain only
             // hd: 'rice.edu', // Additional hosted domain parameter
           },
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/dashboard`,
+          // Add additional options for better OAuth handling
+          skipBrowserRedirect: false,
         },
       })
 
       if (error) {
         console.error('Google OAuth error:', error);
+        localStorage.removeItem('oauthInProgress');
         throw error;
       }
       
       console.log('Google OAuth initiated successfully:', data);
+      
+      // Don't immediately return - let the OAuth redirect handle the flow
+      // The redirect will trigger the auth state change listener
       return { data, error: null }
     } catch (error) {
       console.error('Google sign in error:', error)
+      localStorage.removeItem('oauthInProgress');
       return { data: null, error }
     }
   }

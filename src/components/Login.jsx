@@ -19,6 +19,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
   const [message, setMessage] = useState('')
   const navigate = useNavigate()
   const { signIn, signInWithGoogle, resetPassword } = useAuth()
@@ -66,8 +67,15 @@ export default function Login() {
 
   const handleGoogleSignIn = async () => {
     try {
+      // Check if OAuth is already in progress
+      if (localStorage.getItem('oauthInProgress') === 'true') {
+        console.log('OAuth already in progress, please wait...');
+        setError('Sign-in already in progress. Please wait for the redirect to complete.');
+        return;
+      }
+      
       setError('')
-      setLoading(true)
+      setGoogleLoading(true)
       const { error } = await signInWithGoogle()
       
       if (error) {
@@ -79,13 +87,17 @@ export default function Login() {
         } else {
           setError(error.message || 'Failed to sign in with Google')
         }
+        setGoogleLoading(false)
+      } else {
+        // Show a message that redirect is happening
+        setMessage('Redirecting to Google... Please complete the sign-in process.')
+        // Don't set googleLoading to false here as the redirect will happen
       }
       // The OAuth redirect will handle navigation to dashboard
     } catch (error) {
       console.error('Google sign in error:', error)
       setError('Failed to sign in with Google. Please ensure you use your Rice email.')
-    } finally {
-      setLoading(false)
+      setGoogleLoading(false)
     }
   }
 
@@ -293,7 +305,7 @@ export default function Login() {
             <button
               type="button"
               onClick={handleGoogleSignIn}
-              disabled={loading}
+              disabled={googleLoading || loading}
               className="border border-gray-200 text-[#0d1a4b] font-medium
               shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0d1a4b] focus:ring-offset-2
               transition-all duration-200 ease-in-out flex items-center justify-center gap-3
@@ -306,7 +318,7 @@ export default function Login() {
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
-              {loading ? 'Signing in...' : 'Continue with Google'}
+              {googleLoading ? 'Redirecting to Google...' : 'Continue with Google'}
             </button>
           </div>
         </form>
