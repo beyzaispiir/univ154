@@ -1,29 +1,24 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { MdSearch, MdDownload, MdPictureAsPdf, MdSlideshow, MdLink, MdBookmark, MdBookmarkBorder, MdUpload, MdClose } from 'react-icons/md';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabaseClient';
-import { isUserAdmin } from '../utils/adminEmails';
+import { MdSearch, MdDownload, MdBookmark, MdBookmarkBorder, MdPictureAsPdf, MdSlideshow, MdLink, MdAdd } from 'react-icons/md';
 
-const LectureNotes = () => {
-  const { user } = useAuth();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedWeek, setSelectedWeek] = useState(null);
+export default function LectureNotes() {
+  const { user, isAdmin } = useAuth()
   const [bookmarkedFiles, setBookmarkedFiles] = useState(new Set());
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [showUploadModal, setShowUploadModal] = useState(false);
-  const [uploadError, setUploadError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [uploadData, setUploadData] = useState({
     week: '',
     title: '',
+    description: '',
     file: null
   });
   const [materials, setMaterials] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
 
-  // Use the centralized admin check
-  const isAdmin = isUserAdmin(user?.email);
+  // Use the centralized admin check from AuthContext
+  // const isAdmin = isUserAdmin(user?.email);  // Remove this line
 
   // Fetch materials from Supabase
   const fetchMaterials = async () => {
@@ -224,7 +219,7 @@ const LectureNotes = () => {
             onClick={() => setShowUploadModal(true)}
             className="flex items-center space-x-2 px-4 py-2 bg-[#0d1a4b] text-white rounded-lg hover:bg-[#162456] transition-colors"
           >
-            <MdUpload className="w-5 h-5" />
+            <MdAdd className="w-5 h-5" />
             <span>Upload Material</span>
           </button>
         )}
@@ -394,6 +389,4 @@ const LectureNotes = () => {
       </div>
     </div>
   );
-};
-
-export default LectureNotes; 
+} 

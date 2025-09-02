@@ -15,6 +15,8 @@ export const isUserAdmin = (email) => {
   console.log('Input email:', email);
   console.log('Email type:', typeof email);
   console.log('Email length:', email?.length);
+  console.log('Email trimmed:', email?.trim());
+  console.log('Email after trim length:', email?.trim()?.length);
   console.log('Admin emails list:', adminEmails);
   console.log('Admin emails type:', typeof adminEmails);
   console.log('Admin emails length:', adminEmails.length);
@@ -24,7 +26,13 @@ export const isUserAdmin = (email) => {
     return false;
   }
   
-  const isAdmin = adminEmails.includes(email);
+  const trimmedEmail = email.trim();
+  if (!trimmedEmail) {
+    console.log('Email is empty after trim, returning false');
+    return false;
+  }
+  
+  const isAdmin = adminEmails.includes(trimmedEmail);
   console.log('Array.includes() result:', isAdmin);
   console.log('Final result:', isAdmin);
   console.log('================================');

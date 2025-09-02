@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import { isUserAdmin } from '../utils/adminEmails'
 
 const AuthContext = createContext({})
 
@@ -15,6 +16,20 @@ const isValidEmail = (email) => {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  // Simple function to check admin status
+  const checkAdminStatus = (userEmail) => {
+    if (!userEmail) {
+      setIsAdmin(false)
+      return false
+    }
+    
+    const adminStatus = isUserAdmin(userEmail)
+    setIsAdmin(adminStatus)
+    console.log('Admin status checked for:', userEmail, 'Result:', adminStatus)
+    return adminStatus
+  }
 
   useEffect(() => {
     // Check active sessions and sets the user
@@ -22,6 +37,7 @@ export function AuthProvider({ children }) {
       const { data: { session }, error } = await supabase.auth.getSession()
       if (!error && session?.user) {
         setUser(session.user)
+        checkAdminStatus(session.user.email)
       }
       setLoading(false)
     }
@@ -51,6 +67,7 @@ export function AuthProvider({ children }) {
         console.log('User email type:', typeof user?.email);
         console.log('User email length:', user?.email?.length);
         console.log('User email trimmed:', user?.email?.trim());
+        console.log('Full user object keys:', Object.keys(user || {}));
         console.log('================================');
         
         // Check if the email is from Rice University or Gmail
@@ -60,23 +77,44 @@ export function AuthProvider({ children }) {
           console.error('Invalid email attempted to sign in:', user.email)
           // Don't throw error here as it might cause issues with the auth flow
           setUser(null)
+          setIsAdmin(false)
           return
         }
 
         console.log('Setting user in AuthContext:', user);
         setUser(user)
         
+        // Check admin status immediately
+        checkAdminStatus(user?.email)
+        
         // Clear the OAuth in progress flag
         localStorage.removeItem('oauthInProgress');
+        
+        // Simple retry after delay to ensure admin status is detected
+        setTimeout(() => {
+          console.log('Retrying admin check after delay for:', user?.email);
+          checkAdminStatus(user?.email);
+        }, 3000);  // Increased from 2000 to 3000ms
         
         // Add a small delay to ensure the session is fully established
         setTimeout(() => {
           console.log('OAuth session establishment delay completed');
+          // Re-check admin status after delay to ensure it's properly set
+          if (user?.email) {
+            checkAdminStatus(user.email)
+          }
+          
+          // Redirect to dashboard after successful OAuth
+          if (window.location.pathname === '/') {
+            console.log('Redirecting to dashboard after successful OAuth');
+            window.location.href = '/dashboard';
+          }
         }, 1000);
         
       } else if (event === 'SIGNED_OUT') {
         console.log('User signed out');
         setUser(null)
+        setIsAdmin(false)
         // Clear OAuth progress flag on sign out
         localStorage.removeItem('oauthInProgress');
         // Don't clear remember me data on sign out
@@ -87,12 +125,14 @@ export function AuthProvider({ children }) {
         if (session?.user) {
           console.log('Token refreshed, updating user:', session.user);
           setUser(session.user)
+          checkAdminStatus(session.user)
         }
       } else if (event === 'TOKEN_REFRESHED_FAILED') {
         // If token refresh fails, clear remember me data
         localStorage.removeItem('rememberMe')
         localStorage.removeItem('savedEmail')
         setUser(null)
+        setIsAdmin(false)
         localStorage.removeItem('oauthInProgress');
       }
       setLoading(false)
@@ -201,7 +241,7 @@ export function AuthProvider({ children }) {
             // hosted_domain: 'rice.edu', // Restrict to rice.edu domain only
             // hd: 'rice.edu', // Additional hosted domain parameter
           },
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/`,  // Redirect to root page instead of /dashboard
           // Add additional options for better OAuth handling
           skipBrowserRedirect: false,
         },
@@ -264,6 +304,7 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     resetPassword,
     signOut,
+    isAdmin,
   }
 
   return (

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { isUserAdmin } from '../utils/adminEmails'
 import logo from '../assets/logo with name for univ154.png'
 import riceLogo from '../assets/rice-logo.png'
 import ModuleView from './ModuleView'
@@ -117,12 +116,12 @@ const PathConnector = ({ isActive }) => (
 )
 
 function DashboardContent() {
-  const { user, signOut } = useAuth()
+  const { user, signOut, isAdmin } = useAuth()
   const navigate = useNavigate()
   const [isLoaded, setIsLoaded] = useState(false)
   
-  // Use the centralized admin check
-  const isAdmin = isUserAdmin(user?.email)
+  // Use the centralized admin check from AuthContext
+  // const isAdmin = isUserAdmin(user?.email)  // Remove this line
   
   // Clear OAuth progress flag when dashboard loads
   useEffect(() => {
@@ -138,11 +137,11 @@ function DashboardContent() {
   console.log('User ID:', user?.id);
   console.log('User created_at:', user?.created_at);
   console.log('Is admin?', isAdmin);
-  console.log('Admin check function result:', isUserAdmin(user?.email));
+  console.log('Admin check from AuthContext:', isAdmin);
   console.log('=============================');
   
   return (
-    <WeekAccessProvider user={user}>
+    <WeekAccessProvider user={user} isAdmin={isAdmin}>
       <DashboardContentInner isAdmin={isAdmin} user={user} signOut={signOut} />
     </WeekAccessProvider>
   )

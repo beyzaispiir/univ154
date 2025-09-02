@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { isUserAdmin } from '../utils/adminEmails';
 
 const WeekAccessContext = createContext();
 
@@ -8,7 +7,7 @@ export const useWeekAccess = () => {
   return useContext(WeekAccessContext);
 };
 
-export const WeekAccessProvider = ({ children, user }) => {
+export const WeekAccessProvider = ({ children, user, isAdmin }) => {
   const [globalWeekSettings, setGlobalWeekSettings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,6 +21,7 @@ export const WeekAccessProvider = ({ children, user }) => {
         console.log('User email type:', typeof user?.email);
         console.log('User email length:', user?.email?.length);
         console.log('User email trimmed:', user?.email?.trim());
+        console.log('Is admin prop received:', isAdmin);
         console.log('========================================');
         
         if (user) {
@@ -76,19 +76,19 @@ export const WeekAccessProvider = ({ children, user }) => {
     };
 
     fetchData();
-  }, [user]);
+  }, [user, isAdmin]);
 
   // Check if a specific week is accessible
   const isWeekAccessible = (weekId) => {
     if (!user) return false;
-    if (isUserAdmin(user.email)) return true;
+    if (isAdmin) return true;  // Use the prop instead of calling isUserAdmin
     return globalWeekSettings[weekId]?.isAvailable === true;
   };
 
   // Get all accessible weeks
   const getAccessibleWeeks = () => {
     if (!user) return [];
-    if (isUserAdmin(user.email)) {
+    if (isAdmin) {  // Use the prop instead of calling isUserAdmin
       return Array.from({ length: 10 }, (_, i) => `week-${i + 1}`);
     }
     return Object.keys(globalWeekSettings).filter(weekId => 
@@ -98,7 +98,7 @@ export const WeekAccessProvider = ({ children, user }) => {
 
   // Admin function to update global week settings
   const updateGlobalWeekSettings = async (weekId, isAvailable, releaseDate = null) => {
-    if (!isUserAdmin(user?.email)) {
+    if (!isAdmin) {
       throw new Error('Only admins can update global week settings');
     }
 
@@ -133,7 +133,7 @@ export const WeekAccessProvider = ({ children, user }) => {
 
   // Admin function to bulk update global week settings
   const bulkUpdateGlobalWeekSettings = async (updates) => {
-    if (!isUserAdmin(user?.email)) {
+    if (!isAdmin) {
       throw new Error('Only admins can update global week settings');
     }
 
@@ -175,7 +175,7 @@ export const WeekAccessProvider = ({ children, user }) => {
     getAccessibleWeeks,
     updateGlobalWeekSettings,
     bulkUpdateGlobalWeekSettings,
-    isAdmin: isUserAdmin(user?.email)
+    isAdmin: isAdmin  // Use the prop instead of calling isUserAdmin
   };
 
   return (
