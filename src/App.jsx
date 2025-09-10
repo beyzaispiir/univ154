@@ -123,6 +123,7 @@ function App() {
           <Route path="/update-password" element={<UpdatePassword />} />
           <Route path="/dashboard/*" element={<Dashboard />}>
             <Route index element={<Navigate to="/dashboard/excel/week-1" replace />} />
+            <Route path="excel/week-1" element={<Week1Budgeting />} />
             <Route path="excel/week-1/*" element={<Week1Budgeting />} />
             <Route path="excel/week-6/*" element={<Week6Retirement />} />
             <Route path="admin/week-access" element={<WeekAccessAdmin />} />

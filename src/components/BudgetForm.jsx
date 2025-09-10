@@ -4,202 +4,150 @@ import stateTaxData from '../data/stateTaxData';
 
 // This data structure now includes all necessary info for rendering the exact layout
 const budgetConfig = {
-  title: "Week 1 - Budgeting",
+  title: "Monthly Budget",
   tableHeaders: [
-    "Expense Item", 
-    "Budgeted Amount Spent (Manually Enter)", 
-    "Reccomended Amount Spent", 
-    "Reccomended %"
+    "Expense Items", 
+    "Examples/Info", 
+    "Budgeted Spend", 
+    "Recommended Spend $", 
+    "% of Monthly After-Tax Income"
   ],
   sections: [
+    // Pre-Tax Expense Items
     {
-      title: 'Housing',
-      totalPercent: '40.00%',
+      title: 'Pre-Tax Expense Items',
+      isPreTax: true,
       items: [
-        { id: 'rent', label: 'Rent', recommendedPercent: 0.36 },
-        { type: 'subheader', label: 'Utilities (Electricity, Water)' },
-        { id: 'electricity', label: 'Electricity', recommendedPercent: 0.0060 },
-        { id: 'gas', label: 'Gas', recommendedPercent: 0.0040 },
-        { id: 'water', label: 'Water', recommendedPercent: 0.0060 },
-        { id: 'sewerTrash', label: 'Sewer/Trash', recommendedPercent: 0.0040 },
-        { id: 'phone', label: 'Phone (Cell/Landline)', recommendedPercent: 0.0080 },
-        { id: 'internet', label: 'Internet', recommendedPercent: 0.0080 },
-        { id: 'miscellaneous_utilities', label: 'Miscellaneous', recommendedPercent: 0.0040 },
-      ]
-    },
-    {
-      title: 'Food',
-      items: [
-        { id: 'food_groceries', label: 'Groceries', recommendedPercent: (housingCostPercent) => housingCostPercent * 0.6 },
-        { id: 'food_dining_out', label: 'Dining Out', recommendedPercent: (housingCostPercent) => housingCostPercent * 0.25 },
-        { id: 'food_takeout', label: 'Takeout/Delivery', recommendedPercent: (housingCostPercent) => housingCostPercent * 0.1 },
-        { id: 'food_miscellaneous', label: 'Miscellaneous', recommendedPercent: (housingCostPercent) => housingCostPercent * 0.05 },
-      ]
-    },
-    {
-      title: 'Transportation',
-      items: [
-        { id: 'transport_car_payment', label: 'Car Payment', recommendedPercent: (transportPercent) => transportPercent * 0.5 },
-        { id: 'transport_gas', label: 'Gasoline/Fuel', recommendedPercent: (transportPercent) => transportPercent * 0.2 },
-        { id: 'transport_maintenance', label: 'Car Maintenance (Oil, Tires)', recommendedPercent: (transportPercent) => transportPercent * 0.1 },
-        { id: 'transport_rideshare', label: 'Rideshare (Uber/Lyft)', recommendedPercent: (transportPercent) => transportPercent * 0.1 },
-        { id: 'transport_transit', label: 'Public Transit Passes', recommendedPercent: (transportPercent) => transportPercent * 0.025 },
-        { id: 'transport_registration', label: 'Car Registration', recommendedPercent: (transportPercent) => transportPercent * 0.025 },
-        { id: 'transport_parking', label: 'Parking Fees', recommendedPercent: (transportPercent) => transportPercent * 0.025 },
-        { id: 'transport_miscellaneous', label: 'Miscellaneous', recommendedPercent: (transportPercent) => transportPercent * 0.025 },
-      ]
-    },
-    {
-      title: 'Insurance/Health',
-      items: [
-        { id: 'health_insurance', label: 'Health Insurance', recommendedPercent: (insurancePercent) => insurancePercent * 0.35 },
-        { id: 'life_insurance', label: 'Life Insurance', recommendedPercent: (insurancePercent) => insurancePercent * 0.05 },
-        { id: 'auto_insurance', label: 'Auto Insurance', recommendedPercent: (insurancePercent) => insurancePercent * 0.15 },
-        { id: 'home_insurance', label: 'Home Insurance', recommendedPercent: (insurancePercent) => insurancePercent * 0.05 },
-        { id: 'disability_insurance', label: 'Disability Insurance', recommendedPercent: (insurancePercent) => insurancePercent * 0.05 },
-        { id: 'otc_meds', label: 'Over-the-Counter Medications', recommendedPercent: (insurancePercent) => insurancePercent * 0.05 },
-        { id: 'therapy', label: 'Therapy or Mental Health', recommendedPercent: (insurancePercent) => insurancePercent * 0.1 },
-        { id: 'gym', label: 'Gym Membership', recommendedPercent: (insurancePercent) => insurancePercent * 0.1 },
-        { id: 'health_miscellaneous', label: 'Miscellaneous', recommendedPercent: (insurancePercent) => insurancePercent * 0.1 },
-      ]
-    },
-    {
-      title: 'Unsecured Debt Payments',
-      items: [
-        { id: 'debt_student_loans', label: 'Student Loans', recommendedPercent: (debtPercent) => debtPercent * 0.4 },
-        { id: 'debt_credit_cards', label: 'Credit Card Payments', recommendedPercent: (debtPercent) => debtPercent * 0.3 },
-        { id: 'debt_personal_loans', label: 'Personal Loans', recommendedPercent: (debtPercent) => debtPercent * 0.2 },
-        { id: 'debt_miscellaneous', label: 'Miscellaneous', recommendedPercent: (debtPercent) => debtPercent * 0.1 },
-      ]
-    },
-    {
-      title: 'Savings & Investments',
-      items: [
-        { id: 'savings_emergency_medical', label: 'Emergency Fund - Medical', recommendedPercent: (savingsPercent) => savingsPercent * 0.2 * 4/3 * 0.2 },
-        { id: 'savings_emergency_job_loss', label: 'Emergency Fund - Job Loss', recommendedPercent: (savingsPercent) => savingsPercent * 0.2 * 4/3 * 0.2 },
-        { id: 'savings_emergency_home_repair', label: 'Emergency Fund - Home Repair', recommendedPercent: (savingsPercent) => savingsPercent * 0.2 * 4/3 * 0.2 },
-        { id: 'savings_emergency_legal', label: 'Emergency Fund - Legal', recommendedPercent: (savingsPercent) => savingsPercent * 0.2 * 4/3 * 0.2 },
-        { id: 'savings_emergency_misc', label: 'Emergency Fund - Miscellaneous', recommendedPercent: (savingsPercent) => savingsPercent * 0.2 * 4/3 * 0.2 },
-        { id: 'savings_investment_accounts', label: 'Investment Accounts', recommendedPercent: (savingsPercent) => savingsPercent * 0.35 * 4/3 },
-        { id: 'savings_user_input_1', label: '[User Input]', recommendedPercent: (savingsPercent) => savingsPercent * 0.1 * 4/3 },
-        { id: 'savings_miscellaneous', label: 'Miscellaneous', recommendedPercent: (savingsPercent) => savingsPercent * 0.1 * 4/3 },
-      ]
-    },
-    {
-        title: 'Retirement Contributions (401k, IRA, etc.)',
-        items: [
-            {
-                id: 'retirement_traditional_401k',
-                label: 'Traditional 401(k) Plan',
-                recommendedPercent: ({ afterTaxIncome, housingCosts }) => {
-                    let F123 = 0;
-                    if (housingCosts === 'Low') F123 = 0.215 * 0.25;
-                    if (housingCosts === 'Medium') F123 = 0.20 * 0.25;
-                    if (housingCosts === 'High') F123 = 0.185 * 0.25;
-                    let F125 = F123;
-                    let F127 = F123;
-                    let F129 = F123;
-                    let E127 = 0, E129 = 0, E131 = 0;
-                    for (let i = 0; i < 20; i++) {
-                        E127 = (afterTaxIncome * F127 * 0.2 > 23500) ? 23500 / afterTaxIncome : F127 * 0.2;
-                        E129 = (afterTaxIncome * F129 * 0.1 > 7000) ? 7000 / afterTaxIncome : F129 * 0.1;
-                        E131 = (afterTaxIncome * F123 * 0.2 > 7000) ? 7000 / afterTaxIncome : F123 * 0.2;
-                        F125 = F123 - E131 - E127 - E129;
-                        F127 = F125;
-                        F129 = F125;
-                        console.log(`Iter ${i}: F125=${F125}, F127=${F127}, F129=${F129}, E127=${E127}, E129=${E129}, E131=${E131}`);
-                    }
-                    let E125 = (F125 * afterTaxIncome < 23500) ? F125 : 23500 / afterTaxIncome;
-                    console.log('Final E125:', E125, 'F125:', F125, 'afterTaxIncome:', afterTaxIncome);
-                    return E125;
-                }
-            },
-            {
-                id: 'retirement_roth_401k',
-                label: 'Roth 401(k) Plan',
-                recommendedPercent: ({ afterTaxIncome, housingCosts }) => {
-                    let F127 = 0;
-                    if (housingCosts === 'Low') F127 = 0.215 * 0.25;
-                    if (housingCosts === 'Medium') F127 = 0.20 * 0.25;
-                    if (housingCosts === 'High') F127 = 0.185 * 0.25;
-                    return (afterTaxIncome * F127 * 0.2 > 23500) ? 23500 / afterTaxIncome : F127 * 0.2;
-                }
-            },
-            {
-                id: 'retirement_traditional_ira',
-                label: 'Traditional IRA Plan',
-                recommendedPercent: ({ afterTaxIncome, housingCosts }) => {
-                    let F129 = 0;
-                    if (housingCosts === 'Low') F129 = 0.215 * 0.25;
-                    if (housingCosts === 'Medium') F129 = 0.20 * 0.25;
-                    if (housingCosts === 'High') F129 = 0.185 * 0.25;
-                    return (afterTaxIncome * F129 * 0.1 > 7000) ? 7000 / afterTaxIncome : F129 * 0.1;
-                }
-            },
-            {
-                id: 'retirement_roth_ira',
-                label: 'Roth IRA Plan',
-                recommendedPercent: ({ afterTaxIncome, housingCosts }) => {
-                    let F123 = 0;
-                    if (housingCosts === 'Low') F123 = 0.215 * 0.25;
-                    if (housingCosts === 'Medium') F123 = 0.20 * 0.25;
-                    if (housingCosts === 'High') F123 = 0.185 * 0.25;
-                    return (afterTaxIncome * F123 * 0.2 > 7000) ? 7000 / afterTaxIncome : F123 * 0.2;
-                }
-            },
-            {
-                id: 'retirement_simple_ira',
-                label: 'SIMPLE 401(k) Plan',
-                recommendedPercent: () => 0 // Excel'de genelde 0, isterseniz formül ekleyebilirsiniz
-            },
-            { id: 'retirement_403b', label: '403(b) Plan', recommendedPercent: () => 0 },
-            { id: 'retirement_457b', label: '457(b) Plan', recommendedPercent: () => 0 },
-            { id: 'retirement_thrift', label: 'Thrift Savings Plan', recommendedPercent: () => 0 },
-            { id: 'retirement_private_db', label: 'Private-Sector DB Plan', recommendedPercent: () => 0 },
-            { id: 'retirement_gov_db', label: 'Government DB Plan', recommendedPercent: () => 0 },
-        ]
-    },
-    {
-        title: 'Lifestyle & Entertainment',
-        totalPercent: (housingCosts) => {
-            if (housingCosts === 'Low') return 0.11;
-            if (housingCosts === 'Medium') return 0.105;
-            if (housingCosts === 'High') return 0.10;
-            return 0;
+        {
+          title: 'Insurance',
+          items: [
+            { id: 'health_insurance', label: 'Health Insurance', explanation: 'Limits amount paid for medical bills' },
+            { id: 'life_insurance', label: 'Life Insurance', explanation: 'Pay beneficiaries upon policyholder\'s death' },
+            { id: 'disability_insurance', label: 'Disability Insurance', explanation: 'Income in case you are unable to work' },
+          ]
         },
-        items: [
-            { id: 'lifestyle_subscriptions', label: 'Subscriptions (Netflix, Spotify)', recommendedPercent: (sectionPercent) => sectionPercent * 0.1 },
-            { id: 'lifestyle_hobbies', label: 'Hobbies', recommendedPercent: (sectionPercent) => sectionPercent * 0.1 },
-            { id: 'lifestyle_travel', label: 'Travel/Vacation', recommendedPercent: (sectionPercent) => sectionPercent * 0.25 },
-            { id: 'lifestyle_gifts', label: 'Gifts (Holidays/Birthdays)', recommendedPercent: (sectionPercent) => sectionPercent * 0.1 },
-            { id: 'lifestyle_clothing', label: 'Clothing', recommendedPercent: (sectionPercent) => sectionPercent * 0.1 },
-            { id: 'lifestyle_haircuts', label: 'Haircuts/Salon', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'lifestyle_events', label: 'Sporting, Musical, or other Events', recommendedPercent: (sectionPercent) => sectionPercent * 0.1 },
-            { id: 'lifestyle_grooming', label: 'Personal Care/Grooming', recommendedPercent: (sectionPercent) => sectionPercent * 0.1 },
-            { id: 'lifestyle_miscellaneous', label: 'Miscellaneous', recommendedPercent: (sectionPercent) => sectionPercent * 0.1 },
-        ]
+        {
+          title: 'Retirement Contributions',
+          items: [
+            { id: 'traditional_401k', label: 'Traditional 401(k), 403(b), 457(b), or Thrift Savings Plan', explanation: '$23,500 Max Contribution' },
+            { id: 'traditional_ira', label: 'Traditional IRA', explanation: '$7,000 Max Contribution' },
+          ],
+          note: 'Roth 401k & Roth IRA listed under After-Tax'
+        }
+      ]
     },
     {
-        title: 'Other Miscellaneous Expenses',
-        totalPercent: (housingCosts) => {
-            if (housingCosts === 'Low') return 0.03;
-            if (housingCosts === 'Medium') return 0.025;
-            if (housingCosts === 'High') return 0.02;
-            return 0;
+      title: 'After-Tax Expense Items',
+      items: [
+        {
+          title: 'Retirement Contributions',
+          items: [
+            { id: 'roth_401k', label: 'Roth 401(k) Plan', explanation: '$23,500 Max Contribution' },
+            { id: 'roth_ira', label: 'Roth IRA Plan', explanation: '$7,000 Max Contribution' },
+          ]
         },
-        items: [
-            { id: 'misc_charity', label: 'Charity', recommendedPercent: (sectionPercent) => sectionPercent * 0.5 },
-            { id: 'misc_user_input_1', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'misc_user_input_2', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'misc_user_input_3', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'misc_user_input_4', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'misc_user_input_5', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'misc_user_input_6', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'misc_user_input_7', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'misc_user_input_8', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'misc_user_input_9', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-            { id: 'misc_user_input_10', label: '[User Input]', recommendedPercent: (sectionPercent) => sectionPercent * 0.05 },
-        ]
+        {
+          title: 'Savings & Investments',
+          items: [
+            { id: 'emergency_fund', label: 'Emergency Fund', explanation: 'Job loss, medical emergencies, urgent' },
+            { id: 'down_payment', label: 'Down Payment', explanation: 'Savings Goals' },
+            { id: 'car', label: 'Car', explanation: 'Savings Goals' },
+            { id: 'wedding', label: 'Wedding', explanation: 'Savings Goals' },
+            { id: 'advanced_degree', label: 'Advanced Degree', explanation: 'Savings Goals' },
+            { id: 'vacation', label: 'Vacation', explanation: 'Savings Goals' },
+            { id: 'miscellaneous', label: 'Miscellaneous', explanation: 'Savings Goals' },
+          ]
+        },
+        {
+          title: 'Debt Payments',
+          items: [
+            { id: 'student_loans', label: 'Student Loans', explanation: 'Monthly student loan payments' },
+            { id: 'credit_card_payments', label: 'Credit Card Payments', explanation: 'Monthly credit card payments' },
+            { id: 'personal_loans', label: 'Personal Loans', explanation: 'Monthly personal loan payments' },
+            { id: 'miscellaneous_debt', label: 'Miscellaneous', explanation: 'Other debt payments' },
+          ]
+        },
+        {
+          title: 'Housing',
+          items: [
+            { id: 'rent', label: 'Rent', explanation: 'House, apartment' },
+            { id: 'electricity', label: 'Electricity', explanation: 'Appliances, lighting, heating/cooling systems' },
+            { id: 'gas', label: 'Gas', explanation: 'Heating, hot water, cooking' },
+            { id: 'water', label: 'Water', explanation: 'Drinking, bathing, cooking, laundry' },
+            { id: 'sewer_trash', label: 'Sewer/Trash', explanation: 'Sewer maintenance, trash/recycling collection' },
+            { id: 'phone', label: 'Phone (Cell/Landline)', explanation: 'Voice, text, landline' },
+            { id: 'internet', label: 'Internet', explanation: 'Wi-Fi' },
+            { id: 'housing_miscellaneous', label: 'Miscellaneous', explanation: 'Other housing expenses' },
+          ]
+        },
+        {
+          title: 'Transportation',
+          items: [
+            { id: 'car_payment', label: 'Car Payment', explanation: 'Principal & interest on auto loan' },
+            { id: 'gasoline_fuel', label: 'Gasoline/Fuel', explanation: 'Automobile fuel' },
+            { id: 'car_maintenance', label: 'Car Maintenance', explanation: 'Oil changes, tire replacement, battery check' },
+            { id: 'parking_fees', label: 'Parking Fees', explanation: 'Metered parking, garage fees, permit fees' },
+            { id: 'rideshare', label: 'Rideshare', explanation: 'Uber, Lyft' },
+            { id: 'public_transit', label: 'Public Transit Passes', explanation: 'Buses, subways, trains, light rail services' },
+            { id: 'transportation_miscellaneous', label: 'Miscellaneous', explanation: 'Other transportation expenses' },
+          ]
+        },
+        {
+          title: 'Insurance/Health',
+          items: [
+            { id: 'auto_insurance', label: 'Auto Insurance', explanation: 'Required vehicle coverage for damage' },
+            { id: 'renters_insurance', label: 'Renter\'s Insurance', explanation: 'Protection for residence & belongings' },
+            { id: 'otc_medications', label: 'Over-the-Counter Medications', explanation: 'Pain relievers, cold medicine, allergy meds' },
+            { id: 'mental_health', label: 'Mental Health', explanation: 'Therapist, wellness apps, psychiatric care' },
+            { id: 'physical_health', label: 'Physical Health', explanation: 'Gym membership, equipment, personal training' },
+            { id: 'insurance_miscellaneous', label: 'Miscellaneous', explanation: 'Other insurance/health expenses' },
+          ]
+        },
+        {
+          title: 'Food',
+          items: [
+            { id: 'groceries', label: 'Groceries', explanation: 'Food & drinks' },
+            { id: 'dining_out', label: 'Dining Out', explanation: 'Eating at restaurants' },
+            { id: 'takeout', label: 'Takeout', explanation: 'Restaurant delivery, DoorDash' },
+            { id: 'food_miscellaneous', label: 'Miscellaneous', explanation: 'Other food expenses' },
+          ]
+        },
+        {
+          title: 'Lifestyle & Entertainment',
+          items: [
+            { id: 'subscriptions', label: 'Subscriptions', explanation: 'Netflix, Spotify, Apps' },
+            { id: 'hobbies', label: 'Hobbies', explanation: 'Supplies, gear, classes' },
+            { id: 'travel_vacation', label: 'Travel/Vacation', explanation: 'Flights, lodging, transportation' },
+            { id: 'gifts', label: 'Gifts', explanation: 'Holidays, birthdays, weddings' },
+            { id: 'clothing', label: 'Clothing', explanation: 'Everyday clothes, shoes, outerwear' },
+            { id: 'haircuts_salon', label: 'Haircuts/Salon', explanation: 'Barbershop visits, styling, hair coloring' },
+            { id: 'personal_care', label: 'Personal Care/Grooming', explanation: 'Skincare, shaving products, toiletries' },
+            { id: 'events', label: 'Sporting, Musical, or other Events', explanation: 'Tickets, souvenirs' },
+            { id: 'lifestyle_miscellaneous', label: 'Miscellaneous', explanation: 'Other lifestyle expenses' },
+          ]
+        },
+        {
+          title: 'Charity',
+          items: [
+            { id: 'charity', label: 'Charity', explanation: 'Churches, nonprofits, fundraisers' },
+          ]
+        },
+        {
+          title: 'Other Miscellaneous Expenses',
+          items: [
+            { id: 'user_input_1', label: 'Enter your custom expense name', explanation: 'Additional description' },
+            { id: 'user_input_2', label: 'Enter your custom expense name', explanation: 'Additional description' },
+            { id: 'user_input_3', label: 'Enter your custom expense name', explanation: 'Additional description' },
+            { id: 'user_input_4', label: 'Enter your custom expense name', explanation: 'Additional description' },
+            { id: 'user_input_5', label: 'Enter your custom expense name', explanation: 'Additional description' },
+            { id: 'user_input_6', label: 'Enter your custom expense name', explanation: 'Additional description' },
+            { id: 'user_input_7', label: 'Enter your custom expense name', explanation: 'Additional description' },
+            { id: 'user_input_8', label: 'Enter your custom expense name', explanation: 'Additional description' },
+            { id: 'user_input_9', label: 'Enter your custom expense name', explanation: 'Additional description' },
+            { id: 'user_input_10', label: 'Enter your custom expense name', explanation: 'Additional description' },
+          ]
+        }
+      ]
     }
   ]
 };
@@ -208,11 +156,14 @@ const styles = {
   // Main container
   container: { 
     fontSize: '14px',
-    maxWidth: 900, 
+    maxWidth: 1200, 
     margin: '0 auto', 
     padding: 24, 
     backgroundColor: '#fdfdfd',
-    color: '#333'
+    color: '#333',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   
   // Top "User Inputted Data" section
@@ -247,9 +198,12 @@ const styles = {
   // Main table
   table: { 
     width: '100%', 
+    maxWidth: '1200px',
     borderCollapse: 'separate', // Needed for border-radius on cells
     borderSpacing: 0,
     marginTop: 20, 
+    marginLeft: 'auto',
+    marginRight: 'auto',
     borderRadius: '12px', // Rounded corners for the table
     overflow: 'hidden', // Ensures inner elements conform to border-radius
     border: '1px solid #e0e0e0' // Soft gray border for the whole table
@@ -263,15 +217,16 @@ const styles = {
     fontWeight: '600',
     fontSize: '14px',
   },
-  thExpense: { width: '120px' },
-  thBudgeted: { width: '120px' },
-  thRecommended: { width: '120px' },
+  thExpense: { width: '200px' },
+  thBudgeted: { width: '180px' },
+  thRecommended: { width: '240px' },
   thPercent: { width: '120px' },
   td: { 
     border: '1px solid #e0e0e0',
     padding: '10px 12px', 
     verticalAlign: 'middle',
     fontSize: '14px',
+    whiteSpace: 'nowrap',
   },
   
   // Table row types
@@ -371,108 +326,93 @@ const InfoIcon = () => (
 );
 
 const userInputFields = [
-    { id: 'preTaxIncome', label: 'Pre-Tax Income', value: '1000000' },
-    { id: 'location', label: 'Location (State Abbreviation)', value: 'TX' },
-    { id: 'housingCosts', label: 'Housing Costs', value: 'Medium' },
+    { id: 'preTaxIncome', label: 'Annual Pre-Tax Income', value: '1000000' },
+    { id: 'location', label: 'Location (State Abbreviation)', value: 'NY' },
+    { id: 'residenceInNYC', label: 'Residence in New York City', value: 'No' },
+    { id: 'housingCosts', label: 'Housing Costs', value: 'High' },
 ];
 
-const deductionChoiceFields = [
-    { id: 'marriageStatus', label: 'Marriage Status', options: ['single', 'married'] },
-    { id: 'filedJointly', label: 'Filed Independently or Jointly with spouse', options: ['independently', 'jointly'] },
-    { id: 'dependency', label: 'Dependency: head of household or not?', options: ['no', 'yes'] },
-    { id: 'age', label: 'Age', options: ['under65', 'over65'] },
-    { id: 'blind', label: 'Blindness', options: ['no', 'yes'] },
-    { id: 'qualifyingSurvivingSpouse', label: 'Qualifying Surviving Spouse', options: ['no', 'yes'] },
-];
+// Note: deductionChoiceFields removed as deductionChoices is not available in current context
 
 export default function BudgetForm() {
     const { 
         topInputs, 
         setTopInputs, 
-        deductionChoices, 
-        setDeductionChoices, 
         financialCalculations,
+        summaryCalculations,
         retirementInputs,
-        setRetirementInputs
+        setRetirementInputs,
+        userPreTaxInputs,
+        setUserPreTaxInputs,
+        saveBudgetData,
+        loadBudgetData
     } = useBudget();
 
-    // housingCostPercent değişkenini burada tanımla
-    let housingCostPercent = 0.125; // default Medium
-    if (topInputs.housingCosts === 'Low') housingCostPercent = 0.135;
-    else if (topInputs.housingCosts === 'Medium') housingCostPercent = 0.125;
-    else if (topInputs.housingCosts === 'High') housingCostPercent = 0.115;
+    // Handler functions for save/load
+    const handleSaveBudget = async () => {
+        try {
+            const result = await saveBudgetData(userInputs, customExpenseNames, expandedSections);
+            if (result.success) {
+                alert('Budget saved successfully! 💾');
+            } else {
+                alert('Error saving budget: ' + result.error);
+            }
+        } catch (error) {
+            alert('Error saving budget: ' + error.message);
+        }
+    };
 
-    let transportationPercent = 0.05; // default Medium
-    if (topInputs.housingCosts === 'Low') transportationPercent = 0.055;
-    else if (topInputs.housingCosts === 'Medium') transportationPercent = 0.05;
-    else if (topInputs.housingCosts === 'High') transportationPercent = 0.045;
-
-    let insurancePercent = 0.05; // default Medium
-    if (topInputs.housingCosts === 'Low') insurancePercent = 0.0525;
-    else if (topInputs.housingCosts === 'Medium') insurancePercent = 0.05;
-    else if (topInputs.housingCosts === 'High') insurancePercent = 0.0475;
-
-    let debtPercent = 0.045; // default Medium
-    if (topInputs.housingCosts === 'Low') debtPercent = 0.0525;
-    else if (topInputs.housingCosts === 'Medium') debtPercent = 0.045;
-    else if (topInputs.housingCosts === 'High') debtPercent = 0.0375;
-
-    let savingsPercent = 0.15; // default Medium
-    if (topInputs.housingCosts === 'Low') savingsPercent = 0.215 * 0.75;
-    else if (topInputs.housingCosts === 'Medium') savingsPercent = 0.20 * 0.75;
-    else if (topInputs.housingCosts === 'High') savingsPercent = 0.185 * 0.75;
-
-    let retirementPercent = 0.05; // default Medium
-    if (topInputs.housingCosts === 'Low') retirementPercent = 0.215 * 0.25;
-    else if (topInputs.housingCosts === 'Medium') retirementPercent = 0.20 * 0.25;
-    else if (topInputs.housingCosts === 'High') retirementPercent = 0.185 * 0.25;
+    const handleLoadBudget = async () => {
+        try {
+            const result = await loadBudgetData();
+            if (result.success && result.data) {
+                // Load top inputs
+                if (result.data.top_inputs) {
+                    setTopInputs(result.data.top_inputs);
+                }
+                // Load user inputs
+                if (result.data.user_inputs) {
+                    setUserInputs(result.data.user_inputs);
+                }
+                // Load custom expense names
+                if (result.data.custom_expense_names) {
+                    setCustomExpenseNames(result.data.custom_expense_names);
+                }
+                // Load section states
+                if (result.data.section_states) {
+                    setExpandedSections(result.data.section_states);
+                }
+                alert('Budget loaded successfully! 📁');
+            } else {
+                alert('No saved budget found or error loading: ' + (result.error || 'No data'));
+            }
+        } catch (error) {
+            alert('Error loading budget: ' + error.message);
+        }
+    };
 
     const [userInputs, setUserInputs] = useState(
-        budgetConfig.sections.flatMap(s => s.items).reduce((acc, item) => ({ ...acc, [item.id]: '' }), {})
+        budgetConfig.sections.flatMap(s => s.items).flatMap(subsection => subsection.items).reduce((acc, item) => ({ ...acc, [item.id]: '' }), {})
     );
+
+    // Initialize userInputs with context values for pre-tax items
+    React.useEffect(() => {
+      setUserInputs(prev => {
+        const updated = { ...prev };
+        Object.keys(userPreTaxInputs).forEach(key => {
+          if (userPreTaxInputs[key] !== undefined && userPreTaxInputs[key] !== '') {
+            updated[key] = userPreTaxInputs[key];
+          }
+        });
+        return updated;
+      });
+    }, [userPreTaxInputs]);
     
-    const [showDeductionChoices, setShowDeductionChoices] = useState(false);
+    // Note: showDeductionChoices removed as deductionChoices section is not available
     
     const afterTaxIncome = financialCalculations.afterTaxIncome;
 
-    const dynamicNoteText = useMemo(() => {
-      const {
-          marriageStatus,
-          filedJointly,
-          dependency,
-          age,
-          blind,
-          qualifyingSurvivingSpouse
-      } = deductionChoices;
-
-      let statusDescription;
-
-      if (qualifyingSurvivingSpouse === 'yes') {
-          statusDescription = 'a qualifying surviving spouse';
-      } else if (marriageStatus === 'married') {
-          statusDescription = `a taxpayer filing as married (${filedJointly === 'jointly' ? 'filing jointly' : 'filing separately'})`;
-      } else { // marriageStatus is 'single'
-          if (dependency === 'yes') {
-              statusDescription = 'a head of household';
-          } else {
-              statusDescription = 'a single taxpayer';
-          }
-      }
-      
-      const additions = [];
-      if (age === 'over65') {
-          additions.push('over 65');
-      }
-      if (blind === 'yes') {
-          additions.push('blind');
-      }
-
-      if (additions.length > 0) {
-          statusDescription += `, who is ${additions.join(' and ')}`;
-      }
-
-      return `Taxes are calculated based on your selections: ${statusDescription}.`;
-    }, [deductionChoices]);
+    // Note: dynamicNoteText removed as deductionChoices is not available in current context
 
     const tableCalculations = useMemo(() => {
         const recommended = {};
@@ -483,43 +423,20 @@ export default function BudgetForm() {
         budgetConfig.sections.forEach(section => {
           let sectionEnteredTotal = 0;
           let sectionRecommendedTotal = 0;
-          if (section.title === 'Other Miscellaneous Expenses') {
-            const sectionPercent = section.totalPercent(topInputs.housingCosts);
-            section.items.forEach(item => {
-              const recommendedValue = afterTaxIncome * item.recommendedPercent(sectionPercent);
-              recommended[item.id] = recommendedValue;
-              sectionRecommendedTotal += recommendedValue;
-              const enteredValue = parseFloat(userInputs[item.id]) || 0;
-              entered[item.id] = enteredValue;
-              sectionEnteredTotal += enteredValue;
-            });
-          } else {
-            section.items.forEach(item => {
-              let recommendedValue = 0;
-              if (section.title === 'Food' && typeof item.recommendedPercent === 'function') {
-                recommendedValue = afterTaxIncome * item.recommendedPercent(housingCostPercent);
-              } else if (section.title === 'Transportation' && typeof item.recommendedPercent === 'function') {
-                recommendedValue = afterTaxIncome * item.recommendedPercent(transportationPercent);
-              } else if (section.title === 'Insurance/Health' && typeof item.recommendedPercent === 'function') {
-                recommendedValue = afterTaxIncome * item.recommendedPercent(insurancePercent);
-              } else if (section.title === 'Unsecured Debt Payments' && typeof item.recommendedPercent === 'function') {
-                recommendedValue = afterTaxIncome * item.recommendedPercent(debtPercent);
-              } else if (section.title === 'Savings & Investments' && typeof item.recommendedPercent === 'function') {
-                recommendedValue = afterTaxIncome * item.recommendedPercent(savingsPercent);
-              } else if (section.title === 'Retirement Contributions (401k, IRA, etc.)' && typeof item.recommendedPercent === 'function') {
-                recommendedValue = afterTaxIncome * item.recommendedPercent({ afterTaxIncome, housingCosts: topInputs.housingCosts });
-              } else if (section.title === 'Lifestyle & Entertainment' && typeof item.recommendedPercent === 'function') {
-                recommendedValue = afterTaxIncome * item.recommendedPercent(section.totalPercent(topInputs.housingCosts));
-              } else {
-                recommendedValue = afterTaxIncome * (item.recommendedPercent || 0);
+          
+          section.items.forEach(subsection => {
+            subsection.items.forEach(item => {
+              if (item.id) {
+                const recommendedValue = item.recommendedAmount || 0;
+                recommended[item.id] = recommendedValue;
+                sectionRecommendedTotal += recommendedValue;
+                const enteredValue = parseFloat(userInputs[item.id]) || 0;
+                entered[item.id] = enteredValue;
+                sectionEnteredTotal += enteredValue;
               }
-              recommended[item.id] = recommendedValue;
-              sectionRecommendedTotal += recommendedValue;
-              const enteredValue = parseFloat(userInputs[item.id]) || 0;
-              entered[item.id] = enteredValue;
-              sectionEnteredTotal += enteredValue;
             });
-          }
+          });
+          
           sectionTotals[section.title] = {
             entered: sectionEnteredTotal,
             recommended: sectionRecommendedTotal
@@ -552,38 +469,553 @@ export default function BudgetForm() {
         if (parts.length > 1) {
           numericValue += '.' + parts[1].slice(0, 2); // allow up to 2 decimals
         }
+        
+        // Data validation based on Excel constraints
+        const numValue = parseFloat(numericValue);
+        
+        // Rule 1: Must be a number (if user entered something)
+        if (numericValue && isNaN(numValue)) {
+          alert('⚠️ Must be a number');
+          return;
+        }
+        
+        if (numericValue && !isNaN(numValue)) {
+          // Excel validation rules: 1. Number, 2. >= 0, 3. <= Monthly Pre-Tax Income
+          if (numValue < 0) {
+            alert('⚠️ Must be >= 0');
+            return;
+          }
+          if (numValue > monthlyPreTaxIncome) {
+            alert(`⚠️ Must be <= Monthly Pre-Tax Income ($${formatCurrency(monthlyPreTaxIncome)})`);
+            return;
+          }
+          
+          // Validate retirement contribution limits
+          if (id === 'traditional_401k' && numValue > 23500) {
+            alert('Traditional 401(k) maximum contribution is $23,500 annually');
+            return;
+          }
+          if (id === 'traditional_ira' && numValue > 7000) {
+            alert('Traditional IRA maximum contribution is $7,000 annually');
+            return;
+          }
+          if (id === 'roth_401k' && numValue > 23500) {
+            alert('Roth 401(k) maximum contribution is $23,500 annually');
+            return;
+          }
+          if (id === 'roth_ira' && numValue > 7000) {
+            alert('Roth IRA maximum contribution is $7,000 annually');
+            return;
+          }
+        }
+        
         setUserInputs(prev => ({ ...prev, [id]: numericValue }));
         // If this is a retirement plan input, update context too
         if (id.startsWith('retirement_')) {
           setRetirementInputs(prev => ({ ...prev, [id]: numericValue }));
         }
+        // If this is a pre-tax expense item, update context too
+        if (['health_insurance', 'life_insurance', 'disability_insurance', 'traditional_401k', 'traditional_ira'].includes(id)) {
+          setUserPreTaxInputs(prev => ({ ...prev, [id]: numericValue }));
+        }
     };
     
     const handleTopInputChange = (id, value) => {
+        // Data validation for top inputs
+        if (id === 'preTaxIncome') {
+          const numValue = parseFloat(value);
+          if (value && !isNaN(numValue) && numValue <= 0) {
+            alert('Pre-tax income must be a positive number');
+            return;
+          }
+        }
         setTopInputs(prev => ({ ...prev, [id]: value }));
     };
     
-    const handleDeductionChange = (id, value) => {
-        setDeductionChoices(prev => ({ ...prev, [id]: value }));
-    };
+    // Note: handleDeductionChange removed as deductionChoices is not available in current context
 
     const formatCurrency = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const formatPercent = (num) => (num * 100).toFixed(2) + '%';
+    
+    // Format number for input display (with commas, no .00 if whole number)
+    const formatNumberForInput = (num) => {
+      if (!num || num === '') return '';
+      const number = parseFloat(num);
+      if (isNaN(number)) return num;
+      
+      // Check if it's a whole number
+      if (number % 1 === 0) {
+        return number.toLocaleString('en-US');
+      } else {
+        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+    };
+    
+    // Parse number from formatted input (remove commas)
+    const parseNumberFromInput = (str) => {
+      if (!str) return '';
+      return str.replace(/,/g, '');
+    };
+
+    // Calculate monthly pre-tax income for formula calculations
+    const monthlyPreTaxIncome = parseFloat(topInputs.preTaxIncome || 0) / 12;
+
+    // Calculate monthly after-tax income for After-Tax Expense Items
+    const monthlyAfterTaxIncome = summaryCalculations.suggestedAfterTaxIncome / 12;
+    
+    // Debug After-Tax Retirement Contributions calculations
+    React.useEffect(() => {
+      console.log('=== AFTER-TAX RETIREMENT CONTRIBUTIONS DEBUG ===', new Date().toISOString());
+      console.log('preTaxIncome:', topInputs.preTaxIncome);
+      console.log('suggestedAfterTaxIncome:', summaryCalculations.suggestedAfterTaxIncome);
+      console.log('monthlyAfterTaxIncome:', monthlyAfterTaxIncome);
+      
+      // Test the calculation functions directly
+      const testRoth401k = calculateRecommendedAmount({ id: 'roth_401k' });
+      const testRothIRA = calculateRecommendedAmount({ id: 'roth_ira' });
+      const testRoth401kPercent = calculateRecommendedPercent({ id: 'roth_401k' });
+      const testRothIRAPercent = calculateRecommendedPercent({ id: 'roth_ira' });
+
+      console.log('Direct function calls:');
+      console.log('Roth 401k Amount:', testRoth401k);
+      console.log('Roth IRA Amount:', testRothIRA);
+      console.log('Roth 401k Percentage:', testRoth401kPercent);
+      console.log('Roth IRA Percentage:', testRothIRAPercent);
+    }, [topInputs.preTaxIncome, monthlyAfterTaxIncome, summaryCalculations.suggestedAfterTaxIncome]);
+
+    // Helper function to calculate other percentages for Down Payment and Car calculations
+    const calculateOtherPercentages = () => {
+      // This calculates the total percentage used by other sections
+      // Based on Excel formula: (1-(I50+I54+I82+I104+I122+I138+I150+I172+I198))
+      // Where I50 = Retirement Contributions Total, I54 = Emergency Fund, etc.
+      
+      // Calculate actual percentages from our current calculations
+      const retirementPercent = calculateRecommendedPercent({ id: 'roth_401k' }) + calculateRecommendedPercent({ id: 'roth_ira' });
+      const emergencyFundPercent = calculateRecommendedPercent({ id: 'emergency_fund' });
+      
+      // Debt Payments - these are user input only, so their percentage is 0 for recommended
+      const debtPaymentsPercent = 0; // I82 in Excel
+      
+      // Housing - calculate actual percentage based on housingCosts selection
+      let housingTotalPercent = 0;
+      if (topInputs.housingCosts === 'Low') housingTotalPercent = 0.30; // 30%
+      else if (topInputs.housingCosts === 'Medium') housingTotalPercent = 0.35; // 35%
+      else if (topInputs.housingCosts === 'High') housingTotalPercent = 0.40; // 40%
+      
+      const housingPercent = housingTotalPercent;
+      
+      // Transportation - calculate actual percentage
+      const transportationPercent = calculateRecommendedPercent({ id: 'car_payment' }) + 
+        calculateRecommendedPercent({ id: 'gasoline_fuel' }) + 
+        calculateRecommendedPercent({ id: 'car_maintenance' }) + 
+        calculateRecommendedPercent({ id: 'parking_fees' }) + 
+        calculateRecommendedPercent({ id: 'rideshare' }) + 
+        calculateRecommendedPercent({ id: 'public_transit' }) + 
+        calculateRecommendedPercent({ id: 'transportation_miscellaneous' });
+      
+      // Insurance/Health - calculate actual percentage
+      const insuranceHealthPercent = calculateRecommendedPercent({ id: 'auto_insurance' }) + 
+        calculateRecommendedPercent({ id: 'renters_insurance' }) + 
+        calculateRecommendedPercent({ id: 'otc_medications' }) + 
+        calculateRecommendedPercent({ id: 'mental_health' }) + 
+        calculateRecommendedPercent({ id: 'physical_health' }) + 
+        calculateRecommendedPercent({ id: 'insurance_miscellaneous' });
+      
+      // Food - calculate actual percentage
+      const foodPercent = calculateRecommendedPercent({ id: 'groceries' }) + 
+        calculateRecommendedPercent({ id: 'dining_out' }) + 
+        calculateRecommendedPercent({ id: 'takeout' }) + 
+        calculateRecommendedPercent({ id: 'food_miscellaneous' });
+      
+      // Lifestyle & Entertainment - calculate actual percentage
+      const lifestyleEntertainmentPercent = calculateRecommendedPercent({ id: 'subscriptions' }) + 
+        calculateRecommendedPercent({ id: 'hobbies' }) + 
+        calculateRecommendedPercent({ id: 'travel_vacation' }) + 
+        calculateRecommendedPercent({ id: 'gifts' }) + 
+        calculateRecommendedPercent({ id: 'clothing' }) + 
+        calculateRecommendedPercent({ id: 'haircuts_salon' }) + 
+        calculateRecommendedPercent({ id: 'personal_care' }) + 
+        calculateRecommendedPercent({ id: 'events' }) + 
+        calculateRecommendedPercent({ id: 'lifestyle_miscellaneous' });
+      
+      // Charity - calculate actual percentage
+      const charityPercent = calculateRecommendedPercent({ id: 'charity' });
+      
+      return retirementPercent + emergencyFundPercent + debtPaymentsPercent + housingPercent + transportationPercent + insuranceHealthPercent + foodPercent + lifestyleEntertainmentPercent + charityPercent;
+    };
+
+    // Helper function to calculate Down Payment percentage
+    const calculateDownPaymentPercent = () => {
+      const otherPercentages = calculateOtherPercentages();
+      const remainingPercentage = Math.max(0, 1 - otherPercentages);
+      return remainingPercentage * 0.7; // 70% of remaining
+    };
+
+    // Helper function to calculate Car percentage
+    const calculateCarPercent = () => {
+      const otherPercentages = calculateOtherPercentages();
+      const remainingPercentage = Math.max(0, 1 - otherPercentages);
+      return remainingPercentage * 0.3; // 30% of remaining
+    };
+
+    // Function to calculate recommended amount based on Excel formulas
+    const calculateRecommendedAmount = (item) => {
+      // For After-Tax items, use monthly after-tax income as the base
+      if (['roth_401k', 'roth_ira', 'rent', 'electricity', 'gas', 'water', 'sewer_trash', 'phone', 'internet', 'housing_miscellaneous', 'car_payment', 'gasoline_fuel', 'car_maintenance', 'parking_fees', 'rideshare', 'public_transit', 'transportation_miscellaneous', 'auto_insurance', 'renters_insurance', 'otc_medications', 'mental_health', 'physical_health', 'insurance_miscellaneous', 'groceries', 'dining_out', 'takeout', 'food_miscellaneous', 'subscriptions', 'hobbies', 'travel_vacation', 'gifts', 'clothing', 'haircuts_salon', 'personal_care', 'events', 'lifestyle_miscellaneous', 'student_loans', 'credit_card_payments', 'personal_loans', 'miscellaneous_debt', 'charity', 'user_input_1', 'user_input_2', 'user_input_3', 'user_input_4', 'user_input_5', 'user_input_6', 'user_input_7', 'user_input_8', 'user_input_9', 'user_input_10', 'emergency_fund', 'down_payment', 'car', 'wedding', 'advanced_degree', 'vacation', 'miscellaneous'].includes(item.id)) {
+        if (monthlyAfterTaxIncome <= 0) return 0;
+        
+        if (item.id === 'roth_401k') {
+          // Excel: =MIN('Week 1 - Budgeting'!$G$40*(1/20),1958.33)
+          // This is 5% of monthly after-tax income, capped at $1,958.33 (monthly max for $23,500 annual)
+          return Math.min(monthlyAfterTaxIncome * 0.05, 1958.33);
+        }
+        if (item.id === 'roth_ira') {
+          // Excel: =IF(G46=1958.33,MIN('Week 1 - Budgeting'!$G$40*(0.05-I46),583.33),0)
+          // Only contribute to Roth IRA if Roth 401k is at its maximum
+          const roth401kAmount = Math.min(monthlyAfterTaxIncome * 0.05, 1958.33);
+          if (roth401kAmount === 1958.33) {
+            // Calculate Roth 401k percentage first
+            const roth401kPercent = roth401kAmount / monthlyAfterTaxIncome;
+            // Then calculate Roth IRA: 5% total - Roth 401k percentage, capped at $583.33
+            return Math.min(monthlyAfterTaxIncome * (0.05 - roth401kPercent), 583.33);
+          }
+          return 0;
+        }
+        // Housing - Excel formulas
+        if (['rent', 'electricity', 'gas', 'water', 'sewer_trash', 'phone', 'internet', 'housing_miscellaneous'].includes(item.id)) {
+          if (item.id === 'rent') {
+            // Excel: =I86*'Week 1 - Budgeting'!G40
+            // The total housing percentage is dynamic based on housingCosts selection
+            let housingTotalPercent = 0;
+            if (topInputs.housingCosts === 'Low') housingTotalPercent = 0.30; // 30%
+            else if (topInputs.housingCosts === 'Medium') housingTotalPercent = 0.35; // 35%
+            else if (topInputs.housingCosts === 'High') housingTotalPercent = 0.40; // 40%
+            
+            // Calculate total fixed utilities cost
+            const utilitiesTotal = 125 + 25 + 60 + 25 + 120 + 65 + 0; // electricity + gas + water + sewer/trash + phone + internet + miscellaneous
+            const utilitiesPercent = utilitiesTotal / monthlyAfterTaxIncome;
+            
+            // Rent should be the remaining percentage after utilities
+            const rentPercent = Math.max(0, housingTotalPercent - utilitiesPercent);
+            return monthlyAfterTaxIncome * rentPercent;
+          }
+          if (item.id === 'electricity') return 125; // Fixed value from Excel
+          if (item.id === 'gas') return 25; // Fixed value from Excel
+          if (item.id === 'water') return 60; // Fixed value from Excel
+          if (item.id === 'sewer_trash') return 25; // Fixed value from Excel
+          if (item.id === 'phone') return 120; // Fixed value from Excel
+          if (item.id === 'internet') return 65; // Fixed value from Excel
+          if (item.id === 'housing_miscellaneous') return 0; // Fixed value from Excel
+        }
+        
+        // Transportation - Excel formulas
+        if (['car_payment', 'gasoline_fuel', 'car_maintenance', 'parking_fees', 'rideshare', 'public_transit', 'transportation_miscellaneous'].includes(item.id)) {
+          if (item.id === 'car_payment') return 250; // Fixed value from Excel
+          if (item.id === 'gasoline_fuel') return 80; // Fixed value from Excel
+          if (item.id === 'car_maintenance') return 120; // Fixed value from Excel
+          if (item.id === 'parking_fees') return 120; // Fixed value from Excel
+          if (item.id === 'rideshare') return 60; // Fixed value from Excel
+          if (item.id === 'public_transit') {
+            // Excel: =MIN('Week 1 - Budgeting'!$G$40*0.0025,50)
+            return Math.min(monthlyAfterTaxIncome * 0.0025, 50);
+          }
+          if (item.id === 'transportation_miscellaneous') return 0; // Fixed value from Excel
+        }
+        
+        // Insurance/Health - Excel formulas (fixed values)
+        if (['auto_insurance', 'renters_insurance', 'otc_medications', 'mental_health', 'physical_health', 'insurance_miscellaneous'].includes(item.id)) {
+          if (item.id === 'auto_insurance') return 125;
+          if (item.id === 'renters_insurance') return 50;
+          if (item.id === 'otc_medications') return 25;
+          if (item.id === 'mental_health') return 65;
+          if (item.id === 'physical_health') return 120;
+          if (item.id === 'insurance_miscellaneous') return 0;
+        }
+        
+        // Food - Excel formulas with MIN functions
+        if (['groceries', 'dining_out', 'takeout', 'food_miscellaneous'].includes(item.id)) {
+          if (item.id === 'groceries') {
+            // Excel: =MIN('Week 1 - Budgeting'!$G$40*0.07,1250)
+            return Math.min(monthlyAfterTaxIncome * 0.07, 1250);
+          }
+          if (item.id === 'dining_out') {
+            // Excel: =MIN('Week 1 - Budgeting'!$G$40*0.03,1500)
+            return Math.min(monthlyAfterTaxIncome * 0.03, 1500);
+          }
+          if (item.id === 'takeout') {
+            // Excel: =MIN('Week 1 - Budgeting'!$G$40*0.0125,500)
+            return Math.min(monthlyAfterTaxIncome * 0.0125, 500);
+          }
+          if (item.id === 'food_miscellaneous') {
+            // Excel: =MIN('Week 1 - Budgeting'!$G$40*0.005,100)
+            return Math.min(monthlyAfterTaxIncome * 0.005, 100);
+          }
+        }
+        
+        // Lifestyle & Entertainment - Excel formulas
+        if (['subscriptions', 'hobbies', 'travel_vacation', 'gifts', 'clothing', 'haircuts_salon', 'personal_care', 'events', 'lifestyle_miscellaneous'].includes(item.id)) {
+          if (item.id === 'subscriptions') {
+            // Excel: =MIN('Week 1 - Budgeting'!$G$40*0.01,200)
+            return Math.min(monthlyAfterTaxIncome * 0.01, 200);
+          }
+          if (item.id === 'hobbies') {
+            // Excel: =MIN('Week 1 - Budgeting'!$G$40*0.01,1000)
+            return Math.min(monthlyAfterTaxIncome * 0.01, 1000);
+          }
+          if (item.id === 'travel_vacation') {
+            // Excel: ='Week 1 - Budgeting'!$G$40*0.025
+            return monthlyAfterTaxIncome * 0.025;
+          }
+          if (item.id === 'gifts') {
+            // Excel: ='Week 1 - Budgeting'!$G$40*0.01
+            return monthlyAfterTaxIncome * 0.01;
+          }
+          if (item.id === 'clothing') {
+            // Excel: ='Week 1 - Budgeting'!$G$40*0.01
+            return monthlyAfterTaxIncome * 0.01;
+          }
+          if (item.id === 'haircuts_salon') {
+            // Excel: =MIN('Week 1 - Budgeting'!$G$40*0.005,500)
+            return Math.min(monthlyAfterTaxIncome * 0.005, 500);
+          }
+          if (item.id === 'personal_care') {
+            // Excel: ='Week 1 - Budgeting'!$G$40*0.01
+            return monthlyAfterTaxIncome * 0.01;
+          }
+          if (item.id === 'events') {
+            // Excel: ='Week 1 - Budgeting'!$G$40*0.01
+            return monthlyAfterTaxIncome * 0.01;
+          }
+          if (item.id === 'lifestyle_miscellaneous') {
+            // Excel: =MIN('Week 1 - Budgeting'!$G$40*0.05,100)
+            return Math.min(monthlyAfterTaxIncome * 0.05, 100);
+          }
+        }
+        
+        // Debt Payments - these are user input only, no recommended amounts
+      if (['student_loans', 'credit_card_payments', 'personal_loans', 'miscellaneous_debt'].includes(item.id)) {
+          return 0; // No recommended amounts for debt payments
+        }
+        
+        // Charity - Excel formula
+        if (['charity'].includes(item.id)) {
+          // Excel: ='Week 1 - Budgeting'!$G$40*0.01
+          return monthlyAfterTaxIncome * 0.01;
+        }
+        
+        // User Input items - these are user input only, no recommended amounts
+        if (['user_input_1', 'user_input_2', 'user_input_3', 'user_input_4', 'user_input_5', 'user_input_6', 'user_input_7', 'user_input_8', 'user_input_9', 'user_input_10'].includes(item.id)) {
+          return 0; // No recommended amounts for user input items
+        }
+        
+        if (item.id === 'emergency_fund') {
+          // Excel: ='Week 1 - Budgeting'!$G$40*0.02
+          // 2% of monthly after-tax income
+          return monthlyAfterTaxIncome * 0.02;
+        }
+        if (item.id === 'down_payment') {
+          // Excel: =I58*'Week 1 - Budgeting'!$G$40
+          // Where I58 = (1-(I50+I54+I82+I104+I122+I138+I150+I172+I198))*0.7
+          const downPaymentPercent = calculateDownPaymentPercent();
+          return monthlyAfterTaxIncome * downPaymentPercent;
+        }
+        if (item.id === 'car') {
+          // Excel: =I60*'Week 1 - Budgeting'!$G$40
+          // Where I60 = (1-(I50+I54+I82+I104+I122+I138+I150+I172+I198))*0.3
+          const carPercent = calculateCarPercent();
+          return monthlyAfterTaxIncome * carPercent;
+        }
+        // Wedding, Advanced Degree, Vacation, Miscellaneous are 0 in Excel
+        if (['wedding', 'advanced_degree', 'vacation', 'miscellaneous'].includes(item.id)) {
+          return 0;
+        }
+        return 0;
+      }
+      
+      // For Pre-Tax items, use monthly pre-tax income as the base
+      if (monthlyPreTaxIncome <= 0) return 0;
+      
+      // Pre-Tax Insurance section - use static values from Excel
+      if (['health_insurance', 'life_insurance', 'disability_insurance'].includes(item.id)) {
+        // Health Insurance: $150/month (1.8% of $8,333.33)
+        if (item.id === 'health_insurance') {
+          return 150.00;
+        }
+        // Life and Disability Insurance: $0 (not recommended)
+        return 0;
+      }
+      
+      // Pre-Tax Retirement section - use static values from Excel
+      if (['traditional_401k', 'traditional_ira'].includes(item.id)) {
+        return 0; // Not recommended in Pre-Tax section
+      }
+      
+      // For other items, use static recommended amount if available
+      return item.recommendedAmount || 0;
+    };
+
+    // Function to calculate recommended percentage based on Excel formulas
+    const calculateRecommendedPercent = (item) => {
+      // For After-Tax items, use monthly after-tax income as the base (Excel: =G46/'Week 1 - Budgeting'!$G$40)
+      if (['roth_401k', 'roth_ira', 'rent', 'electricity', 'gas', 'water', 'sewer_trash', 'phone', 'internet', 'housing_miscellaneous', 'car_payment', 'gasoline_fuel', 'car_maintenance', 'parking_fees', 'rideshare', 'public_transit', 'transportation_miscellaneous', 'auto_insurance', 'renters_insurance', 'otc_medications', 'mental_health', 'physical_health', 'insurance_miscellaneous', 'groceries', 'dining_out', 'takeout', 'food_miscellaneous', 'subscriptions', 'hobbies', 'travel_vacation', 'gifts', 'clothing', 'haircuts_salon', 'personal_care', 'events', 'lifestyle_miscellaneous', 'student_loans', 'credit_card_payments', 'personal_loans', 'miscellaneous_debt', 'charity', 'user_input_1', 'user_input_2', 'user_input_3', 'user_input_4', 'user_input_5', 'user_input_6', 'user_input_7', 'user_input_8', 'user_input_9', 'user_input_10', 'emergency_fund', 'down_payment', 'car', 'wedding', 'advanced_degree', 'vacation', 'miscellaneous'].includes(item.id)) {
+        if (monthlyAfterTaxIncome > 0) {
+          // For Down Payment and Car, use the helper functions to get the exact percentage
+          if (item.id === 'down_payment') {
+            return calculateDownPaymentPercent();
+          }
+          if (item.id === 'car') {
+            return calculateCarPercent();
+          }
+          // For other items, calculate from amount
+      const recommendedAmount = calculateRecommendedAmount(item);
+          return recommendedAmount / monthlyAfterTaxIncome;
+        }
+        return 0;
+      }
+      
+      // For Pre-Tax items, use monthly pre-tax income as the base
+      if (monthlyPreTaxIncome > 0) {
+      const recommendedAmount = calculateRecommendedAmount(item);
+        return recommendedAmount / monthlyPreTaxIncome;
+      }
+      return 0;
+    };
 
     // 1. Section expanded state
     const initialExpanded = Object.fromEntries(budgetConfig.sections.map(s => [s.title, true]));
     const [expandedSections, setExpandedSections] = useState(initialExpanded);
     const toggleSection = (title) => setExpandedSections(prev => ({ ...prev, [title]: !prev[title] }));
 
+    // 1.5. Subsection expanded state
+    const initialSubsectionExpanded = {};
+    budgetConfig.sections.forEach(section => {
+      if (section.items && Array.isArray(section.items)) {
+        section.items.forEach(subsection => {
+          if (subsection.title) {
+            initialSubsectionExpanded[subsection.title] = true;
+          }
+        });
+      }
+    });
+    const [expandedSubsections, setExpandedSubsections] = useState(initialSubsectionExpanded);
+    const toggleSubsection = (title) => setExpandedSubsections(prev => ({ ...prev, [title]: !prev[title] }));
+
+  // 2. Custom expense names state for Other Miscellaneous Expenses
+  const [customExpenseNames, setCustomExpenseNames] = useState({
+    user_input_1: '',
+    user_input_1_label: '',
+    user_input_2: '',
+    user_input_2_label: '',
+    user_input_3: '',
+    user_input_3_label: '',
+    user_input_4: '',
+    user_input_4_label: '',
+    user_input_5: '',
+    user_input_5_label: '',
+    user_input_6: '',
+    user_input_6_label: '',
+    user_input_7: '',
+    user_input_7_label: '',
+    user_input_8: '',
+    user_input_8_label: '',
+    user_input_9: '',
+    user_input_9_label: '',
+    user_input_10: '',
+    user_input_10_label: '',
+  });
+
+  const handleExpenseNameChange = (itemId, newName) => {
+    setCustomExpenseNames(prev => ({
+      ...prev,
+      [itemId]: newName
+    }));
+  };
+
+
+    // Debug function to show all calculated values
+    const debugCalculations = () => {
+        const preTaxIncome = parseFloat(topInputs.preTaxIncome || 0);
+        const monthlyPreTaxIncome = preTaxIncome / 12;
+        const standardDeduction = 15000;
+        
+        // Pre-Tax Expenses
+        const suggestedPreTaxExpenses = 150 * 12; // $1,800
+        const userPreTaxExpenses = (
+            (parseFloat(userPreTaxInputs.health_insurance) || 0) +
+            (parseFloat(userPreTaxInputs.life_insurance) || 0) +
+            (parseFloat(userPreTaxInputs.disability_insurance) || 0) +
+            (parseFloat(userPreTaxInputs.traditional_401k) || 0) +
+            (parseFloat(userPreTaxInputs.traditional_ira) || 0)
+        ) * 12;
+        
+        // Taxable Income
+        const suggestedTaxableIncome = preTaxIncome - standardDeduction - suggestedPreTaxExpenses;
+        const userTaxableIncome = preTaxIncome - standardDeduction - userPreTaxExpenses;
+        
+        console.log('=== DEBUG CALCULATIONS FOR $1,000,000 ===');
+        console.log('Pre-Tax Income:', preTaxIncome);
+        console.log('Monthly Pre-Tax Income:', monthlyPreTaxIncome);
+        console.log('Standard Deduction:', standardDeduction);
+        console.log('Suggested Pre-Tax Expenses:', suggestedPreTaxExpenses);
+        console.log('User Pre-Tax Expenses:', userPreTaxExpenses);
+        console.log('Suggested Taxable Income:', suggestedTaxableIncome);
+        console.log('User Taxable Income:', userTaxableIncome);
+        console.log('Summary Calculations:', summaryCalculations);
+        console.log('==========================================');
+    };
+
+    // Function to calculate total expenses (sum of all Budgeted Spend values - user inputs)
+    const calculateTotalExpenses = () => {
+      // Sum all user inputs from Budgeted Spend column
+      let total = 0;
+      
+      // Sum all user input values
+      Object.values(userInputs).forEach(value => {
+        const numValue = parseFloat(value) || 0;
+        total += numValue;
+      });
+      
+      return total;
+    };
+
+    // Function to calculate budget checker (E40 - E200)
+    const calculateBudgetChecker = () => {
+      const monthlyIncome = summaryCalculations.userAfterTaxIncome / 12; // E40 - User's monthly after-tax income
+      const totalExpenses = calculateTotalExpenses(); // E200 (sum of all Budgeted Spend values)
+      const difference = monthlyIncome - totalExpenses;
+      
+      if (difference > 0) {
+        return `Under Budget by $${formatCurrency(difference)}`;
+      } else if (difference < 0) {
+        return `Over Budget by $${formatCurrency(Math.abs(difference))}`;
+      } else {
+        return `Exactly on Budget`;
+      }
+    };
+
+    // Call debug function when component mounts or inputs change
+    React.useEffect(() => {
+        if (topInputs.preTaxIncome === '1000000') {
+            debugCalculations();
+        }
+        // Debug userInputs to see what's in there
+        console.log('userInputs state:', userInputs);
+        Object.entries(userInputs).forEach(([key, value]) => {
+          if (value && value !== '') {
+            console.log(`userInputs[${key}] = "${value}"`);
+          }
+        });
+    }, [topInputs.preTaxIncome, userPreTaxInputs, summaryCalculations, userInputs]);
+
     return (
         <div style={styles.container}>
-          <div style={styles.infoBox}>
-            <InfoIcon />
-            <span>{dynamicNoteText}</span>
-          </div>
         
-        <div style={{width: '450px'}}>
+        <div style={{width: '1200px', maxWidth: '1200px'}}>
+            <div style={{width: '450px', marginBottom: '20px'}}>
             <h3 style={styles.header}>User Inputted Data</h3>
+            <div style={{fontSize: '12px', color: '#666', marginBottom: '10px', fontStyle: 'italic'}}>
+                Taxes calculated based on single taxpayer filing status
+            </div>
             {userInputFields.map(field => (
             <div key={field.id} style={{ display: 'flex', justifyContent: 'space-between', margin: '4px 0', alignItems: 'center' }}>
                 <label>{field.label}</label>
@@ -595,87 +1027,65 @@ export default function BudgetForm() {
                   >
                     {Array.from(new Set(stateTaxData.map(row => row.state))).map(state => <option key={state} value={state}>{state}</option>)}
                   </select>
-                ) : (
-                  <input
+                ) : field.id === 'residenceInNYC' ? (
+                  <select
                     style={styles.topInput}
                     value={topInputs[field.id]}
                     onChange={e => handleTopInputChange(field.id, e.target.value)}
+                  >
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                ) : field.id === 'housingCosts' ? (
+                  <select
+                    style={styles.topInput}
+                    value={topInputs[field.id]}
+                    onChange={e => handleTopInputChange(field.id, e.target.value)}
+                  >
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                ) : (
+                  <input
+                    style={styles.topInput}
+                    type="text"
+                    value={field.id === 'preTaxIncome' ? formatNumberForInput(topInputs[field.id]) : topInputs[field.id]}
+                    onChange={e => handleTopInputChange(field.id, field.id === 'preTaxIncome' ? parseNumberFromInput(e.target.value) : e.target.value)}
                   />
                 )}
             </div>
             ))}
             
-            <button 
-              onClick={() => setShowDeductionChoices(!showDeductionChoices)}
-              style={{...styles.header, cursor: 'pointer', border: 'none', background: 'none', padding: 0, textAlign: 'left', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}
-            >
-              <span>Standard Deduction Choices</span>
-              <span>{showDeductionChoices ? '▲' : '▼'}</span>
-            </button>
-
-            {showDeductionChoices && (
-              <div>
-                {deductionChoiceFields.map(field => (
-                <div key={field.id} style={{ display: 'flex', justifyContent: 'space-between', margin: '4px 0', alignItems: 'center' }}>
-                    <label style={styles.deductionLabel}>{field.label}</label>
-                    <select 
-                    style={styles.selectInput} 
-                    value={deductionChoices[field.id]} 
-                    onChange={(e) => handleDeductionChange(field.id, e.target.value)}
-                    >
-                    {field.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                    </select>
-                </div>
-                ))}
-              </div>
-            )}
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{...styles.afterTaxRow, flexGrow: 1}}>
-                <span>After Tax Income</span>
-                <span>${formatCurrency(afterTaxIncome)}</span>
-              </div>
-              {tableCalculations.grandTotalEntered > afterTaxIncome && (
-                <div style={styles.floatingWarning}>
-                  Over Budget! Your total budgeted expenses exceed your after-tax income.
-                </div>
-              )}
+            {/* Monthly Pre-Tax Income - Row 14 equivalent */}
+            <div style={{...styles.afterTaxRow, flexGrow: 1, marginTop: '10px', backgroundColor: '#e8f5e9'}}>
+              <span>Monthly Pre-Tax Income</span>
+              <span>${formatCurrency(parseFloat(topInputs.preTaxIncome || 0) / 12)}</span>
             </div>
+            
+            {/* Note: Standard Deduction Choices section removed as deductionChoices is not available in current context */}
         </div>
         
         <table style={styles.table}>
             <thead>
             <tr>
-                <th style={{...styles.th, ...styles.thExpense}}>Expense Item</th>
-                <th style={{...styles.th, ...styles.thBudgeted}}>Budgeted Amount Spent (Manually Enter)</th>
-                <th style={{...styles.th, ...styles.thRecommended}}>Recommended Amount Spent</th>
-                <th style={{...styles.th, ...styles.thPercent}}>Recommended %</th>
+                <th style={{...styles.th, ...styles.thExpense}}>Expense Items</th>
+                <th style={{...styles.th, ...styles.thBudgeted}}>Examples/Info</th>
+                <th style={{...styles.th, ...styles.thRecommended}}>Budgeted Spend</th>
+                <th style={{...styles.th, ...styles.thPercent}}>Recommended Spend $</th>
+                <th style={{...styles.th, ...styles.thPercent}}>% of Monthly Income</th>
             </tr>
             </thead>
             <tbody>
-              {budgetConfig.sections.map((section, sectionIndex) => (
+              {budgetConfig.sections.map((section, sectionIndex) => {
+                return (
                 <React.Fragment key={section.title}>
                   <tr>
-                    <td style={{...styles.td, ...styles.sectionHeader, fontWeight: 'bold', cursor: 'pointer'}} colSpan="4"
+                    <td style={{...styles.td, ...styles.sectionHeader, fontWeight: 'bold', cursor: 'pointer'}} colSpan="5"
                         onClick={() => toggleSection(section.title)}>
                       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                         <span>{section.title}</span>
                         <span>
-                          {section.title === 'Food'
-                            ? formatPercent(housingCostPercent)
-                            : section.title === 'Transportation'
-                              ? formatPercent(transportationPercent)
-                              : section.title === 'Insurance/Health'
-                                ? formatPercent(insurancePercent)
-                                : section.title === 'Unsecured Debt Payments'
-                                  ? formatPercent(debtPercent)
-                                  : section.title === 'Savings & Investments'
-                                    ? formatPercent(savingsPercent)
-                                    : section.title === 'Retirement Contributions (401k, IRA, etc.)'
-                                      ? formatPercent(retirementPercent)
-                                      : (typeof section.totalPercent === 'function'
-                                          ? (section.totalPercent(topInputs.housingCosts) * 100).toFixed(2) + '%'
-                                          : (section.totalPercent || ''))}
                           <span style={{marginLeft: 12, fontWeight: 'bold', fontSize: 18}}>
                             {expandedSections[section.title] ? '▼' : '►'}
                           </span>
@@ -685,75 +1095,304 @@ export default function BudgetForm() {
                   </tr>
                   {expandedSections[section.title] && (
                     <>
-                      {section.items.map((item, index) => {
-                        if (item.type === 'subheader') {
-                          return (
-                            <tr key={`${item.label}-${index}`}>
-                              <td style={{...styles.td, fontWeight: 'bold'}}>{item.label}</td>
-                              <td style={styles.td}></td>
-                              <td style={styles.td}></td>
-                              <td style={styles.td}></td>
+                      {section.items.map((subsection, subIndex) => (
+                        <React.Fragment key={subsection.title}>
+                          <tr>
+                            <td style={{...styles.td, ...styles.sectionHeader, fontWeight: 'bold', paddingLeft: '20px', cursor: 'pointer'}} colSpan="5" onClick={() => toggleSubsection(subsection.title)}>
+                              {expandedSubsections[subsection.title] ? '▼' : '▶'} {subsection.title}
+                            </td>
+                          </tr>
+                          {expandedSubsections[subsection.title] && subsection.items.map((item, index) => {
+                            if (item.type === 'subheader') {
+                              return (
+                                <tr key={`${item.label}-${index}`}>
+                                  <td style={{...styles.td, fontWeight: 'bold', paddingLeft: '40px'}}>{item.label}</td>
+                                  <td style={styles.td}></td>
+                                  <td style={styles.td}></td>
+                                  <td style={styles.td}></td>
+                                  <td style={styles.td}></td>
+                                </tr>
+                              )
+                            }
+                            return (
+                              <tr key={item.id}>
+                                <td style={{...styles.td, paddingLeft: '60px', textAlign: 'left'}}>
+                                  {item.id.startsWith('user_input_') ? (
+                                    <input
+                                      style={{
+                                        ...styles.input,
+                                        width: '100%',
+                                        minWidth: '150px',
+                                        fontSize: '14px',
+                                        padding: '4px 8px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '4px',
+                                        textAlign: 'left'
+                                      }}
+                                      type="text"
+                                      value={customExpenseNames[item.id] || ''}
+                                      onChange={(e) => handleExpenseNameChange(item.id, e.target.value)}
+                                      placeholder="Enter expense name"
+                                    />
+                                  ) : (
+                                    item.label
+                                  )}
+                                </td>
+                                <td style={{...styles.td, textAlign: 'left'}}>
+                                  {item.id.startsWith('user_input_') ? (
+                                    <input
+                                      style={{
+                                        ...styles.input,
+                                        width: '100%',
+                                        minWidth: '150px',
+                                        fontSize: '14px',
+                                        padding: '4px 8px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '4px',
+                                        textAlign: 'left',
+                                        color: '#666',
+                                        backgroundColor: '#fffde7'
+                                      }}
+                                      type="text"
+                                      value={customExpenseNames[item.id + '_label'] || ''}
+                                      onChange={(e) => handleExpenseNameChange(item.id + '_label', e.target.value)}
+                                      placeholder="Additional description"
+                                    />
+                                  ) : (
+                                    item.explanation
+                                  )}
+                                </td>
+                                <td style={styles.td}>
+                                  <div style={styles.inputCellContainer}>
+                                    <input
+                                      style={styles.input}
+                                      type="number"
+                                      min="0"
+                                      step="0.01"
+                                      value={userInputs[item.id] || ''}
+                                      onChange={(e) => handleUserInputChange(item.id, e.target.value)}
+                                    />
+                                    <span style={styles.currencySymbol}>$</span>
+                                  </div>
+                                </td>
+                                <td style={{...styles.td, ...styles.readOnly}}>
+                                  {(() => {
+                                    const calculatedAmount = calculateRecommendedAmount(item);
+                                    return calculatedAmount > 0 ? formatCurrency(calculatedAmount) : '-';
+                                  })()}
+                                </td>
+                                <td style={{...styles.td, ...styles.readOnly}}>
+                                  {(() => {
+                                    const calculatedPercent = calculateRecommendedPercent(item);
+                                    return calculatedPercent > 0 ? formatPercent(calculatedPercent) : '-';
+                                  })()}
+                                </td>
+                              </tr>
+                            )
+                          })}
+                          {subsection.note && (
+                            <tr>
+                              <td style={{...styles.td, fontStyle: 'italic', paddingLeft: '40px'}} colSpan="5">
+                                {subsection.note}
+                              </td>
                             </tr>
-                          )
-                        }
-                        let percentValue = '-';
-                        if (tableCalculations.recommended[item.id] && afterTaxIncome) {
-                          percentValue = formatPercent(tableCalculations.recommended[item.id] / afterTaxIncome);
-                        }
-                        return (
-                          <tr key={item.id}>
-                            <td style={{...styles.td, paddingLeft: '40px'}}>{item.label}</td>
+                          )}
+                          {/* Subsection Total Row */}
+                          {expandedSubsections[subsection.title] && (
+                          <tr style={styles.totalRow}>
+                            <td style={{...styles.td, fontWeight: 'bold', paddingLeft: '40px'}}>Total</td>
+                            <td style={styles.td}></td>
                             <td style={styles.td}>
-                              <div style={styles.inputCellContainer}>
-                                <input
-                                  style={styles.input}
-                                  type="number"
-                                  min="0"
-                                  step="0.01"
-                                  value={userInputs[item.id]}
-                                  onChange={(e) => handleUserInputChange(item.id, e.target.value)}
-                                />
-                                <span style={styles.currencySymbol}>$</span>
+                              <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                <span>$</span>
+                                <span>
+                                  {subsection.items
+                                    .filter(item => item.id)
+                                    .reduce((sum, item) => sum + (parseFloat(userInputs[item.id]) || 0), 0) > 0 
+                                    ? formatCurrency(subsection.items
+                                        .filter(item => item.id)
+                                        .reduce((sum, item) => sum + (parseFloat(userInputs[item.id]) || 0), 0)) 
+                                    : '-'}
+                                </span>
                               </div>
                             </td>
-                            <td style={{...styles.td, ...styles.readOnly}}>{formatCurrency(tableCalculations.recommended[item.id])}</td>
-                            <td style={{...styles.td, ...styles.readOnly}}>{percentValue}</td>
+                            <td style={styles.td}>
+                              <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                <span>$</span>
+                                <span>
+                                  {(() => {
+                                    const totalRecommended = subsection.items
+                                      .filter(item => item.id)
+                                      .reduce((sum, item) => sum + calculateRecommendedAmount(item), 0);
+                                    return totalRecommended > 0 ? formatCurrency(totalRecommended) : '-';
+                                  })()}
+                                </span>
+                              </div>
+                            </td>
+                            <td style={{...styles.td, ...styles.readOnly}}>
+                              {(() => {
+                                const totalPercent = subsection.items
+                                  .filter(item => item.id)
+                                  .reduce((sum, item) => sum + calculateRecommendedPercent(item), 0);
+                                return totalPercent > 0 ? formatPercent(totalPercent) : '-';
+                              })()}
+                            </td>
                           </tr>
-                        )
-                      })}
-                      {/* Section Total Row */}
-                      <tr style={styles.totalRow}>
-                        <td style={{...styles.td, fontWeight: 'bold'}}>Total</td>
-                        <td style={styles.td}>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </>
+                  )}
+                  
+                  {/* Monthly Income (After Taxes & Pre-Tax Expense Items) - Row 40 equivalent */}
+                  {section.title === 'Pre-Tax Expense Items' && (
+                    <>
+                      <tr style={{height: '20px'}}>
+                        <td colSpan="5" style={{border: 'none'}}></td>
+                      </tr>
+                      <tr style={{backgroundColor: '#e8f5e9'}}>
+                        <td style={{...styles.td, fontWeight: 'bold', backgroundColor: '#e8f5e9'}}>
+                          Monthly Income (After Taxes & Pre-Tax Expense Items)
+                        </td>
+                        <td style={{...styles.td, backgroundColor: '#e8f5e9'}}></td>
+                        <td style={{...styles.td, backgroundColor: '#e8f5e9'}}>
                           <div style={{display: 'flex', justifyContent: 'space-between'}}>
                             <span>$</span>
-                            <span>
-                              {tableCalculations.sectionTotals[section.title].entered > 0 ? formatCurrency(tableCalculations.sectionTotals[section.title].entered) : '-'}
-                            </span>
+                            <span>{formatCurrency(summaryCalculations.userAfterTaxIncome / 12)}</span>
                           </div>
                         </td>
-                        <td style={styles.td}>
+                        <td style={{...styles.td, backgroundColor: '#e8f5e9'}}>
                           <div style={{display: 'flex', justifyContent: 'space-between'}}>
                             <span>$</span>
-                            <span>
-                              {tableCalculations.sectionTotals[section.title].recommended > 0 ? formatCurrency(tableCalculations.sectionTotals[section.title].recommended) : '-'}
-                            </span>
+                            <span>{formatCurrency(summaryCalculations.suggestedAfterTaxIncome / 12)}</span>
                           </div>
                         </td>
-                        <td style={styles.td}></td>
+                        <td style={{...styles.td, backgroundColor: '#e8f5e9'}}></td>
                       </tr>
                     </>
                   )}
+                  
                   {/* Spacer row for visual separation between sections */}
                   {sectionIndex < budgetConfig.sections.length - 1 && (
                     <tr style={{height: '20px'}}>
-                        <td colSpan="4" style={{border: 'none'}}></td>
+                        <td colSpan="5" style={{border: 'none'}}></td>
                     </tr>
                   )}
                 </React.Fragment>
-              ))}
+                );
+              })}
             </tbody>
         </table>
+        </div>
+        
+        {/* Total Expenses Section */}
+        <div style={{marginTop: '20px', display: 'flex', justifyContent: 'center'}}>
+          <div style={{
+            width: '100%',
+            maxWidth: '1200px',
+            backgroundColor: '#d1fae5',
+            color: '#065f46',
+            padding: '12px 16px',
+            borderRadius: '4px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            border: '1px solid #a7f3d0'
+          }}>
+            <span>Total Expenses</span>
+            <span>${formatCurrency(calculateTotalExpenses())}</span>
+          </div>
+        </div>
+        
+        {/* User Budget Checker Section */}
+        <div style={{marginTop: '10px', display: 'flex', justifyContent: 'center'}}>
+          <div style={{
+            width: '100%',
+            maxWidth: '1200px',
+            backgroundColor: '#f9fafb',
+            border: '1px solid #e5e7eb',
+            padding: '12px 16px',
+            borderRadius: '4px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}>
+            <span style={{color: '#374151'}}>User Budget Checker</span>
+            <div style={{
+              backgroundColor: '#f3f4f6',
+              border: '1px solid #d1d5db',
+              padding: '6px 12px',
+              borderRadius: '4px',
+              color: '#374151',
+              fontWeight: 'bold',
+              fontSize: '14px',
+              minWidth: '300px',
+              textAlign: 'center',
+              marginLeft: '20px'
+            }}>
+              {calculateBudgetChecker()}
+            </div>
+          </div>
+        </div>
+        
+        {/* Info Message */}
+        <div style={{
+          marginTop: '20px', 
+          display: 'flex', 
+          justifyContent: 'center',
+          marginBottom: '10px'
+        }}>
+          <div style={{
+            backgroundColor: '#f3f4f6',
+            border: '1px solid #d1d5db',
+            borderRadius: '4px',
+            padding: '8px 16px',
+            fontSize: '12px',
+            color: '#374151',
+            textAlign: 'center',
+            maxWidth: '600px'
+          }}>
+            💡 <strong>Tip:</strong> Save your budget to keep your data. Next time you login, click "Load Budget" to restore your inputs.
+          </div>
+        </div>
+
+        {/* Save/Load Buttons */}
+        <div style={{marginTop: '10px', display: 'flex', justifyContent: 'center', gap: '10px'}}>
+          <button
+            onClick={handleSaveBudget}
+            style={{
+              backgroundColor: '#002060',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '4px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}
+          >
+            💾 Save Budget
+          </button>
+          <button
+            onClick={handleLoadBudget}
+            style={{
+              backgroundColor: '#374151',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '4px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}
+          >
+            📁 Load Budget
+          </button>
+        </div>
         
         </div>
     );
