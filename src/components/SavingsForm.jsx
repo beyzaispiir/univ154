@@ -163,7 +163,7 @@ const styles = {
     borderRadius: '8px', // Rounded corners
     fontWeight: '600',
     color: '#2e7d32',
-    fontSize: '16px'
+    fontSize: '14px'
   },
 
   // Input fields - matching Week 1 yellow styling
@@ -204,7 +204,7 @@ const styles = {
     fontWeight: '600',
     backgroundColor: '#f5f5f5', // Soft gray - matching Week 1
     color: '#002060', // Match nav link color for consistency
-    fontSize: '16px',
+    fontSize: '14px',
     padding: '12px 16px',
     borderBottom: '1px solid #e0e0e0'
   },
@@ -527,7 +527,7 @@ export default function SavingsForm() {
             <div style={styles.infoBox}>
               <InfoIcon />
               <div>
-                <strong>How it works:</strong> Enter your goal amount and either monthly savings amount (to calculate time) or time period (to calculate monthly savings needed). The system uses a 4% annual earning rate for calculations.
+                <strong>How it works:</strong> Enter your goal amount and either monthly savings amount (to calculate time) or time period (to calculate monthly savings needed). You can customize the annual earning rate for each savings goal.
               </div>
             </div>
             
@@ -582,7 +582,7 @@ export default function SavingsForm() {
                 padding: '12px 16px',
                 borderBottom: '1px solid #e0e0e0',
                 fontWeight: '600',
-                fontSize: '16px',
+                fontSize: '14px',
                 color: '#002060'
               }}>
                 <input
@@ -591,7 +591,7 @@ export default function SavingsForm() {
                     border: '1px solid #ccc',
                     padding: '4px 8px',
                     borderRadius: '4px',
-                    fontSize: '16px',
+                    fontSize: '14px',
                     fontWeight: '600',
                     color: '#002060',
                     width: '100%',
@@ -749,7 +749,7 @@ export default function SavingsForm() {
                   padding: '12px 16px',
                   borderBottom: '1px solid #e0e0e0',
                   fontWeight: '600',
-                  fontSize: '16px',
+                  fontSize: '14px',
                   color: '#002060'
                 }}>
                   <input
@@ -758,7 +758,7 @@ export default function SavingsForm() {
                       border: '1px solid #ccc',
                       padding: '4px 8px',
                       borderRadius: '4px',
-                      fontSize: '16px',
+                      fontSize: '14px',
                       fontWeight: '600',
                       color: '#002060',
                       width: '100%',
@@ -910,7 +910,7 @@ export default function SavingsForm() {
         {/* Summary Section - matching Week 1 styling */}
         <div style={{marginTop: '30px', display: 'flex', justifyContent: 'center'}}>
           <div style={styles.summaryContainer}>
-            <h3 style={{ margin: '0 0 20px 0', color: '#002060', fontSize: '18px', fontWeight: '600' }}>Summary</h3>
+            <h3 style={{ margin: '0 0 20px 0', color: '#002060', fontSize: '16px', fontWeight: '600' }}>Summary</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
               <div style={styles.summaryCard}>
                 <div style={{...styles.summaryValue, color: '#28a745'}}>
