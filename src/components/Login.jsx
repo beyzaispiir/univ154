@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import logo from '../assets/logo with name for univ154.png'
@@ -23,6 +23,21 @@ export default function Login() {
   const [message, setMessage] = useState('')
   const navigate = useNavigate()
   const { signIn, signInWithGoogle, resetPassword } = useAuth()
+
+  // Check for OAuth in progress on component mount
+  useEffect(() => {
+    const oauthInProgress = localStorage.getItem('oauthInProgress')
+    if (oauthInProgress === 'true') {
+      // Automatically clear OAuth state after a short delay
+      const timeout = setTimeout(() => {
+        localStorage.removeItem('oauthInProgress')
+        setGoogleLoading(false)
+        // Don't show any message to avoid confusing students
+      }, 2000) // Reduced from 30 seconds to 2 seconds
+      
+      return () => clearTimeout(timeout)
+    }
+  }, [])
 
   const validateEmail = (email) => {
     const validEmailRegex = /@(rice\.edu|alumni\.rice\.edu|gmail\.com)$/
@@ -67,15 +82,10 @@ export default function Login() {
 
   const handleGoogleSignIn = async () => {
     try {
-      // Check if OAuth is already in progress
-      if (localStorage.getItem('oauthInProgress') === 'true') {
-        console.log('OAuth already in progress, please wait...');
-        setError('Sign-in already in progress. Please wait for the redirect to complete.');
-        return;
-      }
-      
       setError('')
+      setMessage('')
       setGoogleLoading(true)
+      
       const { error } = await signInWithGoogle()
       
       if (error) {
@@ -181,7 +191,7 @@ export default function Login() {
               ⚠️ {error}
             </div>
           )}
-          {message && (
+          {message && message.includes('inbox') && (
             <div className="p-3 mb-4 text-green-500 bg-green-50 rounded-md" style={{ fontSize: '14px', marginBottom: '10px' }}>
               ✅ {message} Please check your inbox and spam folder.
             </div>

@@ -263,6 +263,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                     let weekLabel = `Week ${i+1}`;
                     let weekText = null;
                     if (i === 0) weekLabel = 'Week 1 - Budgeting';
+                    if (i === 1) weekLabel = 'Week 2 - Savings';
                     if (i === 5) {
                       weekText = (
                         <span className="flex items-start">

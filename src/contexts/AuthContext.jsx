@@ -169,20 +169,11 @@ export function AuthProvider({ children }) {
         throw error
       }
 
-      // Check if this is an existing user by comparing created_at with current date
-      if (data?.user?.created_at) {
-        const createdDate = new Date(data.user.created_at)
-        const currentDate = new Date()
-        const timeDiff = currentDate.getTime() - createdDate.getTime()
-        const daysDiff = timeDiff / (1000 * 3600 * 24)
-        
-        console.log('Days since user creation:', daysDiff)
-        
-        // If user was created more than 1 day ago, it's an existing user
-        if (daysDiff > 1) {
-          console.log('This is an existing user, not a new signup')
-          throw new Error('An account with this email already exists. Please sign in instead.')
-        }
+      // Check if this is an existing user by checking if user already exists in Supabase
+      if (data?.user?.email_confirmed_at) {
+        // If email is already confirmed, it's an existing user
+        console.log('This is an existing user with confirmed email, not a new signup')
+        throw new Error('An account with this email already exists. Please sign in instead.')
       }
 
       return { data, error: null }
@@ -227,6 +218,14 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = async () => {
     try {
       console.log('Starting Google OAuth sign in...');
+      
+      // Check if OAuth is already in progress
+      if (localStorage.getItem('oauthInProgress') === 'true') {
+        console.log('OAuth already in progress, clearing previous state...');
+        localStorage.removeItem('oauthInProgress');
+        // Wait a moment for any pending operations to complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
       
       // Set a flag to indicate OAuth is in progress
       localStorage.setItem('oauthInProgress', 'true');

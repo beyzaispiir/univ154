@@ -68,6 +68,75 @@ export const BudgetProvider = ({ children }) => {
     retirement_gov_db: '',
   });
 
+  // Week 2: Savings user inputs with individual sections
+  const [savingsInputs, setSavingsInputs] = useState({
+    // Section names (editable)
+    down_payment_1_name: 'Down Payment',
+    down_payment_2_name: 'Down Payment',
+    car_1_name: 'Car',
+    car_2_name: 'Car',
+    wedding_1_name: 'Wedding',
+    wedding_2_name: 'Wedding',
+    advanced_degree_1_name: 'Advanced Degree',
+    advanced_degree_2_name: 'Advanced Degree',
+    vacation_1_name: 'Vacation',
+    vacation_2_name: 'Vacation',
+    miscellaneous_1_name: 'Miscellaneous',
+    miscellaneous_2_name: 'Miscellaneous',
+    // Annual earning rates (editable)
+    down_payment_1_rate: '',
+    down_payment_2_rate: '',
+    car_1_rate: '',
+    car_2_rate: '',
+    wedding_1_rate: '',
+    wedding_2_rate: '',
+    advanced_degree_1_rate: '',
+    advanced_degree_2_rate: '',
+    vacation_1_rate: '',
+    vacation_2_rate: '',
+    miscellaneous_1_rate: '',
+    miscellaneous_2_rate: '',
+    // Goal amounts
+    down_payment_1: '',
+    down_payment_2: '',
+    car_1: '',
+    car_2: '',
+    wedding_1: '',
+    wedding_2: '',
+    advanced_degree_1: '',
+    advanced_degree_2: '',
+    vacation_1: '',
+    vacation_2: '',
+    miscellaneous_1: '',
+    miscellaneous_2: '',
+    // Monthly savings amounts (calculated)
+    down_payment_1_monthly: '',
+    down_payment_2_monthly: '',
+    car_1_monthly: '',
+    car_2_monthly: '',
+    wedding_1_monthly: '',
+    wedding_2_monthly: '',
+    advanced_degree_1_monthly: '',
+    advanced_degree_2_monthly: '',
+    vacation_1_monthly: '',
+    vacation_2_monthly: '',
+    miscellaneous_1_monthly: '',
+    miscellaneous_2_monthly: '',
+    // Time to goal (calculated)
+    down_payment_1_time: '',
+    down_payment_2_time: '',
+    car_1_time: '',
+    car_2_time: '',
+    wedding_1_time: '',
+    wedding_2_time: '',
+    advanced_degree_1_time: '',
+    advanced_degree_2_time: '',
+    vacation_1_time: '',
+    vacation_2_time: '',
+    miscellaneous_1_time: '',
+    miscellaneous_2_time: '',
+  });
+
   const financialCalculations = useMemo(() => {
     const preTax = parseFloat(topInputs.preTaxIncome) || 0;
     // Use default deduction choices for single taxpayer
@@ -710,6 +779,56 @@ export const BudgetProvider = ({ children }) => {
     };
   }, [topInputs.preTaxIncome, financialCalculations, userPreTaxInputs]);
 
+  // Week 2: Savings calculations matching Excel structure
+  const savingsCalculations = useMemo(() => {
+    const monthlyAfterTaxIncome = summaryCalculations.userAfterTaxIncome / 12;
+    const annualEarningRate = 0.04; // 4% as shown in Excel
+    
+    // Calculate savings goal details for each goal
+    const calculateGoalDetails = (goalAmount) => {
+      const amount = parseFloat(goalAmount) || 0;
+      if (amount <= 0) return { monthlySavings: 0, percentage: 0, timeToGoal: 0 };
+      
+      // Calculate monthly savings needed to reach goal in 60 months (5 years) with 4% annual return
+      // Using future value formula: FV = PMT * [((1 + r)^n - 1) / r]
+      // Solving for PMT: PMT = FV / [((1 + r)^n - 1) / r]
+      const monthlyRate = annualEarningRate / 12;
+      const months = 60; // 5 years as shown in Excel
+      const futureValueFactor = ((1 + monthlyRate) ** months - 1) / monthlyRate;
+      const monthlySavings = amount / futureValueFactor;
+      
+      const percentage = monthlyAfterTaxIncome > 0 ? (monthlySavings / monthlyAfterTaxIncome) * 100 : 0;
+      
+      return {
+        monthlySavings,
+        percentage,
+        timeToGoal: months
+      };
+    };
+
+    // Calculate details for each savings goal
+    const goalDetails = {};
+    Object.keys(savingsInputs).forEach(key => {
+      goalDetails[key] = calculateGoalDetails(savingsInputs[key]);
+    });
+
+    // Calculate total monthly savings
+    const totalMonthlySavings = Object.values(goalDetails).reduce((sum, details) => {
+      return sum + details.monthlySavings;
+    }, 0);
+
+    // Calculate total savings rate
+    const totalSavingsRate = monthlyAfterTaxIncome > 0 ? (totalMonthlySavings / monthlyAfterTaxIncome) * 100 : 0;
+
+    return {
+      monthlyAfterTaxIncome,
+      annualEarningRate,
+      goalDetails,
+      totalMonthlySavings,
+      totalSavingsRate,
+    };
+  }, [summaryCalculations.userAfterTaxIncome, savingsInputs]);
+
   // Supabase functions for data persistence
   const saveBudgetData = async (userInputs, customExpenseNames, sectionStates) => {
     try {
@@ -775,6 +894,9 @@ export const BudgetProvider = ({ children }) => {
     setRetirementInputs,
     userPreTaxInputs,
     setUserPreTaxInputs,
+    savingsInputs,
+    setSavingsInputs,
+    savingsCalculations,
     saveBudgetData,
     loadBudgetData,
   };
