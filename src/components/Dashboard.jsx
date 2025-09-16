@@ -262,10 +262,10 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                     const isAccessible = isWeekAccessible(weekId);
                     let weekLabel = `Week ${i+1}`;
                     let weekText = null;
-                    if (i === 0) weekLabel = 'Week 1 - Budgeting & Money Management';
-                    if (i === 1) weekLabel = 'Week 2 - Savings & Emergency Funds';
-                    if (i === 2) weekLabel = 'Week 3 - Credit & Debt Management';
-                    if (i === 3) weekLabel = 'Week 4 - Understanding Income & Taxes';
+                    if (i === 0) weekLabel = 'Week 1 - Budgeting';
+                    if (i === 1) weekLabel = 'Week 2 - Savings';
+                    if (i === 2) weekLabel = 'Week 3 - Credit & Debt';
+                    if (i === 3) weekLabel = 'Week 4 - Income & Taxes';
                     if (i === 4) weekLabel = 'Week 5 - Real Estate & Homeownership';
                     if (i === 5) {
                       weekText = (
@@ -276,19 +276,16 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                           />
                           <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
                             <span>Week 6 - Retirement Planning</span>
-                            <span className="block text-[14px] leading-[1.1] pl-6">
-                              & Investment Basics
-                            </span>
 
                           </span>
                         </span>
                       );
                       
                     }
-                    if (i === 6) weekLabel = 'Week 7 - Insurance & Risk Management';
-                    if (i === 7) weekLabel = 'Week 8 - Financial Markets & Investing';
-                    if (i === 8) weekLabel = 'Week 9 - Psychology of Finance';
-                    if (i === 9) weekLabel = 'Week 10 - Major Life Events & Planning';
+                    if (i === 6) weekLabel = 'Week 7 - Insurance & Risk';
+                    if (i === 7) weekLabel = 'Week 8 - Psychology of Finance';
+                    if (i === 8) weekLabel = 'Week 9 - Financial Markets & Investing';
+                    if (i === 9) weekLabel = 'Week 10 - Major Life Events';
                     
                     if (!isAccessible && !isAdmin) {
                       return (
@@ -304,9 +301,6 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                                 <FaFileExcel color="#9ca3af" className="w-4 h-4 mt-[2px]" />
                                 <span className="ml-2 text-gray-400">
                                   <span>Week 6 - Retirement Planning</span>
-                                  <span className="block text-[13px] leading-[1.1] pl-6">
-                                    & Investment Basics
-                                  </span>
                                 </span>
                               </span>
                             ) : (
