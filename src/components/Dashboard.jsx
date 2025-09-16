@@ -54,7 +54,7 @@ const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdmi
     <Link
       to={href}
       className={`
-        flex items-center px-[16px] py-[12px] transition-all duration-300 ease-out rounded-lg no-underline
+        flex items-center px-[12px] py-[12px] transition-all duration-300 ease-out rounded-lg no-underline
         transform hover:scale-[1.02] hover:-translate-y-0.5
         ${isActive 
           ? isAdminLink 
@@ -180,7 +180,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
   return (
     <div className="h-screen w-screen flex bg-gray-50 overflow-hidden">
       {/* Sidebar */}
-      <div className="w-[250px] bg-white h-full fixed left-0 top-0 border-r border-gray-100 flex flex-col overflow-y-auto">
+      <div className="w-[280px] bg-white h-full fixed left-0 top-0 border-r border-gray-100 flex flex-col overflow-y-auto">
         {/* Logo Section */}
         <div className={`flex flex-col items-center w-full transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="flex flex-col items-center py-4 px-4 w-full mt-2 mb-2">
@@ -256,7 +256,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                   <span className="font-semibold text-[#0d1a4b]" style={{ fontSize: '16px' }}>Excel Workshop</span>
               </div>
               
-              <div className="px-[16px] space-y-[10px]">
+              <div className="px-[12px] space-y-[10px]">
                   {[...Array(10)].map((_, i) => {
                     const weekId = `week-${i+1}`;
                     const isAccessible = isWeekAccessible(weekId);
@@ -281,16 +281,15 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                       );
                     }
                     if (i === 5) {
-                      weekLabel = 'Week 6 - Retirement Planning';
+                      weekLabel = 'Week 6 - Retirement';
                       weekText = (
-                        <span className="flex">
+                        <span className="flex items-center">
                           <FaFileExcel
                             color={isAccessible ? "#0d1a4b" : "#9ca3af"}
-                            className="w-4 h-4 mt-0 flex-shrink-0"
-                            style={{ alignSelf: 'flex-start' }}
+                            className="w-4 h-4"
                           />
                           <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
-                            <span>Week 6 - Retirement Planning</span>
+                            Week 6 - Retirement
                           </span>
                         </span>
                       );
@@ -325,13 +324,13 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                         </span>
                       );
                     }
-                    if (i === 9) weekLabel = 'Week 10 - Major Life Events';
+                    if (i === 9) weekLabel = 'Week 10 - Major Events';
                     
                     if (!isAccessible && !isAdmin) {
                       return (
                         <div
                           key={`excel-week-${i + 1}`}
-                          className="flex items-center px-[16px] py-[12px] rounded-lg bg-gray-50 cursor-not-allowed opacity-60"
+                          className="flex items-center px-[12px] py-[12px] rounded-lg bg-gray-50 cursor-not-allowed opacity-60"
                           style={{ fontSize: 14, fontWeight: 'normal' }}
                         >
                           <span className="flex items-center w-full">
@@ -342,12 +341,10 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                                 <span className="ml-2 text-gray-400">Week 5 - Real Estate</span>
                               </span>
                             ) : i === 5 ? (
-                              // Week 6: iki satır
-                              <span className="flex">
-                                <FaFileExcel color="#9ca3af" className="w-4 h-4 mt-0 flex-shrink-0" style={{ alignSelf: 'flex-start' }} />
-                                <span className="ml-2 text-gray-400">
-                                  <span>Week 6 - Retirement Planning</span>
-                                </span>
+                              // Week 6: tek satır
+                              <span className="flex items-center">
+                                <FaFileExcel color="#9ca3af" className="w-4 h-4" />
+                                <span className="ml-2 text-gray-400">Week 6 - Retirement</span>
                               </span>
                             ) : i === 7 ? (
                               // Week 8: tek satır
@@ -444,7 +441,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
       </div>
  
       {/* Main Content */}
-      <div className="ml-[250px] flex-1 h-full overflow-y-auto">
+      <div className="ml-[280px] flex-1 h-full overflow-y-auto">
         {/* Top Bar - DISABLED */}
         {/* 
         <div className="bg-white border-b border-gray-100 px-8" style={{ height: '80px' }}>
