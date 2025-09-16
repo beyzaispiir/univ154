@@ -266,25 +266,65 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                     if (i === 1) weekLabel = 'Week 2 - Savings';
                     if (i === 2) weekLabel = 'Week 3 - Credit & Debt';
                     if (i === 3) weekLabel = 'Week 4 - Income & Taxes';
-                    if (i === 4) weekLabel = 'Week 5 - Real Estate & Homeownership';
-                    if (i === 5) {
+                    if (i === 4) {
+                      weekLabel = 'Week 5 - Real Estate';
                       weekText = (
-                        <span className="flex items-start">
+                        <span className="flex items-center">
                           <FaFileExcel
                             color={isAccessible ? "#0d1a4b" : "#9ca3af"}
-                            className="w-4 h-4 mt-[2px]"
+                            className="w-4 h-4"
+                          />
+                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
+                            Week 5 - Real Estate
+                          </span>
+                        </span>
+                      );
+                    }
+                    if (i === 5) {
+                      weekLabel = 'Week 6 - Retirement Planning';
+                      weekText = (
+                        <span className="flex">
+                          <FaFileExcel
+                            color={isAccessible ? "#0d1a4b" : "#9ca3af"}
+                            className="w-4 h-4 mt-0 flex-shrink-0"
+                            style={{ alignSelf: 'flex-start' }}
                           />
                           <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
                             <span>Week 6 - Retirement Planning</span>
-
                           </span>
                         </span>
                       );
                       
                     }
                     if (i === 6) weekLabel = 'Week 7 - Insurance & Risk';
-                    if (i === 7) weekLabel = 'Week 8 - Psychology of Finance';
-                    if (i === 8) weekLabel = 'Week 9 - Financial Markets & Investing';
+                    if (i === 7) {
+                      weekLabel = 'Week 8 - Psych of Finance';
+                      weekText = (
+                        <span className="flex items-center">
+                          <FaFileExcel
+                            color={isAccessible ? "#0d1a4b" : "#9ca3af"}
+                            className="w-4 h-4"
+                          />
+                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
+                            Week 8 - Psych of Finance
+                          </span>
+                        </span>
+                      );
+                    }
+                    if (i === 8) {
+                      weekLabel = 'Week 9 - Investing';
+                      weekText = (
+                        <span className="flex items-center">
+                          <FaFileExcel
+                            color={isAccessible ? "#0d1a4b" : "#9ca3af"}
+                            className="w-4 h-4"
+                          />
+                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
+                            Week 9 - Investing
+                          </span>
+                        </span>
+                      );
+                    }
                     if (i === 9) weekLabel = 'Week 10 - Major Life Events';
                     
                     if (!isAccessible && !isAdmin) {
@@ -295,13 +335,31 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                           style={{ fontSize: 14, fontWeight: 'normal' }}
                         >
                           <span className="flex items-center w-full">
-                            {i === 5 ? (
-                              // Week 6: tek ikon + iki satır
-                              <span className="flex items-start">
-                                <FaFileExcel color="#9ca3af" className="w-4 h-4 mt-[2px]" />
+                            {i === 4 ? (
+                              // Week 5: tek satır
+                              <span className="flex items-center">
+                                <FaFileExcel color="#9ca3af" className="w-4 h-4" />
+                                <span className="ml-2 text-gray-400">Week 5 - Real Estate</span>
+                              </span>
+                            ) : i === 5 ? (
+                              // Week 6: iki satır
+                              <span className="flex">
+                                <FaFileExcel color="#9ca3af" className="w-4 h-4 mt-0 flex-shrink-0" style={{ alignSelf: 'flex-start' }} />
                                 <span className="ml-2 text-gray-400">
                                   <span>Week 6 - Retirement Planning</span>
                                 </span>
+                              </span>
+                            ) : i === 7 ? (
+                              // Week 8: tek satır
+                              <span className="flex items-center">
+                                <FaFileExcel color="#9ca3af" className="w-4 h-4" />
+                                <span className="ml-2 text-gray-400">Week 8 - Psych of Finance</span>
+                              </span>
+                            ) : i === 8 ? (
+                              // Week 9: tek satır
+                              <span className="flex items-center">
+                                <FaFileExcel color="#9ca3af" className="w-4 h-4" />
+                                <span className="ml-2 text-gray-400">Week 9 - Investing</span>
                               </span>
                             ) : (
                               // Diğer haftalar: tek satır
