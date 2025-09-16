@@ -459,6 +459,20 @@ export default function Week6Retirement() {
         You can only enter data in the open (yellow) fields.
       </div>
 
+      {/* Main title with dark blue header bar */}
+      <div style={{
+        backgroundColor: '#002060',
+        color: 'white',
+        padding: '12px 16px',
+        borderRadius: '8px',
+        fontWeight: '600',
+        fontSize: '14px',
+        textAlign: 'center',
+        marginBottom: '20px'
+      }}>
+        Retirement Planning
+      </div>
+
       {/* 1. Retirement Budgeting Overview Table */}
       <div style={simpleHeaderStyle}>Retirement Budgeting</div>
       <div style={styles.section}>

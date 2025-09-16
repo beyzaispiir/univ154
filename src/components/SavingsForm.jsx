@@ -147,7 +147,7 @@ const styles = {
     fontSize: '14px', 
     fontWeight: '600',
     margin: '20px 0 10px 0', 
-    color: '#333' 
+    color: '#002060' // Use website blue color
   },
   
   // Monthly After-Tax Income display - matching Week 1 green styling
@@ -170,12 +170,11 @@ const styles = {
   input: { 
     width: '100%', 
     border: '1px solid #ccc', 
-    padding: '8px 12px', 
+    padding: '8px', 
     textAlign: 'right', 
     backgroundColor: '#fffde7', // Softer yellow - matching Week 1
     borderRadius: '6px', // Rounded corners
-    boxSizing: 'border-box',
-    fontSize: '14px'
+    boxSizing: 'border-box'
   },
   
   // Read-only fields - matching Week 1
@@ -440,8 +439,11 @@ export default function SavingsForm() {
         console.log('Input Value:', value);
         console.log('Current userInputs:', userInputs);
         
+        // Remove commas for processing
+        const cleanValue = value.replace(/,/g, '');
+        
         // Only allow numbers and at most one decimal point
-        const sanitized = value.replace(/[^0-9.]/g, '');
+        const sanitized = cleanValue.replace(/[^0-9.]/g, '');
         // Prevent multiple decimals
         const parts = sanitized.split('.');
         let numericValue = parts[0];
@@ -464,6 +466,12 @@ export default function SavingsForm() {
           // Must be >= 0
           if (numValue < 0) {
             alert('⚠️ Must be >= 0');
+            return;
+          }
+          
+          // Validate annual earning rate limits (0% to 100%)
+          if (id.includes('_rate') && numValue > 100) {
+            alert('⚠️ Annual earning rate must be between 0% and 100%');
             return;
           }
           
@@ -518,7 +526,19 @@ export default function SavingsForm() {
         
         <div style={{width: '1200px', maxWidth: '1200px'}}>
             <div style={{width: '100%', maxWidth: '1200px', marginBottom: '20px'}}>
-            <h3 style={styles.header}>Savings Planning</h3>
+            {/* Dark blue header bar like Week 1 */}
+            <div style={{
+              backgroundColor: '#002060',
+              color: 'white',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              fontWeight: '600',
+              fontSize: '14px',
+              textAlign: 'center',
+              marginBottom: '10px'
+            }}>
+              Savings Planning
+            </div>
             <div style={{fontSize: '12px', color: '#666', marginBottom: '10px', fontStyle: 'italic'}}>
                 Based on your monthly after-tax income
             </div>
@@ -616,10 +636,8 @@ export default function SavingsForm() {
                         <div style={styles.inputCellContainer}>
                           <input
                             style={styles.input}
-                            type="number"
-                            min="0"
-                            step="0.01"
-                            value={goalAmount1}
+                            type="text"
+                            value={formatNumberForInput(goalAmount1)}
                             onChange={(e) => handleUserInputChange(section1.goalAmount, e.target.value)}
                             placeholder="Enter goal amount"
                           />
@@ -635,10 +653,8 @@ export default function SavingsForm() {
                           <div style={styles.inputCellContainer}>
                             <input
                               style={styles.input}
-                              type="number"
-                              min="0"
-                              step="0.01"
-                              value={monthlySavings1}
+                              type="text"
+                              value={formatNumberForInput(monthlySavings1)}
                               onChange={(e) => handleUserInputChange(section1.monthlySavings, e.target.value)}
                               placeholder="Enter monthly amount"
                             />
@@ -783,10 +799,8 @@ export default function SavingsForm() {
                         <div style={styles.inputCellContainer}>
                           <input
                             style={styles.input}
-                            type="number"
-                            min="0"
-                            step="0.01"
-                            value={goalAmount2}
+                            type="text"
+                            value={formatNumberForInput(goalAmount2)}
                             onChange={(e) => handleUserInputChange(section2.goalAmount, e.target.value)}
                             placeholder="Enter goal amount"
                           />
@@ -802,10 +816,8 @@ export default function SavingsForm() {
                           <div style={styles.inputCellContainer}>
                             <input
                               style={styles.input}
-                              type="number"
-                              min="0"
-                              step="0.01"
-                              value={monthlySavings2}
+                              type="text"
+                              value={formatNumberForInput(monthlySavings2)}
                               onChange={(e) => handleUserInputChange(section2.monthlySavings, e.target.value)}
                               placeholder="Enter monthly amount"
                             />
