@@ -13,7 +13,7 @@ import { BudgetProvider } from '../contexts/BudgetContext'
 import { WeekAccessProvider, useWeekAccess } from '../contexts/WeekAccessContext'
 
 // Import icons
-import { MdDashboard, MdSchool, MdInsertChart, MdChat, MdNotifications, MdUpload, MdDownload, MdBook, MdCheckCircle, MdBarChart, MdAccountBalance, MdTimeline, MdCalendarToday, MdAssignment, MdTrendingUp } from 'react-icons/md'
+import { MdDashboard, MdSchool, MdInsertChart, MdChat, MdNotifications, MdUpload, MdDownload, MdBook, MdCheckCircle, MdBarChart, MdAccountBalance, MdTimeline, MdCalendarToday, MdAssignment, MdTrendingUp, MdChevronLeft, MdChevronRight } from 'react-icons/md'
 import { BsCalendar3 } from 'react-icons/bs'
 import { FaChalkboardTeacher } from 'react-icons/fa'
 import { FaFileExcel } from 'react-icons/fa'
@@ -150,6 +150,7 @@ function DashboardContent() {
 function DashboardContentInner({ isAdmin, user, signOut }) {
   const navigate = useNavigate()
   const [isLoaded, setIsLoaded] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   
   // Use week access context
   const { isWeekAccessible } = useWeekAccess()
@@ -177,13 +178,93 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
     }
   }
 
+  const toggleSidebar = () => {
+    setSidebarCollapsed(!sidebarCollapsed)
+  }
+
   return (
     <div className="h-screen w-screen flex bg-gray-50 overflow-hidden">
       {/* Sidebar */}
-      <div className="w-[280px] bg-white h-full fixed left-0 top-0 border-r border-gray-100 flex flex-col overflow-y-auto">
+      <div className={`${sidebarCollapsed ? 'w-[60px]' : 'w-[280px]'} bg-white h-full fixed left-0 top-0 border-r border-gray-100 flex flex-col overflow-y-auto transition-all duration-300 z-10`}>
+        {/* Toggle Button */}
+        <div className="flex justify-end p-3">
+          <button
+            onClick={toggleSidebar}
+            className="flex items-center justify-center transition-all duration-200 hover:scale-105"
+            title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            style={{ 
+              backgroundColor: '#fffde7', // Site yellow/cream color
+              borderRadius: '8px',
+              minWidth: '40px',
+              minHeight: '40px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              border: '1px solid #f0f0f0'
+            }}
+          >
+            {sidebarCollapsed ? (
+              // Right chevron when collapsed (to expand)
+              <MdChevronRight 
+                className="transition-transform duration-300" 
+                style={{ fontSize: '20px', fontWeight: 'bold', color: '#0d1a4b' }}
+              />
+            ) : (
+              // Left chevron when expanded (to collapse)
+              <MdChevronLeft 
+                className="transition-transform duration-300" 
+                style={{ fontSize: '20px', fontWeight: 'bold', color: '#0d1a4b' }}
+              />
+            )}
+          </button>
+        </div>
+
+        {/* Collapsed State - Show only icons - DISABLED */}
+        {false && (
+          <div className="flex flex-col items-center space-y-3 py-4">
+            {/* Dashboard Icon - Home */}
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              title="Dashboard"
+            >
+              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            </button>
+            
+            {/* Excel Workshop Icon - File with chart */}
+            <button
+              className="p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              title="Excel Workshop"
+            >
+              <FaFileExcel className="w-6 h-6 text-green-600" />
+            </button>
+            
+            {/* Weeks Icon - Calendar */}
+            <button
+              className="p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              title="Weekly Modules"
+            >
+              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </button>
+            
+            {/* Logout Icon - Clear logout symbol */}
+            <button
+              onClick={handleLogout}
+              className="p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 mt-auto"
+              title="Logout"
+            >
+              <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
+          </div>
+        )}
+        
         {/* Logo Section */}
-        <div className={`flex flex-col items-center w-full transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="flex flex-col items-center py-4 px-4 w-full mt-2 mb-2">
+        <div className={`flex flex-col items-center w-full transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${sidebarCollapsed ? 'hidden' : ''}`}>
+          <div className="flex flex-col items-center py-6 px-4 w-full">
             <img 
               src={logo} 
               alt="UNIV154 Logo" 
@@ -248,8 +329,8 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
           )}
 
           {/* Excel Workshop Section with new WeekCard design */}
-          <div className={`py-[10px] transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <div className="flex items-center gap-3 pl-6 mb-[20px]">
+          <div className={`py-4 transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'} ${sidebarCollapsed ? 'hidden' : ''}`}>
+              <div className="flex items-center gap-3 pl-6 mb-4">
                   <div className={`p-2 rounded-lg bg-[#fffde7] transition-all duration-500 ${isLoaded ? 'scale-100' : 'scale-0'}`}> 
                     <MdBarChart className="w-[22px] h-[22px] text-[#0d1a4b]" />
                   </div>
@@ -398,7 +479,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
         </nav>
 
         {/* User Profile - At bottom */}
-        <div className="mt-auto">
+        <div className={`mt-auto ${sidebarCollapsed ? 'hidden' : ''}`}>
           {/* Rice Logo above logout */}
           <div className="flex flex-col items-center w-full mb-2">
             <img 
@@ -441,7 +522,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
       </div>
  
       {/* Main Content */}
-      <div className="ml-[280px] flex-1 h-full overflow-y-auto">
+      <div className={`${sidebarCollapsed ? 'ml-[60px]' : 'ml-[280px]'} flex-1 h-full overflow-y-auto transition-all duration-300`}>
         {/* Top Bar - DISABLED */}
         {/* 
         <div className="bg-white border-b border-gray-100 px-8" style={{ height: '80px' }}>

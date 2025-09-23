@@ -461,8 +461,9 @@ export default function BudgetForm() {
     }, []);
 
     const handleUserInputChange = (id, value) => {
-        // Only allow numbers and at most one decimal point
-        const sanitized = value.replace(/[^0-9.]/g, '');
+        // Remove $ and % symbols, then only allow numbers and at most one decimal point
+        const cleanValue = value.replace(/[$%]/g, '');
+        const sanitized = cleanValue.replace(/[^0-9.]/g, '');
         // Prevent multiple decimals
         const parts = sanitized.split('.');
         let numericValue = parts[0];
@@ -1166,13 +1167,11 @@ export default function BudgetForm() {
                                   <div style={styles.inputCellContainer}>
                                     <input
                                       style={styles.input}
-                                      type="number"
-                                      min="0"
-                                      step="0.01"
-                                      value={userInputs[item.id] || ''}
+                                      type="text"
+                                      value={userInputs[item.id] ? `${formatNumberForInput(userInputs[item.id])}$` : ''}
                                       onChange={(e) => handleUserInputChange(item.id, e.target.value)}
+                                      placeholder="Enter amount"
                                     />
-                                    <span style={styles.currencySymbol}>$</span>
                                   </div>
                                 </td>
                                 <td style={{...styles.td, ...styles.readOnly}}>
@@ -1301,8 +1300,7 @@ export default function BudgetForm() {
             fontWeight: 'bold',
             border: '1px solid #a7f3d0'
           }}>
-            <span>Total Expenses</span>
-            <span>${formatCurrency(calculateTotalExpenses())}</span>
+            <span>Total Expenses ${formatCurrency(calculateTotalExpenses())}</span>
           </div>
         </div>
         

@@ -371,7 +371,13 @@ export default function SavingsForm() {
       const goal = parseFloat(goalAmount) || 0;
       const monthly = parseFloat(monthlySavingsAmount) || 0;
       const time = parseFloat(timeToGoal) || 0;
-      const annualRate = annualRateInput ? parseFloat(annualRateInput) / 100 : 0.04; // Convert percentage to decimal, default to 4%
+      
+      // Require annual rate input - no default
+      if (!annualRateInput || annualRateInput === '') {
+        return { monthlySavings: 0, percentage: 0, timeToGoal: 0 };
+      }
+      
+      const annualRate = parseFloat(annualRateInput) / 100; // Convert percentage to decimal
       const monthlyRate = annualRate / 12;
 
       // Debug: Check values
@@ -439,8 +445,22 @@ export default function SavingsForm() {
         console.log('Input Value:', value);
         console.log('Current userInputs:', userInputs);
         
-        // Remove commas for processing
-        const cleanValue = value.replace(/,/g, '');
+        // Check if this is a section name field (allow all characters)
+        if (id.includes('_name')) {
+          console.log('Section name field - allowing all characters');
+          console.log('Setting value to:', value);
+          setUserInputs(prev => {
+            const newState = { ...prev, [id]: value };
+            console.log('Updated userInputs:', newState);
+            console.log('New value for', id, ':', newState[id]);
+            return newState;
+          });
+          triggerUpdate();
+          return;
+        }
+        
+        // Remove commas, $ and % symbols for processing
+        const cleanValue = value.replace(/[,$%]/g, '');
         
         // Only allow numbers and at most one decimal point
         const sanitized = cleanValue.replace(/[^0-9.]/g, '');
@@ -571,7 +591,8 @@ export default function SavingsForm() {
           const monthlySavings1 = userInputs[section1.monthlySavings] || '';
           const timeToGoal1 = userInputs[section1.timeToGoal] || '';
           const annualRate1 = userInputs[section1.annualRate] || '';
-          const sectionName1 = userInputs[section1.sectionName] || section1.title;
+          const sectionName1 = userInputs[section1.sectionName] || '';
+          console.log('Rendering sectionName1 for', section1.sectionName, ':', sectionName1);
           console.log('Section 1 - annualRate1:', annualRate1, 'section1.annualRate:', section1.annualRate);
           const details1 = calculateSavingsDetails(goalAmount1, monthlySavings1, timeToGoal1, section1.calculationMode, annualRate1);
           
@@ -579,7 +600,8 @@ export default function SavingsForm() {
           const monthlySavings2 = userInputs[section2.monthlySavings] || '';
           const timeToGoal2 = userInputs[section2.timeToGoal] || '';
           const annualRate2 = userInputs[section2.annualRate] || '';
-          const sectionName2 = userInputs[section2.sectionName] || section2.title;
+          const sectionName2 = userInputs[section2.sectionName] || '';
+          console.log('Rendering sectionName2 for', section2.sectionName, ':', sectionName2);
           console.log('Section 2 - annualRate2:', annualRate2, 'section2.annualRate:', section2.annualRate);
           const details2 = calculateSavingsDetails(goalAmount2, monthlySavings2, timeToGoal2, section2.calculationMode, annualRate2);
           
@@ -619,8 +641,11 @@ export default function SavingsForm() {
                   }}
                   type="text"
                   value={sectionName1}
-                  onChange={(e) => handleUserInputChange(section1.sectionName, e.target.value)}
-                  placeholder="Enter section name"
+                  onChange={(e) => {
+                    console.log('Section name input changed:', e.target.value);
+                    handleUserInputChange(section1.sectionName, e.target.value);
+                  }}
+                  placeholder="Enter your goal name"
                 />
               </div>
                 
@@ -637,11 +662,10 @@ export default function SavingsForm() {
                           <input
                             style={styles.input}
                             type="text"
-                            value={formatNumberForInput(goalAmount1)}
+                            value={goalAmount1 ? `${formatNumberForInput(goalAmount1)}$` : ''}
                             onChange={(e) => handleUserInputChange(section1.goalAmount, e.target.value)}
                             placeholder="Enter goal amount"
                           />
-                          <span style={styles.currencySymbol}>$</span>
                         </div>
                       </div>
                       
@@ -654,11 +678,10 @@ export default function SavingsForm() {
                             <input
                               style={styles.input}
                               type="text"
-                              value={formatNumberForInput(monthlySavings1)}
+                              value={monthlySavings1 ? `${formatNumberForInput(monthlySavings1)}$` : ''}
                               onChange={(e) => handleUserInputChange(section1.monthlySavings, e.target.value)}
                               placeholder="Enter monthly amount"
                             />
-                            <span style={styles.currencySymbol}>$</span>
                           </div>
                           <div style={styles.percentageInfo}>
                             {details1.percentage > 0 ? details1.percentage.toFixed(2) : '0.00'}% of Monthly After Tax Income
@@ -733,18 +756,17 @@ export default function SavingsForm() {
                         <div style={styles.inputCellContainer}>
                           <input
                             style={styles.input}
-                            type="number"
-                            min="0"
-                            max="100"
-                            step="0.01"
-                            value={annualRate1}
+                            type="text"
+                            value={annualRate1 ? `${annualRate1}%` : ''}
                             onChange={(e) => {
                               console.log('Annual Rate Input Changed:', e.target.value);
                               handleUserInputChange(section1.annualRate, e.target.value);
                             }}
                             placeholder="Enter rate"
                           />
-                          <span style={{ marginLeft: '8px', color: '#555', fontSize: '14px' }}>%</span>
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                          Required for calculations
                         </div>
                       </div>
                     </div>
@@ -782,8 +804,11 @@ export default function SavingsForm() {
                     }}
                     type="text"
                     value={sectionName2}
-                    onChange={(e) => handleUserInputChange(section2.sectionName, e.target.value)}
-                    placeholder="Enter section name"
+                    onChange={(e) => {
+                      console.log('Section name 2 input changed:', e.target.value);
+                      handleUserInputChange(section2.sectionName, e.target.value);
+                    }}
+                    placeholder="Enter your goal name"
                   />
                 </div>
                 
@@ -800,11 +825,10 @@ export default function SavingsForm() {
                           <input
                             style={styles.input}
                             type="text"
-                            value={formatNumberForInput(goalAmount2)}
+                            value={goalAmount2 ? `${formatNumberForInput(goalAmount2)}$` : ''}
                             onChange={(e) => handleUserInputChange(section2.goalAmount, e.target.value)}
                             placeholder="Enter goal amount"
                           />
-                          <span style={styles.currencySymbol}>$</span>
                         </div>
                       </div>
                       
@@ -817,11 +841,10 @@ export default function SavingsForm() {
                             <input
                               style={styles.input}
                               type="text"
-                              value={formatNumberForInput(monthlySavings2)}
+                              value={monthlySavings2 ? `${formatNumberForInput(monthlySavings2)}$` : ''}
                               onChange={(e) => handleUserInputChange(section2.monthlySavings, e.target.value)}
                               placeholder="Enter monthly amount"
                             />
-                            <span style={styles.currencySymbol}>$</span>
                           </div>
                           <div style={styles.percentageInfo}>
                             {details2.percentage > 0 ? details2.percentage.toFixed(2) : '0.00'}% of Monthly After Tax Income
@@ -896,18 +919,17 @@ export default function SavingsForm() {
                         <div style={styles.inputCellContainer}>
                           <input
                             style={styles.input}
-                            type="number"
-                            min="0"
-                            max="100"
-                            step="0.01"
-                            value={annualRate2}
+                            type="text"
+                            value={annualRate2 ? `${annualRate2}%` : ''}
                             onChange={(e) => {
                               console.log('Annual Rate Input Changed:', e.target.value);
                               handleUserInputChange(section2.annualRate, e.target.value);
                             }}
                             placeholder="Enter rate"
                           />
-                          <span style={{ marginLeft: '8px', color: '#555', fontSize: '14px' }}>%</span>
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                          Required for calculations
                         </div>
                       </div>
                     </div>
