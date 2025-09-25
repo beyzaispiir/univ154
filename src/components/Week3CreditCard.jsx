@@ -28,7 +28,9 @@ const Week3CreditCard = () => {
   const [generalTerm, setGeneralTerm] = useState('60');
 
   // Calculated values
-  const minimumPayment = (parseFloat(debtAmount) || 0) * 0.01; // 1% of debt amount
+  // Minimum payment = Interest for Month 1 (Week 3.1 B - AM Table!E4)
+  const monthlyRate = (parseFloat(annualInterestRate) || 0) / 100 / 12;
+  const minimumPayment = (parseFloat(debtAmount) || 0) * monthlyRate;
 
   // Handler functions for save/load
   const handleSaveWeek3 = async () => {
