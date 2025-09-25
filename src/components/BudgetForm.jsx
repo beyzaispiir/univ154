@@ -1211,7 +1211,7 @@ export default function BudgetForm() {
                                     <input
                                       style={styles.input}
                                       type="text"
-                                      value={userInputs[item.id] ? `${formatNumberForInput(userInputs[item.id])}$` : ''}
+                                      value={userInputs[item.id] ? `$${formatNumberForInput(userInputs[item.id])}` : ''}
                                       onChange={(e) => handleUserInputChange(item.id, e.target.value)}
                                       placeholder="Enter amount"
                                     />

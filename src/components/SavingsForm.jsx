@@ -788,7 +788,7 @@ export default function SavingsForm() {
                           <input
                             style={styles.input}
                             type="text"
-                            value={goalAmount1 ? `${formatNumberForInput(goalAmount1)}$` : ''}
+                            value={goalAmount1 ? `$${formatNumberForInput(goalAmount1)}` : ''}
                             onChange={(e) => handleUserInputChange(section1.goalAmount, e.target.value)}
                             placeholder="Enter goal amount"
                           />
@@ -804,7 +804,7 @@ export default function SavingsForm() {
                             <input
                               style={styles.input}
                               type="text"
-                              value={monthlySavings1 ? `${formatNumberForInput(monthlySavings1)}$` : ''}
+                              value={monthlySavings1 ? `$${formatNumberForInput(monthlySavings1)}` : ''}
                               onChange={(e) => handleUserInputChange(section1.monthlySavings, e.target.value)}
                               placeholder="Enter monthly amount"
                             />
@@ -951,7 +951,7 @@ export default function SavingsForm() {
                           <input
                             style={styles.input}
                             type="text"
-                            value={goalAmount2 ? `${formatNumberForInput(goalAmount2)}$` : ''}
+                            value={goalAmount2 ? `$${formatNumberForInput(goalAmount2)}` : ''}
                             onChange={(e) => handleUserInputChange(section2.goalAmount, e.target.value)}
                             placeholder="Enter goal amount"
                           />
@@ -967,7 +967,7 @@ export default function SavingsForm() {
                             <input
                               style={styles.input}
                               type="text"
-                              value={monthlySavings2 ? `${formatNumberForInput(monthlySavings2)}$` : ''}
+                              value={monthlySavings2 ? `$${formatNumberForInput(monthlySavings2)}` : ''}
                               onChange={(e) => handleUserInputChange(section2.monthlySavings, e.target.value)}
                               placeholder="Enter monthly amount"
                             />
