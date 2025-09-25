@@ -8,6 +8,7 @@ import UpdatePassword from './components/UpdatePassword'
 import Dashboard from './components/Dashboard'
 import Week1Budgeting from './components/Week1Budgeting'
 import Week2Savings from './components/Week2Savings'
+import Week3CreditCardPage from './components/Week3CreditCardWrapper'
 import Week6Retirement from './components/Week6Retirement'
 import WeekAccessAdmin from './components/WeekAccessAdmin'
 import Overview from './components/pages/Overview'
@@ -128,6 +129,8 @@ function App() {
             <Route path="excel/week-1/*" element={<Week1Budgeting />} />
             <Route path="excel/week-2" element={<Week2Savings />} />
             <Route path="excel/week-2/*" element={<Week2Savings />} />
+            <Route path="excel/week-3" element={<Week3CreditCardPage />} />
+            <Route path="excel/week-3/*" element={<Week3CreditCardPage />} />
             <Route path="excel/week-6/*" element={<Week6Retirement />} />
             <Route path="admin/week-access" element={<WeekAccessAdmin />} />
             {/* Add routes for other weeks here as they are created */}

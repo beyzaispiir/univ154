@@ -174,7 +174,8 @@ const styles = {
     textAlign: 'right', 
     backgroundColor: '#fffde7', // Softer yellow - matching Week 1
     borderRadius: '6px', // Rounded corners
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    fontSize: '12px'
   },
   
   // Read-only fields - matching Week 1
@@ -315,7 +316,7 @@ export default function SavingsForm() {
     // Handler functions for save/load
     const handleSaveSavings = async () => {
         try {
-            const result = await saveBudgetData(userInputs, {}, expandedSections);
+            const result = await saveBudgetData(userInputs, customExpenseNames, expandedSections);
             if (result.success) {
                 alert('Savings plan saved successfully! 💾');
             } else {
@@ -338,6 +339,10 @@ export default function SavingsForm() {
                 if (result.data.user_inputs) {
                     setUserInputs(result.data.user_inputs);
                 }
+                // Load custom expense names
+                if (result.data.custom_expense_names) {
+                    setCustomExpenseNames(result.data.custom_expense_names);
+                }
                 // Load section states
                 if (result.data.section_states) {
                     setExpandedSections(result.data.section_states);
@@ -358,6 +363,10 @@ export default function SavingsForm() {
     // Force re-render when inputs change
     const [, forceUpdate] = useState({});
     const triggerUpdate = () => forceUpdate({});
+
+    // Add missing state variables for save/load functionality
+    const [expandedSections, setExpandedSections] = useState({});
+    const [customExpenseNames, setCustomExpenseNames] = useState({});
 
 
     const afterTaxIncome = financialCalculations?.afterTaxIncome || 0;
