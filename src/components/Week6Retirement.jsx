@@ -15,15 +15,42 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-// Inline styles matching Week 1 for consistency
+// Inline styles matching Week 1, 2, 3 for consistency
 const styles = {
   container: {
-    fontSize: '14px',
-    maxWidth: '80vw',
+    minHeight: '100vh',
+    backgroundColor: '#f8f9fa',
+    padding: '20px',
+    maxWidth: '1200px',
     margin: '0 auto',
-    padding: '32px 2vw',
-    backgroundColor: '#fdfdfd',
+    fontSize: '14px',
     color: '#333',
+  },
+  sectionContainer: {
+    backgroundColor: 'white',
+    borderRadius: '12px',
+    padding: '24px',
+    marginBottom: '30px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #e9ecef'
+  },
+  enhancedHeader: {
+    backgroundColor: '#002060',
+    color: 'white',
+    padding: '20px 24px',
+    borderRadius: '12px',
+    fontWeight: '700',
+    fontSize: '18px',
+    textAlign: 'center',
+    marginBottom: '20px',
+    boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)'
+  },
+  sectionDivider: {
+    height: '3px',
+    background: 'linear-gradient(90deg, #002060, #28a745, #002060)',
+    margin: '20px 0',
+    borderRadius: '2px',
+    boxShadow: '0 2px 4px rgba(0, 32, 96, 0.2)'
   },
   section: {
     marginBottom: 48,
@@ -162,7 +189,39 @@ function getLastValid(arr) {
 }
 
 export default function Week6Retirement() {
-  const { topInputs, retirementInputs, setRetirementInputs, financialCalculations } = useBudget() || {};
+  const { topInputs, retirementInputs, setRetirementInputs, financialCalculations, saveBudgetData, loadBudgetData } = useBudget() || {};
+
+  // Handler functions for save/load
+  const handleSaveWeek6 = async () => {
+    try {
+      const week6Data = {
+        // Week 6 specific data will go here when needed
+        week: 6,
+        timestamp: new Date().toISOString()
+      };
+      
+      await saveBudgetData(week6Data);
+      alert('Week 6 data saved successfully!');
+    } catch (error) {
+      console.error('Error saving Week 6 data:', error);
+      alert('Error saving Week 6 data. Please try again.');
+    }
+  };
+
+  const handleLoadWeek6 = async () => {
+    try {
+      const result = await loadBudgetData();
+      if (result && result.data) {
+        // Week 6 specific data loading will go here when needed
+        alert('Week 6 data loaded successfully!');
+      } else {
+        alert('No saved data found for Week 6.');
+      }
+    } catch (error) {
+      console.error('Error loading Week 6 data:', error);
+      alert('Error loading Week 6 data. Please try again.');
+    }
+  };
   const selectedState = topInputs?.location;
   const stateBrackets = selectedState ? stateTaxData.filter(row => row.state === selectedState) : [];
 
@@ -452,26 +511,38 @@ export default function Week6Retirement() {
   };
 
   return (
-    <div style={styles.container}>
-      {/* Info alert for editable fields */}
-      <div style={styles.info}>
+    <>
+      {/* Modern info alert for editable fields - guaranteed right top corner */}
+      <div style={{
+        position: 'fixed',
+        top: '24px',
+        right: '32px',
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        background: 'rgba(255,255,255,0.85)',
+        backdropFilter: 'blur(2px)',
+        border: '1px solid #bfdbfe',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+        borderRadius: '14px',
+        padding: '12px 20px',
+        color: '#0d1a4b',
+        fontWeight: 500,
+        fontSize: 12
+      }}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01"/></svg>
         You can only enter data in the open (yellow) fields.
       </div>
 
-      {/* Main title with dark blue header bar */}
-      <div style={{
-        backgroundColor: '#002060',
-        color: 'white',
-        padding: '12px 16px',
-        borderRadius: '8px',
-        fontWeight: '600',
-        fontSize: '14px',
-        textAlign: 'center',
-        marginBottom: '20px'
-      }}>
-        Retirement Planning
-      </div>
+      <div style={styles.container}>
+        <div style={{width: '1200px', maxWidth: '1200px'}}>
+          {/* Section Container - matching Week 1, 2, 3 layered design */}
+          <div style={styles.sectionContainer}>
+            {/* Enhanced Header */}
+            <div style={styles.enhancedHeader}>
+              🏦 Week 6 - Retirement Planning
+            </div>
 
       {/* 1. Retirement Budgeting Overview Table */}
       <div style={simpleHeaderStyle}>Retirement Budgeting</div>
@@ -921,6 +992,82 @@ export default function Week6Retirement() {
         </table>
       </div>
       
-    </div>
+          {/* Section Divider */}
+          <div style={styles.sectionDivider}></div>
+
+          {/* Save/Load Buttons - enhanced like Week 1/2/3 */}
+          <div style={{
+            marginTop: '20px', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            gap: '20px',
+            padding: '15px',
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+          }}>
+            <button
+              onClick={handleSaveWeek6}
+              style={{
+                backgroundColor: '#002060',
+                color: 'white',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = '#003d82';
+                e.target.style.transform = 'translateY(-2px)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = '#002060';
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              💾 Save Week 6 Data
+            </button>
+            <button
+              onClick={handleLoadWeek6}
+              style={{
+                backgroundColor: '#374151',
+                color: 'white',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = '#4b5563';
+                e.target.style.transform = 'translateY(-2px)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = '#374151';
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              📁 Load Week 6 Data
+            </button>
+          </div>
+          
+          {/* Close sectionContainer */}
+          </div>
+        </div>
+      </div>
+    </>
   );
 } 

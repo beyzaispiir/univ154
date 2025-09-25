@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useBudget } from '../contexts/BudgetContext';
 
 // Savings-specific configuration with individual sections
@@ -129,17 +129,44 @@ const savingsConfig = {
 };
 
 const styles = {
-  // Main container - matching Week 1
+  // Main container - enhanced like Week 3
   container: { 
+    minHeight: '100vh',
+    backgroundColor: '#f8f9fa',
+    padding: '20px',
+    maxWidth: '1200px',
+    margin: '0 auto',
     fontSize: '14px',
-    maxWidth: 1200, 
-    margin: '0 auto', 
-    padding: 24, 
-    backgroundColor: '#fdfdfd',
     color: '#333',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
+  },
+  sectionDivider: {
+    height: '3px',
+    background: 'linear-gradient(90deg, #002060, #28a745, #002060)',
+    margin: '20px 0',
+    borderRadius: '2px',
+    boxShadow: '0 2px 4px rgba(0, 32, 96, 0.2)'
+  },
+  sectionContainer: {
+    backgroundColor: 'white',
+    borderRadius: '12px',
+    padding: '24px',
+    marginBottom: '30px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #e9ecef'
+  },
+  enhancedHeader: {
+    backgroundColor: '#002060',
+    color: 'white',
+    padding: '20px 24px',
+    borderRadius: '12px',
+    fontWeight: '700',
+    fontSize: '18px',
+    textAlign: 'center',
+    marginBottom: '20px',
+    boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)'
   },
   
   // Header styling - matching Week 1
@@ -175,6 +202,7 @@ const styles = {
     backgroundColor: '#fffde7', // Softer yellow - matching Week 1
     borderRadius: '6px', // Rounded corners
     boxSizing: 'border-box',
+    fontWeight: '600',
     fontSize: '12px'
   },
   
@@ -215,15 +243,15 @@ const styles = {
     maxWidth: '1200px',
     backgroundColor: '#f8f9fa',
     border: '1px solid #e9ecef',
-    padding: '20px',
+    padding: '15px',
     borderRadius: '8px',
-    marginTop: '30px'
+    marginTop: '20px'
   },
   
   // Summary cards - matching Week 1 color scheme
   summaryCard: {
     textAlign: 'center',
-    padding: '16px',
+    padding: '12px',
     backgroundColor: 'white',
     borderRadius: '8px',
     border: '1px solid #e9ecef',
@@ -363,6 +391,95 @@ export default function SavingsForm() {
     // Force re-render when inputs change
     const [, forceUpdate] = useState({});
     const triggerUpdate = () => forceUpdate({});
+
+    // Set default values when page loads
+    useEffect(() => {
+        // Only set defaults if no meaningful values exist (first time loading)
+        // Check only the goal amounts, monthly savings, and rates (not section names)
+        const meaningfulKeys = [
+            'down_payment_1', 'down_payment_1_monthly', 'down_payment_1_rate', 'down_payment_1_time',
+            'down_payment_2', 'down_payment_2_monthly', 'down_payment_2_rate', 'down_payment_2_time',
+            'car_1', 'car_1_monthly', 'car_1_rate', 'car_1_time',
+            'car_2', 'car_2_monthly', 'car_2_rate', 'car_2_time',
+            'wedding_1', 'wedding_1_monthly', 'wedding_1_rate', 'wedding_1_time',
+            'wedding_2', 'wedding_2_monthly', 'wedding_2_rate', 'wedding_2_time',
+            'advanced_degree_1', 'advanced_degree_1_monthly', 'advanced_degree_1_rate', 'advanced_degree_1_time',
+            'advanced_degree_2', 'advanced_degree_2_monthly', 'advanced_degree_2_rate', 'advanced_degree_2_time',
+            'vacation_1', 'vacation_1_monthly', 'vacation_1_rate', 'vacation_1_time',
+            'vacation_2', 'vacation_2_monthly', 'vacation_2_rate', 'vacation_2_time',
+            'miscellaneous_1', 'miscellaneous_1_monthly', 'miscellaneous_1_rate', 'miscellaneous_1_time',
+            'miscellaneous_2', 'miscellaneous_2_monthly', 'miscellaneous_2_rate', 'miscellaneous_2_time'
+        ];
+        
+        const hasAnyValues = meaningfulKeys.some(key => {
+            const value = userInputs[key];
+            return value !== '' && value !== null && value !== undefined && value !== 0;
+        });
+        
+        if (!hasAnyValues) {
+            const defaultValues = {
+                // Down Payment
+                'down_payment_1': '50000',
+                'down_payment_1_monthly': '500',
+                'down_payment_1_rate': '4',
+                'down_payment_1_time': '60',
+                'down_payment_2': '50000',
+                'down_payment_2_monthly': '500',
+                'down_payment_2_rate': '4',
+                'down_payment_2_time': '60',
+                // Car
+                'car_1': '25000',
+                'car_1_monthly': '500',
+                'car_1_rate': '4',
+                'car_1_time': '60',
+                'car_2': '25000',
+                'car_2_monthly': '500',
+                'car_2_rate': '4',
+                'car_2_time': '60',
+                // Wedding
+                'wedding_1': '15000',
+                'wedding_1_monthly': '500',
+                'wedding_1_rate': '4',
+                'wedding_1_time': '60',
+                'wedding_2': '15000',
+                'wedding_2_monthly': '500',
+                'wedding_2_rate': '4',
+                'wedding_2_time': '60',
+                // Advanced Degree
+                'advanced_degree_1': '30000',
+                'advanced_degree_1_monthly': '500',
+                'advanced_degree_1_rate': '4',
+                'advanced_degree_1_time': '60',
+                'advanced_degree_2': '30000',
+                'advanced_degree_2_monthly': '500',
+                'advanced_degree_2_rate': '4',
+                'advanced_degree_2_time': '60',
+                // Vacation
+                'vacation_1': '5000',
+                'vacation_1_monthly': '500',
+                'vacation_1_rate': '4',
+                'vacation_1_time': '60',
+                'vacation_2': '5000',
+                'vacation_2_monthly': '500',
+                'vacation_2_rate': '4',
+                'vacation_2_time': '60',
+                // Miscellaneous
+                'miscellaneous_1': '10000',
+                'miscellaneous_1_monthly': '500',
+                'miscellaneous_1_rate': '4',
+                'miscellaneous_1_time': '60',
+                'miscellaneous_2': '10000',
+                'miscellaneous_2_monthly': '500',
+                'miscellaneous_2_rate': '4',
+                'miscellaneous_2_time': '60'
+            };
+            
+            setUserInputs(prev => ({
+                ...prev,
+                ...defaultValues
+            }));
+        }
+    }, []);
 
     // Add missing state variables for save/load functionality
     const [expandedSections, setExpandedSections] = useState({});
@@ -554,19 +671,12 @@ export default function SavingsForm() {
             <div style={styles.container}>
         
         <div style={{width: '1200px', maxWidth: '1200px'}}>
+            {/* Section Container - matching Week 3 layered design */}
+            <div style={styles.sectionContainer}>
             <div style={{width: '100%', maxWidth: '1200px', marginBottom: '20px'}}>
-            {/* Dark blue header bar like Week 1 */}
-            <div style={{
-              backgroundColor: '#002060',
-              color: 'white',
-              padding: '12px 16px',
-              borderRadius: '8px',
-              fontWeight: '600',
-              fontSize: '14px',
-              textAlign: 'center',
-              marginBottom: '10px'
-            }}>
-              Savings Planning
+            {/* Enhanced Header */}
+            <div style={styles.enhancedHeader}>
+              💰 Savings Planning
             </div>
             <div style={{fontSize: '12px', color: '#666', marginBottom: '10px', fontStyle: 'italic'}}>
                 Based on your monthly after-tax income
@@ -615,11 +725,18 @@ export default function SavingsForm() {
           const details2 = calculateSavingsDetails(goalAmount2, monthlySavings2, timeToGoal2, section2.calculationMode, annualRate2);
           
           return (
-            <div key={`pair-${pairIndex}`} style={{
-              display: 'flex',
-              gap: '20px',
-              marginBottom: '20px'
-            }}>
+            <div key={`pair-container-${pairIndex}`}>
+              {/* Section Divider - except for first pair */}
+              {pairIndex > 0 && (
+                <div style={styles.sectionDivider}></div>
+              )}
+              
+              {/* Savings Pair */}
+              <div key={`pair-${pairIndex}`} style={{
+                display: 'flex',
+                gap: '20px',
+                marginBottom: '20px'
+              }}>
               {/* First Section */}
               <div style={{
                 flex: 1,
@@ -946,82 +1063,52 @@ export default function SavingsForm() {
                 </div>
               </div>
             </div>
+            </div>
           );
         })}
         </div>
         
-        {/* Summary Section - matching Week 1 styling */}
-        <div style={{marginTop: '30px', display: 'flex', justifyContent: 'center'}}>
-          <div style={styles.summaryContainer}>
-            <h3 style={{ margin: '0 0 20px 0', color: '#002060', fontSize: '16px', fontWeight: '600' }}>Summary</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
-              <div style={styles.summaryCard}>
-                <div style={{...styles.summaryValue, color: '#28a745'}}>
-                  ${formatCurrency(
-                    savingsConfig.sections.reduce((total, section) => {
-                      return total + (parseFloat(userInputs[section.monthlySavings]) || 0);
-                    }, 0)
-                  )}
-                </div>
-                <div style={styles.summaryLabel}>Total Monthly Savings</div>
-              </div>
-              <div style={styles.summaryCard}>
-                <div style={{...styles.summaryValue, color: '#007bff'}}>
-                  {monthlyAfterTaxIncome > 0 ? 
-                    ((savingsConfig.sections.reduce((total, section) => {
-                      return total + (parseFloat(userInputs[section.monthlySavings]) || 0);
-                    }, 0) / monthlyAfterTaxIncome) * 100).toFixed(1) : '0.0'
-                  }%
-                </div>
-                <div style={styles.summaryLabel}>Savings Rate</div>
-              </div>
-              <div style={styles.summaryCard}>
-                <div style={{...styles.summaryValue, color: '#6c757d'}}>
-                  4.0%
-                </div>
-                <div style={styles.summaryLabel}>Annual Earning Rate</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Info Message */}
+        {/* Section Divider */}
+        <div style={styles.sectionDivider}></div>
+
+        {/* Save/Load Buttons - enhanced like Week 3 */}
         <div style={{
           marginTop: '20px', 
           display: 'flex', 
-          justifyContent: 'center',
-          marginBottom: '10px'
+          justifyContent: 'center', 
+          gap: '20px',
+          padding: '15px',
+          backgroundColor: 'white',
+          borderRadius: '12px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
         }}>
-          <div style={{
-            backgroundColor: '#f3f4f6',
-            border: '1px solid #d1d5db',
-            borderRadius: '4px',
-            padding: '8px 16px',
-            fontSize: '12px',
-            color: '#374151',
-            textAlign: 'center',
-            maxWidth: '600px'
-          }}>
-            💡 <strong>Tip:</strong> Aim for a 20% savings rate. Emergency fund should cover 3-6 months of expenses. Max out retirement accounts for tax advantages.
-          </div>
-        </div>
-
-        {/* Save/Load Buttons */}
-        <div style={{marginTop: '10px', display: 'flex', justifyContent: 'center', gap: '10px'}}>
           <button
             onClick={handleSaveSavings}
             style={{
               backgroundColor: '#002060',
               color: 'white',
               border: 'none',
-              padding: '10px 20px',
-              borderRadius: '4px',
-              fontSize: '14px',
+              padding: '12px 24px',
+              borderRadius: '8px',
+              fontSize: '16px',
               fontWeight: 'bold',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.backgroundColor = '#003d82';
+              e.target.style.transform = 'translateY(-2px)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.backgroundColor = '#002060';
+              e.target.style.transform = 'translateY(0)';
             }}
           >
-            💾 Save Savings Plan
+            💾 Save Week 2 Data
           </button>
           <button
             onClick={handleLoadSavings}
@@ -1029,15 +1116,31 @@ export default function SavingsForm() {
               backgroundColor: '#374151',
               color: 'white',
               border: 'none',
-              padding: '10px 20px',
-              borderRadius: '4px',
-              fontSize: '14px',
+              padding: '12px 24px',
+              borderRadius: '8px',
+              fontSize: '16px',
               fontWeight: 'bold',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.backgroundColor = '#4b5563';
+              e.target.style.transform = 'translateY(-2px)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.backgroundColor = '#374151';
+              e.target.style.transform = 'translateY(0)';
             }}
           >
-            📁 Load Savings Plan
+            📁 Load Week 2 Data
           </button>
+        </div>
+        
+        {/* Close sectionContainer */}
         </div>
         
         </div>

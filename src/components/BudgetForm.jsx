@@ -155,15 +155,42 @@ const budgetConfig = {
 const styles = {
   // Main container
   container: { 
+    minHeight: '100vh',
+    backgroundColor: '#f8f9fa',
+    padding: '20px',
+    maxWidth: '1200px',
+    margin: '0 auto',
     fontSize: '14px',
-    maxWidth: 1200, 
-    margin: '0 auto', 
-    padding: 24, 
-    backgroundColor: '#fdfdfd',
     color: '#333',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
+  },
+  sectionContainer: {
+    backgroundColor: 'white',
+    borderRadius: '12px',
+    padding: '24px',
+    marginBottom: '30px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #e9ecef'
+  },
+  enhancedHeader: {
+    backgroundColor: '#002060',
+    color: 'white',
+    padding: '20px 24px',
+    borderRadius: '12px',
+    fontWeight: '700',
+    fontSize: '18px',
+    textAlign: 'center',
+    marginBottom: '20px',
+    boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)'
+  },
+  sectionDivider: {
+    height: '3px',
+    background: 'linear-gradient(90deg, #002060, #28a745, #002060)',
+    margin: '10px 0 0px 0',
+    borderRadius: '2px',
+    boxShadow: '0 2px 4px rgba(0, 32, 96, 0.2)'
   },
   
   // Top "User Inputted Data" section
@@ -250,7 +277,9 @@ const styles = {
     textAlign: 'right', 
     backgroundColor: '#fffde7', // Softer yellow
     borderRadius: '6px', // Rounded corners
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    fontWeight: '600',
+    fontSize: '12px'
   },
   readOnly: { 
     textAlign: 'right', 
@@ -461,8 +490,8 @@ export default function BudgetForm() {
     }, []);
 
     const handleUserInputChange = (id, value) => {
-        // Remove $ and % symbols, then only allow numbers and at most one decimal point
-        const cleanValue = value.replace(/[$%]/g, '');
+        // Remove $, %, and comma symbols, then only allow numbers and at most one decimal point
+        const cleanValue = value.replace(/[$%,]/g, '');
         const sanitized = cleanValue.replace(/[^0-9.]/g, '');
         // Prevent multiple decimals
         const parts = sanitized.split('.');
@@ -1012,6 +1041,12 @@ export default function BudgetForm() {
         <div style={styles.container}>
         
         <div style={{width: '1200px', maxWidth: '1200px'}}>
+            {/* Section Container - matching Week 3 layered design */}
+            <div style={styles.sectionContainer}>
+            {/* Enhanced Header */}
+            <div style={styles.enhancedHeader}>
+              💰 Budget Planning
+            </div>
             <div style={{width: '450px', marginBottom: '20px'}}>
             <h3 style={styles.header}>User Inputted Data</h3>
             <div style={{fontSize: '12px', color: '#666', marginBottom: '10px', fontStyle: 'italic'}}>
@@ -1081,6 +1116,14 @@ export default function BudgetForm() {
               {budgetConfig.sections.map((section, sectionIndex) => {
                 return (
                 <React.Fragment key={section.title}>
+                  {/* Section Divider - except for first section */}
+                  {sectionIndex > 0 && (
+                    <tr>
+                      <td colSpan="5" style={{padding: '10px 0', border: 'none'}}>
+                        <div style={styles.sectionDivider}></div>
+                      </td>
+                    </tr>
+                  )}
                   <tr>
                     <td style={{...styles.td, ...styles.sectionHeader, fontWeight: 'bold', cursor: 'pointer'}} colSpan="5"
                         onClick={() => toggleSection(section.title)}>
@@ -1124,7 +1167,7 @@ export default function BudgetForm() {
                                         ...styles.input,
                                         width: '100%',
                                         minWidth: '150px',
-                                        fontSize: '14px',
+                                        fontSize: '11px',
                                         padding: '4px 8px',
                                         border: '1px solid #ccc',
                                         borderRadius: '4px',
@@ -1146,7 +1189,7 @@ export default function BudgetForm() {
                                         ...styles.input,
                                         width: '100%',
                                         minWidth: '150px',
-                                        fontSize: '14px',
+                                        fontSize: '11px',
                                         padding: '4px 8px',
                                         border: '1px solid #ccc',
                                         borderRadius: '4px',
@@ -1284,96 +1327,111 @@ export default function BudgetForm() {
         </table>
         </div>
         
-        {/* Total Expenses Section */}
+        {/* Summary Section - enhanced like Week 2/3 */}
         <div style={{marginTop: '20px', display: 'flex', justifyContent: 'center'}}>
           <div style={{
             width: '100%',
             maxWidth: '1200px',
-            backgroundColor: '#d1fae5',
-            color: '#065f46',
-            padding: '12px 16px',
-            borderRadius: '4px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            border: '1px solid #a7f3d0'
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            padding: '20px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            border: '1px solid #e9ecef'
           }}>
-            <span>Total Expenses ${formatCurrency(calculateTotalExpenses())}</span>
-          </div>
-        </div>
-        
-        {/* User Budget Checker Section */}
-        <div style={{marginTop: '10px', display: 'flex', justifyContent: 'center'}}>
-          <div style={{
-            width: '100%',
-            maxWidth: '1200px',
-            backgroundColor: '#f9fafb',
-            border: '1px solid #e5e7eb',
-            padding: '12px 16px',
-            borderRadius: '4px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            <span style={{color: '#374151'}}>User Budget Checker</span>
             <div style={{
-              backgroundColor: '#f3f4f6',
-              border: '1px solid #d1d5db',
-              padding: '6px 12px',
-              borderRadius: '4px',
-              color: '#374151',
-              fontWeight: 'bold',
-              fontSize: '14px',
-              minWidth: '300px',
-              textAlign: 'center',
-              marginLeft: '20px'
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '16px',
+              paddingBottom: '12px',
+              borderBottom: '2px solid #f1f3f4'
             }}>
-              {calculateBudgetChecker()}
+              <div style={{
+                width: '24px',
+                height: '24px',
+                marginRight: '12px',
+                color: '#002060'
+              }}>📊</div>
+              <h3 style={{ margin: '0', color: '#002060', fontSize: '18px', fontWeight: '700' }}>Budget Summary</h3>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div style={{
+                textAlign: 'center',
+                padding: '20px',
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                border: '2px solid #e9ecef',
+                boxShadow: '0 6px 16px rgba(0, 0, 0, 0.15)',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
+                <div style={{fontSize: '24px', fontWeight: 'bold', color: '#28a745', marginBottom: '8px'}}>
+                  ${formatCurrency(calculateTotalExpenses())}
+                </div>
+                <div style={{fontSize: '14px', color: '#666', fontWeight: '600'}}>Total Expenses</div>
+              </div>
+              <div style={{
+                textAlign: 'center',
+                padding: '20px',
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                border: '2px solid #e9ecef',
+                boxShadow: '0 6px 16px rgba(0, 0, 0, 0.15)',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
+                <div style={{fontSize: '18px', fontWeight: 'bold', color: '#002060', marginBottom: '8px'}}>
+                  {calculateBudgetChecker()}
+                </div>
+                <div style={{fontSize: '14px', color: '#666', fontWeight: '600'}}>Budget Status</div>
+              </div>
             </div>
           </div>
         </div>
         
-        {/* Info Message */}
+        {/* Section Divider */}
+        <div style={styles.sectionDivider}></div>
+
+        {/* Save/Load Buttons - enhanced like Week 2/3 */}
         <div style={{
           marginTop: '20px', 
           display: 'flex', 
-          justifyContent: 'center',
-          marginBottom: '10px'
+          justifyContent: 'center', 
+          gap: '20px',
+          padding: '15px',
+          backgroundColor: 'white',
+          borderRadius: '12px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
         }}>
-          <div style={{
-            backgroundColor: '#f3f4f6',
-            border: '1px solid #d1d5db',
-            borderRadius: '4px',
-            padding: '8px 16px',
-            fontSize: '12px',
-            color: '#374151',
-            textAlign: 'center',
-            maxWidth: '600px'
-          }}>
-            💡 <strong>Tip:</strong> Save your budget to keep your data. Next time you login, click "Load Budget" to restore your inputs.
-          </div>
-        </div>
-
-        {/* Save/Load Buttons */}
-        <div style={{marginTop: '10px', display: 'flex', justifyContent: 'center', gap: '10px'}}>
           <button
             onClick={handleSaveBudget}
             style={{
               backgroundColor: '#002060',
               color: 'white',
               border: 'none',
-              padding: '10px 20px',
-              borderRadius: '4px',
-              fontSize: '14px',
+              padding: '12px 24px',
+              borderRadius: '8px',
+              fontSize: '16px',
               fontWeight: 'bold',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.backgroundColor = '#003d82';
+              e.target.style.transform = 'translateY(-2px)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.backgroundColor = '#002060';
+              e.target.style.transform = 'translateY(0)';
             }}
           >
-            💾 Save Budget
+            💾 Save Week 1 Data
           </button>
           <button
             onClick={handleLoadBudget}
@@ -1381,15 +1439,31 @@ export default function BudgetForm() {
               backgroundColor: '#374151',
               color: 'white',
               border: 'none',
-              padding: '10px 20px',
-              borderRadius: '4px',
-              fontSize: '14px',
+              padding: '12px 24px',
+              borderRadius: '8px',
+              fontSize: '16px',
               fontWeight: 'bold',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.backgroundColor = '#4b5563';
+              e.target.style.transform = 'translateY(-2px)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.backgroundColor = '#374151';
+              e.target.style.transform = 'translateY(0)';
             }}
           >
-            📁 Load Budget
+            📁 Load Week 1 Data
           </button>
+        </div>
+        
+        {/* Close sectionContainer */}
         </div>
         
         </div>

@@ -9,7 +9,13 @@ import Dashboard from './components/Dashboard'
 import Week1Budgeting from './components/Week1Budgeting'
 import Week2Savings from './components/Week2Savings'
 import Week3CreditCardPage from './components/Week3CreditCardWrapper'
+import Week4 from './components/Week4'
+import Week5 from './components/Week5'
 import Week6Retirement from './components/Week6Retirement'
+import Week7 from './components/Week7'
+import Week8 from './components/Week8'
+import Week9 from './components/Week9'
+import Week10 from './components/Week10'
 import WeekAccessAdmin from './components/WeekAccessAdmin'
 import Overview from './components/pages/Overview'
 
@@ -131,7 +137,19 @@ function App() {
             <Route path="excel/week-2/*" element={<Week2Savings />} />
             <Route path="excel/week-3" element={<Week3CreditCardPage />} />
             <Route path="excel/week-3/*" element={<Week3CreditCardPage />} />
+            <Route path="excel/week-4" element={<Week4 />} />
+            <Route path="excel/week-4/*" element={<Week4 />} />
+            <Route path="excel/week-5" element={<Week5 />} />
+            <Route path="excel/week-5/*" element={<Week5 />} />
             <Route path="excel/week-6/*" element={<Week6Retirement />} />
+            <Route path="excel/week-7" element={<Week7 />} />
+            <Route path="excel/week-7/*" element={<Week7 />} />
+            <Route path="excel/week-8" element={<Week8 />} />
+            <Route path="excel/week-8/*" element={<Week8 />} />
+            <Route path="excel/week-9" element={<Week9 />} />
+            <Route path="excel/week-9/*" element={<Week9 />} />
+            <Route path="excel/week-10" element={<Week10 />} />
+            <Route path="excel/week-10/*" element={<Week10 />} />
             <Route path="admin/week-access" element={<WeekAccessAdmin />} />
             {/* Add routes for other weeks here as they are created */}
           </Route>
