@@ -529,15 +529,8 @@ const {
 
 This project is developed for educational purposes at Rice University. All rights reserved.
 
-## 📞 Support
-
-For technical support or questions:
-- **Course Instructor**: Contact through Rice University
-- **Technical Issues**: Create an issue in the GitHub repository
-- **Email**: Use Rice University email addresses for authentication
-
 ---
 
-**Built with ❤️ for Rice University UNIV154 Course**
+**Built for Rice University UNIV154 Course**
 
-*Last updated: January 2025*
+*Last updated: sept 2025*
