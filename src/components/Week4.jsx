@@ -633,7 +633,7 @@ const Week4 = () => {
         color: '#374151',
         fontWeight: '500',
         marginTop: '20px',
-        maxWidth: '1190x',
+        maxWidth: '1200px',
         margin: '20px auto'
       }}>
         Note: Adjust Week 1 Budget based on this week's insights
