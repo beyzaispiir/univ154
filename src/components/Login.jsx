@@ -191,7 +191,7 @@ export default function Login() {
               ⚠️ {error}
             </div>
           )}
-          {message && message.includes('inbox') && (
+          {message && (message.includes('inbox') || message.includes('Password reset instructions')) && (
             <div className="p-3 mb-4 text-green-500 bg-green-50 rounded-md" style={{ fontSize: '14px', marginBottom: '10px' }}>
               ✅ {message} Please check your inbox and spam folder.
             </div>
