@@ -2,7 +2,7 @@ import React from 'react';
 import { useBudget } from '../contexts/BudgetContext';
 
 const Week4 = () => {
-  const { saveBudgetData, loadBudgetData, summaryCalculations, topInputs } = useBudget();
+  const { summaryCalculations, topInputs } = useBudget();
   
   // Get Week 1 SUGGESTED data directly from summaryCalculations (Week 1 B - Summary)
   const week4Data = {
@@ -37,36 +37,6 @@ const Week4 = () => {
     afterTaxIncome: summaryCalculations.suggestedAfterTaxIncome || 0
   };
 
-  // Handler functions for save/load
-  const handleSaveWeek4 = async () => {
-    try {
-      const dataToSave = {
-        week: 4,
-        week4Data,
-        timestamp: new Date().toISOString()
-      };
-      
-      await saveBudgetData(dataToSave, {}, {});
-      alert('Week 4 data saved successfully!');
-    } catch (error) {
-      console.error('Error saving Week 4 data:', error);
-      alert('Error saving Week 4 data. Please try again.');
-    }
-  };
-
-  const handleLoadWeek4 = async () => {
-    try {
-      const result = await loadBudgetData();
-      if (result && result.success) {
-        alert('Week 4 data loaded successfully! Data is automatically pulled from Week 1 calculations.');
-      } else {
-        alert('No saved data found. Week 4 uses live data from Week 1 calculations.');
-      }
-    } catch (error) {
-      console.error('Error loading Week 4 data:', error);
-      alert('Error loading Week 4 data. Please try again.');
-    }
-  };
 
   // Federal tax brackets for 2025 (matching BudgetContext)
   const federalTaxBrackets = [
@@ -535,10 +505,7 @@ const Week4 = () => {
                             }
                           </td>
                           <td style={styles.tableCell}>
-                            {stateTaxPaidPerBracket[index] > 0 ? 
-                              `$${stateTaxPaidPerBracket[index].toLocaleString()}` : 
-                              "TBD"
-                            }
+                            ${stateTaxPaidPerBracket[index].toLocaleString()}
                           </td>
                         </tr>
                       ))}
@@ -550,76 +517,6 @@ const Week4 = () => {
           </div>
           
           {/* Section Divider */}
-          <div style={styles.sectionDivider}></div>
-
-          {/* Save/Load Buttons - enhanced like Week 1/2/3 */}
-          <div style={{
-            marginTop: '15px', 
-            display: 'flex', 
-            justifyContent: 'center', 
-            gap: '20px',
-            padding: '15px',
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-          }}>
-            <button
-              onClick={handleSaveWeek4}
-              style={{
-                backgroundColor: '#002060',
-                color: 'white',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#003d82';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#002060';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              💾 Save Week 4 Data
-            </button>
-            <button
-              onClick={handleLoadWeek4}
-              style={{
-                backgroundColor: '#374151',
-                color: 'white',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#4b5563';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#374151';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              📁 Load Week 4 Data
-            </button>
-          </div>
         </div>
 
       {/* Note */}
