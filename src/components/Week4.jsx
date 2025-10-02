@@ -1,5 +1,6 @@
 import React from 'react';
 import { useBudget } from '../contexts/BudgetContext';
+import stateTaxData from '../data/stateTaxData';
 
 const Week4 = () => {
   const { summaryCalculations, topInputs } = useBudget();
@@ -62,61 +63,6 @@ const Week4 = () => {
     }
   };
 
-  // Complete state tax data (matching 'Week 1 B - State Tax' sheet structure)
-  // Column B: State, Column C: Tax Rate, Column D: Over (income threshold)
-  const stateTaxData = [
-    { state: 'AL', rate: 0.02, over: 0 }, { state: 'AL', rate: 0.04, over: 500 }, { state: 'AL', rate: 0.05, over: 3000 },
-    { state: 'AK', rate: 0.00, over: 0 },
-    { state: 'AZ', rate: 0.025, over: 0 },
-    { state: 'AR', rate: 0.02, over: 0 }, { state: 'AR', rate: 0.039, over: 4500 },
-    { state: 'CA', rate: 0.01, over: 0 }, { state: 'CA', rate: 0.02, over: 10756 }, { state: 'CA', rate: 0.04, over: 25499 }, { state: 'CA', rate: 0.06, over: 40245 }, { state: 'CA', rate: 0.08, over: 55866 }, { state: 'CA', rate: 0.093, over: 70606 }, { state: 'CA', rate: 0.103, over: 360659 }, { state: 'CA', rate: 0.113, over: 432787 }, { state: 'CA', rate: 0.123, over: 721314 }, { state: 'CA', rate: 0.133, over: 1000000 },
-    { state: 'CO', rate: 0.044, over: 0 },
-    { state: 'CT', rate: 0.02, over: 0 }, { state: 'CT', rate: 0.045, over: 10000 }, { state: 'CT', rate: 0.055, over: 50000 }, { state: 'CT', rate: 0.06, over: 100000 }, { state: 'CT', rate: 0.065, over: 200000 }, { state: 'CT', rate: 0.069, over: 250000 }, { state: 'CT', rate: 0.0699, over: 500000 },
-    { state: 'DE', rate: 0.022, over: 0 }, { state: 'DE', rate: 0.039, over: 2000 }, { state: 'DE', rate: 0.048, over: 5000 }, { state: 'DE', rate: 0.052, over: 10000 }, { state: 'DE', rate: 0.0555, over: 20000 }, { state: 'DE', rate: 0.066, over: 25000 },
-    { state: 'FL', rate: 0.00, over: 0 },
-    { state: 'GA', rate: 0.0539, over: 0 },
-    { state: 'HI', rate: 0.014, over: 0 }, { state: 'HI', rate: 0.032, over: 2400 }, { state: 'HI', rate: 0.055, over: 4800 }, { state: 'HI', rate: 0.064, over: 9600 }, { state: 'HI', rate: 0.068, over: 14400 }, { state: 'HI', rate: 0.072, over: 19200 }, { state: 'HI', rate: 0.076, over: 24000 }, { state: 'HI', rate: 0.079, over: 36000 }, { state: 'HI', rate: 0.0825, over: 48000 }, { state: 'HI', rate: 0.09, over: 150000 }, { state: 'HI', rate: 0.10, over: 175000 }, { state: 'HI', rate: 0.11, over: 200000 },
-    { state: 'ID', rate: 0.05695, over: 0 },
-    { state: 'IL', rate: 0.0495, over: 0 },
-    { state: 'IN', rate: 0.03, over: 0 },
-    { state: 'IA', rate: 0.038, over: 0 },
-    { state: 'KS', rate: 0.052, over: 0 }, { state: 'KS', rate: 0.0558, over: 15000 },
-    { state: 'KY', rate: 0.04, over: 0 },
-    { state: 'LA', rate: 0.03, over: 0 },
-    { state: 'ME', rate: 0.058, over: 0 }, { state: 'ME', rate: 0.0675, over: 23000 }, { state: 'ME', rate: 0.0715, over: 54000 },
-    { state: 'MD', rate: 0.02, over: 0 }, { state: 'MD', rate: 0.03, over: 1000 }, { state: 'MD', rate: 0.04, over: 2000 }, { state: 'MD', rate: 0.0475, over: 3000 }, { state: 'MD', rate: 0.05, over: 100000 }, { state: 'MD', rate: 0.0525, over: 125000 }, { state: 'MD', rate: 0.055, over: 150000 }, { state: 'MD', rate: 0.0575, over: 250000 },
-    { state: 'MA', rate: 0.05, over: 0 }, { state: 'MA', rate: 0.09, over: 1000000 },
-    { state: 'MI', rate: 0.0425, over: 0 },
-    { state: 'MN', rate: 0.0535, over: 0 }, { state: 'MN', rate: 0.068, over: 30070 }, { state: 'MN', rate: 0.0785, over: 98760 }, { state: 'MN', rate: 0.0985, over: 183340 },
-    { state: 'MS', rate: 0.044, over: 0 },
-    { state: 'MO', rate: 0.02, over: 0 }, { state: 'MO', rate: 0.025, over: 1000 }, { state: 'MO', rate: 0.03, over: 2000 }, { state: 'MO', rate: 0.035, over: 3000 }, { state: 'MO', rate: 0.04, over: 4000 }, { state: 'MO', rate: 0.045, over: 5000 }, { state: 'MO', rate: 0.047, over: 6000 },
-    { state: 'MT', rate: 0.047, over: 0 }, { state: 'MT', rate: 0.059, over: 19500 },
-    { state: 'NE', rate: 0.0246, over: 0 }, { state: 'NE', rate: 0.0351, over: 3700 }, { state: 'NE', rate: 0.0501, over: 22230 }, { state: 'NE', rate: 0.052, over: 35730 },
-    { state: 'NV', rate: 0.00, over: 0 },
-    { state: 'NH', rate: 0.00, over: 0 },
-    { state: 'NJ', rate: 0.014, over: 0 }, { state: 'NJ', rate: 0.0175, over: 20000 }, { state: 'NJ', rate: 0.035, over: 35000 }, { state: 'NJ', rate: 0.05525, over: 40000 }, { state: 'NJ', rate: 0.0637, over: 75000 }, { state: 'NJ', rate: 0.0897, over: 500000 }, { state: 'NJ', rate: 0.1075, over: 1000000 },
-    { state: 'NM', rate: 0.015, over: 0 }, { state: 'NM', rate: 0.032, over: 5500 }, { state: 'NM', rate: 0.043, over: 11000 }, { state: 'NM', rate: 0.047, over: 16000 }, { state: 'NM', rate: 0.049, over: 21000 }, { state: 'NM', rate: 0.059, over: 26000 },
-    { state: 'NY', rate: 0.04, over: 0 }, { state: 'NY', rate: 0.045, over: 8500 }, { state: 'NY', rate: 0.0525, over: 11700 }, { state: 'NY', rate: 0.055, over: 13900 }, { state: 'NY', rate: 0.06, over: 80650 }, { state: 'NY', rate: 0.0685, over: 215400 }, { state: 'NY', rate: 0.0965, over: 1077550 }, { state: 'NY', rate: 0.103, over: 5000000 }, { state: 'NY', rate: 0.109, over: 25000000 },
-    { state: 'NC', rate: 0.0425, over: 0 },
-    { state: 'ND', rate: 0.0195, over: 0 }, { state: 'ND', rate: 0.025, over: 41000 },
-    { state: 'OH', rate: 0.0275, over: 0 }, { state: 'OH', rate: 0.035, over: 26050 },
-    { state: 'OK', rate: 0.0025, over: 0 }, { state: 'OK', rate: 0.0075, over: 1000 }, { state: 'OK', rate: 0.0175, over: 2500 }, { state: 'OK', rate: 0.0275, over: 3750 }, { state: 'OK', rate: 0.0375, over: 4900 }, { state: 'OK', rate: 0.0475, over: 7200 },
-    { state: 'OR', rate: 0.0475, over: 0 }, { state: 'OR', rate: 0.0675, over: 4050 }, { state: 'OR', rate: 0.0875, over: 10200 }, { state: 'OR', rate: 0.099, over: 125000 },
-    { state: 'PA', rate: 0.0307, over: 0 },
-    { state: 'RI', rate: 0.0375, over: 0 }, { state: 'RI', rate: 0.0475, over: 68200 }, { state: 'RI', rate: 0.0599, over: 155050 },
-    { state: 'SC', rate: 0.00, over: 0 }, { state: 'SC', rate: 0.03, over: 3200 }, { state: 'SC', rate: 0.062, over: 16040 },
-    { state: 'SD', rate: 0.00, over: 0 },
-    { state: 'TN', rate: 0.00, over: 0 },
-    { state: 'TX', rate: 0.00, over: 0 },
-    { state: 'UT', rate: 0.0455, over: 0 },
-    { state: 'VT', rate: 0.0335, over: 0 }, { state: 'VT', rate: 0.066, over: 42050 }, { state: 'VT', rate: 0.076, over: 102200 }, { state: 'VT', rate: 0.0875, over: 213150 },
-    { state: 'VA', rate: 0.02, over: 0 }, { state: 'VA', rate: 0.03, over: 3000 }, { state: 'VA', rate: 0.05, over: 5000 }, { state: 'VA', rate: 0.0575, over: 17000 },
-    { state: 'WA', rate: 0.00, over: 0 },
-    { state: 'WV', rate: 0.0222, over: 0 }, { state: 'WV', rate: 0.0296, over: 10000 }, { state: 'WV', rate: 0.0333, over: 25000 }, { state: 'WV', rate: 0.0444, over: 40000 }, { state: 'WV', rate: 0.0482, over: 60000 },
-    { state: 'WI', rate: 0.035, over: 0 }, { state: 'WI', rate: 0.044, over: 12760 }, { state: 'WI', rate: 0.053, over: 25520 }, { state: 'WI', rate: 0.0765, over: 280950 },
-    { state: 'WY', rate: 0.00, over: 0 },
-    { state: 'DC', rate: 0.04, over: 0 }, { state: 'DC', rate: 0.06, over: 10000 }, { state: 'DC', rate: 0.065, over: 40000 }, { state: 'DC', rate: 0.085, over: 60000 }, { state: 'DC', rate: 0.0925, over: 250000 }, { state: 'DC', rate: 0.0975, over: 500000 }, { state: 'DC', rate: 0.1075, over: 1000000 }
-  ];
 
   // Function to filter state tax rates (matching Excel FILTER formula)
   const getStateTaxRates = (selectedState) => {
@@ -131,7 +77,7 @@ const Week4 = () => {
     // =FILTER('Week 1 B - State Tax'!D7:D167, 'Week 1 B - State Tax'!B7:B167=F16)
     return stateTaxData
       .filter(item => item.state === selectedState)
-      .map(item => item.over);
+      .map(item => item.lowerBound);
   };
 
   // Function to get "But Not Over" values (matching Excel LET/VSTACK/DROP formula)
@@ -155,16 +101,16 @@ const Week4 = () => {
     
     return stateBrackets.map((bracket, index) => {
       // Calculate taxes paid in this bracket
-      if (taxableIncome <= bracket.over) {
+      if (taxableIncome <= bracket.lowerBound) {
         return 0; // No taxes in this bracket
       }
       
-      // Get the "but not over" value (next bracket's "over" value, or infinity for highest bracket)
+      // Get the "but not over" value (next bracket's "lowerBound" value, or infinity for highest bracket)
       const nextBracket = stateBrackets[index + 1];
-      const butNotOver = nextBracket ? nextBracket.over : Infinity;
+      const butNotOver = nextBracket ? nextBracket.lowerBound : Infinity;
       
       // Calculate taxable amount in this bracket
-      const taxableInBracket = Math.min(taxableIncome, butNotOver) - bracket.over;
+      const taxableInBracket = Math.min(taxableIncome, butNotOver) - bracket.lowerBound;
       
       // Calculate taxes in this bracket
       return Math.max(0, taxableInBracket * bracket.rate);

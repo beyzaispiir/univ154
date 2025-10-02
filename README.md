@@ -235,13 +235,14 @@ Controls global availability of weekly modules.
 ## 🔐 Authentication & Authorization
 
 ### Authentication Methods
-1. **Email/Password**: Traditional signup with Rice University or Gmail emails
+1. **Email/Password**: Traditional signup with Rice University, Gmail, or Yahoo emails
 2. **Google OAuth**: One-click Google authentication
 3. **Magic Links**: Passwordless authentication via email
 
 ### Email Validation
 - Rice University emails (`@rice.edu`, `@alumni.rice.edu`)
 - Gmail addresses (`@gmail.com`)
+- Yahoo addresses (`@yahoo.com`)
 - Automatic validation and rejection of other domains
 
 ### Admin System

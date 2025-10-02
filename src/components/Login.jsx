@@ -40,7 +40,7 @@ export default function Login() {
   }, [])
 
   const validateEmail = (email) => {
-    const validEmailRegex = /@(rice\.edu|alumni\.rice\.edu|gmail\.com)$/
+    const validEmailRegex = /@(rice\.edu|alumni\.rice\.edu|gmail\.com|yahoo\.com)$/
     return validEmailRegex.test(email)
   }
 
@@ -201,7 +201,7 @@ export default function Login() {
           <div style={{ marginBottom: '15px', width: '100%' }}>
             {email && !validateEmail(email) && (
               <p className="text-red-500" style={{ fontSize: '14px', marginBottom: '10px' }}>
-                ⚠️ Please use your Rice University email address (@rice.edu or @alumni.rice.edu) or Gmail address (@gmail.com)
+                ⚠️ Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)
               </p>
             )}
             <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Rice Email Address</label>
@@ -210,9 +210,9 @@ export default function Login() {
               required
               value={email}
               onChange={handleEmailChange}
-              placeholder="username@rice.edu, username@alumni.rice.edu, or username@gmail.com"
-              pattern=".*@(rice\.edu|alumni\.rice\.edu|gmail\.com)$"
-              title="Please use your Rice University email address (@rice.edu or @alumni.rice.edu) or Gmail address (@gmail.com)"
+              placeholder="username@rice.edu, username@alumni.rice.edu, username@gmail.com, or username@yahoo.com"
+              pattern=".*@(rice\.edu|alumni\.rice\.edu|gmail\.com|yahoo\.com)$"
+              title="Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)"
               style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
               className="px-3 border border-gray-100 text-[#0d1a4b] 
               placeholder-gray-400 transition-colors duration-200

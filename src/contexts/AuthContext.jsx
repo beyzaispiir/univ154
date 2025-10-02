@@ -8,9 +8,9 @@ export function useAuth() {
   return useContext(AuthContext)
 }
 
-// Helper function to validate Rice and Gmail email addresses
+// Helper function to validate Rice, Gmail, and Yahoo email addresses
 const isValidEmail = (email) => {
-  return email.endsWith('@rice.edu') || email.endsWith('@alumni.rice.edu') || email.endsWith('@gmail.com');
+  return email.endsWith('@rice.edu') || email.endsWith('@alumni.rice.edu') || email.endsWith('@gmail.com') || email.endsWith('@yahoo.com');
 };
 
 export function AuthProvider({ children }) {
@@ -70,7 +70,7 @@ export function AuthProvider({ children }) {
         console.log('Full user object keys:', Object.keys(user || {}));
         console.log('================================');
         
-        // Check if the email is from Rice University or Gmail
+        // Check if the email is from Rice University, Gmail, or Yahoo
         if (user && !isValidEmail(user.email)) {
           // Sign out the user if not a valid email
           await supabase.auth.signOut()
@@ -148,7 +148,7 @@ export function AuthProvider({ children }) {
       console.log('AuthContext signUp called with:', { email, password: '***' })
       
       if (!isValidEmail(email)) {
-        throw new Error('Please use your Rice University email address (@rice.edu or @alumni.rice.edu) or Gmail address (@gmail.com)')
+        throw new Error('Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)')
       }
 
       const { data, error } = await supabase.auth.signUp({
@@ -186,7 +186,7 @@ export function AuthProvider({ children }) {
   const signIn = async (email, password, rememberMe = false) => {
     try {
       if (!isValidEmail(email)) {
-        throw new Error('Please use your Rice University email address (@rice.edu or @alumni.rice.edu) or Gmail address (@gmail.com)')
+        throw new Error('Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)')
       }
 
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -267,7 +267,7 @@ export function AuthProvider({ children }) {
   const resetPassword = async (email) => {
     try {
       if (!isValidEmail(email)) {
-        throw new Error('Please use your Rice University email address (@rice.edu or @alumni.rice.edu) or Gmail address (@gmail.com)')
+        throw new Error('Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)')
       }
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
