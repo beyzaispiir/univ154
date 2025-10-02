@@ -30,7 +30,7 @@ const Week3CreditCard = () => {
   // Calculated values
   // Minimum payment = Interest for Month 1 (Week 3.1 B - AM Table!E4)
   const monthlyRate = (parseFloat(annualInterestRate) || 0) / 100 / 12;
-  const minimumPayment = (parseFloat(debtAmount) || 0) * monthlyRate;
+  const minimumPayment = Math.round(((parseFloat(debtAmount) || 0) * monthlyRate) * 100) / 100;
 
   // Handler functions for save/load
   const handleSaveWeek3 = async () => {
@@ -723,12 +723,30 @@ const Week3CreditCard = () => {
                   <div style={styles.inputLabel}>User Input Payment</div>
                   <input
                     type="text"
-                    value={userPayment ? `$${parseFloat(userPayment).toLocaleString('en-US')}` : ''}
+                    value={userPayment ? `$${userPayment}` : ''}
                     onChange={(e) => {
                       const value = e.target.value.replace(/[$,]/g, '');
+                      
+                      // Always allow any input while typing (including deletion)
                       setUserPayment(value);
                     }}
-                    style={styles.input}
+                    onBlur={(e) => {
+                      // Only validate when user finishes typing (onBlur)
+                      const value = e.target.value.replace(/[$,]/g, '');
+                      const numericValue = parseFloat(value);
+                      
+                      if (value !== '' && !isNaN(numericValue) && numericValue >= 0) {
+                        if (numericValue < minimumPayment) {
+                          alert(`User Input Payment must be at least the minimum payment amount of $${minimumPayment.toFixed(2)}`);
+                          // Reset to minimum payment
+                          setUserPayment(minimumPayment.toString());
+                        }
+                      }
+                    }}
+                    style={{
+                      ...styles.input,
+                      borderColor: parseFloat(userPayment) < minimumPayment && userPayment !== '' ? '#dc3545' : '#ccc'
+                    }}
                     placeholder="$Enter amount"
                   />
                 </div>
