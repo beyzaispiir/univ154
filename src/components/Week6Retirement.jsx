@@ -195,12 +195,25 @@ export default function Week6Retirement() {
   const handleSaveWeek6 = async () => {
     try {
       const week6Data = {
-        // Week 6 specific data will go here when needed
-        week: 6,
+        startAge,
+        endAge,
+        annualPaymentA,
+        returnRateA,
+        employerMatchA,
+        withdrawalRateA,
+        annualPaymentB,
+        returnRateB,
+        employerMatchB,
+        withdrawalRateB,
+        annualPaymentC,
+        returnRateC,
+        employerMatchC,
+        withdrawalRateC,
         timestamp: new Date().toISOString()
       };
       
-      await saveBudgetData(week6Data);
+      // Save to localStorage
+      localStorage.setItem('week6_data', JSON.stringify(week6Data));
       alert('Week 6 data saved successfully!');
     } catch (error) {
       console.error('Error saving Week 6 data:', error);
@@ -210,9 +223,24 @@ export default function Week6Retirement() {
 
   const handleLoadWeek6 = async () => {
     try {
-      const result = await loadBudgetData();
-      if (result && result.data) {
-        // Week 6 specific data loading will go here when needed
+      const savedData = localStorage.getItem('week6_data');
+      
+      if (savedData) {
+        const week6Data = JSON.parse(savedData);
+        setStartAge(week6Data.startAge || 20);
+        setEndAge(week6Data.endAge || 70);
+        setAnnualPaymentA(week6Data.annualPaymentA || 4638);
+        setReturnRateA(week6Data.returnRateA || 7);
+        setEmployerMatchA(week6Data.employerMatchA || 3);
+        setWithdrawalRateA(week6Data.withdrawalRateA || 6);
+        setAnnualPaymentB(week6Data.annualPaymentB || 10000);
+        setReturnRateB(week6Data.returnRateB || 7);
+        setEmployerMatchB(week6Data.employerMatchB || 3);
+        setWithdrawalRateB(week6Data.withdrawalRateB || 6);
+        setAnnualPaymentC(week6Data.annualPaymentC || 15353);
+        setReturnRateC(week6Data.returnRateC || 7);
+        setEmployerMatchC(week6Data.employerMatchC || 3);
+        setWithdrawalRateC(week6Data.withdrawalRateC || 6);
         alert('Week 6 data loaded successfully!');
       } else {
         alert('No saved data found for Week 6.');

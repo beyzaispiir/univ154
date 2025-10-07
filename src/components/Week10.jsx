@@ -1,10 +1,7 @@
 import React from 'react';
-import { useBudget } from '../contexts/BudgetContext';
 
 const Week10 = () => {
-  const { saveBudgetData, loadBudgetData } = useBudget();
-
-  // Handler functions for save/load
+  // Handler functions for save/load using localStorage
   const handleSaveWeek10 = async () => {
     try {
       const week10Data = {
@@ -13,7 +10,8 @@ const Week10 = () => {
         timestamp: new Date().toISOString()
       };
       
-      await saveBudgetData(week10Data);
+      // Save to localStorage
+      localStorage.setItem('week10_data', JSON.stringify(week10Data));
       alert('Week 10 data saved successfully!');
     } catch (error) {
       console.error('Error saving Week 10 data:', error);
@@ -23,8 +21,10 @@ const Week10 = () => {
 
   const handleLoadWeek10 = async () => {
     try {
-      const result = await loadBudgetData();
-      if (result && result.data) {
+      const savedData = localStorage.getItem('week10_data');
+      
+      if (savedData) {
+        const week10Data = JSON.parse(savedData);
         // Week 10 specific data loading will go here when content is developed
         alert('Week 10 data loaded successfully!');
       } else {

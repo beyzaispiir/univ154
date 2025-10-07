@@ -344,43 +344,52 @@ export default function SavingsForm() {
     // Handler functions for save/load
     const handleSaveSavings = async () => {
         try {
-            const result = await saveBudgetData(userInputs, customExpenseNames, expandedSections);
-            if (result.success) {
-                alert('Savings plan saved successfully! 💾');
-            } else {
-                alert('Error saving savings plan: ' + result.error);
-            }
+            const savingsData = {
+                topInputs,
+                userInputs,
+                customExpenseNames,
+                expandedSections,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('week2_data', JSON.stringify(savingsData));
+            alert('Week 2 data saved successfully! 💾');
         } catch (error) {
-            alert('Error saving savings plan: ' + error.message);
+            alert('Error saving Week 2 data: ' + error.message);
         }
     };
 
     const handleLoadSavings = async () => {
         try {
-            const result = await loadBudgetData();
-            if (result.success && result.data) {
+            const savedData = localStorage.getItem('week2_data');
+            
+            if (savedData) {
+                const savingsData = JSON.parse(savedData);
+                
                 // Load top inputs
-                if (result.data.top_inputs) {
-                    setTopInputs(result.data.top_inputs);
+                if (savingsData.topInputs) {
+                    setTopInputs(savingsData.topInputs);
                 }
                 // Load user inputs
-                if (result.data.user_inputs) {
-                    setUserInputs(result.data.user_inputs);
+                if (savingsData.userInputs) {
+                    setUserInputs(savingsData.userInputs);
                 }
                 // Load custom expense names
-                if (result.data.custom_expense_names) {
-                    setCustomExpenseNames(result.data.custom_expense_names);
+                if (savingsData.customExpenseNames) {
+                    setCustomExpenseNames(savingsData.customExpenseNames);
                 }
                 // Load section states
-                if (result.data.section_states) {
-                    setExpandedSections(result.data.section_states);
+                if (savingsData.expandedSections) {
+                    setExpandedSections(savingsData.expandedSections);
                 }
-                alert('Savings plan loaded successfully! 📁');
+                
+                alert('Week 2 data loaded successfully! 📁');
             } else {
-                alert('No saved savings plan found or error loading: ' + (result.error || 'No data'));
+                alert('No saved data found for Week 2.');
             }
         } catch (error) {
-            alert('Error loading savings plan: ' + error.message);
+            alert('Error loading Week 2 data: ' + error.message);
         }
     };
 

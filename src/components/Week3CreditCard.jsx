@@ -41,15 +41,13 @@ const Week3CreditCard = () => {
         userPayment,
         generalLoanAmount,
         generalAnnualRate,
-        generalTerm
+        generalTerm,
+        timestamp: new Date().toISOString()
       };
       
-      const result = await saveBudgetData(week3Data, {}, {});
-      if (result.success) {
-        alert('Week 3 data saved successfully! 💾');
-      } else {
-        alert('Error saving Week 3 data: ' + result.error);
-      }
+      // Save to localStorage
+      localStorage.setItem('week3_data', JSON.stringify(week3Data));
+      alert('Week 3 data saved successfully! 💾');
     } catch (error) {
       alert('Error saving Week 3 data: ' + error.message);
     }
@@ -57,21 +55,22 @@ const Week3CreditCard = () => {
 
   const handleLoadWeek3 = async () => {
     try {
-      const result = await loadBudgetData();
-      if (result.success && result.data) {
-        // Load Week 3 specific data from user_inputs
-        if (result.data.user_inputs) {
-          if (result.data.user_inputs.debtAmount) setDebtAmount(result.data.user_inputs.debtAmount);
-          if (result.data.user_inputs.annualInterestRate) setAnnualInterestRate(result.data.user_inputs.annualInterestRate);
-          if (result.data.user_inputs.userPayment) setUserPayment(result.data.user_inputs.userPayment);
-          if (result.data.user_inputs.generalLoanAmount) setGeneralLoanAmount(result.data.user_inputs.generalLoanAmount);
-          if (result.data.user_inputs.generalAnnualRate) setGeneralAnnualRate(result.data.user_inputs.generalAnnualRate);
-          if (result.data.user_inputs.generalTerm) setGeneralTerm(result.data.user_inputs.generalTerm);
-        }
+      const savedData = localStorage.getItem('week3_data');
+      
+      if (savedData) {
+        const week3Data = JSON.parse(savedData);
+        
+        // Load Week 3 specific data
+        if (week3Data.debtAmount) setDebtAmount(week3Data.debtAmount);
+        if (week3Data.annualInterestRate) setAnnualInterestRate(week3Data.annualInterestRate);
+        if (week3Data.userPayment) setUserPayment(week3Data.userPayment);
+        if (week3Data.generalLoanAmount) setGeneralLoanAmount(week3Data.generalLoanAmount);
+        if (week3Data.generalAnnualRate) setGeneralAnnualRate(week3Data.generalAnnualRate);
+        if (week3Data.generalTerm) setGeneralTerm(week3Data.generalTerm);
         
         alert('Week 3 data loaded successfully! 📁');
       } else {
-        alert('No saved Week 3 data found or error loading: ' + (result.error || 'No data'));
+        alert('No saved data found for Week 3.');
       }
     } catch (error) {
       alert('Error loading Week 3 data: ' + error.message);

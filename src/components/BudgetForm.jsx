@@ -380,43 +380,52 @@ export default function BudgetForm() {
     // Handler functions for save/load
     const handleSaveBudget = async () => {
         try {
-            const result = await saveBudgetData(userInputs, customExpenseNames, expandedSections);
-            if (result.success) {
-                alert('Budget saved successfully! 💾');
-            } else {
-                alert('Error saving budget: ' + result.error);
-            }
+            const budgetData = {
+                topInputs,
+                userInputs,
+                customExpenseNames,
+                expandedSections,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('week1_data', JSON.stringify(budgetData));
+            alert('Week 1 data saved successfully! 💾');
         } catch (error) {
-            alert('Error saving budget: ' + error.message);
+            alert('Error saving Week 1 data: ' + error.message);
         }
     };
 
     const handleLoadBudget = async () => {
         try {
-            const result = await loadBudgetData();
-            if (result.success && result.data) {
+            const savedData = localStorage.getItem('week1_data');
+            
+            if (savedData) {
+                const budgetData = JSON.parse(savedData);
+                
                 // Load top inputs
-                if (result.data.top_inputs) {
-                    setTopInputs(result.data.top_inputs);
+                if (budgetData.topInputs) {
+                    setTopInputs(budgetData.topInputs);
                 }
                 // Load user inputs
-                if (result.data.user_inputs) {
-                    setUserInputs(result.data.user_inputs);
+                if (budgetData.userInputs) {
+                    setUserInputs(budgetData.userInputs);
                 }
                 // Load custom expense names
-                if (result.data.custom_expense_names) {
-                    setCustomExpenseNames(result.data.custom_expense_names);
+                if (budgetData.customExpenseNames) {
+                    setCustomExpenseNames(budgetData.customExpenseNames);
                 }
                 // Load section states
-                if (result.data.section_states) {
-                    setExpandedSections(result.data.section_states);
+                if (budgetData.expandedSections) {
+                    setExpandedSections(budgetData.expandedSections);
                 }
-                alert('Budget loaded successfully! 📁');
+                
+                alert('Week 1 data loaded successfully! 📁');
             } else {
-                alert('No saved budget found or error loading: ' + (result.error || 'No data'));
+                alert('No saved data found for Week 1.');
             }
         } catch (error) {
-            alert('Error loading budget: ' + error.message);
+            alert('Error loading Week 1 data: ' + error.message);
         }
     };
 
