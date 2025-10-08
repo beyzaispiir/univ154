@@ -19,6 +19,9 @@ const Week5 = () => {
   const [annualInterestRate, setAnnualInterestRate] = useState(6);
   const [loanTermYears, setLoanTermYears] = useState(20);
   
+  // State for validation warnings
+  const [interestRateWarning, setInterestRateWarning] = useState('');
+  
   // State for additional costs (calculated from loan amount)
   const [insurance, setInsurance] = useState(0);
   const [taxes, setTaxes] = useState(0);
@@ -810,29 +813,50 @@ const Week5 = () => {
                 }}>
                   Annual Interest Rate:
                 </label>
-                <input
-                  type="text"
-                  value={annualInterestRate ? `${annualInterestRate}%` : ''}
-                  onChange={(e) => {
-                    const value = e.target.value.replace('%', '');
-                    // Allow decimal numbers
-                    if (value === '' || /^\d*\.?\d*$/.test(value)) {
-                      setAnnualInterestRate(value || 0);
-                    }
-                  }}
-                  style={{
-                    width: '120px',
-                    border: '1px solid #ccc',
-                    padding: '8px 8px',
-                    textAlign: 'right',
-                    backgroundColor: '#fffde7',
-                    borderRadius: '6px',
-                    boxSizing: 'border-box',
-                    fontWeight: '600',
-                    fontSize: '12px'
-                  }}
-                  placeholder="%Enter rate"
-                />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                  <input
+                    type="text"
+                    value={annualInterestRate ? `${annualInterestRate}%` : ''}
+                    onChange={(e) => {
+                      const value = e.target.value.replace('%', '');
+                      // Allow decimal numbers
+                      if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                        const numValue = parseFloat(value) || 0;
+                        setAnnualInterestRate(value || 0);
+                        
+                        // Validate interest rate
+                        if (numValue > 100) {
+                          setInterestRateWarning('Please enter a value lower than 100%');
+                        } else {
+                          setInterestRateWarning('');
+                        }
+                      }
+                    }}
+                    style={{
+                      width: '120px',
+                      border: interestRateWarning ? '2px solid #dc2626' : '1px solid #ccc',
+                      padding: '8px 8px',
+                      textAlign: 'right',
+                      backgroundColor: '#fffde7',
+                      borderRadius: '6px',
+                      boxSizing: 'border-box',
+                      fontWeight: '600',
+                      fontSize: '12px'
+                    }}
+                    placeholder="%Enter rate"
+                  />
+                  {interestRateWarning && (
+                    <div style={{
+                      fontSize: '11px',
+                      color: '#dc2626',
+                      marginTop: '4px',
+                      textAlign: 'right',
+                      fontWeight: '500'
+                    }}>
+                      {interestRateWarning}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div style={{ 
