@@ -822,12 +822,13 @@ const Week5 = () => {
                       // Allow decimal numbers
                       if (value === '' || /^\d*\.?\d*$/.test(value)) {
                         const numValue = parseFloat(value) || 0;
-                        setAnnualInterestRate(value || 0);
                         
-                        // Validate interest rate
+                        // If value exceeds 100%, automatically set to 100%
                         if (numValue > 100) {
-                          setInterestRateWarning('Please enter a value lower than 100%');
+                          setAnnualInterestRate(100);
+                          setInterestRateWarning('Interest rate automatically set to 100% (maximum allowed)');
                         } else {
+                          setAnnualInterestRate(value || 0);
                           setInterestRateWarning('');
                         }
                       }
@@ -870,7 +871,7 @@ const Week5 = () => {
                   color: '#374151',
                   minWidth: '140px'
                 }}>
-                  Regular Term:
+                  Regular Monthly Payment Loan Term:
                 </label>
                 <input
                   type="text"
@@ -1085,6 +1086,224 @@ const Week5 = () => {
               <div style={styles.chartContainer}>
                 <Bar data={calculations.biWeeklyChartData} options={calculations.biWeeklyChartOptions} />
               </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Amortization Tables Section */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '20px',
+            marginBottom: '20px',
+            maxWidth: '100%'
+          }}>
+            {/* Regular Monthly Payment Amortization Table */}
+            <div style={{
+              backgroundColor: 'white',
+              padding: '24px',
+              borderRadius: '12px',
+              border: '2px solid #e9ecef',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              marginBottom: '20px'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '20px',
+                paddingBottom: '12px',
+                borderBottom: '2px solid #f1f3f4'
+              }}>
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  marginRight: '8px',
+                  color: '#002060',
+                  fontSize: '20px'
+                }}>📋</div>
+                <h3 style={{
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  color: '#002060',
+                  margin: '0',
+                  textAlign: 'center'
+                }}>Regular Monthly Payment - Amortization Table</h3>
+              </div>
+              
+              <div style={{
+                maxHeight: '400px',
+                overflowY: 'auto',
+                border: '1px solid #e9ecef',
+                borderRadius: '8px'
+              }}>
+                <table style={{
+                  width: '100%',
+                  borderCollapse: 'collapse',
+                  fontSize: '12px'
+                }}>
+                  <thead style={{
+                    position: 'sticky',
+                    top: 0,
+                    backgroundColor: '#002060',
+                    color: 'white',
+                    zIndex: 10
+                  }}>
+                    <tr>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Month</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Loan Amount</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Payment</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Interest</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Principal</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(() => {
+                      const tableData = [];
+                      let currentLoanAmount = parseFloat(loanAmount) || 0;
+                      const monthlyRate = (parseFloat(annualInterestRate) || 0) / 100 / 12;
+                      const monthlyPayment = calculations.monthlyPayment;
+                      const maxMonths = Math.min(calculations.totalPayments, 40 * 12); // Website limit
+                      
+                      for (let month = 1; month <= maxMonths && currentLoanAmount > 0; month++) {
+                        const interestPayment = currentLoanAmount * monthlyRate;
+                        const principalPayment = monthlyPayment - interestPayment;
+                        const endingBalance = Math.max(0, currentLoanAmount - principalPayment);
+                        
+                        tableData.push({
+                          month,
+                          loanAmount: currentLoanAmount,
+                          payment: monthlyPayment,
+                          interest: interestPayment,
+                          principal: principalPayment,
+                          balance: endingBalance
+                        });
+                        
+                        currentLoanAmount = endingBalance;
+                        
+                        if (endingBalance <= 0) break;
+                      }
+                      
+                      return tableData.map((row, index) => (
+                        <tr key={index} style={{
+                          backgroundColor: index % 2 === 0 ? 'white' : '#f8f9fa'
+                        }}>
+                          <td style={{ padding: '8px', textAlign: 'center', border: '1px solid #e9ecef' }}>{row.month}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.loanAmount.toFixed(2)}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.payment.toFixed(2)}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.interest.toFixed(2)}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.principal.toFixed(2)}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.balance.toFixed(2)}</td>
+                        </tr>
+                      ));
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Bi-Weekly Payment Amortization Table */}
+            <div style={{
+              backgroundColor: 'white',
+              padding: '24px',
+              borderRadius: '12px',
+              border: '2px solid #e9ecef',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              marginBottom: '20px'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '20px',
+                paddingBottom: '12px',
+                borderBottom: '2px solid #f1f3f4'
+              }}>
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  marginRight: '8px',
+                  color: '#002060',
+                  fontSize: '20px'
+                }}>📋</div>
+                <h3 style={{
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  color: '#002060',
+                  margin: '0',
+                  textAlign: 'center'
+                }}>Bi-Weekly Payment - Amortization Table</h3>
+              </div>
+              
+              <div style={{
+                maxHeight: '400px',
+                overflowY: 'auto',
+                border: '1px solid #e9ecef',
+                borderRadius: '8px'
+              }}>
+                <table style={{
+                  width: '100%',
+                  borderCollapse: 'collapse',
+                  fontSize: '12px'
+                }}>
+                  <thead style={{
+                    position: 'sticky',
+                    top: 0,
+                    backgroundColor: '#002060',
+                    color: 'white',
+                    zIndex: 10
+                  }}>
+                    <tr>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Week</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Loan Amount</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Payment</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Interest</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Principal</th>
+                      <th style={{ padding: '12px 8px', textAlign: 'center', fontWeight: '600', border: '1px solid #002060' }}>Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(() => {
+                      const tableData = [];
+                      let currentLoanAmount = parseFloat(loanAmount) || 0;
+                      const biWeeklyRate = (parseFloat(annualInterestRate) || 0) / 100 / 26;
+                      const biWeeklyPayment = calculations.biWeeklyPayment;
+                      const maxPeriods = Math.min(calculations.biWeeklyPayments, 40 * 26); // Website limit
+                      
+                      for (let period = 1; period <= maxPeriods && currentLoanAmount > 0; period++) {
+                        const weekNumber = 2 + (period - 1) * 2;
+                        const interestPayment = currentLoanAmount * biWeeklyRate;
+                        const principalPayment = Math.min(currentLoanAmount, biWeeklyPayment) - interestPayment;
+                        const endingBalance = Math.max(0, currentLoanAmount - principalPayment);
+                        
+                        tableData.push({
+                          week: weekNumber,
+                          loanAmount: currentLoanAmount,
+                          payment: Math.min(currentLoanAmount, biWeeklyPayment),
+                          interest: interestPayment,
+                          principal: principalPayment,
+                          balance: endingBalance
+                        });
+                        
+                        currentLoanAmount = endingBalance;
+                        
+                        if (endingBalance <= 0) break;
+                      }
+                      
+                      return tableData.map((row, index) => (
+                        <tr key={index} style={{
+                          backgroundColor: index % 2 === 0 ? 'white' : '#f8f9fa'
+                        }}>
+                          <td style={{ padding: '8px', textAlign: 'center', border: '1px solid #e9ecef' }}>{row.week}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.loanAmount.toFixed(2)}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.payment.toFixed(2)}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.interest.toFixed(2)}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.principal.toFixed(2)}</td>
+                          <td style={{ padding: '8px', textAlign: 'right', border: '1px solid #e9ecef' }}>${row.balance.toFixed(2)}</td>
+                        </tr>
+                      ));
+                    })()}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
