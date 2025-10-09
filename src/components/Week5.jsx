@@ -770,7 +770,7 @@ const Week5 = () => {
                   fontSize: '14px', 
                   fontWeight: 'bold',
                   color: '#374151',
-                  minWidth: '140px'
+                  minWidth: '160px'
                 }}>
                   Loan Amount:
                 </label>
@@ -809,7 +809,7 @@ const Week5 = () => {
                   fontSize: '14px', 
                   fontWeight: 'bold',
                   color: '#374151',
-                  minWidth: '140px'
+                  minWidth: '160px'
                 }}>
                   Annual Interest Rate:
                 </label>
