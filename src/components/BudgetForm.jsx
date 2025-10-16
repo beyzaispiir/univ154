@@ -494,6 +494,13 @@ export default function BudgetForm() {
             updated[key] = retirementInputs[key];
           }
         });
+        // Map retirement context values back to Week 1 field names
+        if (retirementInputs.retirement_roth_401k !== undefined && retirementInputs.retirement_roth_401k !== '') {
+          updated.roth_401k = retirementInputs.retirement_roth_401k;
+        }
+        if (retirementInputs.retirement_roth_ira !== undefined && retirementInputs.retirement_roth_ira !== '') {
+          updated.roth_ira = retirementInputs.retirement_roth_ira;
+        }
         return updated;
       });
     }, []);
@@ -552,6 +559,13 @@ export default function BudgetForm() {
         // If this is a retirement plan input, update context too
         if (id.startsWith('retirement_')) {
           setRetirementInputs(prev => ({ ...prev, [id]: numericValue }));
+        }
+        // Map Week 1 retirement field names to retirement context
+        if (id === 'roth_401k') {
+          setRetirementInputs(prev => ({ ...prev, retirement_roth_401k: numericValue }));
+        }
+        if (id === 'roth_ira') {
+          setRetirementInputs(prev => ({ ...prev, retirement_roth_ira: numericValue }));
         }
         // If this is a pre-tax expense item, update context too
         if (['health_insurance', 'life_insurance', 'disability_insurance', 'traditional_401k', 'traditional_ira'].includes(id)) {

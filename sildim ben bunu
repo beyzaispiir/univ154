@@ -1,0 +1,87 @@
+ {/* 9. Plan Simulations (Traditional 401k, Roth 401k, etc.) */}
+        <div style={styles.sectionContainer}>
+          <div style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: '#002060',
+            marginBottom: '20px',
+            textAlign: 'center'
+          }}>
+            Traditional 401(k) Balance
+          </div>
+          <div style={{padding: 0}}>
+        <div style={{display:'flex', gap:48, alignItems:'flex-start', padding:'32px 0'}}>
+          {/* Balance Inputs */}
+          <div style={{flex:2, minWidth:340, display:'flex', flexDirection:'column'}}>
+            <div style={{display:'flex', gap:12, marginBottom:40}}>
+              <div style={{flex:1}}>
+                <div style={{fontWeight:600, marginBottom:4}}>Contribution Start Age</div>
+                <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={startAge} onChange={e => setStartAge(Number(e.target.value))} />
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontWeight:600, marginBottom:4}}>Retirement Age</div>
+                <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={endAge} onChange={e => setEndAge(Number(e.target.value))} />
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontWeight:600, marginBottom:4}}>Max Contribution</div>
+                <input style={{...styles.input, fontWeight:700, background:'#fbeee6', textAlign:'center'}} type="text" value={`$${maxContribution.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}`} readOnly />
+                <div style={{fontSize:11, fontStyle:'italic', color:'#888'}}>Adjustment made for after-tax income</div>
+              </div>
+            </div>
+            <div style={{display:'flex', gap:32}}>
+              {/* Series A */}
+              <div style={{flex:1, border:'1px solid #bbb', borderRadius:8, padding:'20px 18px', marginBottom:8, minWidth:220}}>
+                <div style={{fontWeight:600, marginBottom:8, textAlign:'center', color:'#002060'}}>Traditional 401(k) Plan - Series A</div>
+                <div style={{marginBottom:8}}>Annual Payment <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={annualPaymentA} onChange={e => setAnnualPaymentA(Number(e.target.value))} /></div>
+                <div style={{marginBottom:8}}>Annual Return Rate (%) <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={returnRateA} onChange={e => setReturnRateA(Number(e.target.value))} /></div>
+                <div style={{marginBottom:8}}>Employer Match (%) <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={employerMatchA} onChange={e => setEmployerMatchA(Number(e.target.value))} /></div>
+                <div>Withdrawal Rate <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={withdrawalRateA} onChange={e => setWithdrawalRateA(Number(e.target.value))} /></div>
+              </div>
+              {/* Series B */}
+              <div style={{flex:1, border:'1px solid #bbb', borderRadius:8, padding:'20px 18px', marginBottom:8, minWidth:220}}>
+                <div style={{fontWeight:600, marginBottom:8, textAlign:'center', color:'#002060'}}>Traditional 401(k) Plan - Series B</div>
+                <div style={{marginBottom:8}}>Annual Payment <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={annualPaymentB} onChange={e => setAnnualPaymentB(Number(e.target.value))} /></div>
+                <div style={{marginBottom:8}}>Annual Return Rate (%) <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={returnRateB} onChange={e => setReturnRateB(Number(e.target.value))} /></div>
+                <div style={{marginBottom:8}}>Employer Match (%) <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={employerMatchB} onChange={e => setEmployerMatchB(Number(e.target.value))} /></div>
+                <div>Withdrawal Rate <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={withdrawalRateB} onChange={e => setWithdrawalRateB(Number(e.target.value))} /></div>
+              </div>
+              {/* Series C */}
+              <div style={{flex:1, border:'1px solid #bbb', borderRadius:8, padding:'20px 18px', marginBottom:8, minWidth:220}}>
+                <div style={{fontWeight:600, marginBottom:8, textAlign:'center', color:'#002060'}}>Traditional 401(k) Plan - Series C</div>
+                <div style={{marginBottom:8}}>Annual Payment <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={annualPaymentC} onChange={e => setAnnualPaymentC(Number(e.target.value))} /></div>
+                <div style={{marginBottom:8}}>Annual Return Rate (%) <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={returnRateC} onChange={e => setReturnRateC(Number(e.target.value))} /></div>
+                <div style={{marginBottom:8}}>Employer Match (%) <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={employerMatchC} onChange={e => setEmployerMatchC(Number(e.target.value))} /></div>
+                <div>Withdrawal Rate <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} type="number" value={withdrawalRateC} onChange={e => setWithdrawalRateC(Number(e.target.value))} /></div>
+              </div>
+            </div>
+            {/* Chart for all three series */}
+            <div style={{...styles.chartPlaceholder, width:'70%', marginTop:32, marginBottom:0, height:400, background:'white'}}>
+              <Line data={chartData} options={chartOptions} />
+            </div>
+            <div style={{display:'flex', gap:32, justifyContent:'center', margin:'12px 0 0 0'}}>
+              <div>Retirement Balance - A: <span style={styles.readOnly}>${finalBalanceA.toLocaleString(undefined, {maximumFractionDigits:2})}</span></div>
+              <div>Retirement Balance - B: <span style={styles.readOnly}>${finalBalanceB.toLocaleString(undefined, {maximumFractionDigits:2})}</span></div>
+              <div>Retirement Balance - C: <span style={styles.readOnly}>${finalBalanceC.toLocaleString(undefined, {maximumFractionDigits:2})}</span></div>
+            </div>
+          </div>
+          {/* Withdrawals Inputs (not yet dynamic) */}
+          <div style={{flex:1, minWidth:300, border:'1px solid #bbb', borderRadius:8, padding:'28px 18px', background:'#fafcff'}}>
+            <div style={sectionHeaderStyle}>Traditional 401(k) Withdrawals</div>
+            <div style={{display:'flex', flexDirection:'column', gap:18}}>
+              <div>
+                <div style={{fontWeight:600, marginBottom:4}}>Annual Draw Rate</div>
+                <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} defaultValue="4" />
+              </div>
+              <div>
+                <div style={{fontWeight:600, marginBottom:4}}>Starting Distribution Age</div>
+                <input style={{...styles.input, fontWeight:700, background:'#fffde7', textAlign:'center'}} defaultValue="70" />
+              </div>
+              <div>
+                <div style={{fontWeight:600, marginBottom:4}}>RMD</div>
+                <input style={{...styles.input, fontWeight:700, background:'#fbeee6', textAlign:'center'}} value="73" readOnly />
+                <div style={{fontSize:11, fontStyle:'italic', color:'#888'}}>RMD: Required Minimum Distribution (last start age for withdrawals)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

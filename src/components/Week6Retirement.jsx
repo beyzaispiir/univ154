@@ -1811,8 +1811,8 @@ export default function Week6Retirement() {
 
   // Helper function to handle retirement budget changes
   const handleRetirementBudgetChange = (key, value) => {
-    // Allow empty string, numbers, and one decimal point
-    const cleanValue = value.replace(/[^0-9.]/g, '');
+    // Remove dollar signs, commas, and other non-numeric characters except decimal point
+    const cleanValue = value.replace(/[$,\s]/g, '');
     
     // Clear any existing error for this field
     setValidationErrors(prev => ({
@@ -1864,8 +1864,8 @@ export default function Week6Retirement() {
 
   // Helper function to handle monthly payment changes in retirement planning sections
   const handleMonthlyPaymentChange = (key, value) => {
-    // Allow empty string, numbers, and one decimal point
-    const cleanValue = value.replace(/[^0-9.]/g, '');
+    // Remove dollar signs, commas, and other non-numeric characters except decimal point
+    const cleanValue = value.replace(/[$,\s]/g, '');
     
     // Clear any existing error for this field
     setMonthlyPaymentErrors(prev => ({
@@ -1917,7 +1917,8 @@ export default function Week6Retirement() {
 
   // Helper function to handle other retirement planning input changes
   const handleRetirementPlanningInputChange = (key, value) => {
-    const cleanValue = value.replace(/[^0-9.]/g, '');
+    // Remove percentage signs, commas, and other non-numeric characters except decimal point
+    const cleanValue = value.replace(/[%,\s]/g, '');
     
     // Clear any existing error for this field
     setRetirementPlanningErrors(prev => ({
@@ -2470,12 +2471,12 @@ export default function Week6Retirement() {
                 </td>
                 <td style={styles.td}>
                     <input
-                      type="number"
+                      type="text"
                       min="0"
-                    max="1958.33"
-                    step="0.01"
-                    value={retirementBudgetedAmounts.traditional_401k || getDefaultBudgetedAmount('traditional_401k')}
-                    onChange={e => handleRetirementBudgetChange('traditional_401k', e.target.value)}
+                      max="1958.33"
+                      step="0.01"
+                      value={retirementBudgetedAmounts.traditional_401k ? `$${retirementBudgetedAmounts.traditional_401k}` : `$${getDefaultBudgetedAmount('traditional_401k')}`}
+                      onChange={e => handleRetirementBudgetChange('traditional_401k', e.target.value)}
                       style={{
                       ...styles.input,
                       backgroundColor: '#fffde7',
@@ -2543,13 +2544,13 @@ export default function Week6Retirement() {
                 </div>
               </td>
               <td style={styles.td}>
-                <input
-                  type="number"
-                  min="0"
-                  max="1958.33"
-                  step="0.01"
-                  value={retirementBudgetedAmounts.roth_401k || getDefaultBudgetedAmount('roth_401k')}
-                  onChange={e => handleRetirementBudgetChange('roth_401k', e.target.value)}
+                  <input
+                    type="text"
+                    min="0"
+                    max="1958.33"
+                    step="0.01"
+                    value={retirementBudgetedAmounts.roth_401k ? `$${retirementBudgetedAmounts.roth_401k}` : `$${getDefaultBudgetedAmount('roth_401k')}`}
+                    onChange={e => handleRetirementBudgetChange('roth_401k', e.target.value)}
                   style={{
                     ...styles.input,
                     backgroundColor: '#fffde7',
@@ -2598,13 +2599,13 @@ export default function Week6Retirement() {
               </div>
               </td>
               <td style={styles.td}>
-                <input
-                  type="number"
-                  min="0"
-                  max="583.33"
-                  step="0.01"
-                  value={retirementBudgetedAmounts.traditional_ira || getDefaultBudgetedAmount('traditional_ira')}
-                  onChange={e => handleRetirementBudgetChange('traditional_ira', e.target.value)}
+                  <input
+                    type="text"
+                    min="0"
+                    max="583.33"
+                    step="0.01"
+                    value={retirementBudgetedAmounts.traditional_ira ? `$${retirementBudgetedAmounts.traditional_ira}` : `$${getDefaultBudgetedAmount('traditional_ira')}`}
+                    onChange={e => handleRetirementBudgetChange('traditional_ira', e.target.value)}
                   style={{
                     ...styles.input,
                     backgroundColor: '#fffde7',
@@ -2649,13 +2650,13 @@ export default function Week6Retirement() {
               </div>
               </td>
               <td style={styles.td}>
-                <input
-                  type="number"
-                  min="0"
-                  max="583.33"
-                  step="0.01"
-                  value={retirementBudgetedAmounts.roth_ira || getDefaultBudgetedAmount('roth_ira')}
-                  onChange={e => handleRetirementBudgetChange('roth_ira', e.target.value)}
+                  <input
+                    type="text"
+                    min="0"
+                    max="583.33"
+                    step="0.01"
+                    value={retirementBudgetedAmounts.roth_ira ? `$${retirementBudgetedAmounts.roth_ira}` : `$${getDefaultBudgetedAmount('roth_ira')}`}
+                    onChange={e => handleRetirementBudgetChange('roth_ira', e.target.value)}
                   style={{
                     ...styles.input,
                     backgroundColor: '#fffde7',
@@ -2896,8 +2897,8 @@ export default function Week6Retirement() {
               }}>
                 <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Annual Rate of Return (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.annualReturnRate || ''}
+                  type="text"
+                  value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value)}
                   min="0"
                   max="20"
@@ -2925,8 +2926,8 @@ export default function Week6Retirement() {
               }}>
                 <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Employer Match (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.employerMatch401k || ''}
+                  type="text"
+                  value={retirementPlanningInputs.employerMatch401k ? `${retirementPlanningInputs.employerMatch401k}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('employerMatch401k', e.target.value)}
                   min="0"
                   max="100"
@@ -2965,12 +2966,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.traditional_401k_a || ''}
+                  type="text"
+                  value={monthlyPayments.traditional_401k_a ? `$${monthlyPayments.traditional_401k_a}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_401k_a', e.target.value)}
-                  min="0"
-                  max="1958.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -2999,12 +2997,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.traditional_401k_b || ''}
+                  type="text"
+                  value={monthlyPayments.traditional_401k_b ? `$${monthlyPayments.traditional_401k_b}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_401k_b', e.target.value)}
-                  min="0"
-                  max="1958.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -3033,12 +3028,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.traditional_401k_c || ''}
+                  type="text"
+                  value={monthlyPayments.traditional_401k_c ? `$${monthlyPayments.traditional_401k_c}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_401k_c', e.target.value)}
-                  min="0"
-                  max="1958.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -3283,9 +3275,9 @@ export default function Week6Retirement() {
                   </tr>
                   <tr>
                     <td style={{ padding: '4px', fontWeight: '600' }}>Value in Today's Dollars</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditional401kSeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditional401kSeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditional401kSeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditional401kSeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditional401kSeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditional401kSeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                   </tr>
                 </tbody>
               </table>
@@ -3526,8 +3518,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.traditional401kWithdrawalRateA || ''}
+                  type="text"
+                  value={retirementPlanningInputs.traditional401kWithdrawalRateA ? `${retirementPlanningInputs.traditional401kWithdrawalRateA}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('traditional401kWithdrawalRateA', e.target.value)}
                   min="0"
                   max="100"
@@ -3582,8 +3574,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.traditional401kWithdrawalRateB || ''}
+                  type="text"
+                  value={retirementPlanningInputs.traditional401kWithdrawalRateB ? `${retirementPlanningInputs.traditional401kWithdrawalRateB}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('traditional401kWithdrawalRateB', e.target.value)}
                   min="0"
                   max="100"
@@ -3638,8 +3630,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.traditional401kWithdrawalRateC || ''}
+                  type="text"
+                  value={retirementPlanningInputs.traditional401kWithdrawalRateC ? `${retirementPlanningInputs.traditional401kWithdrawalRateC}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('traditional401kWithdrawalRateC', e.target.value)}
                   min="0"
                   max="100"
@@ -4031,8 +4023,8 @@ export default function Week6Retirement() {
               }}>
                 <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Annual Rate of Return (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.annualReturnRate || ''}
+                  type="text"
+                  value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value)}
                   min="0"
                   max="20"
@@ -4060,8 +4052,8 @@ export default function Week6Retirement() {
               }}>
                 <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Employer Match (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.employerMatch401k || ''}
+                  type="text"
+                  value={retirementPlanningInputs.employerMatch401k ? `${retirementPlanningInputs.employerMatch401k}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('employerMatch401k', e.target.value)}
                   min="0"
                   max="100"
@@ -4100,12 +4092,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.roth_401k_a || ''}
+                  type="text"
+                  value={monthlyPayments.roth_401k_a ? `$${monthlyPayments.roth_401k_a}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_401k_a', e.target.value)}
-                  min="0"
-                  max="1958.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -4134,12 +4123,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.roth_401k_b || ''}
+                  type="text"
+                  value={monthlyPayments.roth_401k_b ? `$${monthlyPayments.roth_401k_b}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_401k_b', e.target.value)}
-                  min="0"
-                  max="1958.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -4168,12 +4154,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.roth_401k_c || ''}
+                  type="text"
+                  value={monthlyPayments.roth_401k_c ? `$${monthlyPayments.roth_401k_c}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_401k_c', e.target.value)}
-                  min="0"
-                  max="1958.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -4503,9 +4486,9 @@ export default function Week6Retirement() {
                 </tr>
                   <tr>
                     <td style={{ padding: '4px', fontWeight: '600' }}>Value in Today's Dollars</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRoth401kSeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRoth401kSeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRoth401kSeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRoth401kSeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRoth401kSeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRoth401kSeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                   </tr>
             </tbody>
           </table>
@@ -4605,8 +4588,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.roth401kWithdrawalRateA || ''}
+                  type="text"
+                  value={retirementPlanningInputs.roth401kWithdrawalRateA ? `${retirementPlanningInputs.roth401kWithdrawalRateA}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('roth401kWithdrawalRateA', e.target.value)}
                   min="0"
                   max="100"
@@ -4661,8 +4644,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.roth401kWithdrawalRateB || ''}
+                  type="text"
+                  value={retirementPlanningInputs.roth401kWithdrawalRateB ? `${retirementPlanningInputs.roth401kWithdrawalRateB}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('roth401kWithdrawalRateB', e.target.value)}
                   min="0"
                   max="100"
@@ -4717,8 +4700,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.roth401kWithdrawalRateC || ''}
+                  type="text"
+                  value={retirementPlanningInputs.roth401kWithdrawalRateC ? `${retirementPlanningInputs.roth401kWithdrawalRateC}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('roth401kWithdrawalRateC', e.target.value)}
                   min="0"
                   max="100"
@@ -5060,8 +5043,8 @@ export default function Week6Retirement() {
               }}>
                 <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Annual Rate of Return (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.annualReturnRate || ''}
+                  type="text"
+                  value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value)}
                   min="0"
                   max="20"
@@ -5089,8 +5072,8 @@ export default function Week6Retirement() {
               }}>
                 <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Employer Match (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.employerMatchIRA || ''}
+                  type="text"
+                  value={retirementPlanningInputs.employerMatchIRA ? `${retirementPlanningInputs.employerMatchIRA}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('employerMatchIRA', e.target.value)}
                   min="0"
                   max="100"
@@ -5129,12 +5112,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.traditional_ira_a || ''}
+                  type="text"
+                  value={monthlyPayments.traditional_ira_a ? `$${monthlyPayments.traditional_ira_a}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_ira_a', e.target.value)}
-                  min="0"
-                  max="583.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -5163,12 +5143,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.traditional_ira_b || ''}
+                  type="text"
+                  value={monthlyPayments.traditional_ira_b ? `$${monthlyPayments.traditional_ira_b}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_ira_b', e.target.value)}
-                  min="0"
-                  max="583.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -5197,12 +5174,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.traditional_ira_c || ''}
+                  type="text"
+                  value={monthlyPayments.traditional_ira_c ? `$${monthlyPayments.traditional_ira_c}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_ira_c', e.target.value)}
-                  min="0"
-                  max="583.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -5515,9 +5489,9 @@ export default function Week6Retirement() {
             </tr>
             <tr>
                     <td style={{ padding: '4px', fontWeight: '600' }}>Value in Today's Dollars</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditionalIRASeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditionalIRASeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditionalIRASeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditionalIRASeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditionalIRASeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditionalIRASeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             </tr>
             </tbody>
           </table>
@@ -5617,8 +5591,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.traditionalIRAWithdrawalRateA || ''}
+                  type="text"
+                  value={retirementPlanningInputs.traditionalIRAWithdrawalRateA ? `${retirementPlanningInputs.traditionalIRAWithdrawalRateA}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('traditionalIRAWithdrawalRateA', e.target.value)}
                   min="0"
                   max="100"
@@ -5673,8 +5647,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.traditionalIRAWithdrawalRateB || ''}
+                  type="text"
+                  value={retirementPlanningInputs.traditionalIRAWithdrawalRateB ? `${retirementPlanningInputs.traditionalIRAWithdrawalRateB}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('traditionalIRAWithdrawalRateB', e.target.value)}
                   min="0"
                   max="100"
@@ -5729,8 +5703,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.traditionalIRAWithdrawalRateC || ''}
+                  type="text"
+                  value={retirementPlanningInputs.traditionalIRAWithdrawalRateC ? `${retirementPlanningInputs.traditionalIRAWithdrawalRateC}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('traditionalIRAWithdrawalRateC', e.target.value)}
                   min="0"
                   max="100"
@@ -6073,8 +6047,8 @@ export default function Week6Retirement() {
               }}>
                 <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Annual Rate of Return (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.annualReturnRate || ''}
+                  type="text"
+                  value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value)}
                   min="0"
                   max="20"
@@ -6102,8 +6076,8 @@ export default function Week6Retirement() {
               }}>
                 <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Employer Match (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.employerMatchIRA || ''}
+                  type="text"
+                  value={retirementPlanningInputs.employerMatchIRA ? `${retirementPlanningInputs.employerMatchIRA}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('employerMatchIRA', e.target.value)}
                   min="0"
                   max="100"
@@ -6142,12 +6116,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.roth_ira_a || ''}
+                  type="text"
+                  value={monthlyPayments.roth_ira_a ? `$${monthlyPayments.roth_ira_a}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_ira_a', e.target.value)}
-                  min="0"
-                  max="583.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -6176,12 +6147,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.roth_ira_b || ''}
+                  type="text"
+                  value={monthlyPayments.roth_ira_b ? `$${monthlyPayments.roth_ira_b}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_ira_b', e.target.value)}
-                  min="0"
-                  max="583.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -6210,12 +6178,9 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
                 <input
-                  type="number"
-                  value={monthlyPayments.roth_ira_c || ''}
+                  type="text"
+                  value={monthlyPayments.roth_ira_c ? `$${monthlyPayments.roth_ira_c}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_ira_c', e.target.value)}
-                  min="0"
-                  max="583.33"
-                  step="0.01"
                   style={{
                     width: '100%',
                     padding: '4px',
@@ -6530,9 +6495,9 @@ export default function Week6Retirement() {
             </tr>
             <tr>
                     <td style={{ padding: '4px', fontWeight: '600' }}>Value in Today's Dollars</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRothIRASeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRothIRASeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRothIRASeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString()}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRothIRASeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRothIRASeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRothIRASeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             </tr>
           </tbody>
         </table>
@@ -6630,8 +6595,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.rothIRAWithdrawalRateA || ''}
+                  type="text"
+                  value={retirementPlanningInputs.rothIRAWithdrawalRateA ? `${retirementPlanningInputs.rothIRAWithdrawalRateA}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('rothIRAWithdrawalRateA', e.target.value)}
                   min="0"
                   max="100"
@@ -6686,8 +6651,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.rothIRAWithdrawalRateB || ''}
+                  type="text"
+                  value={retirementPlanningInputs.rothIRAWithdrawalRateB ? `${retirementPlanningInputs.rothIRAWithdrawalRateB}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('rothIRAWithdrawalRateB', e.target.value)}
                   min="0"
                   max="100"
@@ -6742,8 +6707,8 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
                 <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.rothIRAWithdrawalRateC || ''}
+                  type="text"
+                  value={retirementPlanningInputs.rothIRAWithdrawalRateC ? `${retirementPlanningInputs.rothIRAWithdrawalRateC}%` : ''}
                   onChange={(e) => handleRetirementPlanningInputChange('rothIRAWithdrawalRateC', e.target.value)}
                   min="0"
                   max="100"

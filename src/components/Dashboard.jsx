@@ -355,7 +355,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                             color={isAccessible ? "#0d1a4b" : "#9ca3af"}
                             className="w-4 h-4"
                           />
-                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
+                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px' }}>
                             Week 5 - Real Estate
                           </span>
                         </span>
@@ -369,7 +369,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                             color={isAccessible ? "#0d1a4b" : "#9ca3af"}
                             className="w-4 h-4"
                           />
-                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
+                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px' }}>
                             Week 6 - Retirement
                           </span>
                         </span>
@@ -385,7 +385,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                             color={isAccessible ? "#0d1a4b" : "#9ca3af"}
                             className="w-4 h-4"
                           />
-                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
+                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px' }}>
                             Week 8 - Psych of Finance
                           </span>
                         </span>
@@ -399,7 +399,7 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                             color={isAccessible ? "#0d1a4b" : "#9ca3af"}
                             className="w-4 h-4"
                           />
-                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af" }}>
+                          <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px' }}>
                             Week 9 - Investing
                           </span>
                         </span>
@@ -419,31 +419,31 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
                               // Week 5: tek satır
                               <span className="flex items-center">
                                 <FaFileExcel color="#9ca3af" className="w-4 h-4" />
-                                <span className="ml-2 text-gray-400">Week 5 - Real Estate</span>
+                                <span className="ml-2 text-gray-400" style={{ marginLeft: '8px' }}>Week 5 - Real Estate</span>
                               </span>
                             ) : i === 5 ? (
                               // Week 6: tek satır
                               <span className="flex items-center">
                                 <FaFileExcel color="#9ca3af" className="w-4 h-4" />
-                                <span className="ml-2 text-gray-400">Week 6 - Retirement</span>
+                                <span className="ml-2 text-gray-400" style={{ marginLeft: '8px' }}>Week 6 - Retirement</span>
                               </span>
                             ) : i === 7 ? (
                               // Week 8: tek satır
                               <span className="flex items-center">
                                 <FaFileExcel color="#9ca3af" className="w-4 h-4" />
-                                <span className="ml-2 text-gray-400">Week 8 - Psych of Finance</span>
+                                <span className="ml-2 text-gray-400" style={{ marginLeft: '8px' }}>Week 8 - Psych of Finance</span>
                               </span>
                             ) : i === 8 ? (
                               // Week 9: tek satır
                               <span className="flex items-center">
                                 <FaFileExcel color="#9ca3af" className="w-4 h-4" />
-                                <span className="ml-2 text-gray-400">Week 9 - Investing</span>
+                                <span className="ml-2 text-gray-400" style={{ marginLeft: '8px' }}>Week 9 - Investing</span>
                               </span>
                             ) : (
                               // Diğer haftalar: tek satır
                               <span className="flex items-center">
                                 <FaFileExcel color="#9ca3af" className="w-4 h-4" />
-                                <span className="ml-2 text-gray-400">{weekLabel}</span>
+                                <span className="ml-2 text-gray-400" style={{ marginLeft: '8px' }}>{weekLabel}</span>
                               </span>
                             )}
                             <span className="ml-auto text-xs text-gray-400">🔒</span>
