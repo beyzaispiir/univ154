@@ -47,7 +47,7 @@ const styles = {
   },
   sectionDivider: {
     height: '3px',
-    background: 'linear-gradient(90deg, #002060, #28a745, #002060)',
+    background: 'linear-gradient(90deg, #002060, #666, #002060)',
     margin: '20px 0',
     borderRadius: '2px',
     boxShadow: '0 2px 4px rgba(0, 32, 96, 0.2)'
@@ -189,7 +189,7 @@ function getLastValid(arr) {
 }
 
 export default function Week6Retirement() {
-  const { topInputs, retirementInputs, setRetirementInputs, financialCalculations, summaryCalculations, saveBudgetData, loadBudgetData } = useBudget() || {};
+  const { topInputs, retirementInputs, setRetirementInputs, userPreTaxInputs, financialCalculations, summaryCalculations, saveBudgetData, loadBudgetData } = useBudget() || {};
 
   // Handler functions for save/load
   const handleSaveWeek6 = async () => {
@@ -1794,6 +1794,17 @@ export default function Week6Retirement() {
 
   // Helper function to get retirement input from Week 1
   const getRetirementInput = (key) => {
+    // Handle traditional retirement accounts from userPreTaxInputs
+    if (key === 'retirement_traditional_401k') {
+      const val = userPreTaxInputs?.traditional_401k;
+      return val === undefined || val === "" ? 0 : Number(val);
+    }
+    if (key === 'retirement_traditional_ira') {
+      const val = userPreTaxInputs?.traditional_ira;
+      return val === undefined || val === "" ? 0 : Number(val);
+    }
+    
+    // Handle Roth retirement accounts from retirementInputs
     const val = retirementInputs?.[key];
     return val === undefined || val === "" ? 0 : Number(val);
   };
@@ -2439,7 +2450,7 @@ export default function Week6Retirement() {
                     fontSize: '14px',
                     marginBottom: '8px'
                   }}>
-                    Traditional 401(k), 403(b), 457(b), or Thrift Savings Plan
+                    Traditional 401(k)
                   </div>
                   <div style={{
                     fontSize: '12px',
@@ -2520,7 +2531,7 @@ export default function Week6Retirement() {
             <tr>
               <td style={{...styles.td, textAlign: 'left', verticalAlign: 'top', padding: '16px 12px'}}>
                 <div style={{fontWeight: '600', fontSize: '14px', marginBottom: '8px'}}>
-                  Roth 401(k) Plan
+                  Roth 401(k)
       </div>
                 <div style={{fontSize: '12px', color: '#666', lineHeight: '1.4'}}>
                   Post-tax. Employer-sponsored. $23,500 limit. Pay taxes now, withdraw tax-free. Employer match common; goes into pre-tax 401(k).
@@ -2560,12 +2571,12 @@ export default function Week6Retirement() {
                 )}
               </td>
               <td style={styles.td}>
-                <div style={{fontSize: '14px', fontWeight: '600', color: '#28a745'}}>
+                <div style={{fontSize: '14px', fontWeight: '600', color: '#666'}}>
                   ${formatCurrency(calculateRecommendedRoth401k())}
                 </div>
               </td>
               <td style={styles.td}>
-                <div style={{fontSize: '14px', fontWeight: '600', color: '#28a745'}}>
+                <div style={{fontSize: '14px', fontWeight: '600', color: '#666'}}>
                   {monthlyPreTaxIncome > 0 ? ((calculateRecommendedRoth401k() / monthlyPreTaxIncome) * 100).toFixed(2) : '0.00'}%
                 </div>
               </td>
@@ -2666,12 +2677,12 @@ export default function Week6Retirement() {
                 )}
                   </td>
               <td style={styles.td}>
-                <div style={{fontSize: '14px', fontWeight: '600', color: '#28a745'}}>
+                <div style={{fontSize: '14px', fontWeight: '600', color: '#666'}}>
                   ${formatCurrency(calculateRecommendedRothIRA())}
               </div>
               </td>
               <td style={styles.td}>
-                <div style={{fontSize: '14px', fontWeight: '600', color: '#28a745'}}>
+                <div style={{fontSize: '14px', fontWeight: '600', color: '#666'}}>
                   {monthlyPreTaxIncome > 0 ? ((calculateRecommendedRothIRA() / monthlyPreTaxIncome) * 100).toFixed(2) : '0.00'}%
               </div>
               </td>
@@ -4553,8 +4564,8 @@ export default function Week6Retirement() {
               }}>
                 <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>RMD</div>
                 <input
-                  type="number"
-                  value={retirementPlanningInputs.rmdAge || ''}
+                  type="text"
+                  value="None"
                   readOnly
                   style={{
                     width: '100%',
@@ -4573,7 +4584,7 @@ export default function Week6Retirement() {
                 color: '#666',
                 flex: 1
               }}>
-                RMD: Required Minimum Distribution (last start age for withdrawals) - Fixed at 75
+                RMD: Required Minimum Distribution (last start age for withdrawals) 
             </div>
       </div>
 
@@ -5923,7 +5934,7 @@ export default function Week6Retirement() {
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#28a745' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#666' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series B</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -6936,7 +6947,7 @@ export default function Week6Retirement() {
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#28a745' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#666' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series B</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
