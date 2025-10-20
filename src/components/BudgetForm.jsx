@@ -29,7 +29,7 @@ const budgetConfig = {
         {
           title: 'Retirement Contributions',
           items: [
-            { id: 'traditional_401k', label: 'Traditional 401(k), 403(b), 457(b), or Thrift Savings Plan', explanation: '$23,500 Max Contribution' },
+            { id: 'traditional_401k', label: 'Traditional 401(k)', explanation: '$23,500 Max Contribution' },
             { id: 'traditional_ira', label: 'Traditional IRA', explanation: '$7,000 Max Contribution' },
           ],
           note: 'Roth 401k & Roth IRA listed under After-Tax'
