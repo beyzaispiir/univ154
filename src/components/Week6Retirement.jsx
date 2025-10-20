@@ -2309,6 +2309,7 @@ export default function Week6Retirement() {
       </div>
 
       <div style={styles.container}>
+        <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
         <div style={{
           ...styles.enhancedHeader,
@@ -2745,12 +2746,18 @@ export default function Week6Retirement() {
               <tr>
                 <td style={styles.td}>
                   <input
-                    type="number"
+                    type="text"
                     min="0"
                     max="100"
                     step="0.1"
-                    value={deferralPercentage || ''}
-                    onChange={e => setDeferralPercentage(e.target.value)}
+                    value={`${deferralPercentage}%`}
+                    onChange={e => {
+                      const cleanValue = e.target.value.replace(/[%,\s]/g, '');
+                      const numValue = parseFloat(cleanValue);
+                      if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                        setDeferralPercentage(numValue);
+                      }
+                    }}
                     style={{
                       ...styles.input,
                       backgroundColor: '#fffde7',
@@ -7012,6 +7019,7 @@ export default function Week6Retirement() {
             >
               📁 Load Week 6 Data
             </button>
+        </div>
         </div>
       </div>
     </>
