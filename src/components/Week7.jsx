@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const Week7 = () => {
   // State for insurance comparison
-  const [expectedMedicalExpenses, setExpectedMedicalExpenses] = useState(3000);
+  const [expectedMedicalExpenses, setExpectedMedicalExpenses] = useState(11000);
   const [hoveredTerm, setHoveredTerm] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
@@ -18,17 +18,29 @@ const Week7 = () => {
   };
   const [hdhpPlan, setHdhpPlan] = useState({
     annualPremium: 6000,
-    deductible: 4000,
-    coinsuranceRate: 0.2, // 20% stored as decimal (0.2)
-    maxOutOfPocket: 7000,
-    employerHSA: 1000
+    deductible: 5000,
+    coinsuranceRate: 20, // 20% stored as percentage (20)
+    maxOutOfPocket: 8000,
+    employerHSA: 500,
+    // Recommendation values
+    annualPremiumRec: 6000,
+    deductibleRec: 5000,
+    coinsuranceRateRec: 20,
+    maxOutOfPocketRec: 8000,
+    employerHSARec: 500
   });
   const [normalPlan, setNormalPlan] = useState({
-    annualPremium: 9000,
+    annualPremium: 8000,
     deductible: 1000,
-    coinsuranceRate: 0.2, // 20% stored as decimal (0.2)
-    maxOutOfPocket: 5000,
-    employerHSA: 0
+    coinsuranceRate: 20, // 20% stored as percentage (20)
+    maxOutOfPocket: 4000,
+    employerHSA: 0,
+    // Recommendation values
+    annualPremiumRec: 8000,
+    deductibleRec: 1000,
+    coinsuranceRateRec: 20,
+    maxOutOfPocketRec: 4000,
+    employerHSARec: 0
   });
 
   // Calculate costs for each plan using Excel formula: =MIN(C10 + (MAX(C4-C10,0)*(C12/100)), C14)
@@ -47,7 +59,7 @@ const Week7 = () => {
     
     // Calculate coinsurance amount: MAX(C4-C10,0)*(C12/100)
     // Only apply coinsurance if medical expenses exceed deductible
-    // Note: coinsuranceRate is 0.2 (20%), so C12/100 = 0.2/100 = 0.002
+    // Note: coinsuranceRate is 20 (20%), so we divide by 100 to get decimal
     const coinsuranceAmount = Math.max(medicalExpenses - deductible, 0) * (coinsuranceRate / 100);
     console.log(`Coinsurance amount: ${coinsuranceAmount}`);
     
@@ -59,11 +71,18 @@ const Week7 = () => {
     const outOfPocketCosts = Math.min(totalOutOfPocket, maxOutOfPocket);
     console.log(`Final out-of-pocket costs: ${outOfPocketCosts}`);
     
+    // Calculate Total Amount Insurance Covers
+    // Formula: (Expected Medical Expenses - Deductible) × (1 - Coinsurance Rate)
+    const amountAfterDeductible = Math.max(medicalExpenses - deductible, 0);
+    const totalAmountInsuranceCovers = amountAfterDeductible * (1 - coinsuranceRate / 100);
+    console.log(`Total Amount Insurance Covers: ${totalAmountInsuranceCovers}`);
+    
     const totalAnnualCost = annualPremium + outOfPocketCosts - employerHSA;
     
     return {
       outOfPocketCosts,
-      totalAnnualCost
+      totalAnnualCost,
+      totalAmountInsuranceCovers
     };
   };
 
@@ -73,7 +92,7 @@ const Week7 = () => {
   console.log('HDHP costs:', hdhpCosts);
   console.log('Normal costs:', normalCosts);
   const savings = normalCosts.totalAnnualCost - hdhpCosts.totalAnnualCost;
-  const cheaperPlan = savings > 0 ? 'HDHP Plan' : 'Normal Plan';
+  const cheaperPlan = savings > 0 ? 'HDHP Plan' : 'Traditional Plan';
 
   // Handler functions for save/load using localStorage
   const handleSaveWeek7 = async () => {
@@ -338,11 +357,20 @@ const Week7 = () => {
             <div style={{ 
               fontSize: '15px', 
               fontWeight: '600', 
-              marginBottom: '16px', 
+              marginBottom: '8px', 
               textAlign: 'center',
               color: '#002060'
             }}>
               Plan Comparison
+            </div>
+            <div style={{
+              fontSize: '12px',
+              color: '#666',
+              textAlign: 'center',
+              marginBottom: '16px',
+              fontStyle: 'italic'
+            }}>
+              
             </div>
             <div style={{ overflowX: 'auto' }}>
               <table style={styles.table}>
@@ -350,7 +378,7 @@ const Week7 = () => {
                   <tr>
                     <th style={styles.th}>Category</th>
                     <th style={styles.th}>HDHP Plan</th>
-                    <th style={styles.th}>Normal Plan</th>
+                    <th style={styles.th}>Traditional Plan</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -369,32 +397,45 @@ const Week7 = () => {
                       onMouseLeave={() => setHoveredTerm(null)}
                     >
                       Annual Premium
+                      <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px'}}>
+                        Reccomendation
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={hdhpPlan.annualPremium ? `$${hdhpPlan.annualPremium}` : ''}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[$,]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            setHdhpPlan({...hdhpPlan, annualPremium: Number(cleanValue) || 0});
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          value={hdhpPlan.annualPremium ? `$${hdhpPlan.annualPremium}` : ''}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[$,]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              setHdhpPlan({...hdhpPlan, annualPremium: Number(cleanValue) || 0});
+                            }
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          ${hdhpPlan.annualPremiumRec.toLocaleString()}
+                        </div>
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={normalPlan.annualPremium ? `$${normalPlan.annualPremium}` : ''}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[$,]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            setNormalPlan({...normalPlan, annualPremium: Number(cleanValue) || 0});
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          value={normalPlan.annualPremium ? `$${normalPlan.annualPremium}` : ''}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[$,]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              setNormalPlan({...normalPlan, annualPremium: Number(cleanValue) || 0});
+                            }
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          ${normalPlan.annualPremiumRec.toLocaleString()}
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -412,32 +453,45 @@ const Week7 = () => {
                       onMouseLeave={() => setHoveredTerm(null)}
                     >
                       Deductible
+                      <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px'}}>
+                        Reccomendation
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={hdhpPlan.deductible ? `$${hdhpPlan.deductible}` : ''}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[$,]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            setHdhpPlan({...hdhpPlan, deductible: Number(cleanValue) || 0});
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          value={hdhpPlan.deductible ? `$${hdhpPlan.deductible}` : ''}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[$,]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              setHdhpPlan({...hdhpPlan, deductible: Number(cleanValue) || 0});
+                            }
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          ${hdhpPlan.deductibleRec.toLocaleString()}
+                        </div>
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={normalPlan.deductible ? `$${normalPlan.deductible}` : ''}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[$,]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            setNormalPlan({...normalPlan, deductible: Number(cleanValue) || 0});
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          value={normalPlan.deductible ? `$${normalPlan.deductible}` : ''}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[$,]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              setNormalPlan({...normalPlan, deductible: Number(cleanValue) || 0});
+                            }
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          ${normalPlan.deductibleRec.toLocaleString()}
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -455,38 +509,51 @@ const Week7 = () => {
                       onMouseLeave={() => setHoveredTerm(null)}
                     >
                       Coinsurance Rate
+                      <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px'}}>
+                        Reccomendation
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={hdhpPlan.coinsuranceRate ? `${hdhpPlan.coinsuranceRate * 100}%` : ''}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[%,\s]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            const numValue = Number(cleanValue) || 0;
-                            if (numValue >= 0 && numValue <= 100) {
-                              setHdhpPlan({...hdhpPlan, coinsuranceRate: numValue / 100});
+                      <div>
+                        <input
+                          type="text"
+                          value={hdhpPlan.coinsuranceRate ? `${hdhpPlan.coinsuranceRate}%` : ''}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[%,\s]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              const numValue = Number(cleanValue) || 0;
+                              if (numValue >= 0 && numValue <= 100) {
+                                setHdhpPlan({...hdhpPlan, coinsuranceRate: numValue});
+                              }
                             }
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          {hdhpPlan.coinsuranceRateRec}%
+                        </div>
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={normalPlan.coinsuranceRate ? `${normalPlan.coinsuranceRate * 100}%` : ''}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[%,\s]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            const numValue = Number(cleanValue) || 0;
-                            if (numValue >= 0 && numValue <= 100) {
-                              setNormalPlan({...normalPlan, coinsuranceRate: numValue / 100});
+                      <div>
+                        <input
+                          type="text"
+                          value={normalPlan.coinsuranceRate ? `${normalPlan.coinsuranceRate}%` : ''}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[%,\s]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              const numValue = Number(cleanValue) || 0;
+                              if (numValue >= 0 && numValue <= 100) {
+                                setNormalPlan({...normalPlan, coinsuranceRate: numValue});
+                              }
                             }
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          {normalPlan.coinsuranceRateRec}%
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -504,32 +571,45 @@ const Week7 = () => {
                       onMouseLeave={() => setHoveredTerm(null)}
                     >
                       Max Paid Out-of-Pocket
+                      <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px'}}>
+                        Reccomendation
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={hdhpPlan.maxOutOfPocket ? `$${hdhpPlan.maxOutOfPocket}` : ''}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[$,]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            setHdhpPlan({...hdhpPlan, maxOutOfPocket: Number(cleanValue) || 0});
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          value={hdhpPlan.maxOutOfPocket ? `$${hdhpPlan.maxOutOfPocket}` : ''}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[$,]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              setHdhpPlan({...hdhpPlan, maxOutOfPocket: Number(cleanValue) || 0});
+                            }
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          ${hdhpPlan.maxOutOfPocketRec.toLocaleString()}
+                        </div>
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={normalPlan.maxOutOfPocket ? `$${normalPlan.maxOutOfPocket}` : ''}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[$,]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            setNormalPlan({...normalPlan, maxOutOfPocket: Number(cleanValue) || 0});
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          value={normalPlan.maxOutOfPocket ? `$${normalPlan.maxOutOfPocket}` : ''}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[$,]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              setNormalPlan({...normalPlan, maxOutOfPocket: Number(cleanValue) || 0});
+                            }
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          ${normalPlan.maxOutOfPocketRec.toLocaleString()}
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -547,36 +627,121 @@ const Week7 = () => {
                       onMouseLeave={() => setHoveredTerm(null)}
                     >
                       Employer HSA Contribution
+                      <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px'}}>
+                        Reccomendation
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={hdhpPlan.employerHSA ? `$${hdhpPlan.employerHSA}` : ''}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[$,]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            setHdhpPlan({...hdhpPlan, employerHSA: Number(cleanValue) || 0});
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          value={hdhpPlan.employerHSA ? `$${hdhpPlan.employerHSA}` : ''}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[$,]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              setHdhpPlan({...hdhpPlan, employerHSA: Number(cleanValue) || 0});
+                            }
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          ${hdhpPlan.employerHSARec.toLocaleString()}
+                        </div>
+                      </div>
                     </td>
                     <td style={styles.td}>
-                      <input
-                        type="text"
-                        value={normalPlan.employerHSA !== undefined ? `$${normalPlan.employerHSA}` : '$0'}
-                        onChange={(e) => {
-                          const cleanValue = e.target.value.replace(/[$,]/g, '');
-                          if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                            setNormalPlan({...normalPlan, employerHSA: Number(cleanValue) || 0});
-                          }
-                        }}
-                        style={styles.input}
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          value={normalPlan.employerHSA !== undefined ? `$${normalPlan.employerHSA}` : '$0'}
+                          onChange={(e) => {
+                            const cleanValue = e.target.value.replace(/[$,]/g, '');
+                            if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+                              setNormalPlan({...normalPlan, employerHSA: Number(cleanValue) || 0});
+                            }
+                          }}
+                          style={styles.input}
+                        />
+                        <div style={{fontSize: '11px', color: '#666', fontStyle: 'italic', marginTop: '2px', textAlign: 'right'}}>
+                          ${normalPlan.employerHSARec.toLocaleString()}
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          {/* Total Amount Insurance Covers */}
+          <div style={{
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            padding: '16px',
+            border: '1px solid #e9ecef',
+            marginBottom: '20px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
+          }}>
+            <div style={{ 
+              fontSize: '15px', 
+              fontWeight: '600', 
+              marginBottom: '16px', 
+              textAlign: 'center',
+              color: '#002060'
+            }}>
+              Total Amount Insurance Covers
+            </div>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: '1fr 1fr', 
+              gap: '24px'
+            }}>
+              <div style={{
+                backgroundColor: '#f8f9fa',
+                borderRadius: '8px',
+                padding: '16px',
+                border: '1px solid #e9ecef',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#002060',
+                  marginBottom: '8px'
+                }}>
+                  HDHP Plan
+                </div>
+                <div style={{
+                  fontSize: '16px',
+                  fontWeight: '700',
+                  color: '#002060'
+                }}>
+                  ${hdhpCosts.totalAmountInsuranceCovers.toLocaleString()}
+                </div>
+              </div>
+              <div style={{
+                backgroundColor: '#f8f9fa',
+                borderRadius: '8px',
+                padding: '16px',
+                border: '1px solid #e9ecef',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#002060',
+                  marginBottom: '8px'
+                }}>
+                  Traditional Plan
+                </div>
+                <div style={{
+                  fontSize: '16px',
+                  fontWeight: '700',
+                  color: '#002060'
+                }}>
+                  ${normalCosts.totalAmountInsuranceCovers.toLocaleString()}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -636,6 +801,13 @@ const Week7 = () => {
                   </span>
                 </div>
                 
+                <div style={{ marginBottom: '12px', fontSize: '14px', display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: '#495057' }}>Annual Premium:</span>
+                  <span style={{ fontWeight: '600', color: '#002060' }}>
+                    ${hdhpPlan.annualPremium.toLocaleString()}
+                  </span>
+                </div>
+                
                 <div style={{ 
                   borderTop: '1px solid #002060', 
                   paddingTop: '12px', 
@@ -664,7 +836,7 @@ const Week7 = () => {
                   color: '#002060',
                   marginBottom: '16px'
                 }}>
-                  Normal Plan
+                  Traditional Plan
                 </div>
                 
                 <div style={{ marginBottom: '12px', fontSize: '14px', display: 'flex', justifyContent: 'space-between' }}>
@@ -678,6 +850,13 @@ const Week7 = () => {
                   <span style={{ color: '#495057' }}>Less Employer HSA Contribution:</span>
                   <span style={{ fontWeight: '600', color: '#28a745' }}>
                     (${normalPlan.employerHSA.toLocaleString()})
+                  </span>
+                </div>
+                
+                <div style={{ marginBottom: '12px', fontSize: '14px', display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: '#495057' }}>Annual Premium:</span>
+                  <span style={{ fontWeight: '600', color: '#002060' }}>
+                    ${normalPlan.annualPremium.toLocaleString()}
                   </span>
                 </div>
                 
