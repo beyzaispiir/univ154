@@ -71,18 +71,12 @@ const Week7 = () => {
     const outOfPocketCosts = Math.min(totalOutOfPocket, maxOutOfPocket);
     console.log(`Final out-of-pocket costs: ${outOfPocketCosts}`);
     
-    // Calculate Total Amount Insurance Covers
-    // Formula: (Expected Medical Expenses - Deductible) × (1 - Coinsurance Rate)
-    const amountAfterDeductible = Math.max(medicalExpenses - deductible, 0);
-    const totalAmountInsuranceCovers = amountAfterDeductible * (1 - coinsuranceRate / 100);
-    console.log(`Total Amount Insurance Covers: ${totalAmountInsuranceCovers}`);
     
     const totalAnnualCost = annualPremium + outOfPocketCosts - employerHSA;
     
     return {
       outOfPocketCosts,
-      totalAnnualCost,
-      totalAmountInsuranceCovers
+      totalAnnualCost
     };
   };
 
@@ -673,77 +667,6 @@ const Week7 = () => {
             </div>
           </div>
 
-          {/* Total Amount Insurance Covers */}
-          <div style={{
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '16px',
-            border: '1px solid #e9ecef',
-            marginBottom: '20px',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
-          }}>
-            <div style={{ 
-              fontSize: '15px', 
-              fontWeight: '600', 
-              marginBottom: '16px', 
-              textAlign: 'center',
-              color: '#002060'
-            }}>
-              Total Amount Insurance Covers
-            </div>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: '1fr 1fr', 
-              gap: '24px'
-            }}>
-              <div style={{
-                backgroundColor: '#f8f9fa',
-                borderRadius: '8px',
-                padding: '16px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#002060',
-                  marginBottom: '8px'
-                }}>
-                  HDHP Plan
-                </div>
-                <div style={{
-                  fontSize: '16px',
-                  fontWeight: '700',
-                  color: '#002060'
-                }}>
-                  ${hdhpCosts.totalAmountInsuranceCovers.toLocaleString()}
-                </div>
-              </div>
-              <div style={{
-                backgroundColor: '#f8f9fa',
-                borderRadius: '8px',
-                padding: '16px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#002060',
-                  marginBottom: '8px'
-                }}>
-                  Traditional Plan
-                </div>
-                <div style={{
-                  fontSize: '16px',
-                  fontWeight: '700',
-                  color: '#002060'
-                }}>
-                  ${normalCosts.totalAmountInsuranceCovers.toLocaleString()}
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Total Annual Cost Calculation - Clean Design */}
           <div style={{
