@@ -27,13 +27,46 @@ const Week3CreditCard = () => {
   const [generalAnnualRate, setGeneralAnnualRate] = useState('0.08');
   const [generalTerm, setGeneralTerm] = useState('60');
 
+  // Format number for input display (with commas, preserve decimals for cents)
+  const formatNumberForInput = (num) => {
+    if (!num || num === '') return '';
+    
+    // Keep as string to preserve decimal input exactly as user types
+    const numStr = num.toString();
+    
+    // If it's just a decimal point, return it as-is
+    if (numStr === '.') return '.';
+    
+    const number = parseFloat(num);
+    if (isNaN(number)) return numStr;
+    
+    // If it has a decimal point, preserve it exactly (don't force 2 decimals)
+    if (numStr.includes('.')) {
+      const parts = numStr.split('.');
+      const intPart = parts[0] || '';
+      const decPart = parts[1] || '';
+      
+      // If intPart is empty (user typing ".5"), don't format
+      if (intPart === '') {
+        return '.' + decPart;
+      }
+      
+      // Format integer part with commas, keep decimal part as-is
+      const formattedInt = parseInt(intPart).toLocaleString('en-US');
+      return decPart ? `${formattedInt}.${decPart}` : formattedInt + '.';
+    } else {
+      // Whole number - format with commas
+      return parseInt(numStr).toLocaleString('en-US');
+    }
+  };
+
   // Calculated values
   // Minimum payment = Interest for Month 1 (Week 3.1 B - AM Table!E4)
   const monthlyRate = (parseFloat(annualInterestRate) || 0) / 100 / 12;
   const minimumPayment = Math.round(((parseFloat(debtAmount) || 0) * monthlyRate) * 100) / 100;
 
-  // Handler functions for save/load
-  const handleSaveWeek3 = async () => {
+  // Auto-save function (without alert)
+  const autoSaveWeek3 = () => {
     try {
       const week3Data = {
         debtAmount,
@@ -45,19 +78,18 @@ const Week3CreditCard = () => {
         timestamp: new Date().toISOString()
       };
       
-      // Save to localStorage
+      // Save to localStorage silently
       localStorage.setItem('week3_data', JSON.stringify(week3Data));
-      alert('Week 3 data saved successfully! 💾');
     } catch (error) {
-      alert('Error saving Week 3 data: ' + error.message);
+      console.error('Error auto-saving Week 3 data:', error);
     }
   };
 
-  const handleLoadWeek3 = async () => {
-    try {
-      const savedData = localStorage.getItem('week3_data');
-      
-      if (savedData) {
+  // Auto-load data on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('week3_data');
+    if (savedData) {
+      try {
         const week3Data = JSON.parse(savedData);
         
         // Load Week 3 specific data
@@ -67,15 +99,20 @@ const Week3CreditCard = () => {
         if (week3Data.generalLoanAmount) setGeneralLoanAmount(week3Data.generalLoanAmount);
         if (week3Data.generalAnnualRate) setGeneralAnnualRate(week3Data.generalAnnualRate);
         if (week3Data.generalTerm) setGeneralTerm(week3Data.generalTerm);
-        
-        alert('Week 3 data loaded successfully! 📁');
-      } else {
-        alert('No saved data found for Week 3.');
+      } catch (error) {
+        console.error('Error loading Week 3 data:', error);
       }
-    } catch (error) {
-      alert('Error loading Week 3 data: ' + error.message);
     }
-  };
+  }, []); // Only run on mount
+
+  // Auto-save with debounce (500ms delay)
+  useEffect(() => {
+    const saveTimer = setTimeout(() => {
+      autoSaveWeek3();
+    }, 500); // Wait 500ms after last change before saving
+
+    return () => clearTimeout(saveTimer);
+  }, [debtAmount, annualInterestRate, userPayment, generalLoanAmount, generalAnnualRate, generalTerm]);
 
   // General Loans amortization calculation (Week 3.2 B - AM Table)
   const calculateGeneralLoanAmortization = () => {
@@ -686,13 +723,36 @@ const Week3CreditCard = () => {
                   <div style={styles.inputLabel}>Amount of Credit Card Debt</div>
                   <input
                     type="text"
-                    value={debtAmount ? `$${parseFloat(debtAmount).toLocaleString('en-US')}` : ''}
+                    value={debtAmount ? `$${formatNumberForInput(debtAmount)}` : ''}
                     onChange={(e) => {
-                      const value = e.target.value.replace(/[$,]/g, '');
-                      setDebtAmount(value);
+                      const cleanValue = e.target.value.replace(/[$,]/g, '');
+                      const sanitized = cleanValue.replace(/[^0-9.]/g, '');
+                      
+                      if (sanitized === '') {
+                        setDebtAmount('');
+                        return;
+                      }
+                      
+                      const firstDotIndex = sanitized.indexOf('.');
+                      let numericValue = '';
+                      
+                      if (firstDotIndex === -1) {
+                        numericValue = sanitized;
+                      } else {
+                        const intPart = sanitized.substring(0, firstDotIndex);
+                        const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2);
+                        numericValue = intPart + '.' + decPart;
+                      }
+                      
+                      if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+                        setDebtAmount(numericValue);
+                        return;
+                      }
+                      
+                      setDebtAmount(numericValue);
                     }}
                     style={styles.input}
-                    placeholder="$Enter amount"
+                    placeholder="Enter amount"
                   />
                 </div>
                 <div style={styles.inputRow}>
@@ -722,12 +782,33 @@ const Week3CreditCard = () => {
                   <div style={styles.inputLabel}>User Input Payment</div>
                   <input
                     type="text"
-                    value={userPayment ? `$${userPayment}` : ''}
+                    value={userPayment ? `$${formatNumberForInput(userPayment)}` : ''}
                     onChange={(e) => {
-                      const value = e.target.value.replace(/[$,]/g, '');
+                      const cleanValue = e.target.value.replace(/[$,]/g, '');
+                      const sanitized = cleanValue.replace(/[^0-9.]/g, '');
                       
-                      // Always allow any input while typing (including deletion)
-                      setUserPayment(value);
+                      if (sanitized === '') {
+                        setUserPayment('');
+                        return;
+                      }
+                      
+                      const firstDotIndex = sanitized.indexOf('.');
+                      let numericValue = '';
+                      
+                      if (firstDotIndex === -1) {
+                        numericValue = sanitized;
+                      } else {
+                        const intPart = sanitized.substring(0, firstDotIndex);
+                        const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2);
+                        numericValue = intPart + '.' + decPart;
+                      }
+                      
+                      if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+                        setUserPayment(numericValue);
+                        return;
+                      }
+                      
+                      setUserPayment(numericValue);
                     }}
                     onBlur={(e) => {
                       // Only validate when user finishes typing (onBlur)
@@ -987,13 +1068,36 @@ const Week3CreditCard = () => {
                 <span style={styles.loanDetailLabel}>Loan Amount</span>
                 <input
                   type="text"
-                  value={generalLoanAmount ? `$${parseFloat(generalLoanAmount).toLocaleString('en-US')}` : ''}
+                  value={generalLoanAmount ? `$${formatNumberForInput(generalLoanAmount)}` : ''}
                   onChange={(e) => {
-                    const value = e.target.value.replace(/[$,]/g, '');
-                    setGeneralLoanAmount(value);
+                    const cleanValue = e.target.value.replace(/[$,]/g, '');
+                    const sanitized = cleanValue.replace(/[^0-9.]/g, '');
+                    
+                    if (sanitized === '') {
+                      setGeneralLoanAmount('');
+                      return;
+                    }
+                    
+                    const firstDotIndex = sanitized.indexOf('.');
+                    let numericValue = '';
+                    
+                    if (firstDotIndex === -1) {
+                      numericValue = sanitized;
+                    } else {
+                      const intPart = sanitized.substring(0, firstDotIndex);
+                      const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2);
+                      numericValue = intPart + '.' + decPart;
+                    }
+                    
+                    if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+                      setGeneralLoanAmount(numericValue);
+                      return;
+                    }
+                    
+                    setGeneralLoanAmount(numericValue);
                   }}
                   style={styles.loanInput}
-                  placeholder="$Enter amount"
+                  placeholder="Enter amount"
                 />
               </div>
               <div style={styles.loanDetailItem}>
@@ -1132,62 +1236,6 @@ const Week3CreditCard = () => {
         borderRadius: '12px',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
       }}>
-        <button
-          onClick={handleSaveWeek3}
-          style={{
-            backgroundColor: '#002060',
-            color: 'white',
-            border: 'none',
-            padding: '12px 24px',
-            borderRadius: '8px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.backgroundColor = '#003d82';
-            e.target.style.transform = 'translateY(-2px)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.backgroundColor = '#002060';
-            e.target.style.transform = 'translateY(0)';
-          }}
-        >
-          💾 Save Week 3 Data
-        </button>
-        <button
-          onClick={handleLoadWeek3}
-          style={{
-            backgroundColor: '#374151',
-            color: 'white',
-            border: 'none',
-            padding: '12px 24px',
-            borderRadius: '8px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.backgroundColor = '#4b5563';
-            e.target.style.transform = 'translateY(-2px)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.backgroundColor = '#374151';
-            e.target.style.transform = 'translateY(0)';
-          }}
-        >
-          📁 Load Week 3 Data
-        </button>
       </div>
 
       {/* Note */}

@@ -1,10 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 
 const Week7 = () => {
   // State for insurance comparison
   const [expectedMedicalExpenses, setExpectedMedicalExpenses] = useState(11000);
   const [hoveredTerm, setHoveredTerm] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
+  // Format number for input display (with commas, preserve decimals for cents)
+  const formatNumberForInput = (num) => {
+    if (!num || num === '') return '';
+    
+    // Keep as string to preserve decimal input exactly as user types
+    const numStr = num.toString();
+    
+    // If it's just a decimal point, return it as-is
+    if (numStr === '.') return '.';
+    
+    const number = parseFloat(num);
+    if (isNaN(number)) return numStr;
+    
+    // If it has a decimal point, preserve it exactly (don't force 2 decimals)
+    if (numStr.includes('.')) {
+      const parts = numStr.split('.');
+      const intPart = parts[0] || '';
+      const decPart = parts[1] || '';
+      
+      // If intPart is empty (user typing ".5"), don't format
+      if (intPart === '') {
+        return '.' + decPart;
+      }
+      
+      // Format integer part with commas, keep decimal part as-is
+      const formattedInt = parseInt(intPart).toLocaleString('en-US');
+      return decPart ? `${formattedInt}.${decPart}` : formattedInt + '.';
+    } else {
+      // Whole number - format with commas
+      return parseInt(numStr).toLocaleString('en-US');
+    }
+  };
 
   // Definitions for tooltips
   const definitions = {
@@ -46,10 +79,11 @@ const Week7 = () => {
   // Calculate costs for each plan using Excel formula: =MIN(C10 + (MAX(C4-C10,0)*(C12/100)), C14)
   // Where: C10=deductible, C4=medicalExpenses, C12=coinsuranceRate, C14=maxOutOfPocket
   const calculatePlanCosts = (plan, medicalExpenses) => {
-    const { annualPremium, deductible, coinsuranceRate, maxOutOfPocket, employerHSA } = plan;
+    if (!plan) {
+      return { outOfPocketCosts: 0, totalAnnualCost: 0 };
+    }
     
-    console.log(`Calculating for plan:`, plan === hdhpPlan ? 'HDHP' : 'Normal');
-    console.log(`Medical expenses: ${medicalExpenses}, Deductible: ${deductible}`);
+    const { annualPremium, deductible, coinsuranceRate, maxOutOfPocket, employerHSA } = plan;
     
     // Excel formula breakdown:
     // C10 = deductible
@@ -61,16 +95,12 @@ const Week7 = () => {
     // Only apply coinsurance if medical expenses exceed deductible
     // Note: coinsuranceRate is 20 (20%), so we divide by 100 to get decimal
     const coinsuranceAmount = Math.max(medicalExpenses - deductible, 0) * (coinsuranceRate / 100);
-    console.log(`Coinsurance amount: ${coinsuranceAmount}`);
     
     // Calculate total out-of-pocket: C10 + coinsuranceAmount
     const totalOutOfPocket = deductible + coinsuranceAmount;
-    console.log(`Total out-of-pocket before max: ${totalOutOfPocket}`);
     
     // Apply max out-of-pocket limit: MIN(totalOutOfPocket, C14)
     const outOfPocketCosts = Math.min(totalOutOfPocket, maxOutOfPocket);
-    console.log(`Final out-of-pocket costs: ${outOfPocketCosts}`);
-    
     
     const totalAnnualCost = annualPremium + outOfPocketCosts - employerHSA;
     
@@ -80,16 +110,33 @@ const Week7 = () => {
     };
   };
 
-  const hdhpCosts = calculatePlanCosts(hdhpPlan, expectedMedicalExpenses);
-  const normalCosts = calculatePlanCosts(normalPlan, expectedMedicalExpenses);
-  console.log('Current expectedMedicalExpenses:', expectedMedicalExpenses);
-  console.log('HDHP costs:', hdhpCosts);
-  console.log('Normal costs:', normalCosts);
-  const savings = normalCosts.totalAnnualCost - hdhpCosts.totalAnnualCost;
+  // Memoize calculations to prevent unnecessary recalculations
+  const hdhpCosts = useMemo(() => {
+    try {
+      return calculatePlanCosts(hdhpPlan, expectedMedicalExpenses);
+    } catch (error) {
+      console.error('Error calculating HDHP costs:', error);
+      return { outOfPocketCosts: 0, totalAnnualCost: 0 };
+    }
+  }, [hdhpPlan, expectedMedicalExpenses]);
+
+  const normalCosts = useMemo(() => {
+    try {
+      return calculatePlanCosts(normalPlan, expectedMedicalExpenses);
+    } catch (error) {
+      console.error('Error calculating Normal costs:', error);
+      return { outOfPocketCosts: 0, totalAnnualCost: 0 };
+    }
+  }, [normalPlan, expectedMedicalExpenses]);
+
+  const savings = useMemo(() => {
+    return normalCosts.totalAnnualCost - hdhpCosts.totalAnnualCost;
+  }, [normalCosts.totalAnnualCost, hdhpCosts.totalAnnualCost]);
+
   const cheaperPlan = savings > 0 ? 'HDHP Plan' : 'Traditional Plan';
 
   // Handler functions for save/load using localStorage
-  const handleSaveWeek7 = async () => {
+  const handleSaveWeek7 = () => {
     try {
       const week7Data = {
         week: 7,
@@ -99,31 +146,29 @@ const Week7 = () => {
         timestamp: new Date().toISOString()
       };
       
-      // Save to localStorage
       localStorage.setItem('week7_data', JSON.stringify(week7Data));
-      alert('Week 7 data saved successfully!');
+      alert('✅ Week 7 data saved successfully!');
     } catch (error) {
       console.error('Error saving Week 7 data:', error);
-      alert('Error saving Week 7 data. Please try again.');
+      alert('❌ Error saving Week 7 data. Please try again.');
     }
   };
 
-  const handleLoadWeek7 = async () => {
+  const handleLoadWeek7 = () => {
     try {
       const savedData = localStorage.getItem('week7_data');
-      
       if (savedData) {
         const week7Data = JSON.parse(savedData);
-        setExpectedMedicalExpenses(week7Data.expectedMedicalExpenses || 3000);
-        setHdhpPlan(week7Data.hdhpPlan || hdhpPlan);
-        setNormalPlan(week7Data.normalPlan || normalPlan);
-        alert('Week 7 data loaded successfully!');
+        setExpectedMedicalExpenses(week7Data.expectedMedicalExpenses || 11000);
+        if (week7Data.hdhpPlan) setHdhpPlan(week7Data.hdhpPlan);
+        if (week7Data.normalPlan) setNormalPlan(week7Data.normalPlan);
+        alert('✅ Week 7 data loaded successfully!');
       } else {
-        alert('No saved data found for Week 7.');
+        alert('ℹ️ No saved data found for Week 7.');
       }
     } catch (error) {
       console.error('Error loading Week 7 data:', error);
-      alert('Error loading Week 7 data. Please try again.');
+      alert('❌ Error loading Week 7 data. Please try again.');
     }
   };
 
@@ -315,15 +360,34 @@ const Week7 = () => {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <input
                 type="text"
-                value={expectedMedicalExpenses ? `$${expectedMedicalExpenses}` : ''}
+                value={expectedMedicalExpenses ? `$${formatNumberForInput(expectedMedicalExpenses)}` : ''}
                 onChange={(e) => {
                   const cleanValue = e.target.value.replace(/[$,]/g, '');
-                  console.log('Input value:', e.target.value, 'Clean value:', cleanValue);
-                  if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
-                    const numValue = Number(cleanValue) || 0;
-                    console.log('Setting expectedMedicalExpenses to:', numValue);
-                    setExpectedMedicalExpenses(numValue);
+                  const sanitized = cleanValue.replace(/[^0-9.]/g, '');
+                  
+                  if (sanitized === '') {
+                    setExpectedMedicalExpenses(0);
+                    return;
                   }
+                  
+                  const firstDotIndex = sanitized.indexOf('.');
+                  let numericValue = '';
+                  
+                  if (firstDotIndex === -1) {
+                    numericValue = sanitized;
+                  } else {
+                    const intPart = sanitized.substring(0, firstDotIndex);
+                    const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2);
+                    numericValue = intPart + '.' + decPart;
+                  }
+                  
+                  if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+                    setExpectedMedicalExpenses(numericValue || 0);
+                    return;
+                  }
+                  
+                  const numValue = parseFloat(numericValue) || 0;
+                  setExpectedMedicalExpenses(numValue);
                 }}
                 style={{
                   padding: '8px',
@@ -856,58 +920,40 @@ const Week7 = () => {
             <button
               onClick={handleSaveWeek7}
               style={{
+                padding: '12px 24px',
                 backgroundColor: '#002060',
                 color: 'white',
                 border: 'none',
-                padding: '12px 24px',
                 borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
+                fontSize: '14px',
+                fontWeight: '600',
                 cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
-                transition: 'all 0.3s ease'
+                transition: 'background-color 0.2s',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
               }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#003d82';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#002060';
-                e.target.style.transform = 'translateY(0)';
-              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#003080'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#002060'}
             >
               💾 Save Week 7 Data
             </button>
             <button
               onClick={handleLoadWeek7}
               style={{
-                backgroundColor: '#374151',
+                padding: '12px 24px',
+                backgroundColor: '#28a745',
                 color: 'white',
                 border: 'none',
-                padding: '12px 24px',
                 borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
+                fontSize: '14px',
+                fontWeight: '600',
                 cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
-                transition: 'all 0.3s ease'
+                transition: 'background-color 0.2s',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
               }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#4b5563';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#374151';
-                e.target.style.transform = 'translateY(0)';
-              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#218838'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#28a745'}
             >
-              📁 Load Week 7 Data
+              📂 Load Week 7 Data
             </button>
           </div>
 

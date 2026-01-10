@@ -5,67 +5,79 @@ import { calculateFinancials } from '../utils/taxCalculator';
 const styles = {
   container: {
     fontSize: '14px',
-    maxWidth: 1200,
+    maxWidth: 1400,
     margin: '0 auto',
-    padding: 24,
-    backgroundColor: '#fdfdfd',
-    color: '#333'
+    padding: '32px 24px',
+    backgroundColor: '#fafafa',
+    color: '#111827',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   },
   header: {
-    fontSize: '18px',
+    fontSize: '24px',
     fontWeight: '600',
-    margin: '20px 0 10px 0',
-    color: '#002060'
+    margin: '0 0 32px 0',
+    color: '#111827',
+    letterSpacing: '-0.01em',
   },
   table: {
     width: '100%',
     borderCollapse: 'separate',
     borderSpacing: 0,
-    marginTop: 20,
-    borderRadius: '8px',
+    marginTop: 24,
+    borderRadius: '10px',
     overflow: 'hidden',
-    border: '1px solid #e0e0e0'
+    border: '1px solid #e5e7eb',
+    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
   },
   th: {
-    backgroundColor: '#002060',
+    background: '#0d1a4b',
     color: 'white',
-    padding: '12px',
-    borderBottom: '1px solid #e0e0e0',
+    padding: '16px',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     textAlign: 'center',
     fontWeight: '600',
-    fontSize: '14px',
+    fontSize: '13px',
+    letterSpacing: '0.01em',
   },
   td: {
-    border: '1px solid #e0e0e0',
-    padding: '10px 12px',
+    borderBottom: '1px solid #f3f4f6',
+    padding: '14px 16px',
     verticalAlign: 'middle',
     fontSize: '14px',
-    textAlign: 'center'
+    textAlign: 'center',
+    backgroundColor: 'white',
+    transition: 'background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
   },
   inputCell: {
     backgroundColor: '#fffde7',
-    border: '1px solid #ccc',
-    padding: '8px',
+    border: '1px solid #d1d5db',
+    padding: '10px 14px',
     textAlign: 'right',
-    borderRadius: '4px',
+    borderRadius: '8px',
     width: '100%',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    fontSize: '14px',
+    fontWeight: '500',
+    outline: 'none',
   },
   calculatedCell: {
-    backgroundColor: '#f5f5f5',
-    fontWeight: '500'
+    backgroundColor: '#f9fafb',
+    fontWeight: '500',
+    color: '#374151',
   },
   summaryCell: {
-    backgroundColor: '#e8f5e9',
-    fontWeight: '600'
+    backgroundColor: '#f0fdf4',
+    fontWeight: '600',
+    color: '#166534',
   },
   sectionTitle: {
-    backgroundColor: '#002060',
+    background: '#0d1a4b',
     color: 'white',
-    padding: '12px',
+    padding: '16px',
     textAlign: 'center',
     fontWeight: '600',
-    fontSize: '16px'
+    fontSize: '16px',
+    letterSpacing: '0.01em',
   }
 };
 
@@ -162,11 +174,18 @@ export default function Week1FederalTax() {
     <div style={styles.container}>
       <h2 style={styles.header}>Week 1 - Federal Tax</h2>
       
-      {/* Input Section - Cell O2 and P2 */}
-      <div style={{ marginBottom: '30px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-        <h3 style={{ marginBottom: '15px', color: '#002060' }}>User Taxable Income</h3>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <label style={{ fontWeight: '600' }}>User Taxable Income (O2):</label>
+      {/* Input Section - Cell O2 and P2 - Modern Card */}
+      <div style={{ 
+        marginBottom: '32px', 
+        padding: '24px', 
+        backgroundColor: 'white', 
+        borderRadius: '10px',
+        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        border: '1px solid #e5e7eb'
+      }}>
+        <h3 style={{ marginBottom: '16px', color: '#111827', fontSize: '18px', fontWeight: '600' }}>User Taxable Income</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          <label style={{ fontWeight: '500', color: '#374151', fontSize: '14px' }}>User Taxable Income (O2):</label>
           <input
             style={styles.inputCell}
             type="number"
@@ -174,7 +193,7 @@ export default function Week1FederalTax() {
             readOnly
             placeholder="='Week 1 - Summary'!C22"
           />
-          <span style={{ color: '#666', fontSize: '12px' }}>
+          <span style={{ color: '#6b7280', fontSize: '12px', fontStyle: 'italic' }}>
             (P2: ='Week 1 - Summary'!C22)
           </span>
         </div>
@@ -195,21 +214,37 @@ export default function Week1FederalTax() {
           </thead>
           <tbody>
             {taxCalculations.map((calc, index) => (
-              <tr key={index}>
+              <tr 
+                key={index}
+                onMouseEnter={(e) => {
+                  Array.from(e.currentTarget.children).forEach(td => {
+                    if (!td.style.backgroundColor.includes('f9fafb')) {
+                      td.style.backgroundColor = '#f9fafb';
+                    }
+                  });
+                }}
+                onMouseLeave={(e) => {
+                  Array.from(e.currentTarget.children).forEach(td => {
+                    if (td.style.backgroundColor === '#f9fafb') {
+                      td.style.backgroundColor = td.classList.contains('calculated') ? '#f9fafb' : 'white';
+                    }
+                  });
+                }}
+              >
                 <td style={styles.td}>
-                  <strong>O{index + 7}:</strong> {formatPercent(calc.rate)}
+                  <strong style={{color: '#0d1a4b'}}>O{index + 7}:</strong> {formatPercent(calc.rate)}
                 </td>
                 <td style={styles.td}>
-                  <strong>P{index + 7}:</strong> {formatCurrency(calc.lowerBound)}
+                  <strong style={{color: '#0d1a4b'}}>P{index + 7}:</strong> {formatCurrency(calc.lowerBound)}
                 </td>
-                <td style={{...styles.td, ...styles.calculatedCell}}>
-                  <strong>Q{index + 7}:</strong> {calc.appliedTracker}
+                <td style={{...styles.td, ...styles.calculatedCell}} className="calculated">
+                  <strong style={{color: '#0d1a4b'}}>Q{index + 7}:</strong> {calc.appliedTracker}
                 </td>
-                <td style={{...styles.td, ...styles.calculatedCell}}>
-                  <strong>R{index + 7}:</strong> {calc.tracker2}
+                <td style={{...styles.td, ...styles.calculatedCell}} className="calculated">
+                  <strong style={{color: '#0d1a4b'}}>R{index + 7}:</strong> {calc.tracker2}
                 </td>
-                <td style={{...styles.td, ...styles.calculatedCell}}>
-                  <strong>S{index + 7}:</strong> {formatCurrency(calc.federalTax)}
+                <td style={{...styles.td, ...styles.calculatedCell}} className="calculated">
+                  <strong style={{color: '#0d1a4b'}}>S{index + 7}:</strong> {formatCurrency(calc.federalTax)}
                 </td>
               </tr>
             ))}
@@ -217,48 +252,82 @@ export default function Week1FederalTax() {
         </table>
       </div>
 
-      {/* Final Summary Section - Exact Excel Cell References */}
-      <div style={{ padding: '20px', backgroundColor: '#e8f5e9', borderRadius: '8px' }}>
-        <h3 style={{ marginBottom: '15px', color: '#002060' }}>Tax Payment Summary</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '16px', fontWeight: '600', marginBottom: '5px' }}>Total Federal Income Tax</div>
-            <div style={{ fontSize: '20px', fontWeight: '700', color: '#002060' }}>
+      {/* Final Summary Section - Modern Card Design */}
+      <div style={{ 
+        padding: '32px', 
+        backgroundColor: 'white', 
+        borderRadius: '10px',
+        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        border: '1px solid #e5e7eb',
+        marginTop: '32px'
+      }}>
+        <h3 style={{ marginBottom: '24px', color: '#111827', fontSize: '20px', fontWeight: '600' }}>Tax Payment Summary</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+          <div style={{ 
+            textAlign: 'center',
+            padding: '24px',
+            backgroundColor: '#fafafa',
+            borderRadius: '10px',
+            border: '1px solid #e5e7eb',
+            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+          }}>
+            <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#6b7280' }}>Total Federal Income Tax</div>
+            <div style={{ fontSize: '28px', fontWeight: '600', color: '#0d1a4b', marginBottom: '8px' }}>
               {formatCurrency(totalFederalIncomeTax)}
             </div>
-            <div style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
+            <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '8px', fontFamily: 'monospace' }}>
               <strong>S16:</strong> =SUM($S$7:$S$13)
             </div>
           </div>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '16px', fontWeight: '600', marginBottom: '5px' }}>Federal Social Security Tax Payment</div>
-            <div style={{ fontSize: '20px', fontWeight: '700', color: '#002060' }}>
+          <div style={{ 
+            textAlign: 'center',
+            padding: '24px',
+            backgroundColor: '#fafafa',
+            borderRadius: '10px',
+            border: '1px solid #e5e7eb',
+            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+          }}>
+            <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#6b7280' }}>Federal Social Security Tax Payment</div>
+            <div style={{ fontSize: '28px', fontWeight: '600', color: '#0d1a4b', marginBottom: '8px' }}>
               {formatCurrency(socialSecurityTax)}
             </div>
-            <div style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
+            <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '8px', fontFamily: 'monospace' }}>
               <strong>S18:</strong> =MIN('Week 1 - Summary'!$C$4*$B$20,$B$17)
             </div>
           </div>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '16px', fontWeight: '600', marginBottom: '5px' }}>Federal Medicare Tax Payment</div>
-            <div style={{ fontSize: '20px', fontWeight: '700', color: '#002060' }}>
+          <div style={{ 
+            textAlign: 'center',
+            padding: '24px',
+            backgroundColor: '#fafafa',
+            borderRadius: '10px',
+            border: '1px solid #e5e7eb',
+            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+          }}>
+            <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#6b7280' }}>Federal Medicare Tax Payment</div>
+            <div style={{ fontSize: '28px', fontWeight: '600', color: '#0d1a4b', marginBottom: '8px' }}>
               {formatCurrency(medicareTax)}
             </div>
-            <div style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
+            <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '8px', fontFamily: 'monospace' }}>
               <strong>S20:</strong> =$B$23*'Week 1 - Summary'!$C$4
             </div>
           </div>
         </div>
         
-        {/* Additional Excel References */}
-        <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f0f8ff', borderRadius: '6px' }}>
-          <h4 style={{ marginBottom: '10px', color: '#002060' }}>Key Excel Cell References:</h4>
-          <div style={{ fontSize: '12px', color: '#666' }}>
-            <div><strong>P2:</strong> ='Week 1 - Summary'!C22 (User Taxable Income)</div>
-            <div><strong>B17:</strong> 176100 (Social Security Tax Limit)</div>
-            <div><strong>B20:</strong> 0.062 (Social Security Tax %)</div>
-            <div><strong>B23:</strong> 0.0145 (Federal Medicare Tax %)</div>
-            <div><strong>Week 1 - Summary!$C$4:</strong> Annual income reference</div>
+        {/* Additional Excel References - Modern Info Box */}
+        <div style={{ 
+          marginTop: '32px', 
+          padding: '20px', 
+          backgroundColor: '#f0f9ff', 
+          borderRadius: '10px',
+          border: '1px solid #bfdbfe'
+        }}>
+          <h4 style={{ marginBottom: '12px', color: '#1e40af', fontSize: '16px', fontWeight: '600' }}>Key Excel Cell References:</h4>
+          <div style={{ fontSize: '13px', color: '#475569', lineHeight: '1.8' }}>
+            <div><strong style={{color: '#1e40af'}}>P2:</strong> ='Week 1 - Summary'!C22 (User Taxable Income)</div>
+            <div><strong style={{color: '#1e40af'}}>B17:</strong> 176100 (Social Security Tax Limit)</div>
+            <div><strong style={{color: '#1e40af'}}>B20:</strong> 0.062 (Social Security Tax %)</div>
+            <div><strong style={{color: '#1e40af'}}>B23:</strong> 0.0145 (Federal Medicare Tax %)</div>
+            <div><strong style={{color: '#1e40af'}}>Week 1 - Summary!$C$4:</strong> Annual income reference</div>
           </div>
         </div>
       </div>

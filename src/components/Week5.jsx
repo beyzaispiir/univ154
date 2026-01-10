@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -18,6 +18,39 @@ const Week5 = () => {
   const [loanAmount, setLoanAmount] = useState(400000);
   const [annualInterestRate, setAnnualInterestRate] = useState(6);
   const [loanTermYears, setLoanTermYears] = useState(20);
+
+  // Format number for input display (with commas, preserve decimals for cents)
+  const formatNumberForInput = (num) => {
+    if (!num || num === '') return '';
+    
+    // Keep as string to preserve decimal input exactly as user types
+    const numStr = num.toString();
+    
+    // If it's just a decimal point, return it as-is
+    if (numStr === '.') return '.';
+    
+    const number = parseFloat(num);
+    if (isNaN(number)) return numStr;
+    
+    // If it has a decimal point, preserve it exactly (don't force 2 decimals)
+    if (numStr.includes('.')) {
+      const parts = numStr.split('.');
+      const intPart = parts[0] || '';
+      const decPart = parts[1] || '';
+      
+      // If intPart is empty (user typing ".5"), don't format
+      if (intPart === '') {
+        return '.' + decPart;
+      }
+      
+      // Format integer part with commas, keep decimal part as-is
+      const formattedInt = parseInt(intPart).toLocaleString('en-US');
+      return decPart ? `${formattedInt}.${decPart}` : formattedInt + '.';
+    } else {
+      // Whole number - format with commas
+      return parseInt(numStr).toLocaleString('en-US');
+    }
+  };
   
   // State for validation warnings
   const [interestRateWarning, setInterestRateWarning] = useState('');
@@ -399,7 +432,8 @@ const Week5 = () => {
   }, [loanAmount, annualInterestRate, loanTermYears]);
 
   // Handler functions for save/load using localStorage for now
-  const handleSaveWeek5 = async () => {
+  // Auto-save function (without alert)
+  const autoSaveWeek5 = () => {
     try {
       const week5Data = {
         loan_amount: loanAmount,
@@ -411,20 +445,18 @@ const Week5 = () => {
         timestamp: new Date().toISOString()
       };
       
-      // Save to localStorage for now
+      // Save to localStorage silently
       localStorage.setItem('week5_data', JSON.stringify(week5Data));
-      alert('Week 5 data saved successfully!');
     } catch (error) {
-      console.error('Error saving Week 5 data:', error);
-      alert('Error saving Week 5 data. Please try again.');
+      console.error('Error auto-saving Week 5 data:', error);
     }
   };
 
-  const handleLoadWeek5 = async () => {
-    try {
-      const savedData = localStorage.getItem('week5_data');
-      
-      if (savedData) {
+  // Auto-load data on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('week5_data');
+    if (savedData) {
+      try {
         const week5Data = JSON.parse(savedData);
         setLoanAmount(week5Data.loan_amount || 400000);
         setAnnualInterestRate(week5Data.annual_interest_rate || 6);
@@ -432,15 +464,20 @@ const Week5 = () => {
         setInsurance(week5Data.insurance || 0);
         setTaxes(week5Data.taxes || 0);
         setMaintenance(week5Data.maintenance || 0);
-        alert('Week 5 data loaded successfully!');
-      } else {
-        alert('No saved data found for Week 5.');
+      } catch (error) {
+        console.error('Error loading Week 5 data:', error);
       }
-    } catch (error) {
-      console.error('Error loading Week 5 data:', error);
-      alert('Error loading Week 5 data. Please try again.');
     }
-  };
+  }, []); // Only run on mount
+
+  // Auto-save with debounce (500ms delay)
+  useEffect(() => {
+    const saveTimer = setTimeout(() => {
+      autoSaveWeek5();
+    }, 500); // Wait 500ms after last change before saving
+
+    return () => clearTimeout(saveTimer);
+  }, [loanAmount, annualInterestRate, loanTermYears, insurance, taxes, maintenance]);
 
   // Styling matching Week 1, Week 2, and Week 3 patterns exactly
   const styles = {
@@ -776,13 +813,33 @@ const Week5 = () => {
                 </label>
                 <input
                   type="text"
-                  value={loanAmount ? `$${parseFloat(loanAmount).toLocaleString('en-US')}` : ''}
+                  value={loanAmount ? `$${formatNumberForInput(loanAmount)}` : ''}
                   onChange={(e) => {
-                    const value = e.target.value.replace(/[$,]/g, '');
-                    // Allow decimal numbers
-                    if (value === '' || /^\d*\.?\d*$/.test(value)) {
-                      setLoanAmount(value || 0);
+                    const cleanValue = e.target.value.replace(/[$,]/g, '');
+                    const sanitized = cleanValue.replace(/[^0-9.]/g, '');
+                    
+                    if (sanitized === '') {
+                      setLoanAmount(0);
+                      return;
                     }
+                    
+                    const firstDotIndex = sanitized.indexOf('.');
+                    let numericValue = '';
+                    
+                    if (firstDotIndex === -1) {
+                      numericValue = sanitized;
+                    } else {
+                      const intPart = sanitized.substring(0, firstDotIndex);
+                      const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2);
+                      numericValue = intPart + '.' + decPart;
+                    }
+                    
+                    if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+                      setLoanAmount(numericValue || 0);
+                      return;
+                    }
+                    
+                    setLoanAmount(numericValue || 0);
                   }}
                   style={{
                     width: '120px',
@@ -1322,62 +1379,6 @@ const Week5 = () => {
             borderRadius: '12px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
           }}>
-            <button
-              onClick={handleSaveWeek5}
-              style={{
-                backgroundColor: '#002060',
-                color: 'white',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#003d82';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#002060';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              💾 Save Week 5 Data
-            </button>
-            <button
-              onClick={handleLoadWeek5}
-              style={{
-                backgroundColor: '#374151',
-                color: 'white',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#4b5563';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#374151';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              📁 Load Week 5 Data
-            </button>
           </div>
 
         {/* Note */}

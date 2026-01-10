@@ -15,131 +15,145 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-// Inline styles matching Week 1, 2, 3 for consistency
+// Modern inline styles with improved visual design
 const styles = {
   container: {
     minHeight: '100vh',
-    backgroundColor: '#f8f9fa',
-    padding: '20px',
+    backgroundColor: '#f9fafb',
+    padding: '24px',
     maxWidth: '1200px',
     margin: '0 auto',
     fontSize: '14px',
-    color: '#333',
+    color: '#1f2937',
   },
   sectionContainer: {
     backgroundColor: 'white',
-    borderRadius: '12px',
-    padding: '24px',
-    marginBottom: '30px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    border: '1px solid #e9ecef'
+    borderRadius: '16px',
+    padding: '32px',
+    marginBottom: '32px',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #e5e7eb',
+    transition: 'all 0.2s ease-in-out',
   },
   enhancedHeader: {
-    backgroundColor: '#002060',
+    background: 'linear-gradient(135deg, #0d1a4b 0%, #162456 100%)',
     color: 'white',
-    padding: '20px 24px',
-    borderRadius: '12px',
+    padding: '24px 28px',
+    borderRadius: '16px',
     fontWeight: '700',
-    fontSize: '18px',
+    fontSize: '20px',
     textAlign: 'center',
-    marginBottom: '20px',
-    boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)'
+    marginBottom: '24px',
+    boxShadow: '0 10px 15px -3px rgba(13, 26, 75, 0.3), 0 4px 6px -4px rgba(13, 26, 75, 0.2)',
+    letterSpacing: '0.02em',
   },
   sectionDivider: {
-    height: '3px',
-    background: 'linear-gradient(90deg, #002060, #666, #002060)',
-    margin: '20px 0',
+    height: '4px',
+    background: 'linear-gradient(90deg, transparent, #0d1a4b, #fdb913, #0d1a4b, transparent)',
+    margin: '24px 0',
     borderRadius: '2px',
-    boxShadow: '0 2px 4px rgba(0, 32, 96, 0.2)'
+    boxShadow: '0 2px 4px rgba(13, 26, 75, 0.15)'
   },
   section: {
     marginBottom: 48,
-    borderRadius: '12px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+    borderRadius: '16px',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
     background: '#fff',
     padding: '32px 2vw',
+    border: '1px solid #e5e7eb',
+    transition: 'all 0.2s ease-in-out',
   },
   header: {
-    fontSize: '22px',
+    fontSize: '24px',
     fontWeight: 700,
-    color: '#002060',
-    marginBottom: 18,
+    color: '#0d1a4b',
+    marginBottom: 20,
+    letterSpacing: '-0.01em',
   },
   subHeader: {
-    fontSize: '16px',
+    fontSize: '18px',
     fontWeight: 600,
-    color: '#002060',
-    margin: '18px 0 10px 0',
+    color: '#0d1a4b',
+    margin: '20px 0 12px 0',
+    letterSpacing: '-0.01em',
   },
   table: {
     width: '70%',
     borderCollapse: 'separate',
     borderSpacing: 0,
-    marginTop: 10,
+    marginTop: 12,
     borderRadius: '12px',
     overflow: 'hidden',
-    border: '1px solid #e0e0e0',
-    marginBottom: 18,
+    border: '1px solid #e5e7eb',
+    marginBottom: 20,
     marginLeft: 'auto',
-    marginRight: 'auto', // ya da kısaca:
-    // margin: '10px auto 18px auto',
+    marginRight: 'auto',
+    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
   },
   
   th: {
-    backgroundColor: '#002060',
+    background: 'linear-gradient(135deg, #0d1a4b 0%, #162456 100%)',
     color: 'white',
-    padding: '12px',
-    borderBottom: '1px solid #e0e0e0',
+    padding: '14px',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     textAlign: 'center',
     fontWeight: 600,
+    letterSpacing: '0.01em',
   },
   td: {
-    border: '1px solid #e0e0e0',
-    padding: '10px 12px',
+    border: '1px solid #e5e7eb',
+    padding: '12px 14px',
     verticalAlign: 'middle',
     textAlign: 'center',
+    backgroundColor: 'white',
+    transition: 'background-color 0.15s ease',
   },
   input: {
     width: '100%',
-    border: '1px solid #ccc',
-    padding: '8px',
+    border: '2px solid #d1d5db',
+    padding: '10px 12px',
     textAlign: 'right',
     backgroundColor: '#fffde7',
-    borderRadius: '6px',
+    borderRadius: '8px',
     boxSizing: 'border-box',
+    transition: 'all 0.2s ease-in-out',
+    fontSize: '14px',
   },
   readOnly: {
     textAlign: 'right',
     paddingRight: '12px',
-    color: '#555',
-    backgroundColor: '#f5f5f5',
-    borderRadius: '6px',
+    color: '#4b5563',
+    backgroundColor: '#f9fafb',
+    borderRadius: '8px',
+    fontWeight: 500,
   },
   chartPlaceholder: {
     width: '70%',
     height: 300,
-    background: '#eef2f6',
+    background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#888',
+    color: '#6b7280',
     fontSize: 18,
-    borderRadius: '12px',
+    borderRadius: '16px',
     margin: '24px auto',
+    border: '1px solid #e5e7eb',
+    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
   },
   info: {
-    background: 'rgba(255,255,255,0.85)',
-    border: '1px solid #bfdbfe',
-    boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-    borderRadius: '14px',
-    padding: '12px 20px',
+    background: 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(254, 243, 199, 0.9) 100%)',
+    border: '2px solid #fdb913',
+    boxShadow: '0 4px 6px -1px rgba(253, 185, 19, 0.2), 0 2px 4px -2px rgba(253, 185, 19, 0.1)',
+    borderRadius: '12px',
+    padding: '14px 20px',
     color: '#0d1a4b',
     fontWeight: 500,
-    fontSize: 12,
-    marginBottom: 18,
+    fontSize: 13,
+    marginBottom: 20,
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
   },
 };
 
@@ -191,50 +205,6 @@ function getLastValid(arr) {
 export default function Week6Retirement() {
   const { topInputs, retirementInputs, setRetirementInputs, userPreTaxInputs, financialCalculations, summaryCalculations, saveBudgetData, loadBudgetData } = useBudget() || {};
 
-  // Handler functions for save/load
-  const handleSaveWeek6 = async () => {
-    try {
-      const week6Data = {
-        retirementPlanningInputs,
-        monthlyPayments,
-        timestamp: new Date().toISOString()
-      };
-      
-      // Save to localStorage
-      localStorage.setItem('week6_data', JSON.stringify(week6Data));
-      alert('Week 6 data saved successfully!');
-    } catch (error) {
-      console.error('Error saving Week 6 data:', error);
-      alert('Error saving Week 6 data. Please try again.');
-    }
-  };
-
-  const handleLoadWeek6 = async () => {
-    try {
-      const savedData = localStorage.getItem('week6_data');
-      
-      if (savedData) {
-        const week6Data = JSON.parse(savedData);
-        
-        // Load retirement planning inputs
-        if (week6Data.retirementPlanningInputs) {
-          setRetirementPlanningInputs(week6Data.retirementPlanningInputs);
-        }
-        
-        // Load monthly payments
-        if (week6Data.monthlyPayments) {
-          setMonthlyPayments(week6Data.monthlyPayments);
-        }
-        
-        alert('Week 6 data loaded successfully!');
-      } else {
-        alert('No saved data found for Week 6.');
-      }
-    } catch (error) {
-      console.error('Error loading Week 6 data:', error);
-      alert('Error loading Week 6 data. Please try again.');
-    }
-  };
   const selectedState = topInputs?.location;
   const stateBrackets = selectedState ? stateTaxData.filter(row => row.state === selectedState) : [];
 
@@ -365,6 +335,53 @@ export default function Week6Retirement() {
 
   // State for validation errors in retirement planning inputs
   const [retirementPlanningErrors, setRetirementPlanningErrors] = useState({});
+
+  // Auto-save function (without alert)
+  const autoSaveWeek6 = () => {
+    try {
+      const week6Data = {
+        retirementPlanningInputs,
+        monthlyPayments,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Save to localStorage silently
+      localStorage.setItem('week6_data', JSON.stringify(week6Data));
+    } catch (error) {
+      console.error('Error auto-saving Week 6 data:', error);
+    }
+  };
+
+  // Auto-load data on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('week6_data');
+    if (savedData) {
+      try {
+        const week6Data = JSON.parse(savedData);
+        
+        // Load retirement planning inputs
+        if (week6Data.retirementPlanningInputs) {
+          setRetirementPlanningInputs(week6Data.retirementPlanningInputs);
+        }
+        
+        // Load monthly payments
+        if (week6Data.monthlyPayments) {
+          setMonthlyPayments(week6Data.monthlyPayments);
+        }
+      } catch (error) {
+        console.error('Error loading Week 6 data:', error);
+      }
+    }
+  }, []); // Only run on mount
+
+  // Auto-save with debounce (500ms delay)
+  useEffect(() => {
+    const saveTimer = setTimeout(() => {
+      autoSaveWeek6();
+    }, 500); // Wait 500ms after last change before saving
+
+    return () => clearTimeout(saveTimer);
+  }, [retirementPlanningInputs, monthlyPayments]);
 
   // Force re-calculation of withdrawal data when retirement planning inputs or monthly payments change
   useEffect(() => {
@@ -1866,6 +1883,7 @@ export default function Week6Retirement() {
   const handleMonthlyPaymentChange = (key, value) => {
     // Remove dollar signs, commas, and other non-numeric characters except decimal point
     const cleanValue = value.replace(/[$,\s]/g, '');
+    const sanitized = cleanValue.replace(/[^0-9.]/g, '');
     
     // Clear any existing error for this field
     setMonthlyPaymentErrors(prev => ({
@@ -1874,7 +1892,7 @@ export default function Week6Retirement() {
     }));
     
     // Allow empty string (user can clear the field)
-    if (cleanValue === '') {
+    if (sanitized === '') {
       setMonthlyPayments(prev => ({
         ...prev,
         [key]: ''
@@ -1882,8 +1900,29 @@ export default function Week6Retirement() {
       return;
     }
     
+    // Prevent multiple decimals - find first decimal point
+    const firstDotIndex = sanitized.indexOf('.');
+    let numericValue = '';
+    
+    if (firstDotIndex === -1) {
+      numericValue = sanitized;
+    } else {
+      const intPart = sanitized.substring(0, firstDotIndex);
+      const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2); // max 2 decimals
+      numericValue = intPart + '.' + decPart;
+    }
+    
+    // Allow just a decimal point or partial decimal
+    if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+      setMonthlyPayments(prev => ({
+        ...prev,
+        [key]: numericValue
+      }));
+      return;
+    }
+    
     // Convert to number and validate
-    const numValue = parseFloat(cleanValue);
+    const numValue = parseFloat(numericValue);
     
     // Set different limits based on account type
     let maxValue = 1958.33; // Default for 401(k) plans
@@ -1897,7 +1936,7 @@ export default function Week6Retirement() {
     if (numValue >= 0 && numValue <= maxValue) {
       setMonthlyPayments(prev => ({
         ...prev,
-        [key]: cleanValue
+        [key]: numericValue
       }));
     } else if (numValue > maxValue) {
       // Show error message for values exceeding maximum
@@ -6963,62 +7002,6 @@ export default function Week6Retirement() {
             borderRadius: '12px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
           }}>
-            <button
-              onClick={handleSaveWeek6}
-              style={{
-                backgroundColor: '#002060',
-                color: 'white',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#003d82';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#002060';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              💾 Save Week 6 Data
-            </button>
-            <button
-              onClick={handleLoadWeek6}
-              style={{
-                backgroundColor: '#374151',
-                color: 'white',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#4b5563';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = '#374151';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              📁 Load Week 6 Data
-            </button>
         </div>
         </div>
       </div>

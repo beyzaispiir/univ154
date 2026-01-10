@@ -134,18 +134,7 @@ const budgetConfig = {
         },
         {
           title: 'Other Miscellaneous Expenses',
-          items: [
-            { id: 'user_input_1', label: 'Enter your custom expense name', explanation: 'Additional description' },
-            { id: 'user_input_2', label: 'Enter your custom expense name', explanation: 'Additional description' },
-            { id: 'user_input_3', label: 'Enter your custom expense name', explanation: 'Additional description' },
-            { id: 'user_input_4', label: 'Enter your custom expense name', explanation: 'Additional description' },
-            { id: 'user_input_5', label: 'Enter your custom expense name', explanation: 'Additional description' },
-            { id: 'user_input_6', label: 'Enter your custom expense name', explanation: 'Additional description' },
-            { id: 'user_input_7', label: 'Enter your custom expense name', explanation: 'Additional description' },
-            { id: 'user_input_8', label: 'Enter your custom expense name', explanation: 'Additional description' },
-            { id: 'user_input_9', label: 'Enter your custom expense name', explanation: 'Additional description' },
-            { id: 'user_input_10', label: 'Enter your custom expense name', explanation: 'Additional description' },
-          ]
+          items: [] // Dynamic items - will be added by user via plus button
         }
       ]
     }
@@ -153,138 +142,228 @@ const budgetConfig = {
 };
 
 const styles = {
-  // Main container
+  // Main container - Modern Shadcn/ui + Glassmorphism hybrid
   container: { 
     minHeight: '100vh',
-    backgroundColor: '#f8f9fa',
-    padding: '20px',
-    maxWidth: '1200px',
-    margin: '0 auto',
+    background: 'linear-gradient(135deg, rgba(255, 253, 231, 0.27) 0%, rgb(255, 252, 240) 50%, rgb(255, 255, 255) 100%)', // Light yellow to white gradient
+    padding: '32px 24px',
+    width: '100%',
     fontSize: '14px',
-    color: '#333',
+    color: '#111827',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    position: 'relative',
   },
   sectionContainer: {
-    backgroundColor: 'white',
-    borderRadius: '12px',
-    padding: '24px',
-    marginBottom: '30px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    border: '1px solid #e9ecef'
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    borderRadius: '16px',
+    padding: '40px',
+    marginBottom: '32px',
+    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    width: '100%',
+    maxWidth: '1200px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   enhancedHeader: {
-    backgroundColor: '#002060',
+    background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
     color: 'white',
-    padding: '20px 24px',
-    borderRadius: '12px',
-    fontWeight: '700',
-    fontSize: '18px',
+    padding: '28px 32px',
+    borderRadius: '16px',
+    fontWeight: '600',
+    fontSize: '22px',
     textAlign: 'center',
-    marginBottom: '20px',
-    boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)'
+    marginBottom: '32px',
+    boxShadow: '0 8px 32px 0 rgba(13, 26, 75, 0.3), 0 4px 16px 0 rgba(13, 26, 75, 0.2)',
+    letterSpacing: '-0.01em',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
   },
   sectionDivider: {
-    height: '3px',
-    background: 'linear-gradient(90deg, #002060, #28a745, #002060)',
-    margin: '10px 0 0px 0',
-    borderRadius: '2px',
-    boxShadow: '0 2px 4px rgba(0, 32, 96, 0.2)'
+    height: '1px',
+    background: 'linear-gradient(90deg, transparent, rgba(229, 231, 235, 0.6), transparent)',
+    margin: '0',
+    borderRadius: '1px',
   },
   
-  // Top "User Inputted Data" section
+  // Top "User Inputted Data" section - Modern input styles
   header: { 
-    fontSize: '14px', 
+    fontSize: '18px', 
     fontWeight: '600',
-    margin: '20px 0 10px 0', 
-    color: '#333' 
+    margin: '24px 0 16px 0', 
+    color: '#111827',
+    letterSpacing: '-0.01em',
   },
   topInput: { 
-    border: '1px solid #ccc', 
-    backgroundColor: '#fffde7', // Softer yellow
-    padding: '6px 10px', 
-    width: '200px', 
-    borderRadius: '6px', // Rounded corners
-    boxSizing: 'border-box'
+    border: '2px solid #d1d5db', 
+    backgroundColor: '#fffde7',
+    padding: '10px 14px', 
+    width: '220px', 
+    borderRadius: '8px',
+    boxSizing: 'border-box',
+    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+    fontSize: '14px',
+    outline: 'none',
+    fontWeight: '500',
   },
-  selectInput: { border: '1px solid #ccc', backgroundColor: 'white', padding: '6px 10px', width: '200px', borderRadius: '6px', boxSizing: 'border-box' },
+  topInputFocus: {
+    borderColor: '#0d1a4b',
+    boxShadow: '0 0 0 3px rgba(13, 26, 75, 0.12)',
+    backgroundColor: '#fffef0',
+  },
+  selectInput: { 
+    border: '2px solid #d1d5db', 
+    backgroundColor: 'white', 
+    padding: '10px 14px', 
+    width: '220px', 
+    borderRadius: '8px', 
+    boxSizing: 'border-box',
+    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+    fontSize: '14px',
+    outline: 'none',
+    cursor: 'pointer',
+    fontWeight: '500',
+  },
+  selectInputFocus: {
+    borderColor: '#0d1a4b',
+    boxShadow: '0 0 0 3px rgba(13, 26, 75, 0.12)',
+    backgroundColor: '#fafafa',
+  },
   afterTaxRow: { 
-    backgroundColor: '#e8f5e9', // Softer green
+    background: 'rgba(240, 253, 244, 0.8)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
     display: 'flex', 
     justifyContent: 'space-between', 
-    padding: '8px 12px', 
-    border: '1px solid #dcedc8', // Soft border
-    width: '450px', 
-    marginTop: '10px', 
-    borderRadius: '6px', // Rounded corners
+    padding: '16px 20px', 
+    border: '2px solid rgba(134, 239, 172, 0.5)',
+    width: '480px', 
+    marginTop: '16px', 
+    borderRadius: '12px',
     fontWeight: '600',
-    color: '#2e7d32'
+    color: '#166534',
+    boxShadow: '0 4px 16px 0 rgba(22, 101, 52, 0.15)',
+    fontSize: '15px',
   },
 
-  // Main table
+  // Main table - Modern Shadcn/ui table style
   table: { 
     width: '100%', 
     maxWidth: '1200px',
-    borderCollapse: 'separate', // Needed for border-radius on cells
+    borderCollapse: 'separate',
     borderSpacing: 0,
-    marginTop: 20, 
+    marginTop: 32, 
+    marginBottom: 32,
     marginLeft: 'auto',
     marginRight: 'auto',
-    borderRadius: '12px', // Rounded corners for the table
-    overflow: 'hidden', // Ensures inner elements conform to border-radius
-    border: '1px solid #e0e0e0' // Soft gray border for the whole table
+    borderRadius: '12px',
+    overflow: 'hidden',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
+    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    display: 'table',
   },
   th: { 
-    backgroundColor: '#002060',
+    background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
     color: 'white', 
-    padding: '12px', 
-    borderBottom: '1px solid #e0e0e0',
+    padding: '16px', 
+    borderBottom: 'none',
+    borderRight: 'none',
     textAlign: 'center', 
     fontWeight: '600',
-    fontSize: '14px',
+    fontSize: '13px',
+    letterSpacing: '0.01em',
+    position: 'sticky',
+    top: 0,
+    zIndex: 10,
+    boxShadow: 'inset 0 -1px 0 rgba(255, 255, 255, 0.1)',
   },
   thExpense: { width: '200px' },
   thBudgeted: { width: '180px' },
   thRecommended: { width: '240px' },
   thPercent: { width: '120px' },
   td: { 
-    border: '1px solid #e0e0e0',
-    padding: '10px 12px', 
+    borderBottom: '1px solid rgba(243, 244, 246, 0.3)',
+    borderRight: 'none',
+    padding: '14px 16px', 
     verticalAlign: 'middle',
     fontSize: '14px',
     whiteSpace: 'nowrap',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    position: 'relative',
+    boxShadow: 'inset 0 -1px 0 rgba(243, 244, 246, 0.2)',
+  },
+  tdHover: {
+    backgroundColor: 'rgba(249, 250, 251, 0.9)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
+    transform: 'translateX(2px)',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+  },
+  trHover: {
+    backgroundColor: 'rgba(249, 250, 251, 0.6)',
+    transform: 'scale(1.002)',
+    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.04)',
   },
   
   // Table row types
   sectionHeader: { 
     fontWeight: '600',
-    backgroundColor: '#f5f5f5', // Reverted back to soft gray to match total rows
-    color: '#002060', // Match nav link color for consistency
-    fontSize: '14px'
+    background: 'linear-gradient(to bottom, rgba(249, 250, 251, 0.95) 0%, rgba(243, 244, 246, 0.9) 100%)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
+    color: '#111827',
+    fontSize: '15px',
+    letterSpacing: '-0.01em',
+    borderTop: 'none',
+    borderBottom: 'none',
+    padding: '16px 20px',
+    boxShadow: '0 1px 0 rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+    position: 'relative',
   },
   totalRow: { 
-    backgroundColor: '#f5f5f5', // Consistent soft gray
+    background: '#fafafa',
     fontWeight: '600',
-    fontSize: '14px'
+    fontSize: '14px',
+    borderTop: '2px solid #e5e7eb',
   },
 
-  // Input fields within the table
+  // Input fields within the table - Modern Shadcn/ui input style
   input: { 
     width: '100%', 
-    border: '1px solid #ccc', 
-    padding: '8px', 
+    border: '2px solid #d1d5db', 
+    padding: '8px 12px', 
     textAlign: 'right', 
-    backgroundColor: '#fffde7', // Softer yellow
-    borderRadius: '6px', // Rounded corners
+    backgroundColor: '#fffde7',
+    borderRadius: '6px',
     boxSizing: 'border-box',
-    fontWeight: '600',
-    fontSize: '12px'
+    fontWeight: '500',
+    fontSize: '13px',
+    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+    outline: 'none',
+  },
+  inputFocus: {
+    borderColor: '#0d1a4b',
+    boxShadow: '0 0 0 2px rgba(13, 26, 75, 0.12)',
+    backgroundColor: '#fffef0',
   },
   readOnly: { 
     textAlign: 'right', 
     paddingRight: '12px',
-    color: '#555'
+    color: '#6b7280',
+    fontWeight: '500',
   },
   deductionLabel: {
     width: '240px',
@@ -295,17 +374,17 @@ const styles = {
   },
   currencySymbol: {
     marginLeft: '8px',
-    color: '#555',
+    color: '#6b7280',
   },
   warningBox: {
     marginTop: '20px',
-    padding: '12px',
-    border: '1px solid #f5c6cb',
-    backgroundColor: '#f8d7da',
-    color: '#721c24',
-    borderRadius: '6px',
+    padding: '12px 16px',
+    border: '1px solid #fecaca',
+    backgroundColor: '#fef2f2',
+    color: '#991b1b',
+    borderRadius: '8px',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: '14px',
   },
   floatingWarning: {
@@ -314,25 +393,26 @@ const styles = {
     bottom: '32px',
     transform: 'translateX(-50%)',
     zIndex: 1000,
-    backgroundColor: '#f8d7da',
-    color: '#721c24',
-    border: '1px solid #f5c6cb',
+    backgroundColor: '#fef2f2',
+    color: '#991b1b',
+    border: '1px solid #fecaca',
     borderRadius: '8px',
     padding: '16px 32px',
-    fontWeight: 'bold',
-    boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+    fontWeight: '500',
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
     fontSize: '14px',
   },
   infoBox: {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
-    padding: '12px 16px',
-    backgroundColor: '#eef2f6',
+    padding: '14px 18px',
+    backgroundColor: '#f0f9ff',
     borderRadius: '8px',
-    color: '#334155',
+    color: '#1e40af',
     fontSize: '13px',
     marginBottom: '24px',
+    border: '1px solid #bfdbfe',
   },
 };
 
@@ -353,6 +433,185 @@ const InfoIcon = () => (
         <line x1="12" y1="8" x2="12.01" y2="8"></line>
     </svg>
 );
+
+// Animated Number Component - Smooth number transitions
+// Note: formatCurrency function will be passed as prop or accessed from parent scope
+const AnimatedNumber = ({ value, formatCurrency = false, formatCurrencyFn = null, style = {} }) => {
+  const [displayValue, setDisplayValue] = React.useState(value);
+  const [isAnimating, setIsAnimating] = React.useState(false);
+
+  React.useEffect(() => {
+    if (Math.abs(value - displayValue) > 0.01) { // Use threshold to avoid infinite loops
+      setIsAnimating(true);
+      const startValue = displayValue;
+      const endValue = value;
+      const duration = 600;
+      const startTime = Date.now();
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+        const currentValue = startValue + (endValue - startValue) * easeOutCubic;
+        setDisplayValue(currentValue);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setDisplayValue(endValue); // Ensure final value is exact
+          setIsAnimating(false);
+        }
+      };
+      requestAnimationFrame(animate);
+    }
+  }, [value]);
+
+  // Use provided formatCurrency function if available, otherwise use default formatting
+  const formatValue = (val) => {
+    if (formatCurrency && formatCurrencyFn) {
+      return `$${formatCurrencyFn(val)}`;
+    } else if (formatCurrency) {
+      return `$${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    } else {
+      return val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+  };
+
+  return (
+    <span style={{
+      ...style,
+      transition: 'transform 0.2s ease-out',
+      transform: isAnimating ? 'scale(1.05)' : 'scale(1)',
+      display: 'inline-block'
+    }}>
+      {formatValue(displayValue)}
+    </span>
+  );
+};
+
+// Progress Bar Component - Visual budget utilization
+const ProgressBar = ({ percentage, color = '#16a34a', height = '8px', showLabel = true, label }) => {
+  const safePercentage = Math.min(Math.max(percentage, 0), 100);
+  
+  return (
+    <div style={{ width: '100%' }}>
+      {showLabel && label && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', fontSize: '12px', color: '#6b7280' }}>
+          <span>{label}</span>
+          <span style={{ fontWeight: '600', color: safePercentage > 100 ? '#dc2626' : '#16a34a' }}>{safePercentage.toFixed(1)}%</span>
+        </div>
+      )}
+      <div style={{
+        width: '100%',
+        height: height,
+        backgroundColor: 'rgba(229, 231, 235, 0.5)',
+        borderRadius: '9999px',
+        overflow: 'hidden',
+        position: 'relative',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)',
+      }}>
+        <div style={{
+          width: `${safePercentage}%`,
+          height: '100%',
+          backgroundColor: safePercentage > 100 ? '#dc2626' : color,
+          borderRadius: '9999px',
+          transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease',
+          boxShadow: safePercentage > 100 
+            ? '0 2px 8px rgba(220, 38, 38, 0.3)' 
+            : '0 2px 8px rgba(22, 163, 74, 0.3)',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: safePercentage > 100
+              ? 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)'
+              : 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+            animation: 'shimmer 2s infinite',
+          }} />
+        </div>
+      </div>
+      <style>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// Status Badge Component - Modern badge design
+const StatusBadge = ({ status, variant = 'default' }) => {
+  const variants = {
+    success: { bg: 'rgba(240, 253, 244, 0.8)', color: '#16a34a', border: 'rgba(134, 239, 172, 0.5)', icon: '✓' },
+    warning: { bg: 'rgba(254, 252, 232, 0.8)', color: '#ca8a04', border: 'rgba(253, 224, 71, 0.5)', icon: '⚠' },
+    error: { bg: 'rgba(254, 242, 242, 0.8)', color: '#dc2626', border: 'rgba(252, 165, 165, 0.5)', icon: '✕' },
+    info: { bg: 'rgba(240, 249, 255, 0.8)', color: '#2563eb', border: 'rgba(191, 219, 254, 0.5)', icon: 'ℹ' },
+    default: { bg: 'rgba(249, 250, 251, 0.8)', color: '#6b7280', border: 'rgba(229, 231, 235, 0.5)', icon: '' }
+  };
+  
+  const style = variants[variant] || variants.default;
+  
+  return (
+    <span style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+      padding: '4px 12px',
+      borderRadius: '9999px',
+      fontSize: '12px',
+      fontWeight: '600',
+      backgroundColor: style.bg,
+      color: style.color,
+      border: `1px solid ${style.border}`,
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+    }}>
+      {style.icon && <span>{style.icon}</span>}
+      {status}
+    </span>
+  );
+};
+
+// Comparison Indicator - Visual diff between recommended and budgeted
+const ComparisonIndicator = ({ recommended, budgeted, label }) => {
+  const diff = budgeted - recommended;
+  const diffPercent = recommended > 0 ? ((diff / recommended) * 100) : 0;
+  const isOver = diff > 0;
+  const isUnder = diff < 0;
+  
+  if (Math.abs(diff) < 0.01) return null; // No significant difference
+  
+  return (
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+      padding: '4px 10px',
+      borderRadius: '6px',
+      fontSize: '11px',
+      fontWeight: '600',
+      backgroundColor: isOver 
+        ? 'rgba(254, 242, 242, 0.7)' 
+        : 'rgba(240, 253, 244, 0.7)',
+      color: isOver ? '#dc2626' : '#16a34a',
+      border: `1px solid ${isOver ? 'rgba(252, 165, 165, 0.4)' : 'rgba(134, 239, 172, 0.4)'}`,
+      backdropFilter: 'blur(4px)',
+      WebkitBackdropFilter: 'blur(4px)',
+    }}>
+      <span>{isOver ? '↑' : '↓'}</span>
+      <span>{Math.abs(diffPercent).toFixed(1)}%</span>
+      {label && <span style={{ opacity: 0.7 }}>{label}</span>}
+    </div>
+  );
+};
 
 const userInputFields = [
     { id: 'preTaxIncome', label: 'Annual Pre-Tax Income', value: '1000000' },
@@ -377,57 +636,26 @@ export default function BudgetForm() {
         loadBudgetData
     } = useBudget();
 
-    // Handler functions for save/load
-    const handleSaveBudget = async () => {
+    // Auto-save function (without alert)
+    const autoSaveBudget = () => {
         try {
             const budgetData = {
                 topInputs,
                 userInputs,
                 customExpenseNames,
+                customExpenseItems,
+                nextItemId,
                 expandedSections,
                 timestamp: new Date().toISOString()
             };
             
-            // Save to localStorage
+            // Save to localStorage silently
             localStorage.setItem('week1_data', JSON.stringify(budgetData));
-            alert('Week 1 data saved successfully! 💾');
         } catch (error) {
-            alert('Error saving Week 1 data: ' + error.message);
+            console.error('Error auto-saving Week 1 data:', error);
         }
     };
 
-    const handleLoadBudget = async () => {
-        try {
-            const savedData = localStorage.getItem('week1_data');
-            
-            if (savedData) {
-                const budgetData = JSON.parse(savedData);
-                
-                // Load top inputs
-                if (budgetData.topInputs) {
-                    setTopInputs(budgetData.topInputs);
-                }
-                // Load user inputs
-                if (budgetData.userInputs) {
-                    setUserInputs(budgetData.userInputs);
-                }
-                // Load custom expense names
-                if (budgetData.customExpenseNames) {
-                    setCustomExpenseNames(budgetData.customExpenseNames);
-                }
-                // Load section states
-                if (budgetData.expandedSections) {
-                    setExpandedSections(budgetData.expandedSections);
-                }
-                
-                alert('Week 1 data loaded successfully! 📁');
-            } else {
-                alert('No saved data found for Week 1.');
-            }
-        } catch (error) {
-            alert('Error loading Week 1 data: ' + error.message);
-        }
-    };
 
     const [userInputs, setUserInputs] = useState(
         budgetConfig.sections.flatMap(s => s.items).flatMap(subsection => subsection.items).reduce((acc, item) => ({ ...acc, [item.id]: '' }), {})
@@ -509,27 +737,45 @@ export default function BudgetForm() {
         // Remove $, %, and comma symbols, then only allow numbers and at most one decimal point
         const cleanValue = value.replace(/[$%,]/g, '');
         const sanitized = cleanValue.replace(/[^0-9.]/g, '');
-        // Prevent multiple decimals
-        const parts = sanitized.split('.');
-        let numericValue = parts[0];
-        if (parts.length > 1) {
-          numericValue += '.' + parts[1].slice(0, 2); // allow up to 2 decimals
+        
+        // Allow empty string for clearing the field
+        if (sanitized === '') {
+          setUserInputs(prev => ({ ...prev, [id]: '' }));
+          return;
+        }
+        
+        // Prevent multiple decimals - find first decimal point
+        const firstDotIndex = sanitized.indexOf('.');
+        let numericValue = '';
+        
+        if (firstDotIndex === -1) {
+          // No decimal point - just numbers
+          numericValue = sanitized;
+        } else {
+          // Has decimal point - take integer part and up to 2 decimal places
+          const intPart = sanitized.substring(0, firstDotIndex);
+          const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2); // max 2 decimals
+          numericValue = intPart + '.' + decPart;
+        }
+        
+        // Allow just a decimal point or partial decimal (user might be typing ".50")
+        if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+          setUserInputs(prev => ({ ...prev, [id]: numericValue }));
+          return;
         }
         
         // Data validation based on Excel constraints
         const numValue = parseFloat(numericValue);
         
         // Rule 1: Must be a number (if user entered something)
-        if (numericValue && isNaN(numValue)) {
-          alert('⚠️ Must be a number');
-          return;
+        if (numericValue && numericValue !== '.' && isNaN(numValue)) {
+          return; // Don't alert, just prevent invalid input
         }
         
-        if (numericValue && !isNaN(numValue)) {
+        if (numericValue && numericValue !== '.' && !isNaN(numValue)) {
           // Excel validation rules: 1. Number, 2. >= 0, 3. <= Monthly Pre-Tax Income
           if (numValue < 0) {
-            alert('⚠️ Must be >= 0');
-            return;
+            return; // Don't alert, just prevent negative input
           }
           if (numValue > monthlyPreTaxIncome) {
             alert(`⚠️ Must be <= Monthly Pre-Tax Income ($${formatCurrency(monthlyPreTaxIncome)})`);
@@ -555,6 +801,7 @@ export default function BudgetForm() {
           }
         }
         
+        // Store as string to preserve decimal input exactly (e.g., "450.59")
         setUserInputs(prev => ({ ...prev, [id]: numericValue }));
         // If this is a retirement plan input, update context too
         if (id.startsWith('retirement_')) {
@@ -576,11 +823,49 @@ export default function BudgetForm() {
     const handleTopInputChange = (id, value) => {
         // Data validation for top inputs
         if (id === 'preTaxIncome') {
-          const numValue = parseFloat(value);
-          if (value && !isNaN(numValue) && numValue <= 0) {
-            alert('Pre-tax income must be a positive number');
+          // Remove $, %, and comma symbols, then only allow numbers and at most one decimal point
+          const cleanValue = value.replace(/[$%,]/g, '');
+          const sanitized = cleanValue.replace(/[^0-9.]/g, '');
+          
+          // Allow empty string for clearing the field
+          if (sanitized === '') {
+            setTopInputs(prev => ({ ...prev, [id]: '' }));
             return;
           }
+          
+          // Prevent multiple decimals - find first decimal point
+          const firstDotIndex = sanitized.indexOf('.');
+          let numericValue = '';
+          
+          if (firstDotIndex === -1) {
+            // No decimal point - just numbers
+            numericValue = sanitized;
+          } else {
+            // Has decimal point - take integer part and up to 2 decimal places
+            const intPart = sanitized.substring(0, firstDotIndex);
+            const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2); // max 2 decimals
+            numericValue = intPart + '.' + decPart;
+          }
+          
+          // Allow just a decimal point or partial decimal (user might be typing ".50")
+          if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+            setTopInputs(prev => ({ ...prev, [id]: numericValue }));
+            return;
+          }
+          
+          // Data validation
+          const numValue = parseFloat(numericValue);
+          if (numericValue && numericValue !== '.' && !isNaN(numValue)) {
+            if (numValue <= 0) {
+              alert('Pre-tax income must be a positive number');
+              return;
+            }
+          }
+          
+          // Store as string to preserve decimal input exactly (e.g., "1000000.59")
+          // Format with commas for display, but keep raw value for editing
+          setTopInputs(prev => ({ ...prev, [id]: numericValue }));
+          return;
         }
         setTopInputs(prev => ({ ...prev, [id]: value }));
     };
@@ -590,17 +875,36 @@ export default function BudgetForm() {
     const formatCurrency = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const formatPercent = (num) => (num * 100).toFixed(2) + '%';
     
-    // Format number for input display (with commas, no .00 if whole number)
+    // Format number for input display (with commas, preserve decimals for cents)
     const formatNumberForInput = (num) => {
       if (!num || num === '') return '';
-      const number = parseFloat(num);
-      if (isNaN(number)) return num;
       
-      // Check if it's a whole number
-      if (number % 1 === 0) {
-        return number.toLocaleString('en-US');
+      // Keep as string to preserve decimal input exactly as user types
+      const numStr = num.toString();
+      
+      // If it's just a decimal point, return it as-is
+      if (numStr === '.') return '.';
+      
+      const number = parseFloat(num);
+      if (isNaN(number)) return numStr;
+      
+      // If it has a decimal point, preserve it exactly (don't force 2 decimals)
+      if (numStr.includes('.')) {
+        const parts = numStr.split('.');
+        const intPart = parts[0] || '';
+        const decPart = parts[1] || '';
+        
+        // If intPart is empty (user typing ".5"), don't format
+        if (intPart === '') {
+          return '.' + decPart;
+        }
+        
+        // Format integer part with commas, keep decimal part as-is
+        const formattedInt = parseInt(intPart).toLocaleString('en-US');
+        return decPart ? `${formattedInt}.${decPart}` : formattedInt + '.';
       } else {
-        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        // Whole number - format with commas
+        return parseInt(numStr).toLocaleString('en-US');
       }
     };
     
@@ -714,7 +1018,7 @@ export default function BudgetForm() {
     // Function to calculate recommended amount based on Excel formulas
     const calculateRecommendedAmount = (item) => {
       // For After-Tax items, use monthly after-tax income as the base
-      if (['roth_401k', 'roth_ira', 'rent', 'electricity', 'gas', 'water', 'sewer_trash', 'phone', 'internet', 'housing_miscellaneous', 'car_payment', 'gasoline_fuel', 'car_maintenance', 'parking_fees', 'rideshare', 'public_transit', 'transportation_miscellaneous', 'auto_insurance', 'renters_insurance', 'otc_medications', 'mental_health', 'physical_health', 'insurance_miscellaneous', 'groceries', 'dining_out', 'takeout', 'food_miscellaneous', 'subscriptions', 'hobbies', 'travel_vacation', 'gifts', 'clothing', 'haircuts_salon', 'personal_care', 'events', 'lifestyle_miscellaneous', 'student_loans', 'credit_card_payments', 'personal_loans', 'miscellaneous_debt', 'charity', 'user_input_1', 'user_input_2', 'user_input_3', 'user_input_4', 'user_input_5', 'user_input_6', 'user_input_7', 'user_input_8', 'user_input_9', 'user_input_10', 'emergency_fund', 'down_payment', 'car', 'wedding', 'advanced_degree', 'vacation', 'miscellaneous'].includes(item.id)) {
+      if (['roth_401k', 'roth_ira', 'rent', 'electricity', 'gas', 'water', 'sewer_trash', 'phone', 'internet', 'housing_miscellaneous', 'car_payment', 'gasoline_fuel', 'car_maintenance', 'parking_fees', 'rideshare', 'public_transit', 'transportation_miscellaneous', 'auto_insurance', 'renters_insurance', 'otc_medications', 'mental_health', 'physical_health', 'insurance_miscellaneous', 'groceries', 'dining_out', 'takeout', 'food_miscellaneous', 'subscriptions', 'hobbies', 'travel_vacation', 'gifts', 'clothing', 'haircuts_salon', 'personal_care', 'events', 'lifestyle_miscellaneous', 'student_loans', 'credit_card_payments', 'personal_loans', 'miscellaneous_debt', 'charity', 'emergency_fund', 'down_payment', 'car', 'wedding', 'advanced_degree', 'vacation', 'miscellaneous'].includes(item.id) || item.id.startsWith('user_input_')) {
         if (monthlyAfterTaxIncome <= 0) return 0;
         
         if (item.id === 'roth_401k') {
@@ -857,7 +1161,7 @@ export default function BudgetForm() {
         }
         
         // User Input items - these are user input only, no recommended amounts
-        if (['user_input_1', 'user_input_2', 'user_input_3', 'user_input_4', 'user_input_5', 'user_input_6', 'user_input_7', 'user_input_8', 'user_input_9', 'user_input_10'].includes(item.id)) {
+        if (item.id.startsWith('user_input_')) {
           return 0; // No recommended amounts for user input items
         }
         
@@ -910,7 +1214,7 @@ export default function BudgetForm() {
     // Function to calculate recommended percentage based on Excel formulas
     const calculateRecommendedPercent = (item) => {
       // For After-Tax items, use monthly after-tax income as the base (Excel: =G46/'Week 1 - Budgeting'!$G$40)
-      if (['roth_401k', 'roth_ira', 'rent', 'electricity', 'gas', 'water', 'sewer_trash', 'phone', 'internet', 'housing_miscellaneous', 'car_payment', 'gasoline_fuel', 'car_maintenance', 'parking_fees', 'rideshare', 'public_transit', 'transportation_miscellaneous', 'auto_insurance', 'renters_insurance', 'otc_medications', 'mental_health', 'physical_health', 'insurance_miscellaneous', 'groceries', 'dining_out', 'takeout', 'food_miscellaneous', 'subscriptions', 'hobbies', 'travel_vacation', 'gifts', 'clothing', 'haircuts_salon', 'personal_care', 'events', 'lifestyle_miscellaneous', 'student_loans', 'credit_card_payments', 'personal_loans', 'miscellaneous_debt', 'charity', 'user_input_1', 'user_input_2', 'user_input_3', 'user_input_4', 'user_input_5', 'user_input_6', 'user_input_7', 'user_input_8', 'user_input_9', 'user_input_10', 'emergency_fund', 'down_payment', 'car', 'wedding', 'advanced_degree', 'vacation', 'miscellaneous'].includes(item.id)) {
+      if (['roth_401k', 'roth_ira', 'rent', 'electricity', 'gas', 'water', 'sewer_trash', 'phone', 'internet', 'housing_miscellaneous', 'car_payment', 'gasoline_fuel', 'car_maintenance', 'parking_fees', 'rideshare', 'public_transit', 'transportation_miscellaneous', 'auto_insurance', 'renters_insurance', 'otc_medications', 'mental_health', 'physical_health', 'insurance_miscellaneous', 'groceries', 'dining_out', 'takeout', 'food_miscellaneous', 'subscriptions', 'hobbies', 'travel_vacation', 'gifts', 'clothing', 'haircuts_salon', 'personal_care', 'events', 'lifestyle_miscellaneous', 'student_loans', 'credit_card_payments', 'personal_loans', 'miscellaneous_debt', 'charity', 'emergency_fund', 'down_payment', 'car', 'wedding', 'advanced_degree', 'vacation', 'miscellaneous'].includes(item.id) || item.id.startsWith('user_input_')) {
         if (monthlyAfterTaxIncome > 0) {
           // For Down Payment and Car, use the helper functions to get the exact percentage
           if (item.id === 'down_payment') {
@@ -953,29 +1257,39 @@ export default function BudgetForm() {
     const [expandedSubsections, setExpandedSubsections] = useState(initialSubsectionExpanded);
     const toggleSubsection = (title) => setExpandedSubsections(prev => ({ ...prev, [title]: !prev[title] }));
 
-  // 2. Custom expense names state for Other Miscellaneous Expenses
-  const [customExpenseNames, setCustomExpenseNames] = useState({
-    user_input_1: '',
-    user_input_1_label: '',
-    user_input_2: '',
-    user_input_2_label: '',
-    user_input_3: '',
-    user_input_3_label: '',
-    user_input_4: '',
-    user_input_4_label: '',
-    user_input_5: '',
-    user_input_5_label: '',
-    user_input_6: '',
-    user_input_6_label: '',
-    user_input_7: '',
-    user_input_7_label: '',
-    user_input_8: '',
-    user_input_8_label: '',
-    user_input_9: '',
-    user_input_9_label: '',
-    user_input_10: '',
-    user_input_10_label: '',
-  });
+  // 2. Dynamic custom expense items state for Other Miscellaneous Expenses
+  const [customExpenseItems, setCustomExpenseItems] = useState([]);
+  const [customExpenseNames, setCustomExpenseNames] = useState({});
+  const [nextItemId, setNextItemId] = useState(1);
+
+  // Add a new custom expense item
+  const addCustomExpenseItem = () => {
+    const newId = `user_input_${nextItemId}`;
+    setCustomExpenseItems(prev => [...prev, { id: newId, label: 'Enter your custom expense name', explanation: 'Additional description' }]);
+    setCustomExpenseNames(prev => ({
+      ...prev,
+      [newId]: '',
+      [newId + '_label']: ''
+    }));
+    setUserInputs(prev => ({ ...prev, [newId]: '' }));
+    setNextItemId(prev => prev + 1);
+  };
+
+  // Remove a custom expense item
+  const removeCustomExpenseItem = (itemId) => {
+    setCustomExpenseItems(prev => prev.filter(item => item.id !== itemId));
+    setCustomExpenseNames(prev => {
+      const updated = { ...prev };
+      delete updated[itemId];
+      delete updated[itemId + '_label'];
+      return updated;
+    });
+    setUserInputs(prev => {
+      const updated = { ...prev };
+      delete updated[itemId];
+      return updated;
+    });
+  };
 
   const handleExpenseNameChange = (itemId, newName) => {
     setCustomExpenseNames(prev => ({
@@ -1046,6 +1360,52 @@ export default function BudgetForm() {
       }
     };
 
+    // Auto-load data on component mount
+    React.useEffect(() => {
+        const savedData = localStorage.getItem('week1_data');
+        if (savedData) {
+            try {
+                const budgetData = JSON.parse(savedData);
+                
+                // Load top inputs
+                if (budgetData.topInputs) {
+                    setTopInputs(budgetData.topInputs);
+                }
+                // Load user inputs
+                if (budgetData.userInputs) {
+                    setUserInputs(budgetData.userInputs);
+                }
+                // Load custom expense names
+                if (budgetData.customExpenseNames) {
+                    setCustomExpenseNames(budgetData.customExpenseNames);
+                }
+                // Load custom expense items
+                if (budgetData.customExpenseItems) {
+                    setCustomExpenseItems(budgetData.customExpenseItems);
+                }
+                // Load next item ID
+                if (budgetData.nextItemId) {
+                    setNextItemId(budgetData.nextItemId);
+                }
+                // Load section states
+                if (budgetData.expandedSections) {
+                    setExpandedSections(budgetData.expandedSections);
+                }
+            } catch (error) {
+                console.error('Error loading Week 1 data:', error);
+            }
+        }
+    }, []); // Only run on mount
+
+    // Auto-save with debounce (500ms delay)
+    React.useEffect(() => {
+        const saveTimer = setTimeout(() => {
+            autoSaveBudget();
+        }, 500); // Wait 500ms after last change before saving
+
+        return () => clearTimeout(saveTimer);
+    }, [topInputs, userInputs, customExpenseNames, customExpenseItems, nextItemId, expandedSections]);
+
     // Call debug function when component mounts or inputs change
     React.useEffect(() => {
         if (topInputs.preTaxIncome === '1000000') {
@@ -1063,43 +1423,61 @@ export default function BudgetForm() {
     return (
         <div style={styles.container}>
         
-        <div style={{width: '1200px', maxWidth: '1200px'}}>
             {/* Section Container - matching Week 3 layered design */}
             <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
             <div style={styles.enhancedHeader}>
-              💰 Budget Planning
+              <span style={{fontSize: '24px', marginRight: '10px'}}>💰</span>
+              Budget Planning
             </div>
             <div style={{width: '450px', marginBottom: '20px'}}>
             <h3 style={styles.header}>User Inputted Data</h3>
-            <div style={{fontSize: '12px', color: '#666', marginBottom: '10px', fontStyle: 'italic'}}>
-                Taxes calculated based on single taxpayer filing status
+            <div style={{
+              fontSize: '13px', 
+              color: '#1e40af', 
+              marginBottom: '16px', 
+              fontStyle: 'italic', 
+              padding: '12px 16px', 
+              backgroundColor: 'rgba(240, 249, 255, 0.7)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              borderRadius: '10px', 
+              border: '1px solid rgba(191, 219, 254, 0.5)',
+              boxShadow: '0 2px 8px 0 rgba(30, 64, 175, 0.1)'
+            }}>
+                ℹ️ Taxes calculated based on single taxpayer filing status
             </div>
             {userInputFields.map(field => (
-            <div key={field.id} style={{ display: 'flex', justifyContent: 'space-between', margin: '4px 0', alignItems: 'center' }}>
-                <label>{field.label}</label>
+            <div key={field.id} style={{ display: 'flex', justifyContent: 'space-between', margin: '8px 0', alignItems: 'center' }}>
+                <label style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>{field.label}</label>
                 {field.id === 'location' ? (
                   <select
-                    style={styles.topInput}
+                    style={styles.selectInput}
                     value={topInputs[field.id]}
                     onChange={e => handleTopInputChange(field.id, e.target.value)}
+                    onFocus={(e) => Object.assign(e.target.style, styles.selectInputFocus)}
+                    onBlur={(e) => Object.assign(e.target.style, styles.selectInput)}
                   >
                     {Array.from(new Set(stateTaxData.map(row => row.state))).map(state => <option key={state} value={state}>{state}</option>)}
                   </select>
                 ) : field.id === 'residenceInNYC' ? (
                   <select
-                    style={styles.topInput}
+                    style={styles.selectInput}
                     value={topInputs[field.id]}
                     onChange={e => handleTopInputChange(field.id, e.target.value)}
+                    onFocus={(e) => Object.assign(e.target.style, styles.selectInputFocus)}
+                    onBlur={(e) => Object.assign(e.target.style, styles.selectInput)}
                   >
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </select>
                 ) : field.id === 'housingCosts' ? (
                   <select
-                    style={styles.topInput}
+                    style={styles.selectInput}
                     value={topInputs[field.id]}
                     onChange={e => handleTopInputChange(field.id, e.target.value)}
+                    onFocus={(e) => Object.assign(e.target.style, styles.selectInputFocus)}
+                    onBlur={(e) => Object.assign(e.target.style, styles.selectInput)}
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -1109,8 +1487,11 @@ export default function BudgetForm() {
                   <input
                     style={styles.topInput}
                     type="text"
-                    value={field.id === 'preTaxIncome' ? formatNumberForInput(topInputs[field.id]) : topInputs[field.id]}
-                    onChange={e => handleTopInputChange(field.id, field.id === 'preTaxIncome' ? parseNumberFromInput(e.target.value) : e.target.value)}
+                    value={field.id === 'preTaxIncome' && topInputs[field.id] ? formatNumberForInput(topInputs[field.id]) : (topInputs[field.id] || '')}
+                    onChange={e => handleTopInputChange(field.id, e.target.value)}
+                    onFocus={(e) => Object.assign(e.target.style, styles.topInputFocus)}
+                    onBlur={(e) => Object.assign(e.target.style, styles.topInput)}
+                    placeholder="Enter amount"
                   />
                 )}
             </div>
@@ -1125,14 +1506,39 @@ export default function BudgetForm() {
             {/* Note: Standard Deduction Choices section removed as deductionChoices is not available in current context */}
         </div>
         
+        <div style={{width: '100%', overflowX: 'auto', display: 'flex', justifyContent: 'center'}}>
         <table style={styles.table}>
             <thead>
             <tr>
-                <th style={{...styles.th, ...styles.thExpense}}>Expense Items</th>
-                <th style={{...styles.th, ...styles.thBudgeted}}>Examples/Info</th>
-                <th style={{...styles.th, ...styles.thRecommended}}>Budgeted Spend</th>
-                <th style={{...styles.th, ...styles.thPercent}}>Recommended Spend $</th>
-                <th style={{...styles.th, ...styles.thPercent}}>% of Monthly Income</th>
+                <th style={{
+                  ...styles.th, 
+                  ...styles.thExpense,
+                  borderTopLeftRadius: '12px',
+                  borderBottomLeftRadius: '12px',
+                  borderRight: '1px solid rgba(255, 255, 255, 0.08)'
+                }}>Expense Items</th>
+                <th style={{
+                  ...styles.th, 
+                  ...styles.thBudgeted,
+                  borderRight: '1px solid rgba(255, 255, 255, 0.08)'
+                }}>Examples/Info</th>
+                <th style={{
+                  ...styles.th, 
+                  ...styles.thRecommended,
+                  borderRight: '1px solid rgba(255, 255, 255, 0.08)'
+                }}>Budgeted Spend</th>
+                <th style={{
+                  ...styles.th, 
+                  ...styles.thPercent,
+                  borderRight: '1px solid rgba(255, 255, 255, 0.08)'
+                }}>Recommended Spend $</th>
+                <th style={{
+                  ...styles.th, 
+                  ...styles.thPercent,
+                  borderTopRightRadius: '12px',
+                  borderBottomRightRadius: '12px',
+                  borderRight: 'none'
+                }}>% of Monthly Income</th>
             </tr>
             </thead>
             <tbody>
@@ -1142,21 +1548,71 @@ export default function BudgetForm() {
                   {/* Section Divider - except for first section */}
                   {sectionIndex > 0 && (
                     <tr>
-                      <td colSpan="5" style={{padding: '10px 0', border: 'none'}}>
+                      <td colSpan="5" style={{padding: '16px 0', border: 'none', backgroundColor: 'transparent'}}>
                         <div style={styles.sectionDivider}></div>
                       </td>
                     </tr>
                   )}
                   <tr>
-                    <td style={{...styles.td, ...styles.sectionHeader, fontWeight: 'bold', cursor: 'pointer'}} colSpan="5"
-                        onClick={() => toggleSection(section.title)}>
-                      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <span>{section.title}</span>
-                        <span>
-                          <span style={{marginLeft: 12, fontWeight: 'bold', fontSize: 18}}>
-                            {expandedSections[section.title] ? '▼' : '►'}
+                    <td style={{
+                      ...styles.td, 
+                      ...styles.sectionHeader, 
+                      cursor: 'pointer',
+                      borderTop: sectionIndex === 0 ? 'none' : '1px solid rgba(229, 231, 235, 0.4)',
+                      marginTop: sectionIndex === 0 ? '0' : '8px'
+                    }} colSpan="5"
+                        onClick={() => toggleSection(section.title)}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'linear-gradient(to bottom, rgba(243, 244, 246, 0.98) 0%, rgba(237, 242, 247, 0.95) 100%)';
+                          e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = styles.sectionHeader.background;
+                          e.currentTarget.style.boxShadow = styles.sectionHeader.boxShadow;
+                        }}>
+                      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                        <div style={{display: 'flex', alignItems: 'center', gap: '12px', flex: 1}}>
+                          <span style={{
+                            fontSize: '16px', 
+                            fontWeight: '600',
+                            color: '#111827',
+                            transition: 'transform 0.2s',
+                            display: 'inline-block',
+                            transform: expandedSections[section.title] ? 'rotate(90deg)' : 'rotate(0deg)'
+                          }}>
+                            ▶
                           </span>
-                        </span>
+                          <span style={{fontSize: '15px', fontWeight: '600', color: '#111827'}}>{section.title}</span>
+                          {!expandedSections[section.title] && (() => {
+                            // Calculate preview summary for collapsed sections
+                            const allItems = section.items.flatMap(sub => sub.items || []);
+                            const itemsWithValues = allItems.filter(item => item.id && (parseFloat(userInputs[item.id]) || 0) > 0);
+                            const totalEntered = allItems
+                              .filter(item => item.id)
+                              .reduce((sum, item) => sum + (parseFloat(userInputs[item.id]) || 0), 0);
+                            const totalRecommended = allItems
+                              .filter(item => item.id)
+                              .reduce((sum, item) => sum + calculateRecommendedAmount(item), 0);
+                            
+                            if (itemsWithValues.length > 0 || totalRecommended > 0) {
+                              return (
+                                <span style={{
+                                  fontSize: '13px',
+                                  color: '#6b7280',
+                                  fontWeight: '500',
+                                  marginLeft: '12px',
+                                  padding: '4px 10px',
+                                  backgroundColor: 'rgba(243, 244, 246, 0.6)',
+                                  borderRadius: '6px',
+                                  border: '1px solid rgba(229, 231, 235, 0.5)'
+                                }}>
+                                  {itemsWithValues.length} items • Entered: ${formatCurrency(totalEntered)} 
+                                </span>
+                              );
+                            }
+                            return null;
+                          })()}
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -1165,96 +1621,305 @@ export default function BudgetForm() {
                       {section.items.map((subsection, subIndex) => (
                         <React.Fragment key={subsection.title}>
                           <tr>
-                            <td style={{...styles.td, ...styles.sectionHeader, fontWeight: 'bold', paddingLeft: '20px', cursor: 'pointer'}} colSpan="5" onClick={() => toggleSubsection(subsection.title)}>
-                              {expandedSubsections[subsection.title] ? '▼' : '▶'} {subsection.title}
+                            <td
+                              style={{
+                                ...styles.td, 
+                                ...styles.sectionHeader, 
+                                paddingLeft: '32px', 
+                                cursor: 'pointer',
+                                background: 'linear-gradient(to bottom, rgba(247, 248, 250, 0.9) 0%, rgba(241, 245, 249, 0.85) 100%)',
+                                borderTop: '1px solid rgba(229, 231, 235, 0.3)'
+                              }}
+                              colSpan="5"
+                              onClick={() => toggleSubsection(subsection.title)}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'linear-gradient(to bottom, rgba(241, 245, 249, 0.95) 0%, rgba(235, 241, 247, 0.9) 100%)';
+                                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'linear-gradient(to bottom, rgba(247, 248, 250, 0.9) 0%, rgba(241, 245, 249, 0.85) 100%)';
+                                e.currentTarget.style.boxShadow = styles.sectionHeader.boxShadow;
+                              }}>
+                              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                                <div style={{display: 'flex', alignItems: 'center', gap: '10px', flex: 1}}>
+                                  <span style={{
+                                    fontSize: '12px',
+                                    fontWeight: '600',
+                                    color: '#6b7280',
+                                    transition: 'transform 0.2s',
+                                    display: 'inline-block',
+                                    transform: expandedSubsections[subsection.title] ? 'rotate(90deg)' : 'rotate(0deg)'
+                                  }}>
+                                    ▶
+                                  </span>
+                                  <span style={{fontSize: '14px', fontWeight: '600', color: '#374151'}}>
+                                    {subsection.title}
+                                  </span>
+                                  {!expandedSubsections[subsection.title] && (() => {
+                                    // Calculate preview for collapsed subsection
+                                    const itemsToSum = subsection.title === 'Other Miscellaneous Expenses' 
+                                      ? customExpenseItems 
+                                      : subsection.items;
+                                    const itemsWithValues = itemsToSum.filter(item => item.id && (parseFloat(userInputs[item.id]) || 0) > 0);
+                                    const totalEntered = itemsToSum
+                                      .filter(item => item.id)
+                                      .reduce((sum, item) => sum + (parseFloat(userInputs[item.id]) || 0), 0);
+                                    const totalRecommended = itemsToSum
+                                      .filter(item => item.id)
+                                      .reduce((sum, item) => sum + calculateRecommendedAmount(item), 0);
+                                    
+                                    if (itemsWithValues.length > 0 || totalRecommended > 0) {
+                                      return (
+                                        <span style={{
+                                          fontSize: '12px',
+                                          color: '#9ca3af',
+                                          fontWeight: '500',
+                                          marginLeft: '8px',
+                                          padding: '3px 8px',
+                                          backgroundColor: 'rgba(243, 244, 246, 0.5)',
+                                          borderRadius: '4px'
+                                        }}>
+                                          {itemsWithValues.length} items • ${formatCurrency(totalEntered)}
+                                        </span>
+                                      );
+                                    }
+                                    return null;
+                                  })()}
+                                </div>
+                              </div>
                             </td>
                           </tr>
-                          {expandedSubsections[subsection.title] && subsection.items.map((item, index) => {
-                            if (item.type === 'subheader') {
+                          {expandedSubsections[subsection.title] && (() => {
+                            // Use customExpenseItems for "Other Miscellaneous Expenses", otherwise use subsection.items
+                            const itemsToRender = subsection.title === 'Other Miscellaneous Expenses' 
+                              ? customExpenseItems 
+                              : subsection.items;
+                            
+                            return itemsToRender.map((item, index) => {
+                              if (item.type === 'subheader') {
+                                return (
+                                  <tr key={`${item.label}-${index}`}>
+                                    <td style={{...styles.td, fontWeight: 'bold', paddingLeft: '40px'}}>{item.label}</td>
+                                    <td style={styles.td}></td>
+                                    <td style={styles.td}></td>
+                                    <td style={styles.td}></td>
+                                    <td style={styles.td}></td>
+                                  </tr>
+                                )
+                              }
                               return (
-                                <tr key={`${item.label}-${index}`}>
-                                  <td style={{...styles.td, fontWeight: 'bold', paddingLeft: '40px'}}>{item.label}</td>
-                                  <td style={styles.td}></td>
-                                  <td style={styles.td}></td>
-                                  <td style={styles.td}></td>
-                                  <td style={styles.td}></td>
+                                <tr 
+                                  key={item.id}
+                                  style={{
+                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    cursor: 'default',
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = styles.trHover.backgroundColor;
+                                    e.currentTarget.style.transform = styles.trHover.transform;
+                                    e.currentTarget.style.boxShadow = styles.trHover.boxShadow;
+                                    Array.from(e.currentTarget.children).forEach(td => {
+                                      Object.assign(td.style, styles.tdHover);
+                                    });
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                    e.currentTarget.style.transform = 'scale(1)';
+                                    e.currentTarget.style.boxShadow = 'none';
+                                    Array.from(e.currentTarget.children).forEach(td => {
+                                      td.style.backgroundColor = styles.td.backgroundColor;
+                                      td.style.backdropFilter = 'none';
+                                      td.style.WebkitBackdropFilter = 'none';
+                                      td.style.transform = 'translateX(0)';
+                                      td.style.boxShadow = 'none';
+                                    });
+                                  }}
+                                >
+                                  <td style={{...styles.td, paddingLeft: '60px', textAlign: 'left', fontWeight: '500'}}>
+                                    {item.id.startsWith('user_input_') ? (
+                                      <input
+                                        style={{
+                                          ...styles.input,
+                                          width: '100%',
+                                          textAlign: 'left',
+                                          backgroundColor: 'white',
+                                        }}
+                                        type="text"
+                                        value={customExpenseNames[item.id] || ''}
+                                        onChange={(e) => handleExpenseNameChange(item.id, e.target.value)}
+                                        onFocus={(e) => {
+                                          e.target.style.borderColor = '#0d1a4b';
+                                          e.target.style.boxShadow = '0 0 0 2px rgba(13, 26, 75, 0.12)';
+                                          e.target.style.backgroundColor = 'white';
+                                        }}
+                                        onBlur={(e) => {
+                                          e.target.style.borderColor = '#d1d5db';
+                                          e.target.style.boxShadow = 'none';
+                                          e.target.style.backgroundColor = 'white';
+                                        }}
+                                        placeholder="Enter expense name"
+                                      />
+                                    ) : (
+                                      item.label
+                                    )}
+                                  </td>
+                                  <td style={{...styles.td, textAlign: 'left', color: '#6b7280', fontSize: '13px'}}>
+                                    {item.id.startsWith('user_input_') ? (
+                                      <input
+                                        style={{
+                                          ...styles.input,
+                                          width: '100%',
+                                          textAlign: 'left',
+                                          color: '#6b7280',
+                                        }}
+                                        type="text"
+                                        value={customExpenseNames[item.id + '_label'] || ''}
+                                        onChange={(e) => handleExpenseNameChange(item.id + '_label', e.target.value)}
+                                        onFocus={(e) => {
+                                          e.target.style.borderColor = '#0d1a4b';
+                                          e.target.style.boxShadow = '0 0 0 2px rgba(13, 26, 75, 0.12)';
+                                          e.target.style.backgroundColor = '#fffef0';
+                                        }}
+                                        onBlur={(e) => {
+                                          e.target.style.borderColor = '#d1d5db';
+                                          e.target.style.boxShadow = 'none';
+                                          e.target.style.backgroundColor = '#fffde7';
+                                        }}
+                                        placeholder="Additional description"
+                                      />
+                                    ) : (
+                                      item.explanation
+                                    )}
+                                  </td>
+                                  <td style={styles.td}>
+                                    <div style={styles.inputCellContainer}>
+                                      <input
+                                        style={styles.input}
+                                        type="text"
+                                        value={userInputs[item.id] ? `$${formatNumberForInput(userInputs[item.id])}` : ''}
+                                        onChange={(e) => handleUserInputChange(item.id, e.target.value)}
+                                        onFocus={(e) => Object.assign(e.target.style, styles.inputFocus)}
+                                        onBlur={(e) => Object.assign(e.target.style, styles.input)}
+                                        placeholder="Enter amount"
+                                        step="0.01"
+                                      />
+                                    </div>
+                                  </td>
+                                  <td style={{...styles.td, ...styles.readOnly, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px'}}>
+                                    {(() => {
+                                      const calculatedAmount = calculateRecommendedAmount(item);
+                                      const userAmount = parseFloat(userInputs[item.id]) || 0;
+                                      return calculatedAmount > 0 ? (
+                                        <>
+                                          <span>{formatCurrency(calculatedAmount)}</span>
+                                          {userAmount > 0 && Math.abs(userAmount - calculatedAmount) > 0.01 && (
+                                            <ComparisonIndicator 
+                                              recommended={calculatedAmount} 
+                                              budgeted={userAmount} 
+                                            />
+                                          )}
+                                        </>
+                                      ) : '-';
+                                    })()}
+                                  </td>
+                                  <td style={{...styles.td, ...styles.readOnly, position: 'relative'}}>
+                                    {(() => {
+                                      const calculatedPercent = calculateRecommendedPercent(item);
+                                      return calculatedPercent > 0 ? formatPercent(calculatedPercent) : '-';
+                                    })()}
+                                    {item.id.startsWith('user_input_') && (
+                                      <button
+                                        onClick={() => removeCustomExpenseItem(item.id)}
+                                        style={{
+                                          position: 'absolute',
+                                          right: '8px',
+                                          top: '50%',
+                                          transform: 'translateY(-50%)',
+                                          background: '#ef4444',
+                                          color: 'white',
+                                          border: 'none',
+                                          borderRadius: '4px',
+                                          width: '24px',
+                                          height: '24px',
+                                          cursor: 'pointer',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          fontSize: '14px',
+                                          fontWeight: 'bold',
+                                          transition: 'all 0.2s',
+                                        }}
+                                        onMouseEnter={(e) => {
+                                          e.target.style.backgroundColor = '#dc2626';
+                                          e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          e.target.style.backgroundColor = '#ef4444';
+                                          e.target.style.transform = 'translateY(-50%) scale(1)';
+                                        }}
+                                        title="Remove expense"
+                                      >
+                                        ×
+                                      </button>
+                                    )}
+                                  </td>
                                 </tr>
                               )
-                            }
-                            return (
-                              <tr key={item.id}>
-                                <td style={{...styles.td, paddingLeft: '60px', textAlign: 'left'}}>
-                                  {item.id.startsWith('user_input_') ? (
-                                    <input
-                                      style={{
-                                        ...styles.input,
-                                        width: '100%',
-                                        minWidth: '150px',
-                                        fontSize: '11px',
-                                        padding: '4px 8px',
-                                        border: '1px solid #ccc',
-                                        borderRadius: '4px',
-                                        textAlign: 'left'
-                                      }}
-                                      type="text"
-                                      value={customExpenseNames[item.id] || ''}
-                                      onChange={(e) => handleExpenseNameChange(item.id, e.target.value)}
-                                      placeholder="Enter expense name"
-                                    />
-                                  ) : (
-                                    item.label
-                                  )}
-                                </td>
-                                <td style={{...styles.td, textAlign: 'left'}}>
-                                  {item.id.startsWith('user_input_') ? (
-                                    <input
-                                      style={{
-                                        ...styles.input,
-                                        width: '100%',
-                                        minWidth: '150px',
-                                        fontSize: '11px',
-                                        padding: '4px 8px',
-                                        border: '1px solid #ccc',
-                                        borderRadius: '4px',
-                                        textAlign: 'left',
-                                        color: '#666',
-                                        backgroundColor: '#fffde7'
-                                      }}
-                                      type="text"
-                                      value={customExpenseNames[item.id + '_label'] || ''}
-                                      onChange={(e) => handleExpenseNameChange(item.id + '_label', e.target.value)}
-                                      placeholder="Additional description"
-                                    />
-                                  ) : (
-                                    item.explanation
-                                  )}
-                                </td>
-                                <td style={styles.td}>
-                                  <div style={styles.inputCellContainer}>
-                                    <input
-                                      style={styles.input}
-                                      type="text"
-                                      value={userInputs[item.id] ? `$${formatNumberForInput(userInputs[item.id])}` : ''}
-                                      onChange={(e) => handleUserInputChange(item.id, e.target.value)}
-                                      placeholder="Enter amount"
-                                    />
-                                  </div>
-                                </td>
-                                <td style={{...styles.td, ...styles.readOnly}}>
-                                  {(() => {
-                                    const calculatedAmount = calculateRecommendedAmount(item);
-                                    return calculatedAmount > 0 ? formatCurrency(calculatedAmount) : '-';
-                                  })()}
-                                </td>
-                                <td style={{...styles.td, ...styles.readOnly}}>
-                                  {(() => {
-                                    const calculatedPercent = calculateRecommendedPercent(item);
-                                    return calculatedPercent > 0 ? formatPercent(calculatedPercent) : '-';
-                                  })()}
-                                </td>
-                              </tr>
-                            )
-                          })}
+                            });
+                          })()}
+                          {/* Add button for Other Miscellaneous Expenses */}
+                          {expandedSubsections[subsection.title] && subsection.title === 'Other Miscellaneous Expenses' && (
+                            <tr>
+                              <td colSpan="5" style={{...styles.td, paddingLeft: '60px', borderTop: '1px solid #e5e7eb'}}>
+                                <button
+                                  onClick={addCustomExpenseItem}
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '10px 16px',
+                                    backgroundColor: '#0d1a4b',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontSize: '14px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.2s',
+                                    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.target.style.backgroundColor = '#1e3a8a';
+                                    e.target.style.transform = 'scale(1.02)';
+                                    e.target.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.target.style.backgroundColor = '#0d1a4b';
+                                    e.target.style.transform = 'scale(1)';
+                                    e.target.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.1)';
+                                  }}
+                                  onMouseDown={(e) => {
+                                    // Keep the same color when clicked
+                                    e.target.style.backgroundColor = '#1e3a8a';
+                                  }}
+                                  onMouseUp={(e) => {
+                                    // Keep the same color when released
+                                    e.target.style.backgroundColor = '#1e3a8a';
+                                  }}
+                                  onFocus={(e) => {
+                                    e.target.style.backgroundColor = '#1e3a8a';
+                                    e.target.style.outline = 'none';
+                                  }}
+                                  onBlur={(e) => {
+                                    e.target.style.backgroundColor = '#0d1a4b';
+                                  }}
+                                >
+                                  <span style={{ fontSize: '18px', lineHeight: '1' }}>+</span>
+                                  <span>Add Expense</span>
+                                </button>
+                              </td>
+                            </tr>
+                          )}
                           {subsection.note && (
                             <tr>
                               <td style={{...styles.td, fontStyle: 'italic', paddingLeft: '40px'}} colSpan="5">
@@ -1271,13 +1936,15 @@ export default function BudgetForm() {
                               <div style={{display: 'flex', justifyContent: 'space-between'}}>
                                 <span>$</span>
                                 <span>
-                                  {subsection.items
-                                    .filter(item => item.id)
-                                    .reduce((sum, item) => sum + (parseFloat(userInputs[item.id]) || 0), 0) > 0 
-                                    ? formatCurrency(subsection.items
-                                        .filter(item => item.id)
-                                        .reduce((sum, item) => sum + (parseFloat(userInputs[item.id]) || 0), 0)) 
-                                    : '-'}
+                                  {(() => {
+                                    const itemsToSum = subsection.title === 'Other Miscellaneous Expenses' 
+                                      ? customExpenseItems 
+                                      : subsection.items;
+                                    const total = itemsToSum
+                                      .filter(item => item.id)
+                                      .reduce((sum, item) => sum + (parseFloat(userInputs[item.id]) || 0), 0);
+                                    return total > 0 ? formatCurrency(total) : '-';
+                                  })()}
                                 </span>
                               </div>
                             </td>
@@ -1286,7 +1953,10 @@ export default function BudgetForm() {
                                 <span>$</span>
                                 <span>
                                   {(() => {
-                                    const totalRecommended = subsection.items
+                                    const itemsToSum = subsection.title === 'Other Miscellaneous Expenses' 
+                                      ? customExpenseItems 
+                                      : subsection.items;
+                                    const totalRecommended = itemsToSum
                                       .filter(item => item.id)
                                       .reduce((sum, item) => sum + calculateRecommendedAmount(item), 0);
                                     return totalRecommended > 0 ? formatCurrency(totalRecommended) : '-';
@@ -1296,7 +1966,10 @@ export default function BudgetForm() {
                             </td>
                             <td style={{...styles.td, ...styles.readOnly}}>
                               {(() => {
-                                const totalPercent = subsection.items
+                                const itemsToSum = subsection.title === 'Other Miscellaneous Expenses' 
+                                  ? customExpenseItems 
+                                  : subsection.items;
+                                const totalPercent = itemsToSum
                                   .filter(item => item.id)
                                   .reduce((sum, item) => sum + calculateRecommendedPercent(item), 0);
                                 return totalPercent > 0 ? formatPercent(totalPercent) : '-';
@@ -1315,24 +1988,24 @@ export default function BudgetForm() {
                       <tr style={{height: '20px'}}>
                         <td colSpan="5" style={{border: 'none'}}></td>
                       </tr>
-                      <tr style={{backgroundColor: '#e8f5e9'}}>
-                        <td style={{...styles.td, fontWeight: 'bold', backgroundColor: '#e8f5e9'}}>
+                      <tr style={{backgroundColor: 'rgba(240, 253, 244, 0.6)'}}>
+                        <td style={{...styles.td, fontWeight: 'bold', backgroundColor: 'rgba(240, 253, 244, 0.6)', backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}>
                           Monthly Income (After Taxes & Pre-Tax Expense Items)
                         </td>
-                        <td style={{...styles.td, backgroundColor: '#e8f5e9'}}></td>
-                        <td style={{...styles.td, backgroundColor: '#e8f5e9'}}>
+                        <td style={{...styles.td, backgroundColor: 'rgba(240, 253, 244, 0.6)', backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}></td>
+                        <td style={{...styles.td, backgroundColor: 'rgba(240, 253, 244, 0.6)', backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}>
                           <div style={{display: 'flex', justifyContent: 'space-between'}}>
                             <span>$</span>
                             <span>{formatCurrency(summaryCalculations.userAfterTaxIncome / 12)}</span>
                           </div>
                         </td>
-                        <td style={{...styles.td, backgroundColor: '#e8f5e9'}}>
+                        <td style={{...styles.td, backgroundColor: 'rgba(240, 253, 244, 0.6)', backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}>
                           <div style={{display: 'flex', justifyContent: 'space-between'}}>
                             <span>$</span>
                             <span>{formatCurrency(summaryCalculations.suggestedAfterTaxIncome / 12)}</span>
                           </div>
                         </td>
-                        <td style={{...styles.td, backgroundColor: '#e8f5e9'}}></td>
+                        <td style={{...styles.td, backgroundColor: 'rgba(240, 253, 244, 0.6)', backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}></td>
                       </tr>
                     </>
                   )}
@@ -1350,145 +2023,227 @@ export default function BudgetForm() {
         </table>
         </div>
         
-        {/* Summary Section - enhanced like Week 2/3 */}
-        <div style={{marginTop: '20px', display: 'flex', justifyContent: 'center'}}>
+        {/* Close sectionContainer */}
+        </div>
+        
+        {/* Sticky Budget Status Indicator - Glassmorphism style */}
+        <div style={{
+          position: 'fixed',
+          top: '50%',
+          right: '24px',
+          transform: 'translateY(-50%)',
+          zIndex: 1000,
+          backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderRadius: '16px',
+          padding: '20px 24px',
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.15), 0 4px 16px 0 rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
+          minWidth: '220px',
+          maxWidth: '260px',
+          textAlign: 'center',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-50%) scale(1.05)';
+          e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+          e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+        }}
+        >
+          {(() => {
+            const monthlyIncome = summaryCalculations.userAfterTaxIncome / 12;
+            const totalExpenses = calculateTotalExpenses();
+            const difference = monthlyIncome - totalExpenses;
+            const utilizationPercent = monthlyIncome > 0 ? (totalExpenses / monthlyIncome) * 100 : 0;
+            const isUnder = difference > 0;
+            const isOver = difference < 0;
+            
+            return (
+              <>
+                <div style={{
+                  fontSize: '18px',
+                  fontWeight: '700',
+                  color: isUnder ? '#16a34a' : isOver ? '#dc2626' : '#0d1a4b',
+                  marginBottom: '8px',
+                  lineHeight: '1.5'
+                }}>
+                  {isUnder ? `+$${formatCurrency(difference)}` : isOver ? `-$${formatCurrency(Math.abs(difference))}` : '$0.00'}
+                </div>
+                <div style={{fontSize: '11px', color: '#6b7280', fontWeight: '500', letterSpacing: '0.01em', marginBottom: '10px'}}>Budget Status</div>
+                <ProgressBar 
+                  percentage={utilizationPercent} 
+                  color={utilizationPercent > 100 ? '#dc2626' : utilizationPercent > 90 ? '#ca8a04' : '#16a34a'}
+                  height="6px"
+                  showLabel={false}
+                />
+                <div style={{fontSize: '10px', color: '#9ca3af', marginTop: '8px', textAlign: 'center'}}>
+                  {utilizationPercent.toFixed(1)}% utilized
+                </div>
+              </>
+            );
+          })()}
+        </div>
+
+        {/* Summary Section - Glassmorphism card style */}
+        <div style={{marginTop: '32px', display: 'flex', justifyContent: 'center', marginBottom: '100px'}}>
           <div style={{
             width: '100%',
             maxWidth: '1200px',
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            padding: '20px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            border: '1px solid #e9ecef'
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            borderRadius: '16px',
+            padding: '32px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.3)'
           }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: '16px',
-              paddingBottom: '12px',
-              borderBottom: '2px solid #f1f3f4'
+              marginBottom: '24px',
+              paddingBottom: '16px',
+              borderBottom: '1px solid #e5e7eb'
             }}>
               <div style={{
-                width: '24px',
-                height: '24px',
-                marginRight: '12px',
-                color: '#002060'
+                width: '20px',
+                height: '20px',
+                marginRight: '10px',
+                color: '#0d1a4b'
               }}>📊</div>
-              <h3 style={{ margin: '0', color: '#002060', fontSize: '18px', fontWeight: '700' }}>Budget Summary</h3>
+              <h3 style={{ margin: '0', color: '#111827', fontSize: '20px', fontWeight: '600' }}>Budget Summary</h3>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            {/* Budget Utilization Progress Bar */}
+            {(() => {
+              const monthlyIncome = summaryCalculations.userAfterTaxIncome / 12;
+              const totalExpenses = calculateTotalExpenses();
+              const utilizationPercent = monthlyIncome > 0 ? (totalExpenses / monthlyIncome) * 100 : 0;
+              const remaining = monthlyIncome - totalExpenses;
+              
+              return (
+                <div style={{
+                  marginBottom: '32px',
+                  padding: '24px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <div>
+                      <div style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500', marginBottom: '4px' }}>Budget Utilization</div>
+                      <div style={{ fontSize: '24px', fontWeight: '700', color: utilizationPercent > 100 ? '#dc2626' : '#111827' }}>
+                        <AnimatedNumber value={utilizationPercent} />%
+                      </div>
+                    </div>
+                    <StatusBadge 
+                      status={utilizationPercent > 100 ? 'Over Budget' : utilizationPercent > 90 ? 'Near Limit' : 'Healthy'} 
+                      variant={utilizationPercent > 100 ? 'error' : utilizationPercent > 90 ? 'warning' : 'success'} 
+                    />
+                  </div>
+                  <ProgressBar 
+                    percentage={utilizationPercent} 
+                    color={utilizationPercent > 100 ? '#dc2626' : utilizationPercent > 90 ? '#ca8a04' : '#16a34a'}
+                    height="12px"
+                    showLabel={false}
+                  />
+                </div>
+              );
+            })()}
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
               <div style={{
                 textAlign: 'center',
-                padding: '20px',
-                backgroundColor: 'white',
+                padding: '24px',
+                backgroundColor: 'rgba(250, 250, 250, 0.6)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
                 borderRadius: '12px',
-                border: '2px solid #e9ecef',
-                boxShadow: '0 6px 16px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.3s ease',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 position: 'relative',
                 overflow: 'hidden'
-              }}>
-                <div style={{fontSize: '24px', fontWeight: 'bold', color: '#28a745', marginBottom: '8px'}}>
-                  ${formatCurrency(calculateTotalExpenses())}
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(250, 250, 250, 0.8)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.12)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(250, 250, 250, 0.6)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+              }}
+              >
+                <div style={{fontSize: '20px', fontWeight: '700', color: '#16a34a', marginBottom: '8px'}}>
+                  <AnimatedNumber value={calculateTotalExpenses()} formatCurrency={true} formatCurrencyFn={formatCurrency} />
                 </div>
-                <div style={{fontSize: '14px', color: '#666', fontWeight: '600'}}>Total Expenses</div>
+                <div style={{fontSize: '14px', color: '#6b7280', fontWeight: '500'}}>Total Expenses</div>
               </div>
               <div style={{
                 textAlign: 'center',
-                padding: '20px',
-                backgroundColor: 'white',
+                padding: '24px',
+                backgroundColor: 'rgba(250, 250, 250, 0.6)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
                 borderRadius: '12px',
-                border: '2px solid #e9ecef',
-                boxShadow: '0 6px 16px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.3s ease',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 position: 'relative',
                 overflow: 'hidden'
-              }}>
-                <div style={{fontSize: '18px', fontWeight: 'bold', color: '#002060', marginBottom: '8px'}}>
-                  {calculateBudgetChecker()}
-                </div>
-                <div style={{fontSize: '14px', color: '#666', fontWeight: '600'}}>Budget Status</div>
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(250, 250, 250, 0.8)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.12)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(250, 250, 250, 0.6)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+              }}
+              >
+                {(() => {
+                  const monthlyIncome = summaryCalculations.userAfterTaxIncome / 12;
+                  const totalExpenses = calculateTotalExpenses();
+                  const difference = monthlyIncome - totalExpenses;
+                  const statusText = calculateBudgetChecker();
+                  const isUnder = difference > 0;
+                  const isOver = difference < 0;
+                  
+                  return (
+                    <>
+                      <div style={{
+                        fontSize: '20px', 
+                        fontWeight: '700', 
+                        color: isUnder ? '#16a34a' : isOver ? '#dc2626' : '#0d1a4b', 
+                        marginBottom: '8px'
+                      }}>
+                        {isUnder ? `+$${formatCurrency(difference)}` : isOver ? `-$${formatCurrency(Math.abs(difference))}` : '$0.00'}
+                      </div>
+                      <div style={{fontSize: '14px', color: '#6b7280', fontWeight: '500', marginBottom: '12px'}}>Budget Status</div>
+                      <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid rgba(229, 231, 235, 0.5)' }}>
+                        <StatusBadge 
+                          status={statusText.replace('Under Budget by $', '').replace('Over Budget by $', '').replace('Exactly on Budget', 'On Track')} 
+                          variant={isUnder ? 'success' : isOver ? 'error' : 'info'} 
+                        />
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>
         </div>
         
-        {/* Section Divider */}
-        <div style={styles.sectionDivider}></div>
-
-        {/* Save/Load Buttons - enhanced like Week 2/3 */}
-        <div style={{
-          marginTop: '20px', 
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '20px',
-          padding: '15px',
-          backgroundColor: 'white',
-          borderRadius: '12px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-        }}>
-          <button
-            onClick={handleSaveBudget}
-            style={{
-              backgroundColor: '#002060',
-              color: 'white',
-              border: 'none',
-              padding: '12px 24px',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#003d82';
-              e.target.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#002060';
-              e.target.style.transform = 'translateY(0)';
-            }}
-          >
-            💾 Save Week 1 Data
-          </button>
-          <button
-            onClick={handleLoadBudget}
-            style={{
-              backgroundColor: '#374151',
-              color: 'white',
-              border: 'none',
-              padding: '12px 24px',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#4b5563';
-              e.target.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#374151';
-              e.target.style.transform = 'translateY(0)';
-            }}
-          >
-            📁 Load Week 1 Data
-          </button>
-        </div>
-        
-        {/* Close sectionContainer */}
-        </div>
-        
         </div>
     );
-} 
+}

@@ -4,69 +4,80 @@ import { useBudget } from '../contexts/BudgetContext';
 const styles = {
   container: {
     fontSize: '14px',
-    maxWidth: 1200,
+    maxWidth: 1400,
     margin: '0 auto',
-    padding: 24,
-    backgroundColor: '#fdfdfd',
-    color: '#333'
+    padding: '32px 24px',
+    backgroundColor: '#fafafa',
+    color: '#111827',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   },
   header: {
-    fontSize: '18px',
+    fontSize: '24px',
     fontWeight: '600',
-    margin: '20px 0 10px 0',
-    color: '#002060'
+    margin: '0 0 32px 0',
+    color: '#111827',
+    letterSpacing: '-0.01em',
   },
   table: {
     width: '100%',
     borderCollapse: 'separate',
     borderSpacing: 0,
-    marginTop: 20,
-    borderRadius: '8px',
+    marginTop: 24,
+    borderRadius: '10px',
     overflow: 'hidden',
-    border: '1px solid #e0e0e0'
+    border: '1px solid #e5e7eb',
+    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
   },
   th: {
-    backgroundColor: '#002060',
+    background: '#0d1a4b',
     color: 'white',
-    padding: '12px',
-    borderBottom: '1px solid #e0e0e0',
+    padding: '16px',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     textAlign: 'center',
     fontWeight: '600',
-    fontSize: '14px',
+    fontSize: '13px',
+    letterSpacing: '0.01em',
   },
   td: {
-    border: '1px solid #e0e0e0',
-    padding: '10px 12px',
+    borderBottom: '1px solid #f3f4f6',
+    padding: '14px 16px',
     verticalAlign: 'middle',
     fontSize: '14px',
-    textAlign: 'left'
+    textAlign: 'left',
+    backgroundColor: 'white',
+    transition: 'background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
   },
   tdValue: {
     textAlign: 'right',
-    fontWeight: '500'
+    fontWeight: '500',
+    color: '#111827',
   },
   calculatedCell: {
-    backgroundColor: '#f5f5f5',
-    fontWeight: '500'
+    backgroundColor: '#f9fafb',
+    fontWeight: '500',
+    color: '#374151',
   },
   sectionTitle: {
-    backgroundColor: '#002060',
+    background: '#0d1a4b',
     color: 'white',
-    padding: '12px',
+    padding: '16px',
     textAlign: 'center',
     fontWeight: '600',
-    fontSize: '16px'
+    fontSize: '16px',
+    letterSpacing: '0.01em',
   },
   sectionHeader: {
-    backgroundColor: '#e8f5e9',
+    backgroundColor: '#f0fdf4',
     fontWeight: '600',
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#166534',
   },
   formulaNote: {
-    fontSize: '10px',
-    color: '#666',
+    fontSize: '11px',
+    color: '#9ca3af',
     fontStyle: 'italic',
-    marginTop: '2px'
+    marginTop: '4px',
+    fontFamily: 'monospace',
   }
 };
 
@@ -234,16 +245,16 @@ export default function Week1Summary() {
           </tr>
           
           {/* Row 18: After Tax Income - CRITICAL CELLS */}
-          <tr style={{ backgroundColor: '#e8f5e9' }}>
-            <td style={{...styles.td, fontWeight: '600'}}><strong>B18:</strong> After Tax Income</td>
-            <td style={{...styles.td, ...styles.tdValue, ...styles.calculatedCell, fontWeight: '700', fontSize: '16px'}}>
-              <strong>C18:</strong> {formatCurrency(summaryCalculations.suggestedAfterTaxIncome)}
+          <tr style={{ backgroundColor: '#f0fdf4' }}>
+            <td style={{...styles.td, fontWeight: '600', color: '#166534'}}><strong>B18:</strong> After Tax Income</td>
+            <td style={{...styles.td, ...styles.tdValue, ...styles.calculatedCell, fontWeight: '600', fontSize: '18px', color: '#166534'}}>
+              <strong style={{color: '#0d1a4b'}}>C18:</strong> {formatCurrency(summaryCalculations.suggestedAfterTaxIncome)}
               <div style={styles.formulaNote}>= MAX(C9-SUM(C11:C16)+C6,0)</div>
             </td>
             <td style={styles.td}></td>
-            <td style={{...styles.td, fontWeight: '600'}}><strong>E18:</strong> After Tax Income</td>
-            <td style={{...styles.td, ...styles.tdValue, ...styles.calculatedCell, fontWeight: '700', fontSize: '16px'}}>
-              <strong>F18:</strong> {formatCurrency(summaryCalculations.userAfterTaxIncome)}
+            <td style={{...styles.td, fontWeight: '600', color: '#166534'}}><strong>E18:</strong> After Tax Income</td>
+            <td style={{...styles.td, ...styles.tdValue, ...styles.calculatedCell, fontWeight: '600', fontSize: '18px', color: '#166534'}}>
+              <strong style={{color: '#0d1a4b'}}>F18:</strong> {formatCurrency(summaryCalculations.userAfterTaxIncome)}
               <div style={styles.formulaNote}>= MAX(F9-SUM(F11:F16)+F6,0)</div>
             </td>
           </tr>
@@ -325,22 +336,39 @@ export default function Week1Summary() {
         </table>
       </div>
       
-      {/* Key Cell References for Other Sheets */}
-      <div style={{ marginTop: '30px', padding: '20px', backgroundColor: '#f0f8ff', borderRadius: '8px' }}>
-        <h3 style={{ marginBottom: '15px', color: '#002060' }}>Critical Cell References for Other Sheets</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-          <div>
-            <h4 style={{ color: '#002060', marginBottom: '10px' }}>Referenced by Budgeting Sheet:</h4>
-            <div style={{ fontSize: '12px', color: '#666' }}>
-              <div><strong>C18:</strong> Suggested After Tax Income → Monthly Income formulas</div>
-              <div><strong>F18:</strong> User After Tax Income → Monthly Income formulas</div>
+      {/* Key Cell References for Other Sheets - Modern Card */}
+      <div style={{ 
+        marginTop: '32px', 
+        padding: '24px', 
+        backgroundColor: 'white', 
+        borderRadius: '10px',
+        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        border: '1px solid #e5e7eb'
+      }}>
+        <h3 style={{ marginBottom: '20px', color: '#111827', fontSize: '18px', fontWeight: '600' }}>Critical Cell References for Other Sheets</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+          <div style={{
+            padding: '20px',
+            backgroundColor: '#fafafa',
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+          }}>
+            <h4 style={{ color: '#0d1a4b', marginBottom: '12px', fontSize: '15px', fontWeight: '600' }}>Referenced by Budgeting Sheet:</h4>
+            <div style={{ fontSize: '13px', color: '#475569', lineHeight: '1.8' }}>
+              <div><strong style={{color: '#1e40af'}}>C18:</strong> Suggested After Tax Income → Monthly Income formulas</div>
+              <div><strong style={{color: '#1e40af'}}>F18:</strong> User After Tax Income → Monthly Income formulas</div>
             </div>
           </div>
-          <div>
-            <h4 style={{ color: '#002060', marginBottom: '10px' }}>Referenced by Federal Tax Sheet:</h4>
-            <div style={{ fontSize: '12px', color: '#666' }}>
-              <div><strong>C4:</strong> Pre-tax Income → Social Security/Medicare calculations</div>
-              <div><strong>C22:</strong> 0 Pretax Expenses Taxable Income → User Taxable Income</div>
+          <div style={{
+            padding: '20px',
+            backgroundColor: '#fafafa',
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+          }}>
+            <h4 style={{ color: '#0d1a4b', marginBottom: '12px', fontSize: '15px', fontWeight: '600' }}>Referenced by Federal Tax Sheet:</h4>
+            <div style={{ fontSize: '13px', color: '#475569', lineHeight: '1.8' }}>
+              <div><strong style={{color: '#1e40af'}}>C4:</strong> Pre-tax Income → Social Security/Medicare calculations</div>
+              <div><strong style={{color: '#1e40af'}}>C22:</strong> 0 Pretax Expenses Taxable Income → User Taxable Income</div>
             </div>
           </div>
         </div>

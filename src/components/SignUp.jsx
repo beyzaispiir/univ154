@@ -92,8 +92,8 @@ export default function SignUp() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
-      <div className="w-full max-w-[400px] space-y-6 bg-white p-8 rounded-lg shadow-sm px-6" style={{ marginTop: '2rem' }}>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex flex-col items-center p-4">
+      <div className="w-full max-w-[400px] space-y-6 bg-white p-8 rounded-2xl shadow-xl border border-gray-100 px-6" style={{ marginTop: '2rem' }}>
         {/* Logo and Title Section */}
         <div className="flex flex-col items-center">
           <img 
@@ -103,14 +103,16 @@ export default function SignUp() {
             className="object-contain"
           />
           
-          <div className="flex flex-col items-center border-t-2 border-b-2 border-[#0d1a4b] py-4 px-4">
+          <div className="flex flex-col items-center border-t-2 border-b-2 border-[#0d1a4b] py-4 px-4 bg-gradient-to-br from-[#fffde7]/30 to-yellow-50/30 rounded-xl">
             <div className="flex flex-col items-center" style={{ marginBottom: '-1.5rem' }}>
-              <img 
-                src={logo} 
-                alt="UNIV154 Logo" 
-                style={{ height: '140px', width: 'auto', marginLeft: '-10px' }}
-                className="object-contain"
-              />
+              <div className="p-3 rounded-xl bg-white shadow-sm">
+                <img 
+                  src={logo} 
+                  alt="UNIV154 Logo" 
+                  style={{ height: '140px', width: 'auto', marginLeft: '-10px' }}
+                  className="object-contain"
+                />
+              </div>
             </div>
             
             {/* Course Title Section */}
@@ -118,7 +120,7 @@ export default function SignUp() {
               <h1 className="font-bold tracking-wide text-[#0d1a4b] text-left pl-[100px]" style={{ fontSize: '24px', marginTop: '-0.5rem', marginBottom: '0' }}>
                 Financial Literacy for Life
               </h1>
-              <p className="text-sm tracking-wide text-[#0d1a4b] text-left pl-[100px]" style={{ fontSize: '16px', marginTop: '0' }}>
+              <p className="text-sm tracking-wide text-[#0d1a4b]/70 text-left pl-[100px]" style={{ fontSize: '16px', marginTop: '0' }}>
                 Preparing for the Real World
               </p>
             </div>
@@ -135,7 +137,7 @@ export default function SignUp() {
         {/* Form */}
         <form className="space-y-0" onSubmit={handleSubmit}>
           {error && (
-            <div className="p-3 mb-4 text-red-500 bg-red-50 rounded-md" style={{ fontSize: '14px', marginBottom: '10px' }}>
+            <div className="p-3 mb-4 text-red-600 bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl shadow-sm" style={{ fontSize: '14px', marginBottom: '10px' }}>
               ⚠️ {error}
             </div>
           )}
@@ -147,7 +149,7 @@ export default function SignUp() {
                 ⚠️ Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)
               </p>
             )}
-            <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Rice Email Address</label>
+            <label className="block font-semibold text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Rice Email Address</label>
             <input
               type="email"
               required
@@ -156,17 +158,17 @@ export default function SignUp() {
               placeholder="username@rice.edu, username@alumni.rice.edu, username@gmail.com, or username@yahoo.com"
                               pattern=".*@(rice\.edu|alumni\.rice\.edu|gmail\.com|yahoo\.com)$"
                 title="Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)"
-              style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
-              className="px-3 border border-gray-100 text-[#0d1a4b] 
-              placeholder-gray-400 transition-colors duration-200
-              hover:border-[#fdb913] focus:border-[#fdb913]
-              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
+              style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box' }}
+              className="px-4 border-2 border-gray-200 text-[#0d1a4b] bg-white
+              placeholder-gray-400 transition-all duration-200
+              hover:border-[#fdb913] hover:shadow-sm focus:border-[#fdb913]
+              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none focus:shadow-md"
             />
           </div>
 
           {/* Password Input */}
           <div style={{ marginBottom: '15px', width: '100%' }}>
-            <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Password</label>
+            <label className="block font-semibold text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Password</label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -174,11 +176,11 @@ export default function SignUp() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Create a password"
-                style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
-                className="px-3 border border-gray-100 text-[#0d1a4b] 
-                placeholder-gray-400 transition-colors duration-200
-                hover:border-[#fdb913] focus:border-[#fdb913]
-                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
+                style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
+                className="px-4 border-2 border-gray-200 text-[#0d1a4b] bg-white
+                placeholder-gray-400 transition-all duration-200
+                hover:border-[#fdb913] hover:shadow-sm focus:border-[#fdb913]
+                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none focus:shadow-md"
               />
               <button
                 type="button"
@@ -228,7 +230,7 @@ export default function SignUp() {
 
           {/* Confirm Password Input */}
           <div style={{ marginBottom: '15px', width: '100%' }}>
-            <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Confirm Password</label>
+            <label className="block font-semibold text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Confirm Password</label>
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
@@ -236,11 +238,11 @@ export default function SignUp() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your password"
-                style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
-                className="px-3 border border-gray-100 text-[#0d1a4b] 
-                placeholder-gray-400 transition-colors duration-200
-                hover:border-[#fdb913] focus:border-[#fdb913]
-                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
+                style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
+                className="px-4 border-2 border-gray-200 text-[#0d1a4b] bg-white
+                placeholder-gray-400 transition-all duration-200
+                hover:border-[#fdb913] hover:shadow-sm focus:border-[#fdb913]
+                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none focus:shadow-md"
               />
               <button
                 type="button"
@@ -272,11 +274,12 @@ export default function SignUp() {
             <button
               type="submit"
               disabled={loading}
-              className="px-3 py-1.5 border border-gray-100 text-[#0d1a4b] bg-white
-              hover:border-[#fdb913] focus:border-[#fdb913] transition-colors duration-200
-              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none
-              text-sm font-medium"
-              style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
+              className="px-4 py-2.5 border-2 border-[#0d1a4b] text-[#0d1a4b] bg-white
+              hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50 hover:border-[#fdb913] 
+              hover:shadow-md focus:border-[#fdb913] transition-all duration-200 transform hover:scale-[1.02]
+              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none
+              text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box' }}
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>

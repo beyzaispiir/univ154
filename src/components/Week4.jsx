@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useBudget } from '../contexts/BudgetContext';
 import stateTaxData from '../data/stateTaxData';
 
 const Week4 = () => {
   const { summaryCalculations, topInputs } = useBudget();
   
-  // Handler functions for save/load using localStorage
-  const handleSaveWeek4 = async () => {
+  // Auto-save function (without alert)
+  const autoSaveWeek4 = () => {
     try {
       const week4Data = {
         // Week 4 is read-only, but we can save the summary calculations
@@ -15,31 +15,21 @@ const Week4 = () => {
         timestamp: new Date().toISOString()
       };
       
-      // Save to localStorage
+      // Save to localStorage silently
       localStorage.setItem('week4_data', JSON.stringify(week4Data));
-      alert('Week 4 data saved successfully!');
     } catch (error) {
-      console.error('Error saving Week 4 data:', error);
-      alert('Error saving Week 4 data. Please try again.');
+      console.error('Error auto-saving Week 4 data:', error);
     }
   };
 
-  const handleLoadWeek4 = async () => {
-    try {
-      const savedData = localStorage.getItem('week4_data');
-      
-      if (savedData) {
-        const week4Data = JSON.parse(savedData);
-        // Week 4 is read-only, so we just show confirmation
-        alert('Week 4 data loaded successfully! (Note: Week 4 is read-only and shows calculated values)');
-      } else {
-        alert('No saved data found for Week 4.');
-      }
-    } catch (error) {
-      console.error('Error loading Week 4 data:', error);
-      alert('Error loading Week 4 data. Please try again.');
-    }
-  };
+  // Auto-save with debounce (500ms delay)
+  useEffect(() => {
+    const saveTimer = setTimeout(() => {
+      autoSaveWeek4();
+    }, 500); // Wait 500ms after last change before saving
+
+    return () => clearTimeout(saveTimer);
+  }, [summaryCalculations, topInputs]);
   
   // Get Week 1 SUGGESTED data directly from summaryCalculations (Week 1 B - Summary)
   const week4Data = {
@@ -514,62 +504,6 @@ const Week4 = () => {
           maxWidth: '1200px',
           margin: '30px auto'
         }}>
-          <button
-            onClick={handleSaveWeek4}
-            style={{
-              backgroundColor: '#002060',
-              color: 'white',
-              border: 'none',
-              padding: '12px 24px',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#003d82';
-              e.target.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#002060';
-              e.target.style.transform = 'translateY(0)';
-            }}
-          >
-            💾 Save Week 4 Data
-          </button>
-          <button
-            onClick={handleLoadWeek4}
-            style={{
-              backgroundColor: '#374151',
-              color: 'white',
-              border: 'none',
-              padding: '12px 24px',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#4b5563';
-              e.target.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#374151';
-              e.target.style.transform = 'translateY(0)';
-            }}
-          >
-            📁 Load Week 4 Data
-          </button>
         </div>
 
       {/* Note */}

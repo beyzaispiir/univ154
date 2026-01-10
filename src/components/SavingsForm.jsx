@@ -342,7 +342,8 @@ export default function SavingsForm() {
     } = budgetContext;
 
     // Handler functions for save/load
-    const handleSaveSavings = async () => {
+    // Auto-save function (without alert)
+    const autoSaveSavings = () => {
         try {
             const savingsData = {
                 topInputs,
@@ -352,44 +353,10 @@ export default function SavingsForm() {
                 timestamp: new Date().toISOString()
             };
             
-            // Save to localStorage
+            // Save to localStorage silently
             localStorage.setItem('week2_data', JSON.stringify(savingsData));
-            alert('Week 2 data saved successfully! 💾');
         } catch (error) {
-            alert('Error saving Week 2 data: ' + error.message);
-        }
-    };
-
-    const handleLoadSavings = async () => {
-        try {
-            const savedData = localStorage.getItem('week2_data');
-            
-            if (savedData) {
-                const savingsData = JSON.parse(savedData);
-                
-                // Load top inputs
-                if (savingsData.topInputs) {
-                    setTopInputs(savingsData.topInputs);
-                }
-                // Load user inputs
-                if (savingsData.userInputs) {
-                    setUserInputs(savingsData.userInputs);
-                }
-                // Load custom expense names
-                if (savingsData.customExpenseNames) {
-                    setCustomExpenseNames(savingsData.customExpenseNames);
-                }
-                // Load section states
-                if (savingsData.expandedSections) {
-                    setExpandedSections(savingsData.expandedSections);
-                }
-                
-                alert('Week 2 data loaded successfully! 📁');
-            } else {
-                alert('No saved data found for Week 2.');
-            }
-        } catch (error) {
-            alert('Error loading Week 2 data: ' + error.message);
+            console.error('Error auto-saving Week 2 data:', error);
         }
     };
 
@@ -493,6 +460,44 @@ export default function SavingsForm() {
     // Add missing state variables for save/load functionality
     const [expandedSections, setExpandedSections] = useState({});
     const [customExpenseNames, setCustomExpenseNames] = useState({});
+
+    // Auto-load data on component mount
+    useEffect(() => {
+        const savedData = localStorage.getItem('week2_data');
+        if (savedData) {
+            try {
+                const savingsData = JSON.parse(savedData);
+                
+                // Load top inputs
+                if (savingsData.topInputs) {
+                    setTopInputs(savingsData.topInputs);
+                }
+                // Load user inputs
+                if (savingsData.userInputs) {
+                    setUserInputs(savingsData.userInputs);
+                }
+                // Load custom expense names
+                if (savingsData.customExpenseNames) {
+                    setCustomExpenseNames(savingsData.customExpenseNames);
+                }
+                // Load section states
+                if (savingsData.expandedSections) {
+                    setExpandedSections(savingsData.expandedSections);
+                }
+            } catch (error) {
+                console.error('Error loading Week 2 data:', error);
+            }
+        }
+    }, []); // Only run on mount
+
+    // Auto-save with debounce (500ms delay)
+    useEffect(() => {
+        const saveTimer = setTimeout(() => {
+            autoSaveSavings();
+        }, 500); // Wait 500ms after last change before saving
+
+        return () => clearTimeout(saveTimer);
+    }, [topInputs, userInputs, customExpenseNames, expandedSections]);
 
 
     const afterTaxIncome = financialCalculations?.afterTaxIncome || 0;
@@ -599,11 +604,39 @@ export default function SavingsForm() {
         
         // Only allow numbers and at most one decimal point
         const sanitized = cleanValue.replace(/[^0-9.]/g, '');
-        // Prevent multiple decimals
-        const parts = sanitized.split('.');
-        let numericValue = parts[0];
-        if (parts.length > 1) {
-          numericValue += '.' + parts[1].slice(0, 2); // allow up to 2 decimals
+        
+        // Allow empty string for clearing the field
+        if (sanitized === '') {
+          setUserInputs(prev => {
+            const newState = { ...prev, [id]: '' };
+            triggerUpdate();
+            return newState;
+          });
+          return;
+        }
+        
+        // Prevent multiple decimals - find first decimal point
+        const firstDotIndex = sanitized.indexOf('.');
+        let numericValue = '';
+        
+        if (firstDotIndex === -1) {
+          // No decimal point - just numbers
+          numericValue = sanitized;
+        } else {
+          // Has decimal point - take integer part and up to 2 decimal places
+          const intPart = sanitized.substring(0, firstDotIndex);
+          const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2); // max 2 decimals
+          numericValue = intPart + '.' + decPart;
+        }
+        
+        // Allow just a decimal point or partial decimal (user might be typing ".50")
+        if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+          setUserInputs(prev => {
+            const newState = { ...prev, [id]: numericValue };
+            triggerUpdate();
+            return newState;
+          });
+          return;
         }
         
         console.log('Sanitized value:', numericValue);
@@ -654,17 +687,36 @@ export default function SavingsForm() {
     const formatCurrency = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const formatPercent = (num) => (num * 100).toFixed(2) + '%';
     
-    // Format number for input display (with commas, no .00 if whole number)
+    // Format number for input display (with commas, preserve decimals for cents)
     const formatNumberForInput = (num) => {
       if (!num || num === '') return '';
-      const number = parseFloat(num);
-      if (isNaN(number)) return num;
       
-      // Check if it's a whole number
-      if (number % 1 === 0) {
-        return number.toLocaleString('en-US');
+      // Keep as string to preserve decimal input exactly as user types
+      const numStr = num.toString();
+      
+      // If it's just a decimal point, return it as-is
+      if (numStr === '.') return '.';
+      
+      const number = parseFloat(num);
+      if (isNaN(number)) return numStr;
+      
+      // If it has a decimal point, preserve it exactly (don't force 2 decimals)
+      if (numStr.includes('.')) {
+        const parts = numStr.split('.');
+        const intPart = parts[0] || '';
+        const decPart = parts[1] || '';
+        
+        // If intPart is empty (user typing ".5"), don't format
+        if (intPart === '') {
+          return '.' + decPart;
+        }
+        
+        // Format integer part with commas, keep decimal part as-is
+        const formattedInt = parseInt(intPart).toLocaleString('en-US');
+        return decPart ? `${formattedInt}.${decPart}` : formattedInt + '.';
       } else {
-        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        // Whole number - format with commas
+        return parseInt(numStr).toLocaleString('en-US');
       }
     };
     
@@ -1075,78 +1127,6 @@ export default function SavingsForm() {
             </div>
           );
         })}
-        </div>
-        
-        {/* Section Divider */}
-        <div style={styles.sectionDivider}></div>
-
-        {/* Save/Load Buttons - enhanced like Week 3 */}
-        <div style={{
-          marginTop: '20px', 
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '20px',
-          padding: '15px',
-          backgroundColor: 'white',
-          borderRadius: '12px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-        }}>
-          <button
-            onClick={handleSaveSavings}
-            style={{
-              backgroundColor: '#002060',
-              color: 'white',
-              border: 'none',
-              padding: '12px 24px',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#003d82';
-              e.target.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#002060';
-              e.target.style.transform = 'translateY(0)';
-            }}
-          >
-            💾 Save Week 2 Data
-          </button>
-          <button
-            onClick={handleLoadSavings}
-            style={{
-              backgroundColor: '#374151',
-              color: 'white',
-              border: 'none',
-              padding: '12px 24px',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              boxShadow: '0 4px 8px rgba(55, 65, 81, 0.3)',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#4b5563';
-              e.target.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#374151';
-              e.target.style.transform = 'translateY(0)';
-            }}
-          >
-            📁 Load Week 2 Data
-          </button>
         </div>
         
         {/* Close sectionContainer */}
