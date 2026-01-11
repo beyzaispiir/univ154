@@ -45,25 +45,37 @@ const Avatar = ({ url, name }) => {
 }
 
 // Enhanced SidebarLink with better hover effects and animations
-const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdminLink = false, className = '' }) => {
+const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdminLink = false, className = '', disabled = false, onClick }) => {
   const location = useLocation();
   const isActive = location.pathname === href || 
                    (href === '/dashboard' && location.pathname === '/dashboard/') ||
                    (href === '/dashboard/admin/week-access' && location.pathname.startsWith('/dashboard/admin/'));
 
+  const handleClick = (e) => {
+    if (disabled || href === '#') {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (onClick) {
+      onClick(e);
+    }
+  };
+
   return (
     <Link
-      to={href}
+      to={disabled || href === '#' ? '#' : href}
+      onClick={handleClick}
       className={`
         group flex items-center px-[12px] py-[12px] transition-all duration-300 ease-out rounded-2xl no-underline
         transform hover:scale-[1.01] hover:translate-x-1
+        ${disabled ? 'cursor-not-allowed opacity-60' : ''}
         ${isActive 
           ? isAdminLink 
             ? 'bg-gradient-to-r from-red-50 to-red-100 text-[#0d1a4b] font-medium' 
             : 'bg-gradient-to-r from-[#fffde7] to-[#facc15]/20 text-[#0d1a4b] font-medium'
           : 'bg-transparent text-[#0d1a4b]/80'
         }
-        hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-[#0d1a4b]
+        ${!disabled ? 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-[#0d1a4b]' : ''}
         animate-fadeInUp
         ${className}
       `}

@@ -202,52 +202,35 @@ export const MinimalistSidebar = ({
               if (i === 9) weekLabel = 'Week 10 - Major Events';
               
               if (!isAccessible && !isAdmin) {
+                // Locked week'ler için de aynı format, sadece disabled
                 return (
-                  <div
-                    key={`excel-week-${i + 1}`}
-                    className="
-                      flex items-center px-3 py-2 
-                      rounded-2xl 
-                      cursor-not-allowed 
-                      opacity-50
-                    "
+                  <SidebarLink
+                    key={`excel-week-${i+1}`}
+                    href="#"
+                    delay={i}
+                    isAdminLink={false}
+                    disabled={true}
                     style={{
-                      background: 'linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%)',
-                      fontSize: 13,
+                      fontSize: '13px',
                       fontWeight: 'normal',
+                      padding: '8px 12px',
                       borderRadius: '16px',
                     }}
-                  >
-                    <span className="flex items-center w-full">
-                      {i === 4 ? (
-                        <span className="flex items-center">
-                          <FaFileExcel color="#d1d5db" className="w-3.5 h-3.5 transition-transform duration-300" />
-                          <span className="ml-2 text-gray-400" style={{ marginLeft: '8px', fontSize: '13px' }}>Week 5 - Real Estate</span>
-                        </span>
-                      ) : i === 5 ? (
-                        <span className="flex items-center">
-                          <FaFileExcel color="#d1d5db" className="w-3.5 h-3.5 transition-transform duration-300" />
-                          <span className="ml-2 text-gray-400" style={{ marginLeft: '8px', fontSize: '13px' }}>Week 6 - Retirement</span>
-                        </span>
-                      ) : i === 7 ? (
-                        <span className="flex items-center">
-                          <FaFileExcel color="#d1d5db" className="w-3.5 h-3.5 transition-transform duration-300" />
-                          <span className="ml-2 text-gray-400" style={{ marginLeft: '8px', fontSize: '13px' }}>Week 8 - Psych of Finance</span>
-                        </span>
-                      ) : i === 8 ? (
-                        <span className="flex items-center">
-                          <FaFileExcel color="#d1d5db" className="w-3.5 h-3.5 transition-transform duration-300" />
-                          <span className="ml-2 text-gray-400" style={{ marginLeft: '8px', fontSize: '13px' }}>Week 9 - Investing</span>
-                        </span>
-                      ) : (
-                        <span className="flex items-center">
-                          <FaFileExcel color="#d1d5db" className="w-3.5 h-3.5 transition-transform duration-300" />
-                          <span className="ml-2 text-gray-400" style={{ marginLeft: '8px', fontSize: '13px' }}>{weekLabel}</span>
-                        </span>
-                      )}
-                      <span className="ml-auto text-xs text-gray-300">🔒</span>
-                    </span>
-                  </div>
+                    className="
+                      transition-all duration-200
+                      rounded-2xl
+                    "
+                    text={
+                      <span className="flex items-center w-full">
+                        <FaFileExcel 
+                          color="#0d1a4b" 
+                          className="w-3.5 h-3.5 transition-all duration-300" 
+                        />
+                        <span style={{marginLeft: '8px', color: '#0d1a4b', fontSize: '13px'}}>{weekLabel}</span>
+                        <span className="ml-auto text-xs" style={{ color: '#9ca3af' }}>🔒</span>
+                      </span>
+                    }
+                  />
                 );
               }
               
