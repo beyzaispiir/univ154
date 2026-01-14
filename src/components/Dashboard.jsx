@@ -75,7 +75,7 @@ const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdmi
             : 'bg-gradient-to-r from-[#fffde7] to-[#facc15]/20 text-[#0d1a4b] font-medium'
           : 'bg-transparent text-[#0d1a4b]/80'
         }
-        ${!disabled ? 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-[#0d1a4b]' : ''}
+        ${!disabled ? 'hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50 hover:text-[#0d1a4b]' : ''}
         animate-fadeInUp
         ${className}
       `}

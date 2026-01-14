@@ -65,15 +65,15 @@ const Week4 = () => {
   };
 
 
-  // Federal tax brackets for 2025 (matching BudgetContext)
+  // Federal tax brackets for 2026 (matching BudgetContext)
   const federalTaxBrackets = [
-    { rate: 0.10, over: 0, butNotOver: 11925 },
-    { rate: 0.12, over: 11925, butNotOver: 48475 },
-    { rate: 0.22, over: 48475, butNotOver: 103350 },
-    { rate: 0.24, over: 103350, butNotOver: 197300 },
-    { rate: 0.32, over: 197300, butNotOver: 250525 },
-    { rate: 0.35, over: 250525, butNotOver: 626350 },
-    { rate: 0.37, over: 626350, butNotOver: Infinity }
+    { rate: 0.10, over: 0, butNotOver: 12400 },
+    { rate: 0.12, over: 12400, butNotOver: 50400 },
+    { rate: 0.22, over: 50400, butNotOver: 105700 },
+    { rate: 0.24, over: 105700, butNotOver: 201775 },
+    { rate: 0.32, over: 201775, butNotOver: 256225 },
+    { rate: 0.35, over: 256225, butNotOver: 640600 },
+    { rate: 0.37, over: 640600, butNotOver: Infinity }
   ];
 
   // Function to calculate taxes paid per bracket (matching Excel logic)

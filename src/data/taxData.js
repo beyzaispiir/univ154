@@ -1,13 +1,14 @@
 export const taxData2025 = {
   // From "Week 1 & Week 4 B - Federal Tax" sheet
+  // Updated for 2026 tax year
   federalTaxBrackets: [
     { rate: 0.10, lowerBound: 0 },
-    { rate: 0.12, lowerBound: 11925 },
-    { rate: 0.22, lowerBound: 48475 },
-    { rate: 0.24, lowerBound: 103350 },
-    { rate: 0.32, lowerBound: 197300 },
-    { rate: 0.35, lowerBound: 250525 },
-    { rate: 0.37, lowerBound: 626350 },
+    { rate: 0.12, lowerBound: 12400 },
+    { rate: 0.22, lowerBound: 50400 },
+    { rate: 0.24, lowerBound: 105700 },
+    { rate: 0.32, lowerBound: 201775 },
+    { rate: 0.35, lowerBound: 256225 },
+    { rate: 0.37, lowerBound: 640600 },
   ],
   socialSecurity: {
     rate: 0.0620,
@@ -20,13 +21,14 @@ export const taxData2025 = {
   // standardDeduction: 15000, 
   
   // From "Week 4 B - Tax Deduction Rule"
+  // Updated for 2026 tax year
   standardDeductionRules: {
     base: {
-      single: 15000,
-      marriedFilingJointly: 30000,
-      headOfHousehold: 22500,
-      marriedFilingSeparately: 15000,
-      qualifyingWidow: 30000,
+      single: 16100,
+      marriedFilingJointly: 32200,
+      headOfHousehold: 24150,
+      marriedFilingSeparately: 16100,
+      qualifyingWidow: 32200,
     },
     additional: {
       singleOrHeadOfHousehold: 2000,

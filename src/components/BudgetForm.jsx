@@ -29,8 +29,8 @@ const budgetConfig = {
         {
           title: 'Retirement Contributions',
           items: [
-            { id: 'traditional_401k', label: 'Traditional 401(k)', explanation: '$23,500 Max Contribution' },
-            { id: 'traditional_ira', label: 'Traditional IRA', explanation: '$7,000 Max Contribution' },
+            { id: 'traditional_401k', label: 'Traditional 401(k)', explanation: '$2,041.66 Max Monthly Contribution' },
+            { id: 'traditional_ira', label: 'Traditional IRA', explanation: '$625.00 Max Monthly Contribution' },
           ],
           note: 'Roth 401k & Roth IRA listed under After-Tax'
         }
@@ -42,8 +42,8 @@ const budgetConfig = {
         {
           title: 'Retirement Contributions',
           items: [
-            { id: 'roth_401k', label: 'Roth 401(k) Plan', explanation: '$23,500 Max Contribution' },
-            { id: 'roth_ira', label: 'Roth IRA Plan', explanation: '$7,000 Max Contribution' },
+            { id: 'roth_401k', label: 'Roth 401(k) Plan', explanation: '$2,041.66 Max Monthly Contribution' },
+            { id: 'roth_ira', label: 'Roth IRA Plan', explanation: '$625.00 Max Monthly Contribution' },
           ]
         },
         {
@@ -782,21 +782,21 @@ export default function BudgetForm() {
             return;
           }
           
-          // Validate retirement contribution limits
-          if (id === 'traditional_401k' && numValue > 23500) {
-            alert('Traditional 401(k) maximum contribution is $23,500 annually');
+          // Validate retirement contribution limits (monthly)
+          if (id === 'traditional_401k' && numValue > 2041.66) {
+            alert('Traditional 401(k) maximum contribution is $2,041.66 monthly');
             return;
           }
-          if (id === 'traditional_ira' && numValue > 7000) {
-            alert('Traditional IRA maximum contribution is $7,000 annually');
+          if (id === 'traditional_ira' && numValue > 625.00) {
+            alert('Traditional IRA maximum contribution is $625.00 monthly');
             return;
           }
-          if (id === 'roth_401k' && numValue > 23500) {
-            alert('Roth 401(k) maximum contribution is $23,500 annually');
+          if (id === 'roth_401k' && numValue > 2041.66) {
+            alert('Roth 401(k) maximum contribution is $2,041.66 monthly');
             return;
           }
-          if (id === 'roth_ira' && numValue > 7000) {
-            alert('Roth IRA maximum contribution is $7,000 annually');
+          if (id === 'roth_ira' && numValue > 625.00) {
+            alert('Roth IRA maximum contribution is $625.00 monthly');
             return;
           }
         }
@@ -1022,19 +1022,19 @@ export default function BudgetForm() {
         if (monthlyAfterTaxIncome <= 0) return 0;
         
         if (item.id === 'roth_401k') {
-          // Excel: =MIN('Week 1 - Budgeting'!$G$40*(1/20),1958.33)
-          // This is 5% of monthly after-tax income, capped at $1,958.33 (monthly max for $23,500 annual)
-          return Math.min(monthlyAfterTaxIncome * 0.05, 1958.33);
+          // Excel: =MIN('Week 1 - Budgeting'!$G$40*(1/20),2041.66)
+          // This is 5% of monthly after-tax income, capped at $2,041.66 (monthly max)
+          return Math.min(monthlyAfterTaxIncome * 0.05, 2041.66);
         }
         if (item.id === 'roth_ira') {
-          // Excel: =IF(G46=1958.33,MIN('Week 1 - Budgeting'!$G$40*(0.05-I46),583.33),0)
+          // Excel: =IF(G46=2041.66,MIN('Week 1 - Budgeting'!$G$40*(0.05-I46),625.00),0)
           // Only contribute to Roth IRA if Roth 401k is at its maximum
-          const roth401kAmount = Math.min(monthlyAfterTaxIncome * 0.05, 1958.33);
-          if (roth401kAmount === 1958.33) {
+          const roth401kAmount = Math.min(monthlyAfterTaxIncome * 0.05, 2041.66);
+          if (roth401kAmount === 2041.66) {
             // Calculate Roth 401k percentage first
             const roth401kPercent = roth401kAmount / monthlyAfterTaxIncome;
-            // Then calculate Roth IRA: 5% total - Roth 401k percentage, capped at $583.33
-            return Math.min(monthlyAfterTaxIncome * (0.05 - roth401kPercent), 583.33);
+            // Then calculate Roth IRA: 5% total - Roth 401k percentage, capped at $625.00
+            return Math.min(monthlyAfterTaxIncome * (0.05 - roth401kPercent), 625.00);
           }
           return 0;
         }
@@ -2142,10 +2142,12 @@ export default function BudgetForm() {
                         <AnimatedNumber value={utilizationPercent} />%
                       </div>
                     </div>
-                    <StatusBadge 
-                      status={utilizationPercent > 100 ? 'Over Budget' : utilizationPercent > 90 ? 'Near Limit' : 'Healthy'} 
-                      variant={utilizationPercent > 100 ? 'error' : utilizationPercent > 90 ? 'warning' : 'success'} 
-                    />
+                    {(utilizationPercent > 100 || utilizationPercent > 90) && (
+                      <StatusBadge 
+                        status={utilizationPercent > 100 ? 'Over Budget' : 'Near Limit'} 
+                        variant={utilizationPercent > 100 ? 'error' : 'warning'} 
+                      />
+                    )}
                   </div>
                   <ProgressBar 
                     percentage={utilizationPercent} 

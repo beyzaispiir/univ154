@@ -8,12 +8,12 @@ function calculateFederalIncomeTax(taxableIncome) {
 
   const federalTaxBrackets = [
     { rate: 0.10, lowerBound: 0 },
-    { rate: 0.12, lowerBound: 11925 },
-    { rate: 0.22, lowerBound: 48475 },
-    { rate: 0.24, lowerBound: 103350 },
-    { rate: 0.32, lowerBound: 197300 },
-    { rate: 0.35, lowerBound: 250525 },
-    { rate: 0.37, lowerBound: 626350 },
+    { rate: 0.12, lowerBound: 12400 },
+    { rate: 0.22, lowerBound: 50400 },
+    { rate: 0.24, lowerBound: 105700 },
+    { rate: 0.32, lowerBound: 201775 },
+    { rate: 0.35, lowerBound: 256225 },
+    { rate: 0.37, lowerBound: 640600 },
   ];
 
   const brackets = [...federalTaxBrackets].sort((a, b) => a.lowerBound - b.lowerBound);
@@ -193,14 +193,15 @@ export const BudgetProvider = ({ children }) => {
     // SUGGESTED SECTION TAX CALCULATIONS (custom calculation to match Excel exactly)
     
     // Federal Income Tax: Calculate using exact Excel logic
+    // Updated for 2026 tax year
     const federalTaxBrackets = [
       { rate: 0.10, lowerBound: 0 },
-      { rate: 0.12, lowerBound: 11925 },
-      { rate: 0.22, lowerBound: 48475 },
-      { rate: 0.24, lowerBound: 103350 },
-      { rate: 0.32, lowerBound: 197300 },
-      { rate: 0.35, lowerBound: 250525 },
-      { rate: 0.37, lowerBound: 626350 },
+      { rate: 0.12, lowerBound: 12400 },
+      { rate: 0.22, lowerBound: 50400 },
+      { rate: 0.24, lowerBound: 105700 },
+      { rate: 0.32, lowerBound: 201775 },
+      { rate: 0.35, lowerBound: 256225 },
+      { rate: 0.37, lowerBound: 640600 },
     ];
     
     let suggestedFederalIncomeTax = 0;

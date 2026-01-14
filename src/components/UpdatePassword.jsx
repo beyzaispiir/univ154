@@ -158,7 +158,7 @@ export default function UpdatePassword() {
 
           {/* Password Input */}
           <div style={{ marginBottom: '15px', width: '100%' }}>
-            <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>New Password</label>
+            <label className="block font-semibold text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>New Password</label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -166,11 +166,11 @@ export default function UpdatePassword() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your new password"
-                style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
-                className="px-3 border border-gray-100 text-[#0d1a4b] 
-                placeholder-gray-400 transition-colors duration-200
-                hover:border-[#fdb913] focus:border-[#fdb913]
-                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
+                style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', paddingRight: '50px', border: '2px solid #d1d5db' }}
+                className="px-4 text-[#0d1a4b] bg-white
+                placeholder-gray-400 transition-all duration-200
+                hover:border-[#fdb913] hover:shadow-sm focus:border-[#fdb913]
+                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none focus:shadow-md"
               />
               <button
                 type="button"
@@ -220,7 +220,7 @@ export default function UpdatePassword() {
 
           {/* Confirm Password Input */}
           <div style={{ marginBottom: '15px', width: '100%' }}>
-            <label className="block font-medium text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Confirm New Password</label>
+            <label className="block font-semibold text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Confirm New Password</label>
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
@@ -228,11 +228,11 @@ export default function UpdatePassword() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your new password"
-                style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
-                className="px-3 border border-gray-100 text-[#0d1a4b] 
-                placeholder-gray-400 transition-colors duration-200
-                hover:border-[#fdb913] focus:border-[#fdb913]
-                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none"
+                style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', paddingRight: '50px', border: '2px solid #d1d5db' }}
+                className="px-4 text-[#0d1a4b] bg-white
+                placeholder-gray-400 transition-all duration-200
+                hover:border-[#fdb913] hover:shadow-sm focus:border-[#fdb913]
+                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none focus:shadow-md"
               />
               <button
                 type="button"
@@ -264,11 +264,12 @@ export default function UpdatePassword() {
             <button
               type="submit"
               disabled={loading}
-              className="px-3 py-1.5 border border-gray-100 text-[#0d1a4b] bg-white
-              hover:border-[#fdb913] focus:border-[#fdb913] transition-colors duration-200
-              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-50 focus:outline-none
-              text-sm font-medium"
-              style={{ height: '37px', fontSize: '14px', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
+              className="px-4 py-2.5 text-[#0d1a4b] bg-white
+              hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50 hover:border-[#fdb913] 
+              hover:shadow-md focus:border-[#fdb913] transition-all duration-200 transform hover:scale-[1.02]
+              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none
+              text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', border: '2px solid #d1d5db' }}
             >
               {loading ? 'Updating password...' : 'Update Password'}
             </button>

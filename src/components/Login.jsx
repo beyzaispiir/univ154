@@ -142,7 +142,32 @@ export default function Login() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex flex-col items-center justify-center p-4 relative">
+      {/* Success Message - Fixed on Right Side - Same format as Week 1 budget warning */}
+      {message && (message.includes('inbox') || message.includes('Password reset instructions')) && (
+        <div style={{
+          position: 'fixed',
+          top: '24px',
+          right: '32px',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: 'rgba(255,255,255,0.85)',
+          backdropFilter: 'blur(2px)',
+          border: '1px solid #bfdbfe',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+          borderRadius: '14px',
+          padding: '12px 20px',
+          color: '#0d1a4b',
+          fontWeight: 500,
+          fontSize: 12
+        }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01"/></svg>
+          {message} Please check your inbox and spam folder.
+        </div>
+      )}
+      
       <div className="w-full max-w-[400px] space-y-6 bg-white p-8 rounded-2xl shadow-lg px-6">
         {/* Logo and Title Section - Minimalist Gradient Card */}
         <div className="flex flex-col items-center w-full">
@@ -233,13 +258,8 @@ export default function Login() {
         {/* Form */}
         <form className="space-y-5" onSubmit={handleSubmit}>
           {error && (
-            <div className="p-4 text-red-600 bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl shadow-sm" style={{ fontSize: '14px' }}>
+            <div className="p-4 text-red-600 bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl shadow-sm mb-5" style={{ fontSize: '14px' }}>
               ⚠️ {error}
-            </div>
-          )}
-          {message && (message.includes('inbox') || message.includes('Password reset instructions')) && (
-            <div className="p-4 text-green-700 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl shadow-sm" style={{ fontSize: '14px' }}>
-              ✅ {message} Please check your inbox and spam folder.
             </div>
           )}
 
@@ -250,7 +270,7 @@ export default function Login() {
                 ⚠️ Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)
               </p>
             )}
-            <label className="block font-semibold text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Rice Email Address</label>
+            <label className="block font-semibold text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Email Address</label>
             <input
               type="email"
               required
@@ -324,7 +344,9 @@ export default function Login() {
                     localStorage.removeItem('savedEmail')
                   }
                 }}
-                className="h-4 w-4 border-gray-300 rounded text-[#0d1a4b]"
+                className="h-4 w-4 border-gray-300 rounded text-[#0d1a4b] 
+                focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:border-[#fdb913]
+                hover:border-[#fdb913] transition-all duration-200"
               />
               <label htmlFor="remember-me" className="ml-2 text-[#0d1a4b]" style={{ fontSize: '14px' }}>
                 Remember me
@@ -333,7 +355,10 @@ export default function Login() {
             <button
               type="button"
               onClick={handleForgotPassword}
-              className="text-[#0d1a4b] hover:text-[#162456] transition-colors duration-200"
+              className="text-[#0d1a4b] bg-white
+              hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50 hover:border-[#fdb913] 
+              hover:shadow-sm focus:border-[#fdb913] transition-all duration-200 transform hover:scale-[1.02]
+              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none"
               style={{ 
                 fontSize: '14px', 
                 borderRadius: '10px', 
@@ -369,12 +394,12 @@ export default function Login() {
               type="button"
               onClick={handleGoogleSignIn}
               disabled={googleLoading || loading}
-              className="text-[#0d1a4b] font-semibold bg-white
-              shadow-sm hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 focus:outline-none 
-              focus:ring-2 focus:ring-[#0d1a4b] focus:ring-opacity-30 focus:ring-offset-2
-              transition-all duration-200 ease-in-out flex items-center justify-center gap-3
-              hover:border-[#0d1a4b] hover:text-[#162456] hover:shadow-md transform hover:scale-[1.02]
-              disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="px-4 py-2.5 text-[#0d1a4b] bg-white
+              hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50 hover:border-[#fdb913] 
+              hover:shadow-md focus:border-[#fdb913] transition-all duration-200 transform hover:scale-[1.02]
+              focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none
+              text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+              flex items-center justify-center gap-3"
               style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', border: '2px solid #d1d5db' }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 24 24" width="16" style={{ marginRight: '6px' }}>

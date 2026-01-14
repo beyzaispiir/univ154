@@ -92,64 +92,110 @@ export default function SignUp() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex flex-col items-center p-4">
-      <div className="w-full max-w-[400px] space-y-6 bg-white p-8 rounded-2xl shadow-xl border border-gray-100 px-6" style={{ marginTop: '2rem' }}>
-        {/* Logo and Title Section */}
-        <div className="flex flex-col items-center">
-          <img 
-            src={riceLogo} 
-            alt="Rice University Logo" 
-            style={{ height: '100px', width: 'auto', marginBottom: '45px' }}
-            className="object-contain"
-          />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex flex-col items-center justify-center p-4 relative">
+      <div className="w-full max-w-[400px] space-y-6 bg-white p-8 rounded-2xl shadow-lg px-6">
+        {/* Logo and Title Section - Minimalist Gradient Card */}
+        <div className="flex flex-col items-center w-full">
+          {/* Rice University Logo with fade-in */}
+          <div 
+            className="opacity-0 animate-[fadeIn_0.6s_ease-out_0.2s_forwards]"
+            style={{
+              animationFillMode: 'forwards'
+            }}
+          >
+            <img 
+              src={riceLogo} 
+              alt="Rice University Logo" 
+              style={{ height: '100px', width: 'auto', marginBottom: '32px' }}
+              className="object-contain drop-shadow-sm"
+            />
+          </div>
           
-          <div className="flex flex-col items-center border-t-2 border-b-2 border-[#0d1a4b] py-4 px-4 bg-gradient-to-br from-[#fffde7]/30 to-yellow-50/30 rounded-xl">
-            <div className="flex flex-col items-center" style={{ marginBottom: '-1.5rem' }}>
-              <div className="p-3 rounded-xl bg-white shadow-sm">
-                <img 
-                  src={logo} 
-                  alt="UNIV154 Logo" 
-                  style={{ height: '140px', width: 'auto', marginLeft: '-10px' }}
-                  className="object-contain"
-                />
-              </div>
+          {/* Main Logo Card with Gradient Background */}
+          <div 
+            className="w-full rounded-2xl bg-gradient-to-br from-[#fffde7] via-yellow-50 to-white
+            shadow-lg overflow-hidden
+            opacity-0 animate-[fadeIn_0.8s_ease-out_0.4s_forwards] transform"
+            style={{
+              animationFillMode: 'forwards',
+              boxShadow: '0 10px 25px -5px rgba(253, 230, 19, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.07)',
+              padding: '20px 110px',
+              border: '1px solid rgba(242, 250, 3, 0.08)'
+            }}
+          >
+            {/* UNIV154 Logo */}
+            <div className="flex justify-center mb-6" style={{ padding: '0 20px' }}>
+              <img 
+                src={logo} 
+                alt="UNIV154 Logo" 
+                style={{ height: '145px', width: 'auto' }} 
+                className="object-contain drop-shadow-md transition-transform duration-300 hover:scale-105"
+              />
             </div>
             
             {/* Course Title Section */}
             <div className="text-center w-full">
-              <h1 className="font-bold tracking-wide text-[#0d1a4b] text-left pl-[100px]" style={{ fontSize: '24px', marginTop: '-0.5rem', marginBottom: '0' }}>
+              <h1 
+                className="font-bold tracking-wide text-[#0d1a4b] mb-2"
+                style={{ 
+                  fontSize: '26px',
+                  letterSpacing: '-0.02em',
+                  textShadow: '0 1px 2px rgba(13, 26, 75, 0.1)'
+                }}
+              >
                 Financial Literacy for Life
               </h1>
-              <p className="text-sm tracking-wide text-[#0d1a4b]/70 text-left pl-[100px]" style={{ fontSize: '16px', marginTop: '0' }}>
+              <p 
+                className="text-sm tracking-wide text-[#0d1a4b]/70"
+                style={{ 
+                  fontSize: '17px',
+                  letterSpacing: '0.01em'
+                }}
+              >
                 Preparing for the Real World
               </p>
             </div>
           </div>
         </div>
+        
+        {/* CSS Animation for fade-in */}
+        <style>{`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
 
+        {/* Spacer */}
         <div style={{ height: '1px' }}></div>
         
         {/* Welcome Text */}
-        <div className="text-center space-y-2" style={{ marginTop: '25px', marginBottom: '25px' }}>
-          <h2 className="text-base text-[#0d1a4b]" style={{ fontSize: '16px' }}>Create your account</h2>
+        <div className="text-center space-y-2" style={{ marginTop: '30px', marginBottom: '25px' }}>
+          <h2 className="text-lg font-semibold text-[#0d1a4b]" style={{ fontSize: '18px' }}>Create your account</h2>
         </div>
 
         {/* Form */}
-        <form className="space-y-0" onSubmit={handleSubmit}>
+        <form className="space-y-5" onSubmit={handleSubmit}>
           {error && (
-            <div className="p-3 mb-4 text-red-600 bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl shadow-sm" style={{ fontSize: '14px', marginBottom: '10px' }}>
+            <div className="p-4 text-red-600 bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl shadow-sm mb-5" style={{ fontSize: '14px' }}>
               ⚠️ {error}
             </div>
           )}
 
           {/* Email Input */}
-          <div style={{ marginBottom: '15px', width: '100%' }}>
+          <div style={{ marginBottom: '10px', width: '100%' }}>
             {email && !validateEmail(email) && (
               <p className="text-red-500" style={{ fontSize: '14px', marginBottom: '10px' }}>
                 ⚠️ Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)
               </p>
             )}
-            <label className="block font-semibold text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Rice Email Address</label>
+            <label className="block font-semibold text-[#0d1a4b] mb-2" style={{ fontSize: '14px' }}>Email Address</label>
             <input
               type="email"
               required
@@ -158,8 +204,8 @@ export default function SignUp() {
               placeholder="username@rice.edu, username@alumni.rice.edu, username@gmail.com, or username@yahoo.com"
                               pattern=".*@(rice\.edu|alumni\.rice\.edu|gmail\.com|yahoo\.com)$"
                 title="Please use your Rice University email address (@rice.edu or @alumni.rice.edu), Gmail address (@gmail.com), or Yahoo address (@yahoo.com)"
-              style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box' }}
-              className="px-4 border-2 border-gray-200 text-[#0d1a4b] bg-white
+              style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', border: '2px solid #d1d5db' }}
+              className="px-4 text-[#0d1a4b] bg-white
               placeholder-gray-400 transition-all duration-200
               hover:border-[#fdb913] hover:shadow-sm focus:border-[#fdb913]
               focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none focus:shadow-md"
@@ -176,8 +222,8 @@ export default function SignUp() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Create a password"
-                style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
-                className="px-4 border-2 border-gray-200 text-[#0d1a4b] bg-white
+                style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', paddingRight: '50px', border: '2px solid #d1d5db' }}
+                className="px-4 text-[#0d1a4b] bg-white
                 placeholder-gray-400 transition-all duration-200
                 hover:border-[#fdb913] hover:shadow-sm focus:border-[#fdb913]
                 focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none focus:shadow-md"
@@ -238,8 +284,8 @@ export default function SignUp() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your password"
-                style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', paddingRight: '50px' }}
-                className="px-4 border-2 border-gray-200 text-[#0d1a4b] bg-white
+                style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', paddingRight: '50px', border: '2px solid #d1d5db' }}
+                className="px-4 text-[#0d1a4b] bg-white
                 placeholder-gray-400 transition-all duration-200
                 hover:border-[#fdb913] hover:shadow-sm focus:border-[#fdb913]
                 focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none focus:shadow-md"
@@ -270,16 +316,16 @@ export default function SignUp() {
           </div>
 
           {/* Sign Up Button */}
-          <div style={{ marginTop: '15px', marginBottom: '15px', width: '100%' }}>
+          <div style={{ marginTop: '15px', marginBottom: '10px', width: '100%' }}>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2.5 border-2 border-[#0d1a4b] text-[#0d1a4b] bg-white
+              className="px-4 py-2.5 text-[#0d1a4b] bg-white
               hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50 hover:border-[#fdb913] 
               hover:shadow-md focus:border-[#fdb913] transition-all duration-200 transform hover:scale-[1.02]
               focus:ring-2 focus:ring-[#fdb913] focus:ring-opacity-30 focus:outline-none
               text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box' }}
+              style={{ height: '42px', fontSize: '14px', borderRadius: '10px', width: '100%', boxSizing: 'border-box', border: '2px solid #d1d5db' }}
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>

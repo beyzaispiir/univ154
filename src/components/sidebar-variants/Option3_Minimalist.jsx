@@ -247,7 +247,7 @@ export const MinimalistSidebar = ({
                     borderRadius: '16px',
                   }}
                   className="
-                    hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100
+                    hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50
                     transition-all duration-200
                     rounded-2xl
                   "
@@ -310,7 +310,7 @@ export const MinimalistSidebar = ({
                 justifyContent: 'center',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(to right, #fffde7, rgba(250, 204, 21, 0.2))';
+                e.currentTarget.style.background = 'linear-gradient(to right, #fffde7, #fef9c3)';
                 e.currentTarget.style.color = '#0d1a4b';
                 e.currentTarget.style.fontWeight = '500';
                 e.currentTarget.style.transform = 'scale(1.01) translateX(4px)';
