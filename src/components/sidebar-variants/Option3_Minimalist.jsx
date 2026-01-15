@@ -86,7 +86,7 @@ export const MinimalistSidebar = ({
           <div 
             style={{
               marginTop: '0px', // Preparing yazısından uzaklaştırmak için
-              marginBottom: '40px', // Week 1'den uzaklaştırmak için
+              marginBottom: '40px', // Module 1'den uzaklaştırmak için
               paddingTop: '0px',
               paddingBottom: '0px',
               opacity: sidebarCollapsed ? 0 : (isLoaded ? 1 : 0),
@@ -132,18 +132,29 @@ export const MinimalistSidebar = ({
           }}
         >
           <div className="space-y-2">
-            {[...Array(10)].map((_, i) => {
-              const weekId = `week-${i+1}`;
+            {[...Array(9)].map((_, i) => {
+              // Map module index to actual week ID for routing
+              let weekId;
+              if (i === 0) weekId = 'week-1';      // Module 1 -> Week 1
+              else if (i === 1) weekId = 'week-2';  // Module 2 -> Week 2
+              else if (i === 2) weekId = 'week-3';  // Module 3 -> Week 3
+              else if (i === 3) weekId = 'week-4';  // Module 4 -> Week 4
+              else if (i === 4) weekId = 'week-6';  // Module 5 -> Week 6 (Retirement)
+              else if (i === 5) weekId = 'week-9';  // Module 6 -> Week 9 (Markets & Investing)
+              else if (i === 6) weekId = 'week-8';  // Module 7 -> Week 8 (Portfolio Construction)
+              else if (i === 7) weekId = 'week-7';  // Module 8 -> Week 7 (Insurance)
+              else weekId = 'week-5';               // Module 9 -> Week 5 (Real Estate)
+              
               const isAccessible = isWeekAccessible(weekId);
-              let weekLabel = `Week ${i+1}`;
+              let weekLabel = `Module ${i+1}`;
               let weekText = null;
               
-              if (i === 0) weekLabel = 'Week 1 - Budgeting';
-              if (i === 1) weekLabel = 'Week 2 - Savings';
-              if (i === 2) weekLabel = 'Week 3 - Credit & Debt';
-              if (i === 3) weekLabel = 'Week 4 - Income & Taxes';
+              if (i === 0) weekLabel = 'Module 1 - Budgeting';
+              if (i === 1) weekLabel = 'Module 2 - Savings';
+              if (i === 2) weekLabel = 'Module 3 - Credit & Debt';
+              if (i === 3) weekLabel = 'Module 4 - Income & Taxes';
               if (i === 4) {
-                weekLabel = 'Week 5 - Real Estate';
+                weekLabel = 'Module 5 - Retirement Planning';
                 weekText = (
                   <span className="flex items-center group/item">
                     <FaFileExcel
@@ -151,13 +162,13 @@ export const MinimalistSidebar = ({
                       className="w-3.5 h-3.5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:rotate-3"
                     />
                     <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px', fontSize: '13px' }}>
-                      Week 5 - Real Estate
+                      Module 5 - Retirement Planning
                     </span>
                   </span>
                 );
               }
               if (i === 5) {
-                weekLabel = 'Week 6 - Retirement';
+                weekLabel = 'Module 6 - Markets & Investing';
                 weekText = (
                   <span className="flex items-center group/item">
                     <FaFileExcel
@@ -165,14 +176,13 @@ export const MinimalistSidebar = ({
                       className="w-3.5 h-3.5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:rotate-3"
                     />
                     <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px', fontSize: '13px' }}>
-                      Week 6 - Retirement
+                      Module 6 - Markets & Investing
                     </span>
                   </span>
                 );
               }
-              if (i === 6) weekLabel = 'Week 7 - Insurance & Risk';
-              if (i === 7) {
-                weekLabel = 'Week 8 - Psych of Finance';
+              if (i === 6) {
+                weekLabel = 'Module 7 - Portfolio Construction';
                 weekText = (
                   <span className="flex items-center group/item">
                     <FaFileExcel
@@ -180,13 +190,14 @@ export const MinimalistSidebar = ({
                       className="w-3.5 h-3.5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:rotate-3"
                     />
                     <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px', fontSize: '13px' }}>
-                      Week 8 - Psych of Finance
+                      Module 7 - Portfolio Construction
                     </span>
                   </span>
                 );
               }
+              if (i === 7) weekLabel = 'Module 8 - Insurance';
               if (i === 8) {
-                weekLabel = 'Week 9 - Investing';
+                weekLabel = 'Module 9 - Real Estate';
                 weekText = (
                   <span className="flex items-center group/item">
                     <FaFileExcel
@@ -194,12 +205,11 @@ export const MinimalistSidebar = ({
                       className="w-3.5 h-3.5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:rotate-3"
                     />
                     <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px', fontSize: '13px' }}>
-                      Week 9 - Investing
+                      Module 9 - Real Estate
                     </span>
                   </span>
                 );
               }
-              if (i === 9) weekLabel = 'Week 10 - Major Events';
               
               if (!isAccessible && !isAdmin) {
                 // Locked week'ler için de aynı format, sadece disabled
@@ -252,7 +262,7 @@ export const MinimalistSidebar = ({
                     rounded-2xl
                   "
                   text={
-                    i === 5 ? weekText : (
+                    (i === 4 || i === 5 || i === 6 || i === 8) ? weekText : (
                       <span className="flex items-center group/item">
                         <FaFileExcel 
                           color={isAccessible ? "#0d1a4b" : "#9ca3af"} 

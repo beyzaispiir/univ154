@@ -2355,7 +2355,7 @@ export default function Week6Retirement() {
           backgroundColor: '#002060',
           color: 'white'
         }}>
-              🏦 Week 6 - Retirement Planning
+              🏦 Retirement Planning
             </div>
 
         {/* 1. Income Summary */}

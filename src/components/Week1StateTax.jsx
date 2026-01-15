@@ -211,7 +211,7 @@ export default function Week1StateTax() {
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ color: '#2c3e50', marginBottom: '30px' }}>Week 1 - State Tax</h1>
+      <h1 style={{ color: '#2c3e50', marginBottom: '30px' }}>State Tax</h1>
       
       {/* Taxable Income Input Section */}
       <div style={{ 

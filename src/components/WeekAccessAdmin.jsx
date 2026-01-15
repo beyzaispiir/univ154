@@ -94,8 +94,7 @@ export default function WeekAccessAdmin() {
     'week-6': 'Week 6 - Retirement Planning',
     'week-7': 'Week 7 - Insurance & Risk Management',
     'week-8': 'Week 8 - Understanding Financial Markets',
-    'week-9': 'Week 9 - Investing Basics',
-    'week-10': 'Week 10 - Financial Scams & Charitable Giving'
+    'week-9': 'Week 9 - Investing Basics'
   };
 
   const handleWeekToggle = (weekId) => {

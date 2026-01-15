@@ -122,7 +122,7 @@ const Week8 = () => {
           <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
             <div style={styles.enhancedHeader}>
-              🧠 Week 8 - Psychology of Finance
+              🧠 Portfolio Construction
             </div>
             
             {/* Placeholder Content */}

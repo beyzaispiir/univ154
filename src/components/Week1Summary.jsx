@@ -88,7 +88,7 @@ export default function Week1Summary() {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.header}>Week 1 - Summary</h2>
+      <h2 style={styles.header}>Summary</h2>
       
       {/* Main Summary Table */}
       <table style={styles.table}>

@@ -172,7 +172,7 @@ export default function Week1FederalTax() {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.header}>Week 1 - Federal Tax</h2>
+      <h2 style={styles.header}>Federal Tax</h2>
       
       {/* Input Section - Cell O2 and P2 - Modern Card */}
       <div style={{ 
