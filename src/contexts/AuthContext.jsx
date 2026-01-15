@@ -166,14 +166,23 @@ export function AuthProvider({ children }) {
 
       if (error) {
         console.log('Supabase signUp error details:', error)
+        // Check for specific Supabase errors
+        if (error.message && (
+          error.message.includes('already registered') ||
+          error.message.includes('User already registered') ||
+          error.message.includes('already exists') ||
+          error.message.includes('email address is already registered')
+        )) {
+          throw new Error('An account with this email already exists. Please sign in instead.')
+        }
         throw error
       }
 
-      // Check if this is an existing user by checking if user already exists in Supabase
-      if (data?.user?.email_confirmed_at) {
-        // If email is already confirmed, it's an existing user
-        console.log('This is an existing user with confirmed email, not a new signup')
-        throw new Error('An account with this email already exists. Please sign in instead.')
+      // If signup was successful, return the data
+      // Don't check email_confirmed_at as it may be null for new users
+      // Supabase will return an error if the user already exists
+      if (!data?.user) {
+        throw new Error('Failed to create account. Please try again.')
       }
 
       return { data, error: null }
