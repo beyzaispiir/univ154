@@ -158,6 +158,13 @@ export const BudgetProvider = ({ children }) => {
     const preTaxIncome = parseFloat(topInputs.preTaxIncome || 0);
     const standardDeduction = 15000; // $15,000 - NEVER CHANGES!
     
+    // Debug logging for all income values to track the issue
+    console.log('=== SUMMARY CALCULATIONS DEBUG ===');
+    console.log('topInputs.preTaxIncome (raw):', topInputs.preTaxIncome);
+    console.log('preTaxIncome (parsed):', preTaxIncome);
+    console.log('standardDeduction:', standardDeduction);
+    console.log('userPreTaxInputs:', userPreTaxInputs);
+    
     // Debug logging for $1,000,000
     if (preTaxIncome === 1000000) {
       console.log('=== DETAILED TAX CALCULATIONS FOR $1,000,000 ===');
@@ -737,6 +744,20 @@ export const BudgetProvider = ({ children }) => {
       userTaxableIncome - (userFederalIncomeTax + userSocialSecurityTax + userMedicareTax + userStateIncomeTax + userNYCTax) + standardDeduction,
       0
     );
+    
+    // Always log the final userAfterTaxIncome calculation for debugging
+    console.log('=== USER AFTER TAX INCOME CALCULATION ===');
+    console.log('preTaxIncome:', preTaxIncome);
+    console.log('userTaxableIncome:', userTaxableIncome);
+    console.log('userFederalIncomeTax:', userFederalIncomeTax);
+    console.log('userSocialSecurityTax:', userSocialSecurityTax);
+    console.log('userMedicareTax:', userMedicareTax);
+    console.log('userStateIncomeTax:', userStateIncomeTax);
+    console.log('userNYCTax:', userNYCTax);
+    console.log('standardDeduction:', standardDeduction);
+    console.log('Total Taxes:', userFederalIncomeTax + userSocialSecurityTax + userMedicareTax + userStateIncomeTax + userNYCTax);
+    console.log('userAfterTaxIncome (FINAL):', userAfterTaxIncome);
+    console.log('=== END USER AFTER TAX INCOME CALCULATION ===');
     
     if (preTaxIncome === 1000000 || preTaxIncome === 20000 || preTaxIncome === 10000) {
       console.log('=== DEBUG CALCULATIONS FOR INCOME:', preTaxIncome, '===');
