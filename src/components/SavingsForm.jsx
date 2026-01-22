@@ -476,10 +476,10 @@ const styles = {
   // Section name input - Different color to distinguish from number inputs
   sectionNameInput: {
     width: '100%', 
-    border: '1px solid rgba(253, 185, 19, 0.3)', // Yellow/orange border like login page
+    border: '1px solid rgba(13, 26, 75, 0.2)', // Blue border matching site theme
     padding: '12px 16px', 
     textAlign: 'left', 
-    background: 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)', // Gradient from yellow to orange - more visible
+    background: 'linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(30, 58, 138, 0.15) 50%, rgba(13, 26, 75, 0.2) 100%)', // Gradient from light blue to dark blue
     borderRadius: '8px',
     boxSizing: 'border-box',
     fontWeight: '600',
@@ -488,7 +488,7 @@ const styles = {
     color: '#0d1a4b', // Dark blue text color
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     outline: 'none',
-    boxShadow: '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)',
+    boxShadow: '0 1px 2px 0 rgba(13, 26, 75, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)',
   },
 };
 
@@ -1180,29 +1180,32 @@ export default function SavingsForm() {
                   }}
                   onMouseEnter={(e) => {
                     setShowNameTooltip(`${section1.id}_name`);
-                    e.target.style.borderColor = 'rgba(253, 185, 19, 0.5)';
-                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 1) 0%, rgba(253, 185, 19, 0.3) 50%, rgba(251, 146, 60, 0.35) 100%)';
-                    e.target.style.boxShadow = '0 2px 8px 0 rgba(253, 185, 19, 0.2), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
+                    e.target.style.borderColor = 'rgba(13, 26, 75, 0.4)';
+                    e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.25) 50%, rgba(13, 26, 75, 0.3) 100%)';
+                    e.target.style.boxShadow = '0 2px 8px 0 rgba(13, 26, 75, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
                   }}
                   onMouseLeave={(e) => {
                     setShowNameTooltip(null);
                     if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = 'rgba(253, 185, 19, 0.3)';
-                      e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
+                      e.target.style.borderColor = 'rgba(13, 26, 75, 0.2)';
+                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(30, 58, 138, 0.15) 50%, rgba(13, 26, 75, 0.2) 100%)';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(13, 26, 75, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
+                    } else {
+                      // Keep focus gradient when focused
+                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.3) 50%, rgba(13, 26, 75, 0.35) 100%)';
                     }
                   }}
                   onFocus={(e) => {
                     setShowNameTooltip(`${section1.id}_name`);
-                    e.target.style.borderColor = '#fdb913';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(253, 185, 19, 0.3), 0 0 0 1px rgba(253, 185, 19, 0.5), 0 2px 4px 0 rgba(253, 185, 19, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
-                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 1) 0%, rgba(253, 185, 19, 0.35) 50%, rgba(251, 146, 60, 0.4) 100%)';
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.2), 0 0 0 1px rgba(13, 26, 75, 0.4), 0 2px 4px 0 rgba(13, 26, 75, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
+                    e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.3) 50%, rgba(13, 26, 75, 0.35) 100%)';
                   }}
                   onBlur={(e) => {
                     setShowNameTooltip(null);
-                    e.target.style.borderColor = 'rgba(253, 185, 19, 0.3)';
-                    e.target.style.boxShadow = '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
-                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)';
+                    e.target.style.borderColor = 'rgba(13, 26, 75, 0.2)';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(13, 26, 75, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
+                    e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(30, 58, 138, 0.15) 50%, rgba(13, 26, 75, 0.2) 100%)';
                   }}
                   placeholder="Enter your goal name"
                 />
@@ -1510,29 +1513,32 @@ export default function SavingsForm() {
                     }}
                     onMouseEnter={(e) => {
                       setShowNameTooltip(`${section2.id}_name`);
-                      e.target.style.borderColor = 'rgba(253, 185, 19, 0.5)';
-                      e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 1) 0%, rgba(253, 185, 19, 0.3) 50%, rgba(251, 146, 60, 0.35) 100%)';
-                      e.target.style.boxShadow = '0 2px 8px 0 rgba(253, 185, 19, 0.2), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
+                      e.target.style.borderColor = 'rgba(13, 26, 75, 0.4)';
+                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.25) 50%, rgba(13, 26, 75, 0.3) 100%)';
+                      e.target.style.boxShadow = '0 2px 8px 0 rgba(13, 26, 75, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
                     }}
                     onMouseLeave={(e) => {
                       setShowNameTooltip(null);
                       if (document.activeElement !== e.target) {
-                        e.target.style.borderColor = 'rgba(253, 185, 19, 0.3)';
-                        e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)';
-                        e.target.style.boxShadow = '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
+                        e.target.style.borderColor = 'rgba(13, 26, 75, 0.2)';
+                        e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(30, 58, 138, 0.15) 50%, rgba(13, 26, 75, 0.2) 100%)';
+                        e.target.style.boxShadow = '0 1px 2px 0 rgba(13, 26, 75, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
+                      } else {
+                        // Keep focus gradient when focused
+                        e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.3) 50%, rgba(13, 26, 75, 0.35) 100%)';
                       }
                     }}
                     onFocus={(e) => {
                       setShowNameTooltip(`${section2.id}_name`);
-                      e.target.style.borderColor = '#fdb913';
-                      e.target.style.boxShadow = '0 0 0 3px rgba(253, 185, 19, 0.3), 0 0 0 1px rgba(253, 185, 19, 0.5), 0 2px 4px 0 rgba(253, 185, 19, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
-                      e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 1) 0%, rgba(253, 185, 19, 0.35) 50%, rgba(251, 146, 60, 0.4) 100%)';
+                      e.target.style.borderColor = '#0d1a4b';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.2), 0 0 0 1px rgba(13, 26, 75, 0.4), 0 2px 4px 0 rgba(13, 26, 75, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
+                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.3) 50%, rgba(13, 26, 75, 0.35) 100%)';
                     }}
                     onBlur={(e) => {
                       setShowNameTooltip(null);
-                      e.target.style.borderColor = 'rgba(253, 185, 19, 0.3)';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
-                      e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)';
+                      e.target.style.borderColor = 'rgba(13, 26, 75, 0.2)';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(13, 26, 75, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
+                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(30, 58, 138, 0.15) 50%, rgba(13, 26, 75, 0.2) 100%)';
                     }}
                     placeholder="Enter your goal name"
                   />
