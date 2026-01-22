@@ -430,12 +430,12 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     padding: '14px 18px',
-    backgroundColor: '#f0f9ff',
+    backgroundColor: 'rgba(13, 26, 75, 0.05)', // Darker blue background
     borderRadius: '8px',
-    color: '#1e40af',
+    color: '#0d1a4b', // Darker blue text
     fontSize: '13px',
     marginBottom: '24px',
-    border: '1px solid #bfdbfe',
+    border: '1px solid rgba(13, 26, 75, 0.15)', // Darker blue border
   },
   
   // Small percentage info - Professional styling
@@ -472,6 +472,24 @@ const styles = {
   inputFocusGlow: {
     boxShadow: '0 0 0 3px rgba(13, 26, 75, 0.15), 0 0 0 1px rgba(13, 26, 75, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)',
   },
+  
+  // Section name input - Different color to distinguish from number inputs
+  sectionNameInput: {
+    width: '100%', 
+    border: '1px solid rgba(253, 185, 19, 0.3)', // Yellow/orange border like login page
+    padding: '12px 16px', 
+    textAlign: 'left', 
+    background: 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)', // Gradient from yellow to orange - more visible
+    borderRadius: '8px',
+    boxSizing: 'border-box',
+    fontWeight: '600',
+    fontSize: '15px',
+    lineHeight: '1.5',
+    color: '#0d1a4b', // Dark blue text color
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    outline: 'none',
+    boxShadow: '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)',
+  },
 };
 
 const InfoIcon = () => (
@@ -480,7 +498,7 @@ const InfoIcon = () => (
         height="20" 
         viewBox="0 0 24 24" 
         fill="none" 
-        stroke="#3b82f6" 
+        stroke="#0d1a4b" 
         strokeWidth="2.5" 
         strokeLinecap="round" 
         strokeLinejoin="round"
@@ -648,6 +666,7 @@ export default function SavingsForm() {
     // Add missing state variables for save/load functionality
     const [expandedSections, setExpandedSections] = useState({});
     const [customExpenseNames, setCustomExpenseNames] = useState({});
+    const [showNameTooltip, setShowNameTooltip] = useState(null); // Track which section name input is hovered/focused
 
     // Auto-load data on component mount
     useEffect(() => {
@@ -1150,12 +1169,9 @@ export default function SavingsForm() {
                 }}
               >
               {/* Section Header */}
-              <div style={styles.sectionHeader}>
+              <div style={{...styles.sectionHeader, position: 'relative'}}>
                 <input
-                  style={{
-                    ...styles.input,
-                    textAlign: 'left',
-                  }}
+                  style={styles.sectionNameInput}
                   type="text"
                   value={sectionName1}
                   onChange={(e) => {
@@ -1163,33 +1179,66 @@ export default function SavingsForm() {
                     handleUserInputChange(section1.sectionName, e.target.value);
                   }}
                   onMouseEnter={(e) => {
-                    if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = '#9ca3af';
-                      e.target.style.backgroundColor = '#ffffff';
-                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                    }
+                    setShowNameTooltip(`${section1.id}_name`);
+                    e.target.style.borderColor = 'rgba(253, 185, 19, 0.5)';
+                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 1) 0%, rgba(253, 185, 19, 0.3) 50%, rgba(251, 146, 60, 0.35) 100%)';
+                    e.target.style.boxShadow = '0 2px 8px 0 rgba(253, 185, 19, 0.2), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
                   }}
                   onMouseLeave={(e) => {
+                    setShowNameTooltip(null);
                     if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = '#e5e7eb';
-                      e.target.style.backgroundColor = '#fffde7';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                      e.target.style.transform = 'scale(1)';
+                      e.target.style.borderColor = 'rgba(253, 185, 19, 0.3)';
+                      e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
                     }
                   }}
                   onFocus={(e) => {
-                    e.target.style.borderColor = '#0d1a4b';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.15), 0 0 0 1px rgba(13, 26, 75, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                    e.target.style.backgroundColor = '#fffef0';
+                    setShowNameTooltip(`${section1.id}_name`);
+                    e.target.style.borderColor = '#fdb913';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(253, 185, 19, 0.3), 0 0 0 1px rgba(253, 185, 19, 0.5), 0 2px 4px 0 rgba(253, 185, 19, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
+                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 1) 0%, rgba(253, 185, 19, 0.35) 50%, rgba(251, 146, 60, 0.4) 100%)';
                   }}
                   onBlur={(e) => {
-                    e.target.style.borderColor = '#e5e7eb';
-                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                    e.target.style.backgroundColor = '#fffde7';
+                    setShowNameTooltip(null);
+                    e.target.style.borderColor = 'rgba(253, 185, 19, 0.3)';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
+                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)';
                   }}
                   placeholder="Enter your goal name"
                 />
+                {/* Tooltip */}
+                  {showNameTooltip === `${section1.id}_name` && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: '0',
+                      marginTop: '8px',
+                      zIndex: 1000,
+                      background: '#0d1a4b',
+                      color: 'white',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      maxWidth: '280px',
+                      boxShadow: '0 4px 12px rgba(13, 26, 75, 0.3)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      pointerEvents: 'none',
+                      whiteSpace: 'nowrap',
+                    }}>
+                      You can change the name of this savings goal
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '100%',
+                        left: '20px',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '6px solid transparent',
+                        borderRight: '6px solid transparent',
+                        borderBottom: '6px solid #0d1a4b',
+                      }}></div>
+                    </div>
+                  )}
               </div>
                 
                 {/* Section Content */}
@@ -1450,12 +1499,9 @@ export default function SavingsForm() {
                 }}
               >
                 {/* Section Header */}
-                <div style={styles.sectionHeader}>
+                <div style={{...styles.sectionHeader, position: 'relative'}}>
                   <input
-                    style={{
-                      ...styles.input,
-                      textAlign: 'left',
-                    }}
+                    style={styles.sectionNameInput}
                     type="text"
                     value={sectionName2}
                     onChange={(e) => {
@@ -1463,33 +1509,66 @@ export default function SavingsForm() {
                       handleUserInputChange(section2.sectionName, e.target.value);
                     }}
                     onMouseEnter={(e) => {
-                      if (document.activeElement !== e.target) {
-                        e.target.style.borderColor = '#9ca3af';
-                        e.target.style.backgroundColor = '#ffffff';
-                        e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                        e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                      }
+                      setShowNameTooltip(`${section2.id}_name`);
+                      e.target.style.borderColor = 'rgba(253, 185, 19, 0.5)';
+                      e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 1) 0%, rgba(253, 185, 19, 0.3) 50%, rgba(251, 146, 60, 0.35) 100%)';
+                      e.target.style.boxShadow = '0 2px 8px 0 rgba(253, 185, 19, 0.2), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
                     }}
                     onMouseLeave={(e) => {
+                      setShowNameTooltip(null);
                       if (document.activeElement !== e.target) {
-                        e.target.style.borderColor = '#e5e7eb';
-                        e.target.style.backgroundColor = '#fffde7';
-                        e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                        e.target.style.transform = 'scale(1)';
+                        e.target.style.borderColor = 'rgba(253, 185, 19, 0.3)';
+                        e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)';
+                        e.target.style.boxShadow = '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
                       }
                     }}
                     onFocus={(e) => {
-                      e.target.style.borderColor = '#0d1a4b';
-                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                      e.target.style.backgroundColor = '#fffef0';
+                      setShowNameTooltip(`${section2.id}_name`);
+                      e.target.style.borderColor = '#fdb913';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(253, 185, 19, 0.3), 0 0 0 1px rgba(253, 185, 19, 0.5), 0 2px 4px 0 rgba(253, 185, 19, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
+                      e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 1) 0%, rgba(253, 185, 19, 0.35) 50%, rgba(251, 146, 60, 0.4) 100%)';
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = '#e5e7eb';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                      e.target.style.backgroundColor = '#fffde7';
+                      setShowNameTooltip(null);
+                      e.target.style.borderColor = 'rgba(253, 185, 19, 0.3)';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(253, 185, 19, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
+                      e.target.style.background = 'linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(253, 185, 19, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%)';
                     }}
                     placeholder="Enter your goal name"
                   />
+                  {/* Tooltip */}
+                  {showNameTooltip === `${section2.id}_name` && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: '0',
+                      marginTop: '8px',
+                      zIndex: 1000,
+                      background: '#0d1a4b',
+                      color: 'white',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      maxWidth: '280px',
+                      boxShadow: '0 4px 12px rgba(13, 26, 75, 0.3)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      pointerEvents: 'none',
+                      whiteSpace: 'nowrap',
+                    }}>
+                      You can change the name of this savings goal
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '100%',
+                        left: '20px',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '6px solid transparent',
+                        borderRight: '6px solid transparent',
+                        borderBottom: '6px solid #0d1a4b',
+                      }}></div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* sagdaki Section Content */} 

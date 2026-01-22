@@ -407,12 +407,12 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     padding: '14px 18px',
-    backgroundColor: '#f0f9ff',
+    backgroundColor: 'rgba(13, 26, 75, 0.05)', // Darker blue background
     borderRadius: '8px',
-    color: '#1e40af',
+    color: '#0d1a4b', // Darker blue text
     fontSize: '13px',
     marginBottom: '24px',
-    border: '1px solid #bfdbfe',
+    border: '1px solid rgba(13, 26, 75, 0.15)', // Darker blue border
   },
 };
 
@@ -422,7 +422,7 @@ const InfoIcon = () => (
         height="20" 
         viewBox="0 0 24 24" 
         fill="none" 
-        stroke="#3b82f6" 
+        stroke="#0d1a4b" 
         strokeWidth="2.5" 
         strokeLinecap="round" 
         strokeLinejoin="round"
@@ -1433,19 +1433,23 @@ export default function BudgetForm() {
             <div style={{width: '450px', marginBottom: '20px'}}>
             <h3 style={styles.header}>User Inputted Data</h3>
             <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
               fontSize: '13px', 
-              color: '#1e40af', 
+              color: '#0d1a4b', 
               marginBottom: '16px', 
               fontStyle: 'italic', 
               padding: '12px 16px', 
-              backgroundColor: 'rgba(240, 249, 255, 0.7)',
+              backgroundColor: 'rgba(13, 26, 75, 0.05)',
               backdropFilter: 'blur(8px)',
               WebkitBackdropFilter: 'blur(8px)',
               borderRadius: '10px', 
-              border: '1px solid rgba(191, 219, 254, 0.5)',
-              boxShadow: '0 2px 8px 0 rgba(30, 64, 175, 0.1)'
+              border: '1px solid rgba(13, 26, 75, 0.15)',
+              boxShadow: '0 2px 8px 0 rgba(13, 26, 75, 0.1)'
             }}>
-                ℹ️ Taxes calculated based on single taxpayer filing status
+                <InfoIcon />
+                <div>Taxes calculated based on single taxpayer filing status</div>
             </div>
             {userInputFields.map(field => (
             <div key={field.id} style={{ display: 'flex', justifyContent: 'space-between', margin: '8px 0', alignItems: 'center' }}>

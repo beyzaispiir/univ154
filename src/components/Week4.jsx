@@ -278,13 +278,13 @@ const Week4 = () => {
       textAlign: 'center'
     },
     noteBox: {
-      backgroundColor: '#fffde7',
-      border: '1px solid #f9fbe7',
+      backgroundColor: 'rgba(13, 26, 75, 0.05)',
+      border: '1px solid rgba(13, 26, 75, 0.15)',
       borderRadius: '6px',
       padding: '12px',
       marginTop: '20px',
       fontSize: '12px',
-      color: '#374151'
+      color: '#0d1a4b'
     }
   };
 
