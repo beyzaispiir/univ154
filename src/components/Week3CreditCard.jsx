@@ -25,7 +25,11 @@ const Week3CreditCard = () => {
   // State for General Loans section
   const [generalLoanAmount, setGeneralLoanAmount] = useState('50000');
   const [generalAnnualRate, setGeneralAnnualRate] = useState('0.08');
+  const [generalAnnualRateInput, setGeneralAnnualRateInput] = useState('8'); // Temporary input value for display
   const [generalTerm, setGeneralTerm] = useState('60');
+
+  // State for chart modal
+  const [expandedChart, setExpandedChart] = useState(null); // 'userPayment', 'minimumPayment', 'generalLoan', or null
 
   // Format number for input display (with commas, preserve decimals for cents)
   const formatNumberForInput = (num) => {
@@ -97,7 +101,14 @@ const Week3CreditCard = () => {
         if (week3Data.annualInterestRate) setAnnualInterestRate(week3Data.annualInterestRate);
         if (week3Data.userPayment) setUserPayment(week3Data.userPayment);
         if (week3Data.generalLoanAmount) setGeneralLoanAmount(week3Data.generalLoanAmount);
-        if (week3Data.generalAnnualRate) setGeneralAnnualRate(week3Data.generalAnnualRate);
+        if (week3Data.generalAnnualRate) {
+          setGeneralAnnualRate(week3Data.generalAnnualRate);
+          // Update input display value
+          const ratePercent = parseFloat(week3Data.generalAnnualRate) * 100;
+          if (!isNaN(ratePercent)) {
+            setGeneralAnnualRateInput(ratePercent.toString());
+          }
+        }
         if (week3Data.generalTerm) setGeneralTerm(week3Data.generalTerm);
       } catch (error) {
         console.error('Error loading Week 3 data:', error);
@@ -320,48 +331,69 @@ const Week3CreditCard = () => {
   const generalLoanData = calculateGeneralLoanAmortization();
 
 
-  // Styling matching Week 1 and Week 2 patterns exactly
+  // Styling matching Week 1 patterns exactly
   const styles = {
     container: {
       minHeight: '100vh',
-      backgroundColor: '#f8f9fa',
-      padding: '20px',
-      maxWidth: '1200px',
-      margin: '0 auto'
+      background: 'linear-gradient(135deg, rgba(255, 253, 231, 0.27) 0%, rgb(255, 252, 240) 50%, rgb(255, 255, 255) 100%)',
+      padding: '32px 24px',
+      width: '100%',
+      fontSize: '14px',
+      color: '#111827',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      position: 'relative',
     },
     sectionDivider: {
-      height: '3px',
-      background: 'linear-gradient(90deg, #002060, #ff9500, #002060)',
-      margin: '40px 0',
-      borderRadius: '2px',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+      height: '1px',
+      background: 'linear-gradient(90deg, transparent, rgba(229, 231, 235, 0.6), transparent)',
+      margin: '0',
+      borderRadius: '1px',
     },
     sectionContainer: {
-      backgroundColor: 'white',
-      borderRadius: '12px',
-      padding: '24px',
-      marginBottom: '30px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e9ecef'
+      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+      borderRadius: '16px',
+      padding: '40px',
+      marginBottom: '32px',
+      boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      width: '100%',
+      maxWidth: '1200px',
+      marginLeft: 'auto',
+      marginRight: 'auto',
     },
     enhancedHeader: {
-      backgroundColor: '#002060',
+      background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       color: 'white',
-      padding: '20px 24px',
-      borderRadius: '12px',
-      fontWeight: '700',
-      fontSize: '18px',
+      padding: '28px 32px',
+      borderRadius: '16px',
+      fontWeight: '600',
+      fontSize: '22px',
       textAlign: 'center',
-      marginBottom: '20px',
-      boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)'
+      marginBottom: '32px',
+      boxShadow: '0 8px 32px 0 rgba(13, 26, 75, 0.3), 0 4px 16px 0 rgba(13, 26, 75, 0.2)',
+      letterSpacing: '-0.01em',
+      lineHeight: '1.3',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
     },
     inputSection: {
-      backgroundColor: 'white',
-      padding: '8px',
-      borderRadius: '8px',
-      border: '1px solid #e9ecef',
-      marginBottom: '8px',
-      maxWidth: '100%'
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      padding: '16px',
+      borderRadius: '12px',
+      border: '1px solid rgba(229, 231, 235, 0.5)',
+      marginBottom: '16px',
+      maxWidth: '100%',
+      boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.05)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     },
     inputGrid: {
       display: 'grid',
@@ -386,34 +418,41 @@ const Week3CreditCard = () => {
     },
     input: {
       width: '120px',
-      border: '1px solid #ccc',
-      padding: '8px',
+      border: '2px solid #d1d5db',
+      padding: '10px 14px',
       textAlign: 'right',
-      backgroundColor: '#fffde7', // Yellow background for editable fields
-      borderRadius: '6px',
+      backgroundColor: '#fffde7',
+      borderRadius: '8px',
       boxSizing: 'border-box',
-      fontWeight: '600',
-      fontSize: '12px'
+      fontWeight: '500',
+      fontSize: '14px',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      outline: 'none',
+      transform: 'scale(1)',
+      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)',
     },
     readOnlyInput: {
       width: '120px',
-      border: '1px solid #ccc',
-      padding: '8px 12px',
+      border: '1px solid rgba(229, 231, 235, 0.6)',
+      padding: '10px 14px',
       textAlign: 'right',
-      backgroundColor: '#f5f5f5', // Gray background for read-only
-      borderRadius: '6px',
+      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      borderRadius: '8px',
       boxSizing: 'border-box',
       fontSize: '14px',
       fontWeight: '600',
-      color: '#555'
+      color: '#6b7280',
+      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)',
     },
     calculatedValue: {
       width: '120px',
       textAlign: 'right',
       fontSize: '14px',
       fontWeight: '600',
-      color: '#002060',
-      padding: '8px 0px'
+      color: '#0d1a4b',
+      padding: '10px 0px'
     },
     mainLayout: {
       display: 'grid',
@@ -452,13 +491,15 @@ const Week3CreditCard = () => {
       overflow: 'hidden'
     },
     summaryCardEnhanced: {
-      backgroundColor: 'white',
-      padding: '20px',
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      padding: '24px',
       borderRadius: '12px',
-      border: '2px solid #e9ecef',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
       marginBottom: '16px',
-      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-      transition: 'all 0.3s ease',
+      boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       position: 'relative',
       overflow: 'hidden'
     },
@@ -473,14 +514,15 @@ const Week3CreditCard = () => {
       width: '24px',
       height: '24px',
       marginRight: '8px',
-      color: '#002060'
+      color: '#0d1a4b'
     },
     summaryTitle: {
-      fontSize: '14px',
+      fontSize: '15px',
       fontWeight: '600',
-      color: '#002060',
+      color: '#0d1a4b',
       margin: '0',
-      textAlign: 'center'
+      textAlign: 'center',
+      letterSpacing: '-0.01em',
     },
     chartsSection: {
       display: 'grid',
@@ -498,40 +540,47 @@ const Week3CreditCard = () => {
       marginBottom: '20px'
     },
     chartCardEnhanced: {
-      backgroundColor: 'white',
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
       padding: '24px',
       borderRadius: '12px',
-      border: '2px solid #e9ecef',
-      boxShadow: '0 6px 16px rgba(0, 0, 0, 0.15)',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
       marginBottom: '20px',
-      position: 'relative'
+      position: 'relative',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     },
     chartHeader: {
       display: 'flex',
-      alignItems: 'flex-start',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       marginBottom: '20px',
       paddingBottom: '12px',
-      borderBottom: '2px solid #f1f3f4'
+      borderBottom: '2px solid #f1f3f4',
+      gap: '12px'
     },
     chartIcon: {
       width: '20px',
       height: '20px',
       marginRight: '8px',
-      color: '#002060'
+      color: '#0d1a4b'
     },
     chartTitle: {
-      fontSize: '14px',
+      fontSize: '15px',
       fontWeight: '600',
-      color: '#002060',
+      color: '#0d1a4b',
       margin: '0',
-      textAlign: 'center'
+      textAlign: 'center',
+      letterSpacing: '-0.01em',
     },
     sectionTitle: {
-      fontSize: '14px',
+      fontSize: '15px',
       fontWeight: '600',
-      color: '#002060',
+      color: '#0d1a4b',
       marginBottom: '12px',
-      textAlign: 'center'
+      textAlign: 'center',
+      letterSpacing: '-0.01em',
     },
     summaryTable: {
       marginBottom: '12px'
@@ -550,60 +599,90 @@ const Week3CreditCard = () => {
     summaryValue: {
       fontSize: '14px',
       fontWeight: '600',
-      color: '#002060'
+      color: '#0d1a4b'
     },
     chartContainer: {
       height: '200px',
-      backgroundColor: '#f8f9fa',
-      border: '1px solid #e9ecef',
-      borderRadius: '6px',
+      backgroundColor: 'rgba(249, 250, 251, 0.6)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      border: '1px solid rgba(229, 231, 235, 0.5)',
+      borderRadius: '8px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      color: '#666',
-      marginTop: '8px'
+      color: '#6b7280',
+      marginTop: '8px',
+      boxShadow: 'inset 0 1px 2px 0 rgba(0, 0, 0, 0.05)',
     },
     note: {
-      backgroundColor: '#f8f9fa',
-      border: '1px solid #e9ecef',
-      padding: '12px',
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      border: '1px solid rgba(229, 231, 235, 0.5)',
+      padding: '14px 18px',
       borderRadius: '8px',
       textAlign: 'center',
       fontSize: '14px',
       color: '#374151',
-      fontWeight: '500'
+      fontWeight: '500',
+      boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.05)',
+    },
+    infoBox: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      padding: '14px 18px',
+      backgroundColor: 'rgba(13, 26, 75, 0.05)',
+      borderRadius: '8px',
+      color: '#0d1a4b',
+      fontSize: '13px',
+      marginBottom: '24px',
+      border: '1px solid rgba(13, 26, 75, 0.15)',
     },
     // General Loans Section Styles
     generalLoansSection: {
       marginBottom: '20px'
     },
     generalLoansHeader: {
-      backgroundColor: '#002060',
+      background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       color: 'white',
-      padding: '12px 16px',
-      borderRadius: '8px',
+      padding: '28px 32px',
+      borderRadius: '16px',
       fontWeight: '600',
-      fontSize: '14px',
+      fontSize: '22px',
       textAlign: 'center',
-      marginBottom: '10px'
+      marginBottom: '32px',
+      boxShadow: '0 8px 32px 0 rgba(13, 26, 75, 0.3), 0 4px 16px 0 rgba(13, 26, 75, 0.2)',
+      letterSpacing: '-0.01em',
+      lineHeight: '1.3',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
     },
     generalLoansContent: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr 1fr',
-      gap: '16px'
+      gap: '24px',
+      marginBottom: '32px'
     },
     ratesTable: {
-      backgroundColor: 'white',
-      padding: '16px',
-      borderRadius: '8px',
-      border: '1px solid #e9ecef'
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     },
     ratesTitle: {
-      fontSize: '14px',
+      fontSize: '15px',
       fontWeight: '600',
-      color: '#002060',
-      marginBottom: '12px',
-      textAlign: 'center'
+      color: '#0d1a4b',
+      marginBottom: '16px',
+      textAlign: 'center',
+      letterSpacing: '-0.01em',
     },
     ratesList: {
       display: 'flex',
@@ -624,25 +703,30 @@ const Week3CreditCard = () => {
     rateValue: {
       fontSize: '14px',
       fontWeight: '600',
-      color: '#002060'
+      color: '#0d1a4b'
     },
     loanDetails: {
-      backgroundColor: 'white',
-      padding: '16px',
-      borderRadius: '8px',
-      border: '1px solid #e9ecef'
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     },
     loanDetailsTitle: {
-      fontSize: '14px',
+      fontSize: '15px',
       fontWeight: '600',
-      color: '#002060',
-      marginBottom: '12px',
-      textAlign: 'center'
+      color: '#0d1a4b',
+      marginBottom: '16px',
+      textAlign: 'center',
+      letterSpacing: '-0.01em',
     },
     loanDetailsList: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '8px'
+      gap: '12px'
     },
     loanDetailItem: {
       display: 'flex',
@@ -656,28 +740,35 @@ const Week3CreditCard = () => {
       color: '#666'
     },
     loanInput: {
-      width: '120px',
-      border: '1px solid #ccc',
-      padding: '8px',
+      width: '150px',
+      border: '2px solid #d1d5db',
+      padding: '10px 14px',
       textAlign: 'right',
       backgroundColor: '#fffde7',
-      borderRadius: '6px',
-      fontWeight: '600',
+      borderRadius: '8px',
+      fontWeight: '500',
       boxSizing: 'border-box',
-      fontSize: '12px'
+      fontSize: '14px',
+      transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+      outline: 'none',
     },
     paymentSummary: {
-      backgroundColor: 'white',
-      padding: '16px',
-      borderRadius: '8px',
-      border: '1px solid #e9ecef'
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     },
     paymentSummaryTitle: {
-      fontSize: '14px',
+      fontSize: '15px',
       fontWeight: '600',
-      color: '#002060',
-      marginBottom: '12px',
-      textAlign: 'center'
+      color: '#0d1a4b',
+      marginBottom: '16px',
+      textAlign: 'center',
+      letterSpacing: '-0.01em',
     },
     paymentSummaryList: {
       display: 'flex',
@@ -698,9 +789,28 @@ const Week3CreditCard = () => {
     paymentSummaryValue: {
       fontSize: '14px',
       fontWeight: '600',
-      color: '#002060'
+      color: '#0d1a4b'
     }
   };
+
+  // Info Icon Component matching Week 1
+  const InfoIcon = () => (
+    <svg 
+      width="20" 
+      height="20" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="#0d1a4b" 
+      strokeWidth="2.5" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+      style={{ flexShrink: 0 }}
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+  );
 
   return (
     <div style={styles.container}>
@@ -711,11 +821,31 @@ const Week3CreditCard = () => {
           💳 Credit Card Debt Management
           </div>
 
+        {/* Info Box - matching Week 1 styling */}
+        <div style={styles.infoBox}>
+          <InfoIcon />
+          <div>
+            <strong>How it works:</strong> Enter your credit card debt amount and annual interest rate. Compare the impact of making minimum payments versus your custom payment amount. You can also analyze general loans with fixed monthly payments.
+          </div>
+          </div>
+
       {/* Main Content - Left and Right Layout like Excel */}
       <div style={styles.mainLayout}>
         {/* Left Side: Input Parameters */}
         <div style={styles.leftSection}>
-          <div style={styles.inputSection}>
+          <div 
+            style={styles.inputSection}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.12)';
+              e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.7)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 2px 8px 0 rgba(0, 0, 0, 0.05)';
+              e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.5)';
+            }}
+          >
             <div style={styles.inputGrid}>
               {/* Left Column */}
               <div style={styles.inputColumn}>
@@ -753,6 +883,33 @@ const Week3CreditCard = () => {
                     }}
                     style={styles.input}
                     placeholder="Enter amount"
+                    onMouseEnter={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.borderColor = '#9ca3af';
+                        e.target.style.backgroundColor = '#ffffff';
+                        e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                        e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.borderColor = '#d1d5db';
+                        e.target.style.backgroundColor = '#fffde7';
+                        e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                        e.target.style.transform = 'scale(1)';
+                      }
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#0d1a4b';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                      e.target.style.backgroundColor = '#fffef0';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.transform = 'scale(1)';
+                    }}
                   />
                 </div>
                 <div style={styles.inputRow}>
@@ -766,6 +923,33 @@ const Week3CreditCard = () => {
                     }}
                     style={styles.input}
                     placeholder="%Enter rate"
+                    onMouseEnter={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.borderColor = '#9ca3af';
+                        e.target.style.backgroundColor = '#ffffff';
+                        e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                        e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.borderColor = '#d1d5db';
+                        e.target.style.backgroundColor = '#fffde7';
+                        e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                        e.target.style.transform = 'scale(1)';
+                      }
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#0d1a4b';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                      e.target.style.backgroundColor = '#fffef0';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.transform = 'scale(1)';
+                    }}
                   />
                 </div>
               </div>
@@ -810,11 +994,40 @@ const Week3CreditCard = () => {
                       
                       setUserPayment(numericValue);
                     }}
+                    style={{
+                      ...styles.input,
+                      borderColor: parseFloat(userPayment) < minimumPayment && userPayment !== '' ? '#dc3545' : '#d1d5db'
+                    }}
+                    placeholder="$Enter amount"
+                    onMouseEnter={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.borderColor = '#9ca3af';
+                        e.target.style.backgroundColor = '#ffffff';
+                        e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                        e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (document.activeElement !== e.target) {
+                        const value = e.target.value.replace(/[$,]/g, '');
+                        const numericValue = parseFloat(value);
+                        e.target.style.borderColor = (value !== '' && !isNaN(numericValue) && numericValue < minimumPayment) ? '#dc3545' : '#d1d5db';
+                        e.target.style.backgroundColor = '#fffde7';
+                        e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                        e.target.style.transform = 'scale(1)';
+                      }
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#0d1a4b';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                      e.target.style.backgroundColor = '#fffef0';
+                    }}
                     onBlur={(e) => {
-                      // Only validate when user finishes typing (onBlur)
+                      // Validation and styling combined
                       const value = e.target.value.replace(/[$,]/g, '');
                       const numericValue = parseFloat(value);
                       
+                      // Validation
                       if (value !== '' && !isNaN(numericValue) && numericValue >= 0) {
                         if (numericValue < minimumPayment) {
                           alert(`User Input Payment must be at least the minimum payment amount of $${minimumPayment.toFixed(2)}`);
@@ -822,12 +1035,13 @@ const Week3CreditCard = () => {
                           setUserPayment(minimumPayment.toString());
                         }
                       }
+                      
+                      // Styling
+                      e.target.style.borderColor = (value !== '' && !isNaN(numericValue) && numericValue < minimumPayment) ? '#dc3545' : '#d1d5db';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.transform = 'scale(1)';
                     }}
-                    style={{
-                      ...styles.input,
-                      borderColor: parseFloat(userPayment) < minimumPayment && userPayment !== '' ? '#dc3545' : '#ccc'
-                    }}
-                    placeholder="$Enter amount"
                   />
                 </div>
               </div>
@@ -839,7 +1053,19 @@ const Week3CreditCard = () => {
         <div style={styles.rightSection}>
           <div style={styles.summaryGrid}>
             {/* User Input Payment Summary */}
-            <div style={styles.summaryCardEnhanced}>
+            <div 
+              style={styles.summaryCardEnhanced}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+                e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+                e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+              }}
+            >
               <div style={styles.summaryCardHeader}>
                 <div style={styles.summaryCardIcon}>💳</div>
               <h3 style={styles.summaryTitle}>User Input Payment</h3>
@@ -867,7 +1093,19 @@ const Week3CreditCard = () => {
             </div>
 
             {/* Minimum Input Payment Summary */}
-            <div style={styles.summaryCardEnhanced}>
+            <div 
+              style={styles.summaryCardEnhanced}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+                e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+                e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+              }}
+            >
               <div style={styles.summaryCardHeader}>
                 <div style={styles.summaryCardIcon}>⚠️</div>
               <h3 style={styles.summaryTitle}>Minimum Input Payment</h3>
@@ -900,10 +1138,41 @@ const Week3CreditCard = () => {
       {/* Charts Section - Side by Side like Excel */}
       <div style={styles.chartsSection}>
         {/* Left Chart: User Input Payment */}
-        <div style={styles.chartCardEnhanced}>
+        <div 
+          style={{ ...styles.chartCardEnhanced, cursor: 'pointer' }}
+          onClick={() => setExpandedChart('userPayment')}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+            e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+            e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+          }}
+        >
           <div style={styles.chartHeader}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
             <div style={styles.chartIcon}>📊</div>
-          <h3 style={styles.chartTitle}>Debt Payments: Interest vs Principal</h3>
+              <h3 style={{ ...styles.chartTitle, flex: 'none' }}>Debt Payments: Interest vs Principal</h3>
+            </div>
+            <div style={{ 
+              fontSize: '11px', 
+              color: '#0d1a4b', 
+              fontWeight: '600',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '4px 10px',
+              backgroundColor: 'rgba(13, 26, 75, 0.08)',
+              borderRadius: '6px',
+              transition: 'all 0.2s',
+              whiteSpace: 'nowrap'
+            }}>
+              <span>🔍</span>
+              <span>Click to expand</span>
+            </div>
           </div>
           <div style={{ fontSize: '12px', color: '#666', textAlign: 'center', marginBottom: '10px', fontWeight: '600' }}>User Input Payment</div>
           <div style={styles.chartContainer}>
@@ -914,13 +1183,19 @@ const Week3CreditCard = () => {
                   {
                     label: 'Principal Payment',
                     data: userPaymentData.amortizationTable.map(month => month.principal),
-                    backgroundColor: '#002060',
+                    backgroundColor: '#0d1a4b',
+                    borderColor: '#0a1440',
+                    borderWidth: 0,
+                    borderRadius: 4,
                     stack: 'stack1'
                   },
                   {
                     label: 'Interest Payment',
                     data: userPaymentData.amortizationTable.map(month => month.interest),
-                    backgroundColor: '#ff9500',
+                    backgroundColor: 'rgba(139, 157, 196, 0.45)',
+                    borderColor: 'rgba(107, 127, 168, 0.4)',
+                    borderWidth: 0,
+                    borderRadius: 4,
                     stack: 'stack1'
                   }
                 ]
@@ -928,12 +1203,40 @@ const Week3CreditCard = () => {
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                  intersect: false,
+                  mode: 'index'
+                },
                 plugins: {
                   legend: {
                     position: 'top',
                   },
                   title: {
                     display: false
+                  },
+                  tooltip: {
+                    animation: {
+                      duration: 0
+                    },
+                    position: 'nearest',
+                    backgroundColor: 'rgba(13, 26, 75, 0.95)',
+                    padding: 12,
+                    titleFont: {
+                      size: 14,
+                      weight: '600'
+                    },
+                    bodyFont: {
+                      size: 13
+                    },
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1,
+                    cornerRadius: 8,
+                    displayColors: true,
+                    callbacks: {
+                      label: function(context) {
+                        return context.dataset.label + ': $' + context.parsed.y.toFixed(2);
+                      }
+                    }
                   }
                 },
                 scales: {
@@ -955,6 +1258,9 @@ const Week3CreditCard = () => {
                       }
                     }
                   }
+                },
+                animation: {
+                  duration: 0
                 }
               }}
               style={{ height: '200px' }}
@@ -963,10 +1269,41 @@ const Week3CreditCard = () => {
         </div>
 
         {/* Right Chart: Minimum Input Payment */}
-        <div style={styles.chartCardEnhanced}>
+        <div 
+          style={{ ...styles.chartCardEnhanced, cursor: 'pointer' }}
+          onClick={() => setExpandedChart('minimumPayment')}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+            e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+            e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+          }}
+        >
           <div style={styles.chartHeader}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
             <div style={styles.chartIcon}>📈</div>
-          <h3 style={styles.chartTitle}>Debt Payments: Interest vs Principal</h3>
+              <h3 style={{ ...styles.chartTitle, flex: 'none' }}>Debt Payments: Interest vs Principal</h3>
+            </div>
+            <div style={{ 
+              fontSize: '11px', 
+              color: '#0d1a4b', 
+              fontWeight: '600',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '4px 10px',
+              backgroundColor: 'rgba(13, 26, 75, 0.08)',
+              borderRadius: '6px',
+              transition: 'all 0.2s',
+              whiteSpace: 'nowrap'
+            }}>
+              <span>🔍</span>
+              <span>Click to expand</span>
+            </div>
           </div>
           <div style={{ fontSize: '12px', color: '#666', textAlign: 'center', marginBottom: '10px', fontWeight: '600' }}>Minimum Payment</div>
           <div style={styles.chartContainer}>
@@ -977,13 +1314,19 @@ const Week3CreditCard = () => {
                   {
                     label: 'Principal Payment',
                     data: minimumPaymentData.amortizationTable.slice(0, 100).map(month => month.principal),
-                    backgroundColor: '#002060',
+                    backgroundColor: '#0d1a4b',
+                    borderColor: '#0a1440',
+                    borderWidth: 0,
+                    borderRadius: 4,
                     stack: 'stack2'
                   },
                   {
                     label: 'Interest Payment',
                     data: minimumPaymentData.amortizationTable.slice(0, 100).map(month => month.interest),
-                    backgroundColor: '#ff9500',
+                    backgroundColor: 'rgba(139, 157, 196, 0.45)',
+                    borderColor: 'rgba(107, 127, 168, 0.4)',
+                    borderWidth: 0,
+                    borderRadius: 4,
                     stack: 'stack2'
                   }
                 ]
@@ -991,12 +1334,40 @@ const Week3CreditCard = () => {
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                  intersect: false,
+                  mode: 'index'
+                },
                 plugins: {
                   legend: {
                     position: 'top',
                   },
                   title: {
                     display: false
+                  },
+                  tooltip: {
+                    animation: {
+                      duration: 0
+                    },
+                    position: 'nearest',
+                    backgroundColor: 'rgba(13, 26, 75, 0.95)',
+                    padding: 12,
+                    titleFont: {
+                      size: 14,
+                      weight: '600'
+                    },
+                    bodyFont: {
+                      size: 13
+                    },
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1,
+                    cornerRadius: 8,
+                    displayColors: true,
+                    callbacks: {
+                      label: function(context) {
+                        return context.dataset.label + ': $' + context.parsed.y.toFixed(2);
+                      }
+                    }
                   }
                 },
                 scales: {
@@ -1018,10 +1389,14 @@ const Week3CreditCard = () => {
                       }
                     }
                   }
+                },
+                animation: {
+                  duration: 0
                 }
               }}
               style={{ height: '200px' }}
             />
+          </div>
           </div>
         </div>
       </div>
@@ -1038,7 +1413,19 @@ const Week3CreditCard = () => {
         
         <div style={styles.generalLoansContent}>
           {/* Left: Average Interest Rates */}
-          <div style={styles.ratesTable}>
+          <div 
+            style={styles.ratesTable}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+              e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+            }}
+          >
             <h3 style={styles.ratesTitle}>Average Interest Rates</h3>
             <div style={styles.ratesList}>
               <div style={styles.rateItem}>
@@ -1061,7 +1448,19 @@ const Week3CreditCard = () => {
           </div>
 
           {/* Middle: Loan Details */}
-          <div style={styles.loanDetails}>
+          <div 
+            style={styles.loanDetails}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+              e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+            }}
+          >
             <h3 style={styles.loanDetailsTitle}>Loan Details</h3>
             <div style={styles.loanDetailsList}>
               <div style={styles.loanDetailItem}>
@@ -1098,45 +1497,202 @@ const Week3CreditCard = () => {
                   }}
                   style={styles.loanInput}
                   placeholder="Enter amount"
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
+                  }}
                 />
               </div>
               <div style={styles.loanDetailItem}>
                 <span style={styles.loanDetailLabel}>Annual Interest Rate</span>
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <input
                   type="text"
-                  value={generalAnnualRate ? `${(parseFloat(generalAnnualRate) * 100).toFixed(0)}%` : ''}
+                    value={generalAnnualRateInput ? `${generalAnnualRateInput}%` : ''}
                   onChange={(e) => {
-                    const rawValue = e.target.value.replace(/[%,]/g, '');
-                    const numericValue = parseFloat(rawValue);
-                    if (!isNaN(numericValue)) {
-                      // Store as decimal for calculations (e.g., 8 -> 0.08)
-                      setGeneralAnnualRate((numericValue / 100).toString());
+                      // Remove % symbol for processing
+                      const cleanValue = e.target.value.replace(/[%,]/g, '');
+                      
+                      // Only allow numbers and at most one decimal point
+                      const sanitized = cleanValue.replace(/[^0-9.]/g, '');
+                      
+                      // Update input display value immediately
+                      setGeneralAnnualRateInput(sanitized);
+                      
+                      // Allow empty string for clearing the field
+                      if (sanitized === '') {
+                        setGeneralAnnualRate('');
+                        return;
+                      }
+                      
+                      // Prevent multiple decimals - find first decimal point
+                      const firstDotIndex = sanitized.indexOf('.');
+                      let numericValue = '';
+                      
+                      if (firstDotIndex === -1) {
+                        // No decimal point - just numbers
+                        numericValue = sanitized;
+                      } else {
+                        // Has decimal point - take integer part and up to 2 decimal places
+                        const intPart = sanitized.substring(0, firstDotIndex);
+                        const decPart = sanitized.substring(firstDotIndex + 1).slice(0, 2); // max 2 decimals
+                        numericValue = intPart + '.' + decPart;
+                      }
+                      
+                      // Update the actual rate value for calculations
+                      const parsedValue = parseFloat(numericValue);
+                      if (!isNaN(parsedValue) && parsedValue >= 0) {
+                        // Store as decimal for calculations (e.g., 8.57 -> 0.0857)
+                        setGeneralAnnualRate((parsedValue / 100).toString());
+                      } else if (sanitized === '.' || (firstDotIndex !== -1 && sanitized.substring(firstDotIndex + 1) === '')) {
+                        // User is typing a decimal point - keep current value or set to 0
+                        const intPart = firstDotIndex === -1 ? '' : sanitized.substring(0, firstDotIndex);
+                        if (intPart === '') {
+                          setGeneralAnnualRate('0');
+                        } else {
+                          const parsed = parseFloat(intPart);
+                          if (!isNaN(parsed) && parsed >= 0) {
+                            setGeneralAnnualRate((parsed / 100).toString());
+                          }
+                        }
                     } else {
                       setGeneralAnnualRate('');
                     }
-                  }}
+                    }}
                   style={styles.loanInput}
                   placeholder="Enter percentage"
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    // Update styling
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
+                    // On blur, ensure the input value matches the stored rate
+                    const currentRate = parseFloat(generalAnnualRate) * 100;
+                    if (!isNaN(currentRate)) {
+                      setGeneralAnnualRateInput(currentRate.toString());
+                    }
+                  }}
                 />
+                </div>
               </div>
               <div style={styles.loanDetailItem}>
                 <span style={styles.loanDetailLabel}>Term</span>
-                <input
-                  type="text"
-                  value={generalTerm ? `${parseInt(generalTerm).toLocaleString('en-US')} months` : ''}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/[^0-9]/g, '');
-                    setGeneralTerm(value);
+                <div 
+                  id="term-input-container"
+                  style={{ position: 'relative', display: 'flex', alignItems: 'center', transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)' }}
+                  onMouseEnter={(e) => {
+                    const input = e.currentTarget.querySelector('input');
+                    if (input && document.activeElement !== input) {
+                      input.style.borderColor = '#9ca3af';
+                      input.style.backgroundColor = '#ffffff';
+                      input.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.currentTarget.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
                   }}
-                  style={styles.loanInput}
+                  onMouseLeave={(e) => {
+                    const input = e.currentTarget.querySelector('input');
+                    if (input && document.activeElement !== input) {
+                      input.style.borderColor = '#d1d5db';
+                      input.style.backgroundColor = '#fffde7';
+                      input.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }
+                  }}
+                >
+                <input
+                    type="number"
+                    min="1"
+                    step="0.1"
+                    value={generalTerm || ''}
+                  onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === '') {
+                        setGeneralTerm('');
+                        return;
+                      }
+                      const numValue = parseFloat(value);
+                      if (!isNaN(numValue) && numValue >= 0) {
+                    setGeneralTerm(value);
+                      }
+                  }}
+                    style={{ ...styles.loanInput, paddingRight: '70px', transform: 'none' }}
                   placeholder="Enter months"
-                />
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#0d1a4b';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                      e.target.style.backgroundColor = '#fffef0';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.backgroundColor = '#fffde7';
+                    }}
+                  />
+                  <span style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', color: '#111827', fontSize: '13px', fontWeight: '500', pointerEvents: 'none' }}>months</span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Right: Payment Summary */}
-          <div style={styles.paymentSummary}>
+          <div 
+            style={styles.paymentSummary}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+              e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+            }}
+          >
             <h3 style={styles.paymentSummaryTitle}>Payment Summary</h3>
             <div style={styles.paymentSummaryList}>
               <div style={styles.paymentSummaryItem}>
@@ -1150,18 +1706,48 @@ const Week3CreditCard = () => {
               <div style={styles.paymentSummaryItem}>
                 <span style={styles.paymentSummaryLabel}>Total Amount Paid</span>
                 <span style={styles.paymentSummaryValue}>${generalLoanData.summary.totalAmountPaid.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
-              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* General Loan Chart Section */}
-      <div style={styles.chartsSection}>
-        <div style={styles.chartCardEnhanced}>
+        <div style={{ ...styles.chartsSection, gridTemplateColumns: '1fr', justifyContent: 'center', marginTop: '32px' }}>
+          <div 
+            style={{ ...styles.chartCardEnhanced, cursor: 'pointer', justifySelf: 'center', maxWidth: 'calc(50% - 8px)', width: 'fit-content' }}
+            onClick={() => setExpandedChart('generalLoan')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+              e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+            }}
+          >
           <div style={styles.chartHeader}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
             <div style={styles.chartIcon}>📊</div>
-            <h3 style={styles.chartTitle}>General Loan: Interest vs Principal</h3>
+                <h3 style={{ ...styles.chartTitle, flex: 'none' }}>General Loan: Interest vs Principal</h3>
+              </div>
+              <div style={{ 
+                fontSize: '11px', 
+                color: '#0d1a4b', 
+                fontWeight: '600',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '4px 10px',
+                backgroundColor: 'rgba(13, 26, 75, 0.08)',
+                borderRadius: '6px',
+                transition: 'all 0.2s',
+                whiteSpace: 'nowrap'
+              }}>
+                <span>🔍</span>
+                <span>Click to expand</span>
+              </div>
           </div>
           <div style={{ fontSize: '12px', color: '#666', textAlign: 'center', marginBottom: '10px', fontWeight: '600' }}>Fixed Monthly Payment</div>
           <div style={styles.chartContainer}>
@@ -1172,13 +1758,19 @@ const Week3CreditCard = () => {
                   {
                     label: 'Principal Payment',
                     data: generalLoanData.amortizationTable.map(month => month.principal),
-                    backgroundColor: '#002060',
+                      backgroundColor: '#0d1a4b',
+                      borderColor: '#0a1440',
+                      borderWidth: 0,
+                      borderRadius: 4,
                     stack: 'stack3'
                   },
                   {
                     label: 'Interest Payment',
                     data: generalLoanData.amortizationTable.map(month => month.interest),
-                    backgroundColor: '#ff9500',
+                      backgroundColor: 'rgba(139, 157, 196, 0.45)',
+                      borderColor: 'rgba(107, 127, 168, 0.4)',
+                      borderWidth: 0,
+                      borderRadius: 4,
                     stack: 'stack3'
                   }
                 ]
@@ -1186,12 +1778,40 @@ const Week3CreditCard = () => {
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
+                  interaction: {
+                    intersect: false,
+                    mode: 'index'
+                  },
                 plugins: {
                   legend: {
                     position: 'top',
                   },
                   title: {
                     display: false
+                    },
+                    tooltip: {
+                      animation: {
+                        duration: 0
+                      },
+                      position: 'nearest',
+                      backgroundColor: 'rgba(13, 26, 75, 0.95)',
+                      padding: 12,
+                      titleFont: {
+                        size: 14,
+                        weight: '600'
+                      },
+                      bodyFont: {
+                        size: 13
+                      },
+                      borderColor: 'rgba(255, 255, 255, 0.2)',
+                      borderWidth: 1,
+                      cornerRadius: 8,
+                      displayColors: true,
+                      callbacks: {
+                        label: function(context) {
+                          return context.dataset.label + ': $' + context.parsed.y.toFixed(2);
+                        }
+                      }
                   }
                 },
                 scales: {
@@ -1213,6 +1833,9 @@ const Week3CreditCard = () => {
                       }
                     }
                   }
+                  },
+                  animation: {
+                    duration: 0
                 }
               }}
               style={{ height: '200px' }}
@@ -1222,26 +1845,280 @@ const Week3CreditCard = () => {
       </div>
       </div>
 
-      {/* Section Divider */}
-      <div style={styles.sectionDivider}></div>
-
-      {/* Save/Load Buttons */}
-      <div style={{
-        marginTop: '30px', 
-        display: 'flex', 
-        justifyContent: 'center', 
-        gap: '20px',
-        padding: '20px',
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-      }}>
-      </div>
-
       {/* Note */}
-          <div style={styles.note}>
-            Note: Adjust Week 1 Budget based on this week's insights
+      <div style={{ ...styles.note, marginTop: '24px' }}>
+        Note: Adjust Week 1 Budget based on this week's insights
       </div>
+
+      {/* Chart Modal */}
+      {expandedChart && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
+        display: 'flex', 
+            alignItems: 'center',
+        justifyContent: 'center', 
+            zIndex: 1000,
+        padding: '20px',
+          }}
+          onClick={() => setExpandedChart(null)}
+        >
+          <div 
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.98)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              borderRadius: '16px',
+              padding: '32px',
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              width: '100%',
+              boxShadow: '0 20px 60px 0 rgba(0, 0, 0, 0.3)',
+              border: '1px solid rgba(255, 255, 255, 0.5)',
+              position: 'relative',
+              overflow: 'auto',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setExpandedChart(null)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'rgba(13, 26, 75, 0.1)',
+                border: 'none',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '20px',
+                color: '#0d1a4b',
+                fontWeight: 'bold',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = 'rgba(13, 26, 75, 0.2)';
+                e.target.style.transform = 'scale(1.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(13, 26, 75, 0.1)';
+                e.target.style.transform = 'scale(1)';
+              }}
+            >
+              ×
+            </button>
+
+            {/* Chart Title */}
+            <div style={{ marginBottom: '24px', textAlign: 'center' }}>
+              <h2 style={{ 
+                fontSize: '24px', 
+                fontWeight: '700', 
+                color: '#0d1a4b',
+                margin: 0,
+                marginBottom: '8px'
+              }}>
+                {expandedChart === 'userPayment' && 'Debt Payments: Interest vs Principal'}
+                {expandedChart === 'minimumPayment' && 'Debt Payments: Interest vs Principal'}
+                {expandedChart === 'generalLoan' && 'General Loan: Interest vs Principal'}
+              </h2>
+              <div style={{ fontSize: '14px', color: '#666', fontWeight: '600' }}>
+                {expandedChart === 'userPayment' && 'User Input Payment'}
+                {expandedChart === 'minimumPayment' && 'Minimum Payment'}
+                {expandedChart === 'generalLoan' && 'Fixed Monthly Payment'}
+              </div>
+      </div>
+
+            {/* Expanded Chart */}
+            <div style={{ height: '60vh', minHeight: '500px' }}>
+              <Bar 
+                data={
+                  expandedChart === 'userPayment' ? {
+                    labels: userPaymentData.amortizationTable.map((_, index) => index + 1),
+                    datasets: [
+                      {
+                        label: 'Principal Payment',
+                        data: userPaymentData.amortizationTable.map(month => month.principal),
+                        backgroundColor: '#0d1a4b',
+                        borderColor: '#0a1440',
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        stack: 'stack1'
+                      },
+                      {
+                        label: 'Interest Payment',
+                        data: userPaymentData.amortizationTable.map(month => month.interest),
+                        backgroundColor: 'rgba(139, 157, 196, 0.45)',
+                        borderColor: 'rgba(107, 127, 168, 0.4)',
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        stack: 'stack1'
+                      }
+                    ]
+                  } : expandedChart === 'minimumPayment' ? {
+                    labels: minimumPaymentData.amortizationTable.slice(0, 100).map((_, index) => index + 1),
+                    datasets: [
+                      {
+                        label: 'Principal Payment',
+                        data: minimumPaymentData.amortizationTable.slice(0, 100).map(month => month.principal),
+                        backgroundColor: '#0d1a4b',
+                        borderColor: '#0a1440',
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        stack: 'stack2'
+                      },
+                      {
+                        label: 'Interest Payment',
+                        data: minimumPaymentData.amortizationTable.slice(0, 100).map(month => month.interest),
+                        backgroundColor: 'rgba(139, 157, 196, 0.45)',
+                        borderColor: 'rgba(107, 127, 168, 0.4)',
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        stack: 'stack2'
+                      }
+                    ]
+                  } : {
+                    labels: generalLoanData.amortizationTable.map((_, index) => index + 1),
+                    datasets: [
+                      {
+                        label: 'Principal Payment',
+                        data: generalLoanData.amortizationTable.map(month => month.principal),
+                        backgroundColor: '#0d1a4b',
+                        borderColor: '#0a1440',
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        stack: 'stack3'
+                      },
+                      {
+                        label: 'Interest Payment',
+                        data: generalLoanData.amortizationTable.map(month => month.interest),
+                        backgroundColor: 'rgba(139, 157, 196, 0.45)',
+                        borderColor: 'rgba(107, 127, 168, 0.4)',
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        stack: 'stack3'
+                      }
+                    ]
+                  }
+                }
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  interaction: {
+                    intersect: false,
+                    mode: 'index'
+                  },
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                      labels: {
+                        font: {
+                          size: 18,
+                          weight: '600'
+                        },
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyle: 'rectRounded',
+                        boxWidth: 20,
+                        boxHeight: 20
+                      }
+                    },
+                    title: {
+                      display: false
+                    },
+                    tooltip: {
+                      animation: {
+                        duration: 0
+                      },
+                      position: 'nearest',
+                      backgroundColor: 'rgba(13, 26, 75, 0.95)',
+                      padding: 16,
+                      titleFont: {
+                        size: 20,
+                        weight: '600'
+                      },
+                      bodyFont: {
+                        size: 16
+                      },
+                      borderColor: 'rgba(255, 255, 255, 0.2)',
+                      borderWidth: 1,
+                      cornerRadius: 8,
+                      displayColors: true,
+                      callbacks: {
+                        label: function(context) {
+                          return context.dataset.label + ': $' + context.parsed.y.toFixed(2);
+                        }
+                      }
+                    }
+                  },
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: 'Month',
+                        font: {
+                          size: 22,
+                          weight: '700'
+                        },
+                        padding: {
+                          top: 15,
+                          bottom: 15
+                        }
+                      },
+                      ticks: {
+                        font: {
+                          size: 16,
+                          weight: '500'
+                        },
+                        padding: 12
+                      }
+                    },
+                    y: {
+                      beginAtZero: true,
+                      title: {
+                        display: true,
+                        text: 'Payment',
+                        font: {
+                          size: 22,
+                          weight: '700'
+                        },
+                        padding: {
+                          top: 15,
+                          bottom: 15
+                        }
+                      },
+                      ticks: {
+                        font: {
+                          size: 16,
+                          weight: '500'
+                        },
+                        padding: 12,
+                        callback: function(value) {
+                          return '$' + value.toFixed(2);
+                        }
+                      }
+                    }
+                  },
+                  animation: {
+                    duration: 0
+                  }
+                }}
+              />
+      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

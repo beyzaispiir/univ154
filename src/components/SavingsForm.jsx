@@ -1345,30 +1345,34 @@ export default function SavingsForm() {
                           <label style={styles.label}>
                             Time to Achieve Savings Goal
                           </label>
-                          <div style={styles.inputCellContainer}>
+                          <div 
+                            style={{ ...styles.inputCellContainer, transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)' }}
+                            onMouseEnter={(e) => {
+                              const input = e.currentTarget.querySelector('input');
+                              if (input && document.activeElement !== input) {
+                                input.style.borderColor = '#9ca3af';
+                                input.style.backgroundColor = '#ffffff';
+                                input.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                                e.currentTarget.style.transform = 'translateY(-2px) scale(1.01)';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              const input = e.currentTarget.querySelector('input');
+                              if (input && document.activeElement !== input) {
+                                input.style.borderColor = '#e5e7eb';
+                                input.style.backgroundColor = '#fffde7';
+                                input.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                                e.currentTarget.style.transform = 'scale(1)';
+                              }
+                            }}
+                          >
                             <input
-                              style={{ ...styles.input, paddingRight: '70px' }}
+                              style={{ ...styles.input, paddingRight: '70px', transform: 'none' }}
                               type="number"
                               min="1"
                               step="1"
                               value={timeToGoal1}
                               onChange={(e) => handleUserInputChange(section1.timeToGoal, e.target.value)}
-                              onMouseEnter={(e) => {
-                                if (document.activeElement !== e.target) {
-                                  e.target.style.borderColor = '#9ca3af';
-                                  e.target.style.backgroundColor = '#ffffff';
-                                  e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                  e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                if (document.activeElement !== e.target) {
-                                  e.target.style.borderColor = '#e5e7eb';
-                                  e.target.style.backgroundColor = '#fffde7';
-                                  e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                  e.target.style.transform = 'scale(1)';
-                                }
-                              }}
                               onFocus={(e) => {
                                 e.target.style.borderColor = '#0d1a4b';
                                 e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
@@ -1381,7 +1385,7 @@ export default function SavingsForm() {
                               }}
                               placeholder="Enter months"
                             />
-                            <span style={{ position: 'absolute', right: '16px', color: '#6b7280', fontSize: '13px', fontWeight: '500', pointerEvents: 'none' }}>months</span>
+                            <span style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', color: '#111827', fontSize: '13px', fontWeight: '500', pointerEvents: 'none' }}>months</span>
                           </div>
                         </div>
                       )}
@@ -1396,8 +1400,8 @@ export default function SavingsForm() {
                           </label>
                           <ReadOnlyWithAnimation 
                             value={details1.timeToGoal} 
-                            format={(val) => `${Math.round(val)} Months`}
-                            suffix=" Months"
+                            format={(val) => `${Math.round(val)} months`}
+                            suffix=" months"
                             fieldId={`${section1.id}_timeToGoal`}
                           />
                           {/* Spacer to match height with percentageInfo in left column */}
@@ -1462,9 +1466,6 @@ export default function SavingsForm() {
                             }}
                             placeholder="Enter rate"
                           />
-                        </div>
-                        <div style={styles.percentageInfo}>
-                          Required for calculations
                         </div>
                       </div>
                     </div>
@@ -1678,30 +1679,34 @@ export default function SavingsForm() {
                           <label style={styles.label}>
                             Time to Achieve Savings Goal
                           </label>
-                          <div style={styles.inputCellContainer}>
+                          <div 
+                            style={{ ...styles.inputCellContainer, transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)' }}
+                            onMouseEnter={(e) => {
+                              const input = e.currentTarget.querySelector('input');
+                              if (input && document.activeElement !== input) {
+                                input.style.borderColor = '#9ca3af';
+                                input.style.backgroundColor = '#ffffff';
+                                input.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                                e.currentTarget.style.transform = 'translateY(-2px) scale(1.01)';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              const input = e.currentTarget.querySelector('input');
+                              if (input && document.activeElement !== input) {
+                                input.style.borderColor = '#e5e7eb';
+                                input.style.backgroundColor = '#fffde7';
+                                input.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                                e.currentTarget.style.transform = 'scale(1)';
+                              }
+                            }}
+                          >
                             <input
-                              style={{ ...styles.input, paddingRight: '70px' }}
+                              style={{ ...styles.input, paddingRight: '70px', transform: 'none' }}
                               type="number"
                               min="1"
                               step="1"
                               value={timeToGoal2}
                               onChange={(e) => handleUserInputChange(section2.timeToGoal, e.target.value)}
-                              onMouseEnter={(e) => {
-                                if (document.activeElement !== e.target) {
-                                  e.target.style.borderColor = '#9ca3af';
-                                  e.target.style.backgroundColor = '#ffffff';
-                                  e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                  e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                if (document.activeElement !== e.target) {
-                                  e.target.style.borderColor = '#e5e7eb';
-                                  e.target.style.backgroundColor = '#fffde7';
-                                  e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                  e.target.style.transform = 'scale(1)';
-                                }
-                              }}
                               onFocus={(e) => {
                                 e.target.style.borderColor = '#0d1a4b';
                                 e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
@@ -1714,7 +1719,7 @@ export default function SavingsForm() {
                               }}
                               placeholder="Enter months"
                             />
-                            <span style={{ position: 'absolute', right: '16px', color: '#6b7280', fontSize: '13px', fontWeight: '500', pointerEvents: 'none' }}>months</span>
+                            <span style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', color: '#111827', fontSize: '13px', fontWeight: '500', pointerEvents: 'none' }}>months</span>
                           </div>
                           {/* Spacer to match height with percentageInfo in section1 left column */}
                           <div style={styles.percentageInfo}>
@@ -1733,8 +1738,8 @@ export default function SavingsForm() {
                           </label>
                           <ReadOnlyWithAnimation 
                             value={details2.timeToGoal} 
-                            format={(val) => `${Math.round(val)} Months`}
-                            suffix=" Months"
+                            format={(val) => `${Math.round(val)} months`}
+                            suffix=" months"
                             fieldId={`${section2.id}_timeToGoal`}
                           />
                           {/* Spacer to match height with percentageInfo in left column */}
@@ -1799,9 +1804,6 @@ export default function SavingsForm() {
                             }}
                             placeholder="Enter rate"
                           />
-                        </div>
-                        <div style={styles.percentageInfo}>
-                          Required for calculations
                         </div>
                       </div>
                     </div>
