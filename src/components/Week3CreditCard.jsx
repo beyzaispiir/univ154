@@ -818,7 +818,7 @@ const Week3CreditCard = () => {
       <div style={styles.sectionContainer}>
         {/* Enhanced Header */}
         <div style={styles.enhancedHeader}>
-          💳 Credit Card Debt Management
+          💳 Credit & Debt Management
           </div>
 
         {/* Info Box - matching Week 1 styling */}
