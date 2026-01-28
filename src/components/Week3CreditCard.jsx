@@ -1712,9 +1712,9 @@ const Week3CreditCard = () => {
       </div>
 
       {/* General Loan Chart Section */}
-        <div style={{ ...styles.chartsSection, gridTemplateColumns: '1fr', justifyContent: 'center', marginTop: '32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '32px', width: '100%' }}>
           <div 
-            style={{ ...styles.chartCardEnhanced, cursor: 'pointer', justifySelf: 'center', maxWidth: 'calc(50% - 8px)', width: 'fit-content' }}
+            style={{ ...styles.chartCardEnhanced, cursor: 'pointer', width: 'calc(50% - 8px)', maxWidth: 'calc(50% - 8px)' }}
             onClick={() => setExpandedChart('generalLoan')}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-4px)';
