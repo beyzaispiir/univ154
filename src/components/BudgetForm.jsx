@@ -1303,7 +1303,7 @@ export default function BudgetForm() {
     const debugCalculations = () => {
         const preTaxIncome = parseFloat(topInputs.preTaxIncome || 0);
         const monthlyPreTaxIncome = preTaxIncome / 12;
-        const standardDeduction = 15000;
+        const standardDeduction = 16100; // 2026 single filers
         
         // Pre-Tax Expenses
         const suggestedPreTaxExpenses = 150 * 12; // $1,800

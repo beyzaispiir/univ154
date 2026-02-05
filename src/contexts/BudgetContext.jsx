@@ -156,7 +156,7 @@ export const BudgetProvider = ({ children }) => {
   // Summary sheet calculations (Week 1 B - Summary)
   const summaryCalculations = useMemo(() => {
     const preTaxIncome = parseFloat(topInputs.preTaxIncome || 0);
-    const standardDeduction = 15000; // $15,000 - NEVER CHANGES!
+    const standardDeduction = 16100; // $16,100 - 2026 single filers
     
     // Debug logging for all income values to track the issue
     console.log('=== SUMMARY CALCULATIONS DEBUG ===');

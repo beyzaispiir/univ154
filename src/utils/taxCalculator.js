@@ -13,9 +13,8 @@ import stateTaxData from '../data/stateTaxData';
  * @returns {number} The calculated total standard deduction.
  */
 function calculateStandardDeduction() {
-  // ALWAYS RETURN $15,000 FOR SINGLE FILERS - NEVER CHANGES!
-  // Parameters ignored - we always use $15,000
-  return 15000;
+  // 2026 single filers standard deduction
+  return taxData2025.standardDeductionRules.base.single; // $16,100
   
   // OLD COMPLEX LOGIC REMOVED - WE ALWAYS USE $15,000
   /*
@@ -115,7 +114,7 @@ export function calculateFinancials(preTaxIncome, userDeductionChoices, state, r
     preTaxIncome = 0;
   }
 
-  const standardDeduction = calculateStandardDeduction(); // Always returns $15,000
+  const standardDeduction = calculateStandardDeduction(); // 2026 single: $16,100
   const taxableIncome = preTaxIncome - standardDeduction;
 
   const federalIncomeTax = calculateFederalIncomeTax(taxableIncome);

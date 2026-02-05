@@ -166,363 +166,450 @@ const Week4 = () => {
     return stateNames[state] || `${state} State Income Tax`;
   };
 
-  // Styling matching Week 1, Week 2, and Week 3 patterns exactly
+  // Styling matching Week 3 patterns exactly
   const styles = {
     container: {
-      minHeight: 'auto',
-      backgroundColor: '#f8f9fa',
-      padding: '10px',
-      maxWidth: '1200px',
-      margin: '0 auto'
-    },
-    sectionContainer: {
-      backgroundColor: 'white',
-      borderRadius: '12px',
-      padding: '16px',
-      marginBottom: '10px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e9ecef'
-    },
-    enhancedHeader: {
-      backgroundColor: '#002060',
-      color: 'white',
-      padding: '12px 16px',
-      borderRadius: '12px',
-      fontWeight: '700',
-      fontSize: '18px',
-      textAlign: 'center',
-      marginBottom: '12px',
-      boxShadow: '0 4px 8px rgba(0, 32, 96, 0.3)'
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, rgba(255, 253, 231, 0.27) 0%, rgb(255, 252, 240) 50%, rgb(255, 255, 255) 100%)',
+      padding: '32px 24px 16px 24px',
+      width: '100%',
+      fontSize: '14px',
+      color: '#111827',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      position: 'relative',
     },
     sectionDivider: {
-      height: '3px',
-      background: 'linear-gradient(90deg, #002060, #ff9500, #002060)',
-      margin: '20px 0',
-      borderRadius: '2px',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+      height: '1px',
+      background: 'linear-gradient(90deg, transparent, rgba(229, 231, 235, 0.6), transparent)',
+      margin: '0',
+      borderRadius: '1px',
+    },
+    sectionContainer: {
+      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+      borderRadius: '16px',
+      padding: '40px',
+      marginBottom: '32px',
+      boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      width: '100%',
+      maxWidth: '1200px',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+    enhancedHeader: {
+      background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+      color: 'white',
+      padding: '28px 32px',
+      borderRadius: '16px',
+      fontWeight: '600',
+      fontSize: '22px',
+      textAlign: 'center',
+      marginBottom: '32px',
+      boxShadow: '0 8px 32px 0 rgba(13, 26, 75, 0.3), 0 4px 16px 0 rgba(13, 26, 75, 0.2)',
+      letterSpacing: '-0.01em',
+      lineHeight: '1.3',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
     },
     mainContent: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
-      gap: '20px',
-      marginBottom: '10px'
+      gap: '24px',
+      marginBottom: '32px',
+      maxWidth: '100%'
     },
     leftSection: {
-      backgroundColor: '#f8f9fa',
-      padding: '12px',
-      borderRadius: '8px',
-      border: '1px solid #e9ecef'
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     },
     rightSection: {
-      backgroundColor: '#f8f9fa',
-      padding: '12px',
-      borderRadius: '8px',
-      border: '1px solid #e9ecef'
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     },
     sectionTitle: {
-      fontSize: '16px',
+      fontSize: '15px',
       fontWeight: '600',
-      color: '#002060',
-      marginBottom: '15px',
-      paddingBottom: '8px',
-      borderBottom: '2px solid #002060'
+      color: '#0d1a4b',
+      marginBottom: '20px',
+      textAlign: 'center',
+      letterSpacing: '-0.01em',
+      paddingBottom: '12px',
+      borderBottom: '2px solid #f1f3f4'
     },
     dataRow: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: '8px 0',
-      borderBottom: '1px solid #e9ecef'
+      padding: '12px 16px',
+      borderBottom: '1px solid rgba(229, 231, 235, 0.6)',
+      transition: 'all 0.2s ease'
     },
     dataLabel: {
       fontSize: '14px',
-      color: '#333',
-      fontWeight: '500'
+      color: '#374151',
+      fontWeight: '500',
+      flex: '1'
     },
     dataValue: {
       fontSize: '14px',
-      color: '#002060',
       fontWeight: '600',
-      backgroundColor: '#fff',
-      padding: '4px 8px',
-      borderRadius: '4px',
-      border: '1px solid #e9ecef',
-      minWidth: '100px',
-      textAlign: 'right'
+      color: '#0d1a4b',
+      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+      padding: '8px 12px',
+      borderRadius: '8px',
+      border: '1px solid rgba(229, 231, 235, 0.6)',
+      minWidth: '120px',
+      textAlign: 'right',
+      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)',
     },
     highlightRow: {
-      backgroundColor: '#e3f2fd',
-      padding: '8px',
-      borderRadius: '6px',
-      margin: '10px 0',
-      border: '2px solid #002060'
+      backgroundColor: 'rgba(13, 26, 75, 0.08)',
+      padding: '16px',
+      borderRadius: '12px',
+      margin: '24px 0',
+      border: '2px solid rgba(13, 26, 75, 0.2)',
+      boxShadow: '0 4px 12px 0 rgba(13, 26, 75, 0.1)',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
     },
     tableContainer: {
-      marginTop: '16px'
+      marginTop: '24px'
     },
     table: {
       width: '100%',
       borderCollapse: 'collapse',
-      fontSize: '12px'
+      fontSize: '13px',
+      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.05)',
     },
     tableHeader: {
-      backgroundColor: '#002060',
+      background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
       color: 'white',
-      padding: '8px',
+      padding: '12px 8px',
       textAlign: 'center',
-      fontWeight: '600'
+      fontWeight: '600',
+      fontSize: '13px',
+      letterSpacing: '-0.01em',
     },
     tableCell: {
-      border: '1px solid #e9ecef',
-      padding: '6px',
-      textAlign: 'center'
+      border: '1px solid rgba(229, 231, 235, 0.5)',
+      padding: '10px 8px',
+      textAlign: 'center',
+      fontSize: '13px',
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      transition: 'background-color 0.2s ease',
+    },
+    tableRow: {
+      transition: 'background-color 0.2s ease',
+      cursor: 'default',
     },
     noteBox: {
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      border: '1px solid rgba(229, 231, 235, 0.5)',
+      padding: '14px 18px',
+      borderRadius: '8px',
+      textAlign: 'center',
+      fontSize: '14px',
+      color: '#374151',
+      fontWeight: '500',
+      boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.05)',
+      marginTop: '24px',
+    },
+    infoBox: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      padding: '14px 18px',
       backgroundColor: 'rgba(13, 26, 75, 0.05)',
+      borderRadius: '8px',
+      color: '#0d1a4b',
+      fontSize: '13px',
+      marginBottom: '24px',
       border: '1px solid rgba(13, 26, 75, 0.15)',
-      borderRadius: '6px',
-      padding: '12px',
-      marginTop: '20px',
-      fontSize: '12px',
-      color: '#0d1a4b'
-    }
+    },
+    note: {
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      border: '1px solid rgba(229, 231, 235, 0.5)',
+      padding: '14px 18px',
+      borderRadius: '8px',
+      textAlign: 'center',
+      fontSize: '14px',
+      color: '#374151',
+      fontWeight: '500',
+      boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.05)',
+    },
   };
 
-  return (
-    <>
-      {/* Modern info alert for editable fields - guaranteed right top corner */}
-      <div style={{
-        position: 'fixed',
-        top: '24px',
-        right: '32px',
-        zIndex: 9999,
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        background: 'rgba(255,255,255,0.85)',
-        backdropFilter: 'blur(2px)',
-        border: '1px solid #bfdbfe',
-        boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-        borderRadius: '14px',
-        padding: '12px 20px',
-        color: '#0d1a4b',
-        fontWeight: 500,
-        fontSize: 12
-      }}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01"/></svg>
-        Data from Week 1 calculations. Review and adjust as needed.
-      </div>
+  // Info Icon Component matching Week 3
+  const InfoIcon = () => (
+    <svg 
+      width="20" 
+      height="20" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="#0d1a4b" 
+      strokeWidth="2.5" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+      style={{ flexShrink: 0 }}
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+  );
 
-      <div style={styles.container}>
-          {/* Section Container - matching Week 1, 2, 3 layered design */}
-          <div style={styles.sectionContainer}>
-            {/* Enhanced Header */}
-            <div style={styles.enhancedHeader}>
-              📊 Income Taxes
+  return (
+    <div style={styles.container}>
+      {/* Section Container - matching Week 3 layered design */}
+      <div style={styles.sectionContainer}>
+        {/* Enhanced Header */}
+        <div style={styles.enhancedHeader}>
+          📊 Income Taxes
+        </div>
+        
+        {/* Info Box - matching Week 3 styling */}
+        <div style={styles.infoBox}>
+          <InfoIcon />
+          <div>
+            <strong>How it works:</strong> This page displays your tax calculations based on Week 1 budget data. Tax calculations exclude detailed state/city rules and provide a close estimate of After-Tax Income rather than exact figures.
+          </div>
+        </div>
+
+        {/* Main Content Grid */}
+        <div style={styles.mainContent}>
+          {/* Left Section - After-Tax Income Summary */}
+          <div 
+            style={styles.leftSection}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+              e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+            }}
+          >
+            <div style={styles.sectionTitle}>
+              After-Tax Income Summary
             </div>
             
-            {/* Note about calculations */}
-            <div style={styles.noteBox}>
-              <strong>Note:</strong> Tax calculations exclude detailed state/city rules and provide a close estimate of After-Tax Income rather than exact figures.
+            <div style={styles.dataRow}>
+              <span style={styles.dataLabel}>Pre-tax Income</span>
+              <span style={styles.dataValue}>${week4Data.preTaxIncome.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
             </div>
-
-            {/* Main Content Grid */}
-            <div style={styles.mainContent}>
-              {/* Left Section - After-Tax Income Summary */}
-              <div style={styles.leftSection}>
-                <div style={styles.sectionTitle}>
-                  After-Tax Income Summary
-                </div>
-                
-                <div style={styles.dataRow}>
-                  <span style={styles.dataLabel}>Pre-tax Income</span>
-                  <span style={styles.dataValue}>${week4Data.preTaxIncome.toLocaleString()}</span>
-                </div>
-                
-                <div style={styles.dataRow}>
-                  <span style={styles.dataLabel}>Standard Deduction (Single Filers 2025)</span>
-                  <span style={styles.dataValue}>${week4Data.standardDeduction.toLocaleString()}</span>
-                </div>
-                
-                <div style={styles.dataRow}>
-                  <span style={styles.dataLabel}>Pre-Tax Expenses (Health Insurance, Tr. 401k, Tr. IRA)</span>
-                  <span style={styles.dataValue}>${week4Data.preTaxExpenses.toLocaleString()}</span>
-                </div>
-                
-                <div style={styles.dataRow}>
-                  <span style={styles.dataLabel}>Taxable Income</span>
-                  <span style={styles.dataValue}>${week4Data.taxableIncome.toLocaleString()}</span>
-                </div>
-                
-                <div style={styles.dataRow}>
-                  <span style={styles.dataLabel}>Federal Income Tax Payment</span>
-                  <span style={styles.dataValue}>${week4Data.federalIncomeTax.toLocaleString()}</span>
-                </div>
-                
-                <div style={styles.dataRow}>
-                  <span style={styles.dataLabel}>Federal Social Security Tax Payment</span>
-                  <span style={styles.dataValue}>${week4Data.federalSocialSecurityTax.toLocaleString()}</span>
-                </div>
-                
-                <div style={styles.dataRow}>
-                  <span style={styles.dataLabel}>Federal Medicare Tax Payment</span>
-                  <span style={styles.dataValue}>${week4Data.federalMedicareTax.toLocaleString()}</span>
-                </div>
-                
-                <div style={styles.dataRow}>
-                  <span style={styles.dataLabel}>State Income Tax Payment</span>
-                  <span style={styles.dataValue}>${week4Data.stateIncomeTax.toLocaleString()}</span>
-                </div>
-                
-                <div style={styles.dataRow}>
-                  <span style={styles.dataLabel}>NY City Income Tax Payment</span>
-                  <span style={styles.dataValue}>${week4Data.nyCityIncomeTax.toLocaleString()}</span>
-                </div>
-                
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '6px 8px',
-                  backgroundColor: '#e8f5e8',
-                  borderRadius: '20px',
-                  margin: '20px 0',
-                  border: '2px solid #28a745',
-                  boxShadow: '0 2px 4px rgba(40, 167, 69, 0.2)'
-                }}>
-                  <span style={{
-                    fontSize: '14px',
-                    color: '#155724',
-                    fontWeight: '700'
-                  }}>After Tax Income</span>
-                  <span style={{
-                    fontSize: '14px',
-                    color: '#155724',
-                    fontWeight: '700',
-                    backgroundColor: 'white',
-                    padding: '4px 4px',
-                    borderRadius: '6px',
-                    border: '1px solid #28a745',
-                    minWidth: '120px',
-                    textAlign: 'right'
-                  }}>
-                    ${week4Data.afterTaxIncome.toLocaleString()}
-                  </span>
-                </div>
-                
-                <div style={styles.noteBox}>
-                  <strong>Note:</strong> Adjust Week 1 Budget based on this week's insights.
-                </div>
-              </div>
-
-              {/* Right Section - Tax Tables */}
-              <div style={styles.rightSection}>
-                {/* Federal Income Tax Table */}
-                <div style={styles.tableContainer}>
-                  <div style={styles.sectionTitle}>
-                    Federal Income Tax
-                  </div>
-                  <table style={styles.table}>
-                    <thead>
-                      <tr>
-                        <th style={styles.tableHeader}>Tax Rate</th>
-                        <th style={styles.tableHeader}>Over</th>
-                        <th style={styles.tableHeader}>But Not Over</th>
-                        <th style={styles.tableHeader}>Taxes Paid Per Bracket</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {federalTaxBrackets.map((bracket, index) => {
-                        const taxesPaid = calculateTaxesPaidPerBracket(week4Data.taxableIncome, bracket);
-                        return (
-                          <tr key={index}>
-                            <td style={styles.tableCell}>{(bracket.rate * 100).toFixed(1)}%</td>
-                            <td style={styles.tableCell}>${bracket.over.toLocaleString()}</td>
-                            <td style={styles.tableCell}>
-                              {bracket.butNotOver === Infinity ? '...' : `$${bracket.butNotOver.toLocaleString()}`}
-                            </td>
-                            <td style={styles.tableCell}>
-                              ${taxesPaid.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Dynamic State Income Tax Table */}
-                <div style={styles.tableContainer}>
-                  <div style={styles.sectionTitle}>
-                    {getStateTaxTableTitle(topInputs.location)}
-                  </div>
-                  <table style={styles.table}>
-                    <thead>
-                      <tr>
-                        <th style={styles.tableHeader}>Tax Rate</th>
-                        <th style={styles.tableHeader}>Over</th>
-                        <th style={styles.tableHeader}>But Not Over</th>
-                        <th style={styles.tableHeader}>Taxes Paid Per Bracket</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {stateTaxRates.map((rate, index) => (
-                        <tr key={index}>
-                          <td style={styles.tableCell}>{(rate * 100).toFixed(2)}%</td>
-                          <td style={styles.tableCell}>${stateTaxOverValues[index].toLocaleString()}</td>
-                          <td style={styles.tableCell}>
-                            {stateTaxButNotOverValues[index] === "…" ? 
-                              "…" : 
-                              `$${stateTaxButNotOverValues[index].toLocaleString()}`
-                            }
-                          </td>
-                          <td style={styles.tableCell}>
-                            ${stateTaxPaidPerBracket[index].toLocaleString()}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-              </div>
-              </div>
+            
+            <div style={styles.dataRow}>
+              <span style={styles.dataLabel}>Standard Deduction (Single Filers 2025)</span>
+              <span style={styles.dataValue}>${week4Data.standardDeduction.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            
+            <div style={styles.dataRow}>
+              <span style={styles.dataLabel}>Pre-Tax Expenses (Health Insurance, Tr. 401k, Tr. IRA)</span>
+              <span style={styles.dataValue}>${week4Data.preTaxExpenses.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            
+            <div style={styles.dataRow}>
+              <span style={styles.dataLabel}>Taxable Income</span>
+              <span style={styles.dataValue}>${week4Data.taxableIncome.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            
+            <div style={styles.dataRow}>
+              <span style={styles.dataLabel}>Federal Income Tax Payment</span>
+              <span style={styles.dataValue}>${week4Data.federalIncomeTax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            
+            <div style={styles.dataRow}>
+              <span style={styles.dataLabel}>Federal Social Security Tax Payment</span>
+              <span style={styles.dataValue}>${week4Data.federalSocialSecurityTax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            
+            <div style={styles.dataRow}>
+              <span style={styles.dataLabel}>Federal Medicare Tax Payment</span>
+              <span style={styles.dataValue}>${week4Data.federalMedicareTax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            
+            <div style={styles.dataRow}>
+              <span style={styles.dataLabel}>State Income Tax Payment</span>
+              <span style={styles.dataValue}>${week4Data.stateIncomeTax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            
+            <div style={styles.dataRow}>
+              <span style={styles.dataLabel}>NY City Income Tax Payment</span>
+              <span style={styles.dataValue}>${week4Data.nyCityIncomeTax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            
+            <div style={styles.highlightRow}>
+              <span style={{
+                fontSize: '15px',
+                color: '#0d1a4b',
+                fontWeight: '700'
+              }}>After Tax Income</span>
+              <span style={{
+                fontSize: '15px',
+                color: '#0d1a4b',
+                fontWeight: '700',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                border: '2px solid rgba(13, 26, 75, 0.3)',
+                minWidth: '140px',
+                textAlign: 'right',
+                boxShadow: '0 2px 8px 0 rgba(13, 26, 75, 0.15)',
+              }}>
+                ${week4Data.afterTaxIncome.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+              </span>
             </div>
           </div>
-          
-          {/* Section Divider */}
-        </div>
 
-        {/* Save/Load Buttons */}
-        <div style={{
-          marginTop: '30px', 
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '20px',
-          padding: '20px',
-          backgroundColor: 'white',
-          borderRadius: '12px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          maxWidth: '1200px',
-          margin: '30px auto'
-        }}>
+          {/* Right Section - Tax Tables */}
+          <div 
+            style={styles.rightSection}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
+              e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+            }}
+          >
+            {/* Federal Income Tax Table */}
+            <div style={styles.tableContainer}>
+              <div style={styles.sectionTitle}>
+                Federal Income Tax
+              </div>
+              <table style={styles.table}>
+                <thead>
+                  <tr>
+                    <th style={styles.tableHeader}>Tax Rate</th>
+                    <th style={styles.tableHeader}>Over</th>
+                    <th style={styles.tableHeader}>But Not Over</th>
+                    <th style={styles.tableHeader}>Taxes Paid Per Bracket</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {federalTaxBrackets.map((bracket, index) => {
+                    const taxesPaid = calculateTaxesPaidPerBracket(week4Data.taxableIncome, bracket);
+                    return (
+                      <tr 
+                        key={index}
+                        style={styles.tableRow}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = 'rgba(255, 253, 231, 0.6)';
+                          Array.from(e.currentTarget.children).forEach(cell => {
+                            cell.style.backgroundColor = 'rgba(255, 253, 231, 0.6)';
+                          });
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          Array.from(e.currentTarget.children).forEach(cell => {
+                            cell.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+                          });
+                        }}
+                      >
+                        <td style={styles.tableCell}>{(bracket.rate * 100).toFixed(1)}%</td>
+                        <td style={styles.tableCell}>${bracket.over.toLocaleString()}</td>
+                        <td style={styles.tableCell}>
+                          {bracket.butNotOver === Infinity ? '...' : `$${bracket.butNotOver.toLocaleString()}`}
+                        </td>
+                        <td style={styles.tableCell}>
+                          ${taxesPaid.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Dynamic State Income Tax Table */}
+            <div style={styles.tableContainer}>
+              <div style={styles.sectionTitle}>
+                {getStateTaxTableTitle(topInputs.location)}
+              </div>
+              <table style={styles.table}>
+                <thead>
+                  <tr>
+                    <th style={styles.tableHeader}>Tax Rate</th>
+                    <th style={styles.tableHeader}>Over</th>
+                    <th style={styles.tableHeader}>But Not Over</th>
+                    <th style={styles.tableHeader}>Taxes Paid Per Bracket</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stateTaxRates.map((rate, index) => (
+                    <tr 
+                      key={index}
+                      style={styles.tableRow}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(255, 253, 231, 0.6)';
+                        Array.from(e.currentTarget.children).forEach(cell => {
+                          cell.style.backgroundColor = 'rgba(255, 253, 231, 0.6)';
+                        });
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        Array.from(e.currentTarget.children).forEach(cell => {
+                          cell.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+                        });
+                      }}
+                    >
+                      <td style={styles.tableCell}>{(rate * 100).toFixed(2)}%</td>
+                      <td style={styles.tableCell}>${stateTaxOverValues[index].toLocaleString()}</td>
+                      <td style={styles.tableCell}>
+                        {stateTaxButNotOverValues[index] === "…" ? 
+                          "…" : 
+                          `$${stateTaxButNotOverValues[index].toLocaleString()}`
+                        }
+                      </td>
+                      <td style={styles.tableCell}>
+                        ${stateTaxPaidPerBracket[index].toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
+      </div>
 
       {/* Note */}
-      <div style={{
-        backgroundColor: '#f8f9fa',
-        border: '1px solid #e9ecef',
-        padding: '12px',
-        borderRadius: '8px',
-        textAlign: 'center',
-        fontSize: '14px',
-        color: '#374151',
-        fontWeight: '500',
-        marginTop: '20px',
-        maxWidth: '1200px',
-        margin: '20px auto'
-      }}>
+      <div style={{ ...styles.note, marginTop: '24px', marginBottom: '0' }}>
         Note: Adjust Week 1 Budget based on this week's insights
       </div>
-    </>
+    </div>
   );
 };
 
