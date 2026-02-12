@@ -15,44 +15,69 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-// Modern inline styles with improved visual design
+// Modern inline styles matching Week 2 and Week 3 design
 const styles = {
   container: {
     minHeight: '100vh',
-    backgroundColor: '#f9fafb',
-    padding: '24px',
-    maxWidth: '1200px',
-    margin: '0 auto',
+    background: 'linear-gradient(135deg, rgba(255, 253, 231, 0.27) 0%, rgb(255, 252, 240) 50%, rgb(255, 255, 255) 100%)',
+    padding: '32px 24px 16px 24px',
+    width: '100%',
     fontSize: '14px',
-    color: '#1f2937',
+    color: '#111827',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    position: 'relative',
   },
   sectionContainer: {
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
     borderRadius: '16px',
-    padding: '32px',
+    padding: '40px',
     marginBottom: '32px',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
-    border: '1px solid #e5e7eb',
-    transition: 'all 0.2s ease-in-out',
+    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    width: '100%',
+    maxWidth: '1200px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   enhancedHeader: {
-    background: 'linear-gradient(135deg, #0d1a4b 0%, #162456 100%)',
+    background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
     color: 'white',
-    padding: '24px 28px',
+    padding: '28px 32px',
     borderRadius: '16px',
-    fontWeight: '700',
-    fontSize: '20px',
+    fontWeight: '600',
+    fontSize: '22px',
     textAlign: 'center',
-    marginBottom: '24px',
-    boxShadow: '0 10px 15px -3px rgba(13, 26, 75, 0.3), 0 4px 6px -4px rgba(13, 26, 75, 0.2)',
-    letterSpacing: '0.02em',
+    marginBottom: '32px',
+    boxShadow: '0 8px 32px 0 rgba(13, 26, 75, 0.3), 0 4px 16px 0 rgba(13, 26, 75, 0.2)',
+    letterSpacing: '-0.01em',
+    lineHeight: '1.3',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
   },
   sectionDivider: {
-    height: '4px',
-    background: 'linear-gradient(90deg, transparent, #0d1a4b, #fdb913, #0d1a4b, transparent)',
-    margin: '24px 0',
-    borderRadius: '2px',
-    boxShadow: '0 2px 4px rgba(13, 26, 75, 0.15)'
+    height: '1px',
+    background: 'linear-gradient(90deg, transparent, rgba(229, 231, 235, 0.6), transparent)',
+    margin: '0',
+    borderRadius: '1px',
+  },
+  infoBox: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '14px 18px',
+    backgroundColor: 'rgba(13, 26, 75, 0.05)',
+    borderRadius: '8px',
+    color: '#0d1a4b',
+    fontSize: '13px',
+    marginBottom: '24px',
+    border: '1px solid rgba(13, 26, 75, 0.15)',
   },
   section: {
     marginBottom: 48,
@@ -92,13 +117,15 @@ const styles = {
   },
   
   th: {
-    background: 'linear-gradient(135deg, #0d1a4b 0%, #162456 100%)',
+    background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
     color: 'white',
     padding: '14px',
     borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     textAlign: 'center',
     fontWeight: 600,
-    letterSpacing: '0.01em',
+    letterSpacing: '-0.01em',
   },
   td: {
     border: '1px solid #e5e7eb',
@@ -111,21 +138,30 @@ const styles = {
   input: {
     width: '100%',
     border: '2px solid #d1d5db',
-    padding: '10px 12px',
+    padding: '10px 14px',
     textAlign: 'right',
     backgroundColor: '#fffde7',
     borderRadius: '8px',
     boxSizing: 'border-box',
-    transition: 'all 0.2s ease-in-out',
+    fontWeight: '500',
     fontSize: '14px',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    outline: 'none',
+    transform: 'scale(1)',
+    boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)',
+    maxWidth: '100%',
   },
   readOnly: {
     textAlign: 'right',
     paddingRight: '12px',
-    color: '#4b5563',
-    backgroundColor: '#f9fafb',
+    color: '#6b7280',
+    backgroundColor: 'rgba(249, 250, 251, 0.8)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
     borderRadius: '8px',
-    fontWeight: 500,
+    fontWeight: '600',
+    border: '1px solid rgba(229, 231, 235, 0.6)',
+    boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)',
   },
   chartPlaceholder: {
     width: '70%',
@@ -2325,6 +2361,7 @@ export default function Week6Retirement() {
   return (
     <>
       {/* Modern info alert for editable fields - guaranteed right top corner */}
+      {/* Modern info alert for editable fields - guaranteed right top corner */}
       <div style={{
         position: 'fixed',
         top: '24px',
@@ -2335,7 +2372,7 @@ export default function Week6Retirement() {
         gap: '8px',
         background: 'rgba(255,255,255,0.85)',
         backdropFilter: 'blur(2px)',
-        border: '1px solid #bfdbfe',
+        border: '1px solid rgba(13, 26, 75, 0.15)',
         boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
         borderRadius: '14px',
         padding: '12px 20px',
@@ -2343,82 +2380,138 @@ export default function Week6Retirement() {
         fontWeight: 500,
         fontSize: 12
       }}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d1a4b" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01"/></svg>
         You can only enter data in the open (yellow) fields.
       </div>
 
       <div style={styles.container}>
         <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
-        <div style={{
-          ...styles.enhancedHeader,
-          backgroundColor: '#002060',
-          color: 'white'
-        }}>
+        <div style={styles.enhancedHeader}>
               🏦 Retirement Planning
             </div>
 
+        {/* Info Box - matching Week 2/3 styling */}
+        <div style={styles.infoBox}>
+          <svg 
+            width="20" 
+            height="20" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="#0d1a4b" 
+            strokeWidth="2.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+            style={{ flexShrink: 0 }}
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <div>
+            <strong>How it works:</strong> Enter your retirement planning inputs and monthly payments. The calculator will show you how your retirement accounts will grow over time and how much you can withdraw during retirement.
+          </div>
+            </div>
+
         {/* 1. Income Summary */}
-        <div style={styles.sectionContainer}>
           <div style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: '#002060',
-            marginBottom: '20px',
-            textAlign: 'center'
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          padding: '24px',
+          borderRadius: '12px',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
+          boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+          marginBottom: '24px',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}>
+          <div style={{
+            fontSize: '15px',
+            fontWeight: '600',
+            color: '#0d1a4b',
+            marginBottom: '16px',
+            textAlign: 'center',
+            letterSpacing: '-0.01em',
           }}>
             Income Summary
           </div>
           <div style={{
             display: 'flex',
-            gap: '40px',
+            gap: '24px',
             justifyContent: 'center',
-            marginBottom: '20px'
+            marginBottom: '20px',
+            flexWrap: 'wrap'
           }}>
             <div style={{
-              backgroundColor: '#e8f5e9',
-              padding: '10px 16px',
-              borderRadius: '6px',
-              border: '1px solid #dcedc8',
+              backgroundColor: 'rgba(240, 253, 244, 0.8)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              padding: '16px 20px',
+              borderRadius: '12px',
+              border: '2px solid rgba(134, 239, 172, 0.5)',
               textAlign: 'center',
-              minWidth: '200px'
-            }}>
+              minWidth: '200px',
+              boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.05)',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.12)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 2px 8px 0 rgba(0, 0, 0, 0.05)';
+            }}
+            >
               <div style={{
                 fontSize: '13px',
                 fontWeight: '600',
-                color: '#2e7d32',
-                marginBottom: '4px'
+                color: '#0d1a4b',
+                marginBottom: '8px'
               }}>
                 Monthly Pre-Tax Income
               </div>
               <div style={{
                 fontSize: '18px',
                 fontWeight: '700',
-                color: '#002060'
+                color: '#0d1a4b'
               }}>
                 ${formatCurrency(monthlyPreTaxIncome)}
               </div>
             </div>
             <div style={{
-              backgroundColor: '#e8f5e9',
-              padding: '10px 16px',
-              borderRadius: '6px',
-              border: '1px solid #dcedc8',
+              backgroundColor: 'rgba(240, 253, 244, 0.8)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              padding: '16px 20px',
+              borderRadius: '12px',
+              border: '2px solid rgba(134, 239, 172, 0.5)',
               textAlign: 'center',
-              minWidth: '200px'
-            }}>
+              minWidth: '200px',
+              boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.05)',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.12)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 2px 8px 0 rgba(0, 0, 0, 0.05)';
+            }}
+            >
               <div style={{
                 fontSize: '13px',
                 fontWeight: '600',
-                color: '#2e7d32',
-                marginBottom: '4px'
+                color: '#0d1a4b',
+                marginBottom: '8px'
               }}>
                 Monthly After-Tax Income
               </div>
               <div style={{
                 fontSize: '18px',
                 fontWeight: '700',
-                color: '#002060'
+                color: '#0d1a4b'
               }}>
                 ${formatCurrency(monthlyUserAfterTaxIncome)}
               </div>
@@ -2427,51 +2520,70 @@ export default function Week6Retirement() {
         </div>
 
         {/* 2. Retirement Account Budgeting Table */}
-        <div style={styles.sectionContainer}>
+        <div style={{
+          ...styles.sectionContainer,
+          maxWidth: '1100px',
+          padding: '32px'
+        }}>
           <div style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: '#002060',
+            fontSize: '15px',
+            fontWeight: '600',
+            color: '#0d1a4b',
             marginBottom: '20px',
-            textAlign: 'center'
+            textAlign: 'center',
+            letterSpacing: '-0.01em',
           }}>
             Retirement Account Budgeting
           </div>
+          <div style={{ 
+            overflowX: 'auto', 
+            width: '100%', 
+            maxWidth: '100%',
+            boxSizing: 'border-box'
+          }}>
           <table style={{
             ...styles.table,
             width: '100%',
-            minWidth: '1000px'
+            minWidth: '700px',
+            maxWidth: '100%',
+            boxSizing: 'border-box',
+            tableLayout: 'auto'
           }}>
           <thead>
             <tr>
                 <th style={{
                   ...styles.th,
                   textAlign: 'left',
-                  width: '25%'
+                  width: '22%',
+                  minWidth: '140px'
                 }}>
                   Account Type
                 </th>
                 <th style={{
                   ...styles.th,
-                  width: '20%'
+                  width: '18%',
+                  minWidth: '120px'
                 }}>
                   User Input in Week 1 Budget
                 </th>
                 <th style={{
                   ...styles.th,
-                  width: '20%'
+                  width: '20%',
+                  minWidth: '140px'
                 }}>
                   Budgeted Amount Spent
                 </th>
                 <th style={{
                   ...styles.th,
-                  width: '20%'
+                  width: '20%',
+                  minWidth: '140px'
                 }}>
                   Recommended Amount Spent
                 </th>
                 <th style={{
                   ...styles.th,
-                  width: '15%'
+                  width: '20%',
+                  minWidth: '120px'
                 }}>
                   Recommended %
                 </th>
@@ -2524,6 +2636,33 @@ export default function Week6Retirement() {
                       textAlign: 'center'
                     }}
                     placeholder="Enter amount"
+                    onMouseEnter={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.borderColor = '#9ca3af';
+                        e.target.style.backgroundColor = '#ffffff';
+                        e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                        e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.borderColor = '#d1d5db';
+                        e.target.style.backgroundColor = '#fffde7';
+                        e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                        e.target.style.transform = 'scale(1)';
+                      }
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#0d1a4b';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                      e.target.style.backgroundColor = '#fffef0';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.transform = 'scale(1)';
+                    }}
                   />
                   <div style={{
                     fontSize: '11px',
@@ -2598,6 +2737,33 @@ export default function Week6Retirement() {
                     textAlign: 'center'
                   }}
                   placeholder="Enter amount"
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
+                  }}
                 />
                 <div style={{fontSize: '11px', color: '#888', marginTop: '4px', textAlign: 'center'}}>
                   {retirementBudgetedAmounts.roth_401k ? 
@@ -2653,6 +2819,33 @@ export default function Week6Retirement() {
                     textAlign: 'center'
                   }}
                   placeholder="Enter amount"
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
+                  }}
                 />
                 <div style={{fontSize: '11px', color: '#888', marginTop: '4px', textAlign: 'center'}}>
                   {retirementBudgetedAmounts.traditional_ira ? 
@@ -2704,6 +2897,33 @@ export default function Week6Retirement() {
                     textAlign: 'center'
                   }}
                   placeholder="Enter amount"
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
+                  }}
                 />
                 <div style={{fontSize: '11px', color: '#888', marginTop: '4px', textAlign: 'center'}}>
                   {retirementBudgetedAmounts.roth_ira ? 
@@ -2730,35 +2950,42 @@ export default function Week6Retirement() {
                 </tr>
 
             {/* Total Row */}
-            <tr style={{backgroundColor: '#002060'}}>
-              <td style={{...styles.td, backgroundColor: '#002060', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
+            <tr style={{background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)'}}>
+              <td style={{...styles.td, background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
                 <b>Total</b>
               </td>
-              <td style={{...styles.td, backgroundColor: '#002060', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
+              <td style={{...styles.td, background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
                 ${formatCurrency(totalUserInput)}
               </td>
-              <td style={{...styles.td, backgroundColor: '#002060', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
+              <td style={{...styles.td, background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
                 ${formatCurrency(totalBudgetedAmount)}
               </td>
-              <td style={{...styles.td, backgroundColor: '#002060', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
+              <td style={{...styles.td, background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
                 ${formatCurrency(totalRecommendedAmount)}
               </td>
-              <td style={{...styles.td, backgroundColor: '#002060', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
+              <td style={{...styles.td, background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)', color: '#fff', fontWeight: '700', fontSize: '14px'}}>
                 {totalRecommendedPercent.toFixed(2)}%
               </td>
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
 
         {/* 3. Monthly Deferral Calculator */}
-        <div style={styles.sectionContainer}>
+        <div style={{
+          ...styles.sectionContainer,
+          maxWidth: '600px',
+          padding: '24px',
+          marginBottom: '24px'
+        }}>
           <div style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: '#002060',
+            fontSize: '15px',
+            fontWeight: '600',
+            color: '#0d1a4b',
             marginBottom: '20px',
-            textAlign: 'center'
+            textAlign: 'center',
+            letterSpacing: '-0.01em',
           }}>
             Monthly Deferral Calculator
               </div>
@@ -2770,10 +2997,21 @@ export default function Week6Retirement() {
           }}>
             Retirement contribution based on % of monthly gross income
               </div>
+          <div style={{ 
+            overflowX: 'auto', 
+            width: '100%', 
+            maxWidth: '100%', 
+            display: 'flex', 
+            justifyContent: 'center',
+            boxSizing: 'border-box'
+          }}>
           <table style={{
             ...styles.table,
-            width: '300px',
-            margin: '0 auto'
+            width: '100%',
+            maxWidth: '350px',
+            margin: '0 auto',
+            boxSizing: 'border-box',
+            tableLayout: 'auto'
           }}>
             <thead>
               <tr>
@@ -2804,6 +3042,33 @@ export default function Week6Retirement() {
                       textAlign: 'center'
                     }}
                     placeholder="5%"
+                    onMouseEnter={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.borderColor = '#9ca3af';
+                        e.target.style.backgroundColor = '#ffffff';
+                        e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                        e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.borderColor = '#d1d5db';
+                        e.target.style.backgroundColor = '#fffde7';
+                        e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                        e.target.style.transform = 'scale(1)';
+                      }
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#0d1a4b';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                      e.target.style.backgroundColor = '#fffef0';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.transform = 'scale(1)';
+                    }}
                   />
                 </td>
                 <td style={styles.td}>
@@ -2818,6 +3083,7 @@ export default function Week6Retirement() {
               </tr>
             </tbody>
           </table>
+          </div>
           <div style={{
             fontSize: '13px',
             color: '#666',
@@ -2835,29 +3101,42 @@ export default function Week6Retirement() {
 
         {/* 5. Traditional 401(k) Balance and Withdrawals */}
         <div style={{
-          display: 'flex',
-          gap: '20px',
-          marginBottom: '30px'
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '32px',
+          marginBottom: '40px',
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
         }}>
           {/* Traditional 401(k) Balance */}
           <div style={{
-            flex: 1,
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '20px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            border: '1px solid #e0e0e0'
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: '16px',
+            padding: '28px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(229, 231, 235, 0.8)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+            minWidth: 0,
+            width: '100%',
+            maxWidth: '100%',
           }}>
             {/* Header */}
             <div style={{
-              backgroundColor: '#002060',
+              background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.98) 0%, rgba(30, 58, 138, 0.95) 100%)',
               color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              marginBottom: '16px',
+              padding: '18px 24px',
+              borderRadius: '12px',
+              marginBottom: '24px',
               fontSize: '16px',
-              fontWeight: '600',
-              textAlign: 'center'
+              fontWeight: '700',
+              textAlign: 'center',
+              letterSpacing: '-0.02em',
+              boxShadow: '0 4px 12px 0 rgba(13, 26, 75, 0.25)',
             }}>
               Traditional 401(k) Balance
               </div>
@@ -2865,9 +3144,13 @@ export default function Week6Retirement() {
             {/* Description */}
             <div style={{
               fontSize: '13px',
-              color: '#666',
-              marginBottom: '16px',
-              lineHeight: '1.4'
+              color: '#4b5563',
+              marginBottom: '24px',
+              lineHeight: '1.6',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '10px',
+              border: '1px solid rgba(229, 231, 235, 0.6)',
             }}>
               Pre-tax. Employer-sponsored. $23,500 limit. No taxes now, taxed at withdrawal. Employer match available.
               </div>
@@ -2876,16 +3159,16 @@ export default function Week6Retirement() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '8px',
-              marginBottom: '16px'
+              gap: '16px',
+              marginBottom: '24px'
             }}>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Contribution Start Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Contribution Start Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.contributionStartAge || ''}
@@ -2893,27 +3176,56 @@ export default function Week6Retirement() {
                   min="0"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.contributionStartAge && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.contributionStartAge}
             </div>
                 )}
             </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Retirement Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Retirement Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.retirementAge || ''}
@@ -2921,27 +3233,30 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.readOnly,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
                   }}
+                  readOnly
                 />
                 {retirementPlanningErrors.retirementAge && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.retirementAge}
             </div>
                 )}
           </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Annual Rate of Return (%)</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Annual Rate of Return (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
@@ -2950,27 +3265,56 @@ export default function Week6Retirement() {
                   max="20"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.annualReturnRate && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.annualReturnRate}
               </div>
                 )}
               </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Employer Match (%)</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Employer Match (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.employerMatch401k ? `${retirementPlanningInputs.employerMatch401k}%` : ''}
@@ -2979,16 +3323,45 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.employerMatch401k && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.employerMatch401k}
               </div>
                 )}
@@ -2997,115 +3370,255 @@ export default function Week6Retirement() {
 
             {/* Scenarios */}
             <div style={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '16px'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+              marginBottom: '24px',
+              width: '100%',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario A</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.traditional_401k_a ? `$${monthlyPayments.traditional_401k_a}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_401k_a', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.traditional_401k_a && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.traditional_401k_a}
         </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_401k_a).toFixed(2)}% of Monthly Pre-Tax Income</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_401k_a).toFixed(2)}% of Monthly Pre-Tax Income</div>
       </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario B</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.traditional_401k_b ? `$${monthlyPayments.traditional_401k_b}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_401k_b', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.traditional_401k_b && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.traditional_401k_b}
               </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_401k_b).toFixed(2)}% of Monthly Pre-Tax Income</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_401k_b).toFixed(2)}% of Monthly Pre-Tax Income</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario C</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.traditional_401k_c ? `$${monthlyPayments.traditional_401k_c}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_401k_c', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.traditional_401k_c && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.traditional_401k_c}
             </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_401k_c).toFixed(2)}% of Monthly Pre-Tax Income</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_401k_c).toFixed(2)}% of Monthly Pre-Tax Income</div>
               </div>
               </div>
 
             {/* Dynamic Chart */}
             <div style={{
-              backgroundColor: '#f8f9fa',
-              border: '1px solid #e9ecef',
-              borderRadius: '6px',
-              padding: '16px',
-              marginBottom: '16px',
-              minHeight: '350px'
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
+              borderRadius: '14px',
+              padding: '28px',
+              marginBottom: '24px',
+              minHeight: '380px',
+              boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.06)',
             }}>
-              <div style={{ fontSize: '14px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', color: '#333' }}>
+              <div style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', textAlign: 'center', color: '#111827', letterSpacing: '-0.02em' }}>
                 Traditional 401(k) Balance vs. Age Chart
               </div>
               {(() => {
@@ -3295,35 +3808,145 @@ export default function Week6Retirement() {
 
             {/* Summary Table */}
             <div style={{
-              backgroundColor: '#f8f9fa',
-              borderRadius: '6px',
-              padding: '12px',
-              border: '1px solid #e9ecef'
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              borderRadius: '14px',
+              padding: '24px',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
+              boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.06)',
             }}>
-              <div style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', textAlign: 'center', color: '#111827', letterSpacing: '-0.02em' }}>
                 Summary
             </div>
-              <table style={{ width: '100%', fontSize: '11px' }}>
+              <table style={{ width: '100%', fontSize: '13px', borderCollapse: 'separate', borderSpacing: '0' }}>
                 <thead>
-                  <tr style={{ backgroundColor: '#e9ecef' }}>
-                    <th style={{ padding: '4px', textAlign: 'left' }}>Metric</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario A</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario B</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario C</th>
+                  <tr>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'left', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Metric</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario A</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario B</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario C</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td style={{ padding: '4px', fontWeight: '600' }}>Future Value Retirement Balance</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateTraditional401kSeriesA().finalBalance.toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateTraditional401kSeriesB().finalBalance.toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateTraditional401kSeriesC().finalBalance.toLocaleString()}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      fontWeight: '600',
+                      color: '#4b5563',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>Future Value Retirement Balance</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateTraditional401kSeriesA().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateTraditional401kSeriesB().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateTraditional401kSeriesC().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                   </tr>
                   <tr>
-                    <td style={{ padding: '4px', fontWeight: '600' }}>Value in Today's Dollars</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditional401kSeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditional401kSeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditional401kSeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      fontWeight: '600',
+                      color: '#4b5563',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>Value in Today's Dollars</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateTraditional401kSeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateTraditional401kSeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateTraditional401kSeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                   </tr>
                 </tbody>
               </table>
@@ -3332,36 +3955,46 @@ export default function Week6Retirement() {
 
           {/* Traditional 401(k) Withdrawals */}
           <div style={{
-            flex: 1,
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '20px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            border: '1px solid #e0e0e0'
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: '16px',
+            padding: '28px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(229, 231, 235, 0.8)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+            minWidth: 0,
+            width: '100%',
+            maxWidth: '100%',
           }}>
             {/* Header */}
             <div style={{
-              backgroundColor: '#002060',
+              background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.98) 0%, rgba(30, 58, 138, 0.95) 100%)',
               color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              marginBottom: '16px',
+              padding: '18px 24px',
+              borderRadius: '12px',
+              marginBottom: '24px',
               fontSize: '16px',
-              fontWeight: '600',
-              textAlign: 'center'
+              fontWeight: '700',
+              textAlign: 'center',
+              letterSpacing: '-0.02em',
+              boxShadow: '0 4px 12px 0 rgba(13, 26, 75, 0.25)',
             }}>
               Traditional 401(k) Withdrawals
               </div>
 
             <div style={{
-              fontSize: '12px',
-              color: '#666',
-              padding: '8px',
-              backgroundColor: '#f8f9fa',
-              borderRadius: '4px',
-              border: '1px solid #e9ecef',
+              fontSize: '13px',
+              color: '#4b5563',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '10px',
+              border: '1px solid rgba(229, 231, 235, 0.6)',
               textAlign: 'center',
-              fontStyle: 'italic'
+              fontStyle: 'italic',
+              marginBottom: '24px'
             }}>
               Note: Withdrawal Balance calculated from previous Traditional 401(k) Balance (left)
               </div>
@@ -3511,37 +4144,53 @@ export default function Week6Retirement() {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              marginBottom: '16px'
+              gap: '16px',
+              marginBottom: '24px',
+              padding: '16px 20px',
+              backgroundColor: 'rgba(249, 250, 251, 0.6)',
+              borderRadius: '12px',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
             }}>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                minWidth: '60px'
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                minWidth: '120px',
+                width: '120px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>RMD</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>RMD</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.rmdAge || ''}
                   readOnly
                   style={{
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
+                    padding: '12px 16px',
+                    border: '1px solid rgba(229, 231, 235, 0.6)',
+                    borderRadius: '8px',
                     backgroundColor: '#ffb3ba',
-                    fontSize: '12px',
+                    fontSize: '15px',
                     textAlign: 'center',
-                    cursor: 'not-allowed'
+                    cursor: 'not-allowed',
+                    fontWeight: '700',
+                    color: '#111827',
+                    boxSizing: 'border-box'
                   }}
                 />
           </div>
               <div style={{
-                fontSize: '11px',
-                color: '#666',
-                flex: 1
+                fontSize: '13px',
+                color: '#4b5563',
+                flex: 1,
+                fontWeight: '500',
+                lineHeight: '1.6',
+                display: 'flex',
+                alignItems: 'center',
+                paddingLeft: '4px'
               }}>
                 RMD: Required Minimum Distribution (last start age for withdrawals) - Fixed at 75
         </div>
@@ -3549,20 +4198,40 @@ export default function Week6Retirement() {
 
             {/* Scenarios */}
             <div style={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '16px'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+              marginBottom: '24px',
+              width: '100%',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario A</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditional401kWithdrawalRateA ? `${retirementPlanningInputs.traditional401kWithdrawalRateA}%` : ''}
@@ -3571,21 +4240,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditional401kWithdrawalRateA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditional401kWithdrawalRateA}
               </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.traditional401kAgeA || 60}
@@ -3593,32 +4291,77 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditional401kAgeA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditional401kAgeA}
               </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateTraditional401kPV('A').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditional401kPV('A').toFixed(2)}</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario B</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditional401kWithdrawalRateB ? `${retirementPlanningInputs.traditional401kWithdrawalRateB}%` : ''}
@@ -3627,21 +4370,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditional401kWithdrawalRateB && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditional401kWithdrawalRateB}
             </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.traditional401kAgeB || 60}
@@ -3649,32 +4421,77 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditional401kAgeB && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditional401kAgeB}
               </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateTraditional401kPV('B').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditional401kPV('B').toFixed(2)}</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario C</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditional401kWithdrawalRateC ? `${retirementPlanningInputs.traditional401kWithdrawalRateC}%` : ''}
@@ -3683,21 +4500,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditional401kWithdrawalRateC && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditional401kWithdrawalRateC}
               </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.traditional401kAgeC || 60}
@@ -3705,21 +4551,50 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditional401kAgeC && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditional401kAgeC}
             </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateTraditional401kPV('C').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditional401kPV('C').toFixed(2)}</div>
             </div>
           </div>
 
@@ -3779,14 +4654,15 @@ export default function Week6Retirement() {
 
             {/* Traditional 401(k) Withdrawals vs Age Chart */}
             <div style={{
-              backgroundColor: '#f8f9fa',
-              border: '1px solid #e9ecef',
-              borderRadius: '6px',
-              padding: '16px',
-              marginBottom: '16px',
-              minHeight: '350px'
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
+              borderRadius: '14px',
+              padding: '28px',
+              marginBottom: '24px',
+              minHeight: '380px',
+              boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.06)',
             }}>
-              <div style={{ fontSize: '14px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', color: '#333' }}>
+              <div style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', textAlign: 'center', color: '#111827', letterSpacing: '-0.02em' }}>
                 Traditional 401(k) Withdrawals vs. Age Chart
               </div>
               {(() => {
@@ -3946,13 +4822,15 @@ export default function Week6Retirement() {
 
 
             <div style={{
-              fontSize: '12px',
-              color: '#666',
-              padding: '8px',
-              backgroundColor: '#f8f9fa',
-              borderRadius: '4px',
-              border: '1px solid #e9ecef',
-              textAlign: 'center'
+              fontSize: '13px',
+              color: '#4b5563',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '10px',
+              border: '1px solid rgba(229, 231, 235, 0.6)',
+              textAlign: 'center',
+              fontStyle: 'italic',
+              marginTop: '24px'
             }}>
               Note: If the Annual Rate of Return is larger than Withdrawal Rate, your portfolio will increase forever!
               </div>
@@ -3961,57 +4839,74 @@ export default function Week6Retirement() {
 
         {/* 6. Roth 401(k) Balance and Withdrawals */}
         <div style={{
-          display: 'flex',
-          gap: '20px',
-          marginBottom: '30px'
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '32px',
+          marginBottom: '40px',
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
         }}>
           {/* Roth 401(k) Balance */}
           <div style={{
-            flex: 1,
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '20px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            border: '1px solid #e0e0e0'
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: '16px',
+            padding: '28px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(229, 231, 235, 0.8)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+            minWidth: 0,
+            width: '100%',
+            maxWidth: '100%',
           }}>
             {/* Header */}
             <div style={{
-              backgroundColor: '#002060',
+              background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.98) 0%, rgba(30, 58, 138, 0.95) 100%)',
               color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              marginBottom: '16px',
+              padding: '18px 24px',
+              borderRadius: '12px',
+              marginBottom: '24px',
               fontSize: '16px',
-              fontWeight: '600',
-              textAlign: 'center'
+              fontWeight: '700',
+              textAlign: 'center',
+              letterSpacing: '-0.02em',
+              boxShadow: '0 4px 12px 0 rgba(13, 26, 75, 0.25)',
             }}>
               Roth 401(k) Balance
-        </div>
+              </div>
 
             {/* Description */}
             <div style={{
               fontSize: '13px',
-              color: '#666',
-              marginBottom: '16px',
-              lineHeight: '1.4'
+              color: '#4b5563',
+              marginBottom: '24px',
+              lineHeight: '1.6',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '10px',
+              border: '1px solid rgba(229, 231, 235, 0.6)',
             }}>
               Post-tax. Employer-sponsored. $23,500 limit. Pay taxes now, withdraw tax-free. Employer match common; goes into pre-tax 401(k).
-      </div>
+              </div>
 
             {/* Key Parameters */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '8px',
-              marginBottom: '16px'
+              gap: '16px',
+              marginBottom: '24px'
             }}>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Contribution Start Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Contribution Start Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.contributionStartAge || ''}
@@ -4019,27 +4914,56 @@ export default function Week6Retirement() {
                   min="0"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.contributionStartAge && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.contributionStartAge}
-              </div>
+            </div>
                 )}
-              </div>
+            </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Retirement Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Retirement Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.retirementAge || ''}
@@ -4047,27 +4971,30 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.readOnly,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
                   }}
+                  readOnly
                 />
                 {retirementPlanningErrors.retirementAge && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.retirementAge}
             </div>
                 )}
-              </div>
+          </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Annual Rate of Return (%)</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Annual Rate of Return (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
@@ -4076,27 +5003,56 @@ export default function Week6Retirement() {
                   max="20"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.annualReturnRate && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.annualReturnRate}
               </div>
                 )}
               </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Employer Match (%)</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Employer Match (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.employerMatch401k ? `${retirementPlanningInputs.employerMatch401k}%` : ''}
@@ -4105,120 +5061,282 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.employerMatch401k && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.employerMatch401k}
-            </div>
+              </div>
                 )}
             </div>
           </div>
 
             {/* Scenarios */}
             <div style={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '16px'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+              marginBottom: '24px',
+              width: '100%',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
               }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '-0.01em' }}>Scenario A</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.roth_401k_a ? `$${monthlyPayments.roth_401k_a}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_401k_a', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.roth_401k_a && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.roth_401k_a}
               </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_401k_a).toFixed(2)}% of Monthly After Tax Income</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_401k_a).toFixed(2)}% of Monthly After Tax Income</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
               }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '-0.01em' }}>Scenario B</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.roth_401k_b ? `$${monthlyPayments.roth_401k_b}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_401k_b', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.roth_401k_b && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.roth_401k_b}
               </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_401k_b).toFixed(2)}% of Monthly After Tax Income</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_401k_b).toFixed(2)}% of Monthly After Tax Income</div>
             </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
               }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '-0.01em' }}>Scenario C</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.roth_401k_c ? `$${monthlyPayments.roth_401k_c}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_401k_c', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.roth_401k_c && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.roth_401k_c}
           </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_401k_c).toFixed(2)}% of Monthly After Tax Income</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_401k_c).toFixed(2)}% of Monthly After Tax Income</div>
         </div>
       </div>
 
@@ -4506,35 +5624,145 @@ export default function Week6Retirement() {
 
             {/* Summary Table */}
             <div style={{
-              backgroundColor: '#f8f9fa',
-              borderRadius: '6px',
-              padding: '12px',
-              border: '1px solid #e9ecef'
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              borderRadius: '14px',
+              padding: '24px',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
+              boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.06)',
             }}>
-              <div style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', textAlign: 'center', color: '#111827', letterSpacing: '-0.02em' }}>
                 Summary
-      </div>
-              <table style={{ width: '100%', fontSize: '11px' }}>
-            <thead>
-                  <tr style={{ backgroundColor: '#e9ecef' }}>
-                    <th style={{ padding: '4px', textAlign: 'left' }}>Metric</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario A</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario B</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario C</th>
-              </tr>
-            </thead>
-            <tbody>
+            </div>
+              <table style={{ width: '100%', fontSize: '13px', borderCollapse: 'separate', borderSpacing: '0' }}>
+                <thead>
                   <tr>
-                    <td style={{ padding: '4px', fontWeight: '600' }}>Future Value Retirement Balance</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateRoth401kSeriesA().finalBalance.toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateRoth401kSeriesB().finalBalance.toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateRoth401kSeriesC().finalBalance.toLocaleString()}</td>
-                </tr>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'left', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Metric</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario A</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario B</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario C</th>
+                  </tr>
+                </thead>
+                <tbody>
                   <tr>
-                    <td style={{ padding: '4px', fontWeight: '600' }}>Value in Today's Dollars</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRoth401kSeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRoth401kSeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRoth401kSeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      fontWeight: '600',
+                      color: '#4b5563',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>Future Value Retirement Balance</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateRoth401kSeriesA().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateRoth401kSeriesB().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateRoth401kSeriesC().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      fontWeight: '600',
+                      color: '#4b5563',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>Value in Today's Dollars</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateRoth401kSeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateRoth401kSeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateRoth401kSeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                   </tr>
             </tbody>
           </table>
@@ -4543,36 +5771,46 @@ export default function Week6Retirement() {
 
           {/* Roth 401(k) Withdrawals */}
           <div style={{
-            flex: 1,
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '20px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            border: '1px solid #e0e0e0'
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: '16px',
+            padding: '28px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(229, 231, 235, 0.8)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+            minWidth: 0,
+            width: '100%',
+            maxWidth: '100%',
           }}>
             {/* Header */}
             <div style={{
-              backgroundColor: '#002060',
+              background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.98) 0%, rgba(30, 58, 138, 0.95) 100%)',
               color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              marginBottom: '16px',
+              padding: '18px 24px',
+              borderRadius: '12px',
+              marginBottom: '24px',
               fontSize: '16px',
-              fontWeight: '600',
-              textAlign: 'center'
+              fontWeight: '700',
+              textAlign: 'center',
+              letterSpacing: '-0.02em',
+              boxShadow: '0 4px 12px 0 rgba(13, 26, 75, 0.25)',
             }}>
               Roth 401(k) Withdrawals
               </div>
 
             {/* Note */}
             <div style={{
-              fontSize: '12px',
-              color: '#666',
-              marginBottom: '16px',
-              padding: '8px',
-              backgroundColor: '#f8f9fa',
-              borderRadius: '4px',
-              border: '1px solid #e9ecef'
+              fontSize: '13px',
+              color: '#4b5563',
+              marginBottom: '24px',
+              lineHeight: '1.6',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '10px',
+              border: '1px solid rgba(229, 231, 235, 0.6)',
             }}>
               Note: Withdrawal Balance calculated from previous Roth 401(k) Balance (left)
               </div>
@@ -4581,58 +5819,94 @@ export default function Week6Retirement() {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              marginBottom: '16px'
+              gap: '16px',
+              marginBottom: '24px',
+              padding: '16px 20px',
+              backgroundColor: 'rgba(249, 250, 251, 0.6)',
+              borderRadius: '12px',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
             }}>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                minWidth: '60px'
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                minWidth: '120px',
+                width: '120px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>RMD</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>RMD</div>
                 <input
                   type="text"
                   value="None"
                   readOnly
                   style={{
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
+                    padding: '12px 16px',
+                    border: '1px solid rgba(229, 231, 235, 0.6)',
+                    borderRadius: '8px',
                     backgroundColor: '#ffb3ba',
-                    fontSize: '12px',
+                    fontSize: '15px',
                     textAlign: 'center',
-                    cursor: 'not-allowed'
+                    cursor: 'not-allowed',
+                    fontWeight: '700',
+                    color: '#111827',
+                    boxSizing: 'border-box'
                   }}
                 />
-              </div>
+          </div>
               <div style={{
-                fontSize: '11px',
-                color: '#666',
-                flex: 1
+                fontSize: '13px',
+                color: '#4b5563',
+                flex: 1,
+                fontWeight: '500',
+                lineHeight: '1.6',
+                display: 'flex',
+                alignItems: 'center',
+                paddingLeft: '4px'
               }}>
-                RMD: Required Minimum Distribution (last start age for withdrawals) 
-            </div>
+                RMD: Required Minimum Distribution (last start age for withdrawals) - Fixed at 75
+        </div>
       </div>
 
             {/* Scenarios */}
             <div style={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '16px'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+              marginBottom: '24px',
+              width: '100%',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario A</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.roth401kWithdrawalRateA ? `${retirementPlanningInputs.roth401kWithdrawalRateA}%` : ''}
@@ -4641,21 +5915,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.roth401kWithdrawalRateA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.roth401kWithdrawalRateA}
                   </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.roth401kAgeA || 60}
@@ -4663,32 +5966,77 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.roth401kAgeA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.roth401kAgeA}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateRoth401kPV('A').toFixed(2)}</div>
-          </div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRoth401kPV('A').toFixed(2)}</div>
+              </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario B</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.roth401kWithdrawalRateB ? `${retirementPlanningInputs.roth401kWithdrawalRateB}%` : ''}
@@ -4697,21 +6045,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.roth401kWithdrawalRateB && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.roth401kWithdrawalRateB}
                   </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.roth401kAgeB || 60}
@@ -4719,32 +6096,77 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.roth401kAgeB && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.roth401kAgeB}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateRoth401kPV('B').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRoth401kPV('B').toFixed(2)}</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario C</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.roth401kWithdrawalRateC ? `${retirementPlanningInputs.roth401kWithdrawalRateC}%` : ''}
@@ -4753,21 +6175,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.roth401kWithdrawalRateC && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.roth401kWithdrawalRateC}
                   </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.roth401kAgeC || 60}
@@ -4775,21 +6226,50 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.roth401kAgeC && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.roth401kAgeC}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateRoth401kPV('C').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRoth401kPV('C').toFixed(2)}</div>
               </div>
       </div>
 
@@ -4981,57 +6461,74 @@ export default function Week6Retirement() {
 
         {/* 7. Traditional IRA Balance and Withdrawals */}
         <div style={{
-          display: 'flex',
-          gap: '20px',
-          marginBottom: '30px'
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '32px',
+          marginBottom: '40px',
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
         }}>
           {/* Traditional IRA Balance */}
           <div style={{
-            flex: 1,
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '20px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            border: '1px solid #e0e0e0'
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: '16px',
+            padding: '28px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(229, 231, 235, 0.8)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+            minWidth: 0,
+            width: '100%',
+            maxWidth: '100%',
           }}>
             {/* Header */}
             <div style={{
-              backgroundColor: '#002060',
+              background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.98) 0%, rgba(30, 58, 138, 0.95) 100%)',
               color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              marginBottom: '16px',
+              padding: '18px 24px',
+              borderRadius: '12px',
+              marginBottom: '24px',
               fontSize: '16px',
-              fontWeight: '600',
-              textAlign: 'center'
+              fontWeight: '700',
+              textAlign: 'center',
+              letterSpacing: '-0.02em',
+              boxShadow: '0 4px 12px 0 rgba(13, 26, 75, 0.25)',
             }}>
               Traditional IRA Balance
-      </div>
+              </div>
 
             {/* Description */}
             <div style={{
               fontSize: '13px',
-              color: '#666',
-              marginBottom: '16px',
-              lineHeight: '1.4'
+              color: '#4b5563',
+              marginBottom: '24px',
+              lineHeight: '1.6',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '10px',
+              border: '1px solid rgba(229, 231, 235, 0.6)',
             }}>
               Pre-tax. Individual account. $7,000 limit under 50 y/o & under $150,000 income. Lowers taxes now, taxed at withdrawal. No employer match.
-      </div>
+              </div>
 
             {/* Key Parameters */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '8px',
-              marginBottom: '16px'
+              gap: '16px',
+              marginBottom: '24px'
             }}>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Contribution Start Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Contribution Start Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.contributionStartAge || ''}
@@ -5039,27 +6536,56 @@ export default function Week6Retirement() {
                   min="0"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.contributionStartAge && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.contributionStartAge}
-                  </div>
+            </div>
                 )}
-      </div>
+            </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Retirement Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Retirement Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.retirementAge || ''}
@@ -5067,27 +6593,30 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.readOnly,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
                   }}
+                  readOnly
                 />
                 {retirementPlanningErrors.retirementAge && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.retirementAge}
-                  </div>
+            </div>
                 )}
-              </div>
+          </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Annual Rate of Return (%)</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Annual Rate of Return (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
@@ -5096,27 +6625,56 @@ export default function Week6Retirement() {
                   max="20"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.annualReturnRate && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.annualReturnRate}
-                  </div>
+              </div>
                 )}
               </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Employer Match (%)</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Employer Match (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.employerMatchIRA ? `${retirementPlanningInputs.employerMatchIRA}%` : ''}
@@ -5125,121 +6683,283 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.employerMatchIRA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.employerMatchIRA}
-                  </div>
-                )}
               </div>
+                )}
             </div>
+          </div>
 
             {/* Scenarios */}
             <div style={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '16px'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+              marginBottom: '24px',
+              width: '100%',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
               }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '-0.01em' }}>Scenario A</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.traditional_ira_a ? `$${monthlyPayments.traditional_ira_a}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_ira_a', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.traditional_ira_a && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.traditional_ira_a}
-          </div>
-        )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_ira_a).toFixed(2)}% of Monthly Pre-Tax Income</div>
+              </div>
+                )}
+                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_ira_a).toFixed(2)}% of Monthly Pre-Tax Income</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
               }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '-0.01em' }}>Scenario B</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.traditional_ira_b ? `$${monthlyPayments.traditional_ira_b}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_ira_b', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.traditional_ira_b && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.traditional_ira_b}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_ira_b).toFixed(2)}% of Monthly Pre-Tax Income</div>
-              </div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_ira_b).toFixed(2)}% of Monthly Pre-Tax Income</div>
+            </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
               }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '-0.01em' }}>Scenario C</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.traditional_ira_c ? `$${monthlyPayments.traditional_ira_c}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_ira_c', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.traditional_ira_c && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.traditional_ira_c}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_ira_c).toFixed(2)}% of Monthly Pre-Tax Income</div>
-              </div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfPreTaxIncome(monthlyPayments.traditional_ira_c).toFixed(2)}% of Monthly Pre-Tax Income</div>
+        </div>
       </div>
 
             {/* Traditional IRA Balance vs Age Chart */}
@@ -5509,36 +7229,146 @@ export default function Week6Retirement() {
             })()}
             {/* Summary Table */}
             <div style={{
-              backgroundColor: '#f8f9fa',
-              borderRadius: '6px',
-              padding: '12px',
-              border: '1px solid #e9ecef'
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              borderRadius: '14px',
+              padding: '24px',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
+              boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.06)',
             }}>
-              <div style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', textAlign: 'center', color: '#111827', letterSpacing: '-0.02em' }}>
                 Summary
-              </div>
-              <table style={{ width: '100%', fontSize: '11px' }}>
-            <thead>
-                  <tr style={{ backgroundColor: '#e9ecef' }}>
-                    <th style={{ padding: '4px', textAlign: 'left' }}>Metric</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario A</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario B</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario C</th>
-              </tr>
-            </thead>
-          <tbody>
-            <tr>
-                    <td style={{ padding: '4px', fontWeight: '600' }}>Future Value Retirement Balance</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateTraditionalIRASeriesA().finalBalance.toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateTraditionalIRASeriesB().finalBalance.toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateTraditionalIRASeriesC().finalBalance.toLocaleString()}</td>
-            </tr>
-            <tr>
-                    <td style={{ padding: '4px', fontWeight: '600' }}>Value in Today's Dollars</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditionalIRASeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditionalIRASeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateTraditionalIRASeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            </tr>
+            </div>
+              <table style={{ width: '100%', fontSize: '13px', borderCollapse: 'separate', borderSpacing: '0' }}>
+                <thead>
+                  <tr>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'left', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Metric</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario A</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario B</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario C</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      fontWeight: '600',
+                      color: '#4b5563',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>Future Value Retirement Balance</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateTraditionalIRASeriesA().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateTraditionalIRASeriesB().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateTraditionalIRASeriesC().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      fontWeight: '600',
+                      color: '#4b5563',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>Value in Today's Dollars</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateTraditionalIRASeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateTraditionalIRASeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateTraditionalIRASeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                  </tr>
             </tbody>
           </table>
           </div>
@@ -5546,96 +7376,142 @@ export default function Week6Retirement() {
 
           {/* Traditional IRA Withdrawals */}
           <div style={{
-            flex: 1,
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '20px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            border: '1px solid #e0e0e0'
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: '16px',
+            padding: '28px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(229, 231, 235, 0.8)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+            minWidth: 0,
+            width: '100%',
+            maxWidth: '100%',
           }}>
             {/* Header */}
             <div style={{
-              backgroundColor: '#002060',
+              background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.98) 0%, rgba(30, 58, 138, 0.95) 100%)',
               color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              marginBottom: '16px',
+              padding: '18px 24px',
+              borderRadius: '12px',
+              marginBottom: '24px',
               fontSize: '16px',
-              fontWeight: '600',
-              textAlign: 'center'
+              fontWeight: '700',
+              textAlign: 'center',
+              letterSpacing: '-0.02em',
+              boxShadow: '0 4px 12px 0 rgba(13, 26, 75, 0.25)',
             }}>
               Traditional IRA Withdrawals
-            </div>
+              </div>
 
             {/* Note */}
             <div style={{
-              fontSize: '12px',
-              color: '#666',
-              marginBottom: '16px',
-              padding: '8px',
-              backgroundColor: '#f8f9fa',
-              borderRadius: '4px',
-              border: '1px solid #e9ecef'
+              fontSize: '13px',
+              color: '#4b5563',
+              marginBottom: '24px',
+              lineHeight: '1.6',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '10px',
+              border: '1px solid rgba(229, 231, 235, 0.6)',
             }}>
               Note: Withdrawal Balance calculated from previous Traditional IRA Balance (left)
-            </div>
+              </div>
 
             {/* RMD Input */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              marginBottom: '16px'
+              gap: '16px',
+              marginBottom: '24px',
+              padding: '16px 20px',
+              backgroundColor: 'rgba(249, 250, 251, 0.6)',
+              borderRadius: '12px',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
             }}>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                minWidth: '60px'
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                minWidth: '120px',
+                width: '120px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>RMD</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>RMD</div>
                 <input
                   type="number"
                   value="75"
                   readOnly
                   style={{
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
+                    padding: '12px 16px',
+                    border: '1px solid rgba(229, 231, 235, 0.6)',
+                    borderRadius: '8px',
                     backgroundColor: '#ffb3ba',
-                    fontSize: '12px',
+                    fontSize: '15px',
                     textAlign: 'center',
-                    cursor: 'not-allowed'
+                    cursor: 'not-allowed',
+                    fontWeight: '700',
+                    color: '#111827',
+                    boxSizing: 'border-box'
                   }}
                 />
-              </div>
+          </div>
               <div style={{
-                fontSize: '11px',
-                color: '#666',
-                flex: 1
+                fontSize: '13px',
+                color: '#4b5563',
+                flex: 1,
+                fontWeight: '500',
+                lineHeight: '1.6',
+                display: 'flex',
+                alignItems: 'center',
+                paddingLeft: '4px'
               }}>
                 RMD: Required Minimum Distribution (last start age for withdrawals) - Fixed at 75
-              </div>
-            </div>
+        </div>
+      </div>
 
             {/* Scenarios */}
             <div style={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '16px'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+              marginBottom: '24px',
+              width: '100%',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario A</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditionalIRAWithdrawalRateA ? `${retirementPlanningInputs.traditionalIRAWithdrawalRateA}%` : ''}
@@ -5644,21 +7520,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditionalIRAWithdrawalRateA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditionalIRAWithdrawalRateA}
                   </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.traditionalIRAAgeA || 60}
@@ -5666,32 +7571,77 @@ export default function Week6Retirement() {
                   min="31"
                   max={retirementPlanningInputs.rmdAge || 73}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditionalIRAAgeA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditionalIRAAgeA}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateTraditionalIRAPV('A').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditionalIRAPV('A').toFixed(2)}</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario B</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditionalIRAWithdrawalRateB ? `${retirementPlanningInputs.traditionalIRAWithdrawalRateB}%` : ''}
@@ -5700,21 +7650,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditionalIRAWithdrawalRateB && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditionalIRAWithdrawalRateB}
                   </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.traditionalIRAAgeB || 60}
@@ -5722,32 +7701,77 @@ export default function Week6Retirement() {
                   min="31"
                   max={retirementPlanningInputs.rmdAge || 73}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditionalIRAAgeB && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditionalIRAAgeB}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateTraditionalIRAPV('B').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditionalIRAPV('B').toFixed(2)}</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario C</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditionalIRAWithdrawalRateC ? `${retirementPlanningInputs.traditionalIRAWithdrawalRateC}%` : ''}
@@ -5756,21 +7780,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditionalIRAWithdrawalRateC && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditionalIRAWithdrawalRateC}
                   </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.traditionalIRAAgeC || 60}
@@ -5778,23 +7831,52 @@ export default function Week6Retirement() {
                   min="31"
                   max={retirementPlanningInputs.rmdAge || 73}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.traditionalIRAAgeC && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.traditionalIRAAgeC}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateTraditionalIRAPV('C').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditionalIRAPV('C').toFixed(2)}</div>
               </div>
-            </div>
+      </div>
 
             {/* Chart Placeholder */}
             {/* Traditional IRA Withdrawals vs Age Chart */}
@@ -5985,57 +8067,74 @@ export default function Week6Retirement() {
 
         {/* 8. Roth IRA Balance and Withdrawals */}
         <div style={{
-          display: 'flex',
-          gap: '20px',
-          marginBottom: '30px'
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '32px',
+          marginBottom: '40px',
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
         }}>
           {/* Roth IRA Balance */}
           <div style={{
-            flex: 1,
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '20px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            border: '1px solid #e0e0e0'
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: '16px',
+            padding: '28px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(229, 231, 235, 0.8)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+            minWidth: 0,
+            width: '100%',
+            maxWidth: '100%',
           }}>
             {/* Header */}
             <div style={{
-              backgroundColor: '#002060',
+              background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.98) 0%, rgba(30, 58, 138, 0.95) 100%)',
               color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              marginBottom: '16px',
+              padding: '18px 24px',
+              borderRadius: '12px',
+              marginBottom: '24px',
               fontSize: '16px',
-              fontWeight: '600',
-              textAlign: 'center'
+              fontWeight: '700',
+              textAlign: 'center',
+              letterSpacing: '-0.02em',
+              boxShadow: '0 4px 12px 0 rgba(13, 26, 75, 0.25)',
             }}>
               Roth IRA Balance
-            </div>
+              </div>
 
             {/* Description */}
             <div style={{
               fontSize: '13px',
-              color: '#666',
-              marginBottom: '16px',
-              lineHeight: '1.4'
+              color: '#4b5563',
+              marginBottom: '24px',
+              lineHeight: '1.6',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '10px',
+              border: '1px solid rgba(229, 231, 235, 0.6)',
             }}>
               Post-tax. Individual account. $7,000 limit under 50 yo & under $150,000 income. Tax-free growth and withdrawals. No employer match.
-            </div>
+              </div>
 
             {/* Key Parameters */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '8px',
-              marginBottom: '16px'
+              gap: '16px',
+              marginBottom: '24px'
             }}>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Contribution Start Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Contribution Start Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.contributionStartAge || ''}
@@ -6043,27 +8142,56 @@ export default function Week6Retirement() {
                   min="0"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.contributionStartAge && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.contributionStartAge}
-                  </div>
+            </div>
                 )}
-              </div>
+            </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Retirement Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Retirement Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.retirementAge || ''}
@@ -6071,27 +8199,30 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.readOnly,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
                   }}
+                  readOnly
                 />
                 {retirementPlanningErrors.retirementAge && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.retirementAge}
-                  </div>
+            </div>
                 )}
-              </div>
+          </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Annual Rate of Return (%)</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Annual Rate of Return (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
@@ -6100,27 +8231,56 @@ export default function Week6Retirement() {
                   max="20"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.annualReturnRate && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.annualReturnRate}
-                  </div>
+              </div>
                 )}
               </div>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
+                backgroundColor: 'rgba(249, 250, 251, 0.6)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>Employer Match (%)</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Employer Match (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.employerMatchIRA ? `${retirementPlanningInputs.employerMatchIRA}%` : ''}
@@ -6129,122 +8289,284 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'right',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.employerMatchIRA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.employerMatchIRA}
-                  </div>
-                )}
               </div>
+                )}
             </div>
+          </div>
 
             {/* Scenarios */}
             <div style={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '16px'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+              marginBottom: '24px',
+              width: '100%',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
               }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '-0.01em' }}>Scenario A</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.roth_ira_a ? `$${monthlyPayments.roth_ira_a}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_ira_a', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.roth_ira_a && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.roth_ira_a}
-                  </div>
+              </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_ira_a).toFixed(2)}% of Monthly After Tax Income</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_ira_a).toFixed(2)}% of Monthly After Tax Income</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
               }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '-0.01em' }}>Scenario B</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.roth_ira_b ? `$${monthlyPayments.roth_ira_b}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_ira_b', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.roth_ira_b && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.roth_ira_b}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_ira_b).toFixed(2)}% of Monthly After Tax Income</div>
-              </div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_ira_b).toFixed(2)}% of Monthly After Tax Income</div>
+            </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
               }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Monthly Payment</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '-0.01em' }}>Scenario C</div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
                   value={monthlyPayments.roth_ira_c ? `$${monthlyPayments.roth_ira_c}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_ira_c', e.target.value)}
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {monthlyPaymentErrors.roth_ira_c && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {monthlyPaymentErrors.roth_ira_c}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '2px' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_ira_c).toFixed(2)}% of Monthly After Tax Income</div>
-              </div>
-            </div>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '10px', fontWeight: '500' }}>{calculatePercentageOfAfterTaxIncome(monthlyPayments.roth_ira_c).toFixed(2)}% of Monthly After Tax Income</div>
+        </div>
+      </div>
 
             {/* Roth IRA Balance vs Age Chart */}
             <div style={{
@@ -6515,36 +8837,146 @@ export default function Week6Retirement() {
 
             {/* Summary Table */}
             <div style={{
-              backgroundColor: '#f8f9fa',
-              borderRadius: '6px',
-              padding: '12px',
-              border: '1px solid #e9ecef'
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              borderRadius: '14px',
+              padding: '24px',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
+              boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.06)',
             }}>
-              <div style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', textAlign: 'center', color: '#111827', letterSpacing: '-0.02em' }}>
                 Summary
-              </div>
-              <table style={{ width: '100%', fontSize: '11px' }}>
+            </div>
+              <table style={{ width: '100%', fontSize: '13px', borderCollapse: 'separate', borderSpacing: '0' }}>
                 <thead>
-                  <tr style={{ backgroundColor: '#e9ecef' }}>
-                    <th style={{ padding: '4px', textAlign: 'left' }}>Metric</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario A</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario B</th>
-                    <th style={{ padding: '4px', textAlign: 'center' }}>Scenario C</th>
-            </tr>
+                  <tr>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'left', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Metric</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario A</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario B</th>
+                    <th style={{ 
+                      padding: '12px 16px', 
+                      textAlign: 'center', 
+                      backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                      borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      fontWeight: '700',
+                      color: '#374151',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>Scenario C</th>
+                  </tr>
                 </thead>
-          <tbody>
-            <tr>
-                    <td style={{ padding: '4px', fontWeight: '600' }}>Future Value Retirement Balance</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateRothIRASeriesA().finalBalance.toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateRothIRASeriesB().finalBalance.toLocaleString()}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculateRothIRASeriesC().finalBalance.toLocaleString()}</td>
-            </tr>
-            <tr>
-                    <td style={{ padding: '4px', fontWeight: '600' }}>Value in Today's Dollars</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRothIRASeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRothIRASeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style={{ padding: '4px', textAlign: 'center' }}>${calculatePresentValue(calculateRothIRASeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            </tr>
+                <tbody>
+                  <tr>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      fontWeight: '600',
+                      color: '#4b5563',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>Future Value Retirement Balance</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateRothIRASeriesA().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateRothIRASeriesB().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculateRothIRASeriesC().finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      fontWeight: '600',
+                      color: '#4b5563',
+                      borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>Value in Today's Dollars</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateRothIRASeriesA().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateRothIRASeriesB().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ 
+                      padding: '14px 16px', 
+                      textAlign: 'right', 
+                      fontWeight: '600',
+                      color: '#111827',
+                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                    }}>${calculatePresentValue(calculateRothIRASeriesC().finalBalance, (retirementPlanningInputs.retirementAge || 65) - (retirementPlanningInputs.contributionStartAge || 22)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                  </tr>
           </tbody>
         </table>
             </div>
@@ -6552,94 +8984,142 @@ export default function Week6Retirement() {
 
           {/* Roth IRA Withdrawals */}
           <div style={{
-            flex: 1,
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '20px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            border: '1px solid #e0e0e0'
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: '16px',
+            padding: '28px',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(229, 231, 235, 0.8)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+            minWidth: 0,
+            width: '100%',
+            maxWidth: '100%',
           }}>
             {/* Header */}
             <div style={{
-              backgroundColor: '#002060',
+              background: 'linear-gradient(135deg, rgba(13, 26, 75, 0.98) 0%, rgba(30, 58, 138, 0.95) 100%)',
               color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              marginBottom: '16px',
+              padding: '18px 24px',
+              borderRadius: '12px',
+              marginBottom: '24px',
               fontSize: '16px',
-              fontWeight: '600',
-              textAlign: 'center'
+              fontWeight: '700',
+              textAlign: 'center',
+              letterSpacing: '-0.02em',
+              boxShadow: '0 4px 12px 0 rgba(13, 26, 75, 0.25)',
             }}>
               Roth IRA Withdrawals
-            </div>
+              </div>
 
             {/* Note */}
             <div style={{
-              fontSize: '12px',
-              color: '#666',
-              marginBottom: '16px',
-              padding: '8px',
-              backgroundColor: '#f8f9fa',
-              borderRadius: '4px',
-              border: '1px solid #e9ecef'
+              fontSize: '13px',
+              color: '#4b5563',
+              marginBottom: '24px',
+              lineHeight: '1.6',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '10px',
+              border: '1px solid rgba(229, 231, 235, 0.6)',
             }}>
               Note: Withdrawal Balance calculated from previous Roth IRA Balance (left)
-            </div>
+              </div>
 
             {/* RMD Input */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              marginBottom: '16px'
+              gap: '16px',
+              marginBottom: '24px',
+              padding: '16px 20px',
+              backgroundColor: 'rgba(249, 250, 251, 0.6)',
+              borderRadius: '12px',
+              border: '1px solid rgba(229, 231, 235, 0.8)',
             }}>
               <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                minWidth: '60px'
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                padding: '14px',
+                borderRadius: '10px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                minWidth: '120px',
+                width: '120px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
               }}>
-                <div style={{ fontSize: '11px', color: '#666', marginBottom: '2px' }}>RMD</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>RMD</div>
                 <input
                   type="text"
                   value="None"
+                  readOnly
                   style={{
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
+                    padding: '12px 16px',
+                    border: '1px solid rgba(229, 231, 235, 0.6)',
+                    borderRadius: '8px',
                     backgroundColor: '#ffb3ba',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    fontSize: '15px',
+                    textAlign: 'center',
+                    cursor: 'not-allowed',
+                    fontWeight: '700',
+                    color: '#111827',
+                    boxSizing: 'border-box'
                   }}
                 />
-              </div>
+          </div>
               <div style={{
-                fontSize: '11px',
-                color: '#666',
-                flex: 1
+                fontSize: '13px',
+                color: '#4b5563',
+                flex: 1,
+                fontWeight: '500',
+                lineHeight: '1.6',
+                display: 'flex',
+                alignItems: 'center',
+                paddingLeft: '4px'
               }}>
-                RMD: Required Minimum Distribution (last start age for withdrawals)
-              </div>
-            </div>
+                RMD: Required Minimum Distribution (last start age for withdrawals) - Fixed at 75
+        </div>
+      </div>
 
             {/* Scenarios */}
             <div style={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '16px'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+              marginBottom: '24px',
+              width: '100%',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario A</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario A</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.rothIRAWithdrawalRateA ? `${retirementPlanningInputs.rothIRAWithdrawalRateA}%` : ''}
@@ -6648,21 +9128,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.rothIRAWithdrawalRateA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.rothIRAWithdrawalRateA}
                   </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.rothIRAAgeA || 60}
@@ -6670,32 +9179,77 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.rothIRAAgeA && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.rothIRAAgeA}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateRothIRAPV('A').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRothIRAPV('A').toFixed(2)}</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario B</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario B</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.rothIRAWithdrawalRateB ? `${retirementPlanningInputs.rothIRAWithdrawalRateB}%` : ''}
@@ -6704,21 +9258,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.rothIRAWithdrawalRateB && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.rothIRAWithdrawalRateB}
                   </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.rothIRAAgeB || 60}
@@ -6726,32 +9309,77 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.rothIRAAgeB && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.rothIRAAgeB}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateRothIRAPV('B').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRothIRAPV('B').toFixed(2)}</div>
               </div>
               <div style={{
-                flex: 1,
-                backgroundColor: '#f8f9fa',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', marginBottom: '4px' }}>Scenario C</div>
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px' }}>Withdrawal Rate (%)</div>
+                backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.8)',
+                textAlign: 'center',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                width: '100%',
+                maxWidth: '100%',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(13, 26, 75, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+              }}
+              >
+                <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px', color: '#0d1a4b', letterSpacing: '0.3px' }}>Scenario C</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Withdrawal Rate (%)</div>
                 <input
                   type="text"
                   value={retirementPlanningInputs.rothIRAWithdrawalRateC ? `${retirementPlanningInputs.rothIRAWithdrawalRateC}%` : ''}
@@ -6760,21 +9388,50 @@ export default function Week6Retirement() {
                   max="100"
                   step="0.1"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.rothIRAWithdrawalRateC && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.rothIRAWithdrawalRateC}
                   </div>
                 )}
-                <div style={{ fontSize: '10px', color: '#666', marginBottom: '2px', marginTop: '4px' }}>Starting Distribution Age</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', marginTop: '12px', fontWeight: '500' }}>Starting Distribution Age</div>
                 <input
                   type="number"
                   value={retirementPlanningInputs.rothIRAAgeC || 60}
@@ -6782,23 +9439,52 @@ export default function Week6Retirement() {
                   min="31"
                   max="100"
                   style={{
+                    ...styles.input,
                     width: '100%',
-                    padding: '4px',
-                    border: '1px solid #ddd',
-                    borderRadius: '3px',
-                    backgroundColor: '#fffde7',
-                    fontSize: '12px',
-                    textAlign: 'center'
+                    padding: '12px 16px',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '10px',
+                    boxSizing: 'border-box',
+                    maxWidth: '100%'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#9ca3af';
+                      e.target.style.backgroundColor = '#ffffff';
+                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
+                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement !== e.target) {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.backgroundColor = '#fffde7';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                      e.target.style.transform = 'scale(1)';
+                    }
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#0d1a4b';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
+                    e.target.style.backgroundColor = '#fffef0';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db';
+                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
+                    e.target.style.backgroundColor = '#fffde7';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
                 {retirementPlanningErrors.rothIRAAgeC && (
-                  <div style={{ fontSize: '9px', color: 'red', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>
                     {retirementPlanningErrors.rothIRAAgeC}
                   </div>
                 )}
-                <div style={{ fontSize: '9px', color: '#666', marginTop: '4px' }}>PV of First Payment: ${calculateRothIRAPV('C').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRothIRAPV('C').toFixed(2)}</div>
               </div>
-            </div>
+      </div>
 
             {/* Chart Placeholder */}
             {/* Roth IRA Withdrawals vs Age Chart */}
