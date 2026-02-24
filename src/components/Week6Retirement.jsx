@@ -1991,7 +1991,7 @@ export default function Week6Retirement() {
   };
 
   // Helper function to handle other retirement planning input changes
-  const handleRetirementPlanningInputChange = (key, value) => {
+  const handleRetirementPlanningInputChange = (key, value, inputEl) => {
     // Remove percentage signs, commas, and other non-numeric characters except decimal point
     const cleanValue = value.replace(/[%,\s]/g, '');
     
@@ -2017,6 +2017,16 @@ export default function Week6Retirement() {
       ...prev,
       [key]: cleanValue
     }));
+
+    // Keep cursor before the % (or other suffix) so user can keep typing naturally
+    if (inputEl && cleanValue !== '') {
+      const pos = cleanValue.length;
+      requestAnimationFrame(() => {
+        if (inputEl && document.activeElement === inputEl) {
+          inputEl.setSelectionRange(pos, pos);
+        }
+      });
+    }
     
     // Define validation rules for each input type
     let errorMessage = '';
@@ -2622,70 +2632,24 @@ export default function Week6Retirement() {
                   </div>
                 </td>
                 <td style={styles.td}>
-                    <input
-                      type="text"
-                      min="0"
-                      max="1958.33"
-                      step="0.01"
-                      value={retirementBudgetedAmounts.traditional_401k ? `$${retirementBudgetedAmounts.traditional_401k}` : `$${getDefaultBudgetedAmount('traditional_401k')}`}
-                      onChange={e => handleRetirementBudgetChange('traditional_401k', e.target.value)}
-                      style={{
-                      ...styles.input,
-                      backgroundColor: '#fffde7',
-                      fontWeight: '700',
-                      textAlign: 'center'
-                    }}
-                    placeholder="Enter amount"
-                    onMouseEnter={(e) => {
-                      if (document.activeElement !== e.target) {
-                        e.target.style.borderColor = '#9ca3af';
-                        e.target.style.backgroundColor = '#ffffff';
-                        e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                        e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (document.activeElement !== e.target) {
-                        e.target.style.borderColor = '#d1d5db';
-                        e.target.style.backgroundColor = '#fffde7';
-                        e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                        e.target.style.transform = 'scale(1)';
-                      }
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#0d1a4b';
-                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
-                      e.target.style.backgroundColor = '#fffef0';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#d1d5db';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                      e.target.style.backgroundColor = '#fffde7';
-                      e.target.style.transform = 'scale(1)';
-                    }}
-                  />
+                  <div style={{
+                    fontSize: '14px',
+                    fontWeight: '700',
+                    textAlign: 'center'
+                  }}>
+                    ${formatCurrency(parseFloat(retirementBudgetedAmounts.traditional_401k) || getDefaultBudgetedAmount('traditional_401k'))}
+                  </div>
                   <div style={{
                     fontSize: '11px',
                     color: '#888',
                     marginTop: '4px',
                     textAlign: 'center'
                   }}>
-                    {retirementBudgetedAmounts.traditional_401k ? 
-                      `${((retirementBudgetedAmounts.traditional_401k / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income` : 
-                      `${((getDefaultBudgetedAmount('traditional_401k') / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income`
-                    }
+                    {(() => {
+                    const amount = parseFloat(retirementBudgetedAmounts.traditional_401k) || getDefaultBudgetedAmount('traditional_401k');
+                    return `${((amount / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income`;
+                  })()}
                   </div>
-                  {validationErrors.traditional_401k && (
-                    <div style={{
-                      fontSize: '10px',
-                      color: '#dc3545',
-                      marginTop: '2px',
-                      textAlign: 'center',
-                      fontWeight: '500'
-                    }}>
-                      {validationErrors.traditional_401k}
-                    </div>
-                  )}
                   </td>
                 <td style={styles.td}>
                   <div style={{
@@ -2723,59 +2687,15 @@ export default function Week6Retirement() {
                 </div>
               </td>
               <td style={styles.td}>
-                  <input
-                    type="text"
-                    min="0"
-                    max="1958.33"
-                    step="0.01"
-                    value={retirementBudgetedAmounts.roth_401k ? `$${retirementBudgetedAmounts.roth_401k}` : `$${getDefaultBudgetedAmount('roth_401k')}`}
-                    onChange={e => handleRetirementBudgetChange('roth_401k', e.target.value)}
-                  style={{
-                    ...styles.input,
-                    backgroundColor: '#fffde7',
-                    fontWeight: '700',
-                    textAlign: 'center'
-                  }}
-                  placeholder="Enter amount"
-                  onMouseEnter={(e) => {
-                    if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = '#9ca3af';
-                      e.target.style.backgroundColor = '#ffffff';
-                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = '#d1d5db';
-                      e.target.style.backgroundColor = '#fffde7';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                      e.target.style.transform = 'scale(1)';
-                    }
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#0d1a4b';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
-                    e.target.style.backgroundColor = '#fffef0';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#d1d5db';
-                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                    e.target.style.backgroundColor = '#fffde7';
-                    e.target.style.transform = 'scale(1)';
-                  }}
-                />
-                <div style={{fontSize: '11px', color: '#888', marginTop: '4px', textAlign: 'center'}}>
-                  {retirementBudgetedAmounts.roth_401k ? 
-                    `${((retirementBudgetedAmounts.roth_401k / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income` : 
-                    `${((getDefaultBudgetedAmount('roth_401k') / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income`
-                  }
+                <div style={{fontSize: '14px', fontWeight: '700', textAlign: 'center'}}>
+                  ${formatCurrency(parseFloat(retirementBudgetedAmounts.roth_401k) || getDefaultBudgetedAmount('roth_401k'))}
                 </div>
-                {validationErrors.roth_401k && (
-                  <div style={{fontSize: '10px', color: '#dc3545', marginTop: '2px', textAlign: 'center', fontWeight: '500'}}>
-                    {validationErrors.roth_401k}
-                  </div>
-                )}
+                <div style={{fontSize: '11px', color: '#888', marginTop: '4px', textAlign: 'center'}}>
+                  {(() => {
+                  const amount = parseFloat(retirementBudgetedAmounts.roth_401k) || getDefaultBudgetedAmount('roth_401k');
+                  return `${((amount / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income`;
+                })()}
+                </div>
               </td>
               <td style={styles.td}>
                 <div style={{fontSize: '14px', fontWeight: '600', color: '#666'}}>
@@ -2805,59 +2725,15 @@ export default function Week6Retirement() {
               </div>
               </td>
               <td style={styles.td}>
-                  <input
-                    type="text"
-                    min="0"
-                    max="583.33"
-                    step="0.01"
-                    value={retirementBudgetedAmounts.traditional_ira ? `$${retirementBudgetedAmounts.traditional_ira}` : `$${getDefaultBudgetedAmount('traditional_ira')}`}
-                    onChange={e => handleRetirementBudgetChange('traditional_ira', e.target.value)}
-                  style={{
-                    ...styles.input,
-                    backgroundColor: '#fffde7',
-                    fontWeight: '700',
-                    textAlign: 'center'
-                  }}
-                  placeholder="Enter amount"
-                  onMouseEnter={(e) => {
-                    if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = '#9ca3af';
-                      e.target.style.backgroundColor = '#ffffff';
-                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = '#d1d5db';
-                      e.target.style.backgroundColor = '#fffde7';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                      e.target.style.transform = 'scale(1)';
-                    }
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#0d1a4b';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
-                    e.target.style.backgroundColor = '#fffef0';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#d1d5db';
-                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                    e.target.style.backgroundColor = '#fffde7';
-                    e.target.style.transform = 'scale(1)';
-                  }}
-                />
+                <div style={{fontSize: '14px', fontWeight: '700', textAlign: 'center'}}>
+                  ${formatCurrency(parseFloat(retirementBudgetedAmounts.traditional_ira) || getDefaultBudgetedAmount('traditional_ira'))}
+                </div>
                 <div style={{fontSize: '11px', color: '#888', marginTop: '4px', textAlign: 'center'}}>
-                  {retirementBudgetedAmounts.traditional_ira ? 
-                    `${((retirementBudgetedAmounts.traditional_ira / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income` : 
-                    `${((getDefaultBudgetedAmount('traditional_ira') / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income`
-                  }
-            </div>
-                {validationErrors.traditional_ira && (
-                  <div style={{fontSize: '10px', color: '#dc3545', marginTop: '2px', textAlign: 'center', fontWeight: '500'}}>
-                    {validationErrors.traditional_ira}
-              </div>
-                )}
+                  {(() => {
+                  const amount = parseFloat(retirementBudgetedAmounts.traditional_ira) || getDefaultBudgetedAmount('traditional_ira');
+                  return `${((amount / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income`;
+                })()}
+                </div>
               </td>
               <td style={styles.td}>
                 <div style={{fontSize: '14px', fontWeight: '600', color: '#666'}}>-</div>
@@ -2883,59 +2759,15 @@ export default function Week6Retirement() {
               </div>
               </td>
               <td style={styles.td}>
-                  <input
-                    type="text"
-                    min="0"
-                    max="583.33"
-                    step="0.01"
-                    value={retirementBudgetedAmounts.roth_ira ? `$${retirementBudgetedAmounts.roth_ira}` : `$${getDefaultBudgetedAmount('roth_ira')}`}
-                    onChange={e => handleRetirementBudgetChange('roth_ira', e.target.value)}
-                  style={{
-                    ...styles.input,
-                    backgroundColor: '#fffde7',
-                    fontWeight: '700',
-                    textAlign: 'center'
-                  }}
-                  placeholder="Enter amount"
-                  onMouseEnter={(e) => {
-                    if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = '#9ca3af';
-                      e.target.style.backgroundColor = '#ffffff';
-                      e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                      e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = '#d1d5db';
-                      e.target.style.backgroundColor = '#fffde7';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                      e.target.style.transform = 'scale(1)';
-                    }
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#0d1a4b';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.12)';
-                    e.target.style.backgroundColor = '#fffef0';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#d1d5db';
-                    e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                    e.target.style.backgroundColor = '#fffde7';
-                    e.target.style.transform = 'scale(1)';
-                  }}
-                />
+                <div style={{fontSize: '14px', fontWeight: '700', textAlign: 'center'}}>
+                  ${formatCurrency(parseFloat(retirementBudgetedAmounts.roth_ira) || getDefaultBudgetedAmount('roth_ira'))}
+                </div>
                 <div style={{fontSize: '11px', color: '#888', marginTop: '4px', textAlign: 'center'}}>
-                  {retirementBudgetedAmounts.roth_ira ? 
-                    `${((retirementBudgetedAmounts.roth_ira / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income` : 
-                    `${((getDefaultBudgetedAmount('roth_ira') / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income`
-                  }
-            </div>
-                {validationErrors.roth_ira && (
-                  <div style={{fontSize: '10px', color: '#dc3545', marginTop: '2px', textAlign: 'center', fontWeight: '500'}}>
-                    {validationErrors.roth_ira}
-              </div>
-                )}
+                  {(() => {
+                  const amount = parseFloat(retirementBudgetedAmounts.roth_ira) || getDefaultBudgetedAmount('roth_ira');
+                  return `${((amount / monthlyPreTaxIncome) * 100).toFixed(1)}% of Gross Monthly Income`;
+                })()}
+                </div>
                   </td>
               <td style={styles.td}>
                 <div style={{fontSize: '14px', fontWeight: '600', color: '#666'}}>
@@ -3033,6 +2865,13 @@ export default function Week6Retirement() {
                       const numValue = parseFloat(cleanValue);
                       if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
                         setDeferralPercentage(numValue);
+                        const inputEl = e.target;
+                        const pos = cleanValue.length;
+                        requestAnimationFrame(() => {
+                          if (inputEl && document.activeElement === inputEl) {
+                            inputEl.setSelectionRange(pos, pos);
+                          }
+                        });
                       }
                     }}
                     style={{
@@ -3260,7 +3099,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value, e.target)}
                   min="0"
                   max="20"
                   step="0.1"
@@ -3318,7 +3157,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.employerMatch401k ? `${retirementPlanningInputs.employerMatch401k}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('employerMatch401k', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('employerMatch401k', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -4235,7 +4074,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditional401kWithdrawalRateA ? `${retirementPlanningInputs.traditional401kWithdrawalRateA}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('traditional401kWithdrawalRateA', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('traditional401kWithdrawalRateA', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -4365,7 +4204,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditional401kWithdrawalRateB ? `${retirementPlanningInputs.traditional401kWithdrawalRateB}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('traditional401kWithdrawalRateB', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('traditional401kWithdrawalRateB', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -4495,7 +4334,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditional401kWithdrawalRateC ? `${retirementPlanningInputs.traditional401kWithdrawalRateC}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('traditional401kWithdrawalRateC', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('traditional401kWithdrawalRateC', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -4998,7 +4837,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value, e.target)}
                   min="0"
                   max="20"
                   step="0.1"
@@ -5056,7 +4895,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.employerMatch401k ? `${retirementPlanningInputs.employerMatch401k}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('employerMatch401k', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('employerMatch401k', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -5910,7 +5749,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.roth401kWithdrawalRateA ? `${retirementPlanningInputs.roth401kWithdrawalRateA}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('roth401kWithdrawalRateA', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('roth401kWithdrawalRateA', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -6040,7 +5879,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.roth401kWithdrawalRateB ? `${retirementPlanningInputs.roth401kWithdrawalRateB}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('roth401kWithdrawalRateB', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('roth401kWithdrawalRateB', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -6170,7 +6009,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.roth401kWithdrawalRateC ? `${retirementPlanningInputs.roth401kWithdrawalRateC}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('roth401kWithdrawalRateC', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('roth401kWithdrawalRateC', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -6620,7 +6459,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value, e.target)}
                   min="0"
                   max="20"
                   step="0.1"
@@ -6678,7 +6517,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.employerMatchIRA ? `${retirementPlanningInputs.employerMatchIRA}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('employerMatchIRA', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('employerMatchIRA', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -7515,7 +7354,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditionalIRAWithdrawalRateA ? `${retirementPlanningInputs.traditionalIRAWithdrawalRateA}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('traditionalIRAWithdrawalRateA', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('traditionalIRAWithdrawalRateA', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -7645,7 +7484,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditionalIRAWithdrawalRateB ? `${retirementPlanningInputs.traditionalIRAWithdrawalRateB}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('traditionalIRAWithdrawalRateB', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('traditionalIRAWithdrawalRateB', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -7775,7 +7614,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.traditionalIRAWithdrawalRateC ? `${retirementPlanningInputs.traditionalIRAWithdrawalRateC}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('traditionalIRAWithdrawalRateC', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('traditionalIRAWithdrawalRateC', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -8226,7 +8065,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.annualReturnRate ? `${retirementPlanningInputs.annualReturnRate}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('annualReturnRate', e.target.value, e.target)}
                   min="0"
                   max="20"
                   step="0.1"
@@ -8284,7 +8123,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.employerMatchIRA ? `${retirementPlanningInputs.employerMatchIRA}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('employerMatchIRA', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('employerMatchIRA', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -9123,7 +8962,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.rothIRAWithdrawalRateA ? `${retirementPlanningInputs.rothIRAWithdrawalRateA}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('rothIRAWithdrawalRateA', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('rothIRAWithdrawalRateA', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -9253,7 +9092,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.rothIRAWithdrawalRateB ? `${retirementPlanningInputs.rothIRAWithdrawalRateB}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('rothIRAWithdrawalRateB', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('rothIRAWithdrawalRateB', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"
@@ -9383,7 +9222,7 @@ export default function Week6Retirement() {
                 <input
                   type="text"
                   value={retirementPlanningInputs.rothIRAWithdrawalRateC ? `${retirementPlanningInputs.rothIRAWithdrawalRateC}%` : ''}
-                  onChange={(e) => handleRetirementPlanningInputChange('rothIRAWithdrawalRateC', e.target.value)}
+                  onChange={(e) => handleRetirementPlanningInputChange('rothIRAWithdrawalRateC', e.target.value, e.target)}
                   min="0"
                   max="100"
                   step="0.1"

@@ -92,9 +92,10 @@ export default function WeekAccessAdmin() {
     'week-4': 'Week 4 - Income & Taxes',
     'week-5': 'Week 5 - Real Estate & Homeownership',
     'week-6': 'Week 6 - Retirement Planning',
-    'week-7': 'Week 7 - Insurance & Risk Management',
-    'week-8': 'Week 8 - Understanding Financial Markets',
-    'week-9': 'Week 9 - Investing Basics'
+    'week-7': 'Week 7 - Insurance',
+    'week-8': 'Week 8 - Portfolio Construction',
+    'week-9': 'Week 9 - Markets & Investing',
+    'week-12': 'Week 12 - Constructing The Goal'
   };
 
   const handleWeekToggle = (weekId) => {

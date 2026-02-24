@@ -888,6 +888,13 @@ const Week5 = () => {
                           setAnnualInterestRate(value || 0);
                           setInterestRateWarning('');
                         }
+                        const inputEl = e.target;
+                        const pos = value.length;
+                        requestAnimationFrame(() => {
+                          if (inputEl && document.activeElement === inputEl) {
+                            inputEl.setSelectionRange(pos, pos);
+                          }
+                        });
                       }
                     }}
                     style={{
@@ -938,6 +945,13 @@ const Week5 = () => {
                     // Allow decimal numbers but prevent multiple dots
                     if (value === '' || /^\d*\.?\d*$/.test(value)) {
                       setLoanTermYears(value || 0);
+                      const inputEl = e.target;
+                      const pos = (value || '').length;
+                      requestAnimationFrame(() => {
+                        if (inputEl && document.activeElement === inputEl) {
+                          inputEl.setSelectionRange(pos, pos);
+                        }
+                      });
                     }
                   }}
                   style={{

@@ -1,6 +1,8 @@
 // OPTION 3: MINIMALIST MODERN SIDEBAR
 // Clean, minimal tasarım ile perfect spacing
 
+import { useState } from 'react';
+
 export const MinimalistSidebar = ({ 
   sidebarCollapsed, 
   toggleSidebar, 
@@ -16,8 +18,13 @@ export const MinimalistSidebar = ({
   MdChevronRight,
   FaChalkboardTeacher,
   MdBarChart,
-  FaFileExcel
+  FaFileExcel,
+  MdMenuBook,
+  sidebarFixed = true,
+  onSidebarFixedChange,
 }) => {
+  const [showHideSidebarTooltip, setShowHideSidebarTooltip] = useState(false);
+
   return (
     <div 
       className="sidebar-modern"
@@ -72,7 +79,7 @@ export const MinimalistSidebar = ({
             <h1 className="font-semibold tracking-tight text-[#0d1a4b] text-center" style={{ fontSize: '15px' }}>
               Financial Literacy for Life
             </h1>
-            <p className="text-xs tracking-wide text-gray-500 text-center" style={{ fontSize: '13px', marginTop: '2px' }}>
+            <p className="tracking-wide text-gray-500 text-center" style={{ fontSize: '13px', marginTop: '2px' }}>
               Preparing for the Real World
             </p>
           </div>
@@ -118,10 +125,10 @@ export const MinimalistSidebar = ({
           </div>
         )}
 
-        {/* Excel Workshop Section */}
+        {/* Modules Section */}
         <div 
           style={{
-            marginTop: '0px', // Admin Panel'den uzaklaştırmak için (yukarıda marginBottom var)
+            marginTop: '0px',
             marginBottom: '0px',
             paddingTop: '0px',
             paddingBottom: '0px',
@@ -131,85 +138,71 @@ export const MinimalistSidebar = ({
             pointerEvents: sidebarCollapsed ? 'none' : 'auto',
           }}
         >
-          <div className="space-y-2">
-            {[...Array(9)].map((_, i) => {
-              // Map module index to actual week ID for routing
-              let weekId;
-              if (i === 0) weekId = 'week-1';      // Module 1 -> Week 1
-              else if (i === 1) weekId = 'week-2';  // Module 2 -> Week 2
-              else if (i === 2) weekId = 'week-3';  // Module 3 -> Week 3
-              else if (i === 3) weekId = 'week-4';  // Module 4 -> Week 4
-              else if (i === 4) weekId = 'week-6';  // Module 5 -> Week 6 (Retirement)
-              else if (i === 5) weekId = 'week-9';  // Module 6 -> Week 9 (Markets & Investing)
-              else if (i === 6) weekId = 'week-8';  // Module 7 -> Week 8 (Portfolio Construction)
-              else if (i === 7) weekId = 'week-7';  // Module 8 -> Week 7 (Insurance)
-              else weekId = 'week-5';               // Module 9 -> Week 5 (Real Estate)
+          <div className="flex flex-col gap-5">
+            {(() => {
+              const topicLabels = [
+                'Budgeting',
+                'Savings & Emergency Funds',
+                'Credit & Debt Management',
+                'Income & Taxes',
+                'Retirement Planning',
+                'Markets & Investing',
+                'Constructing The Goal',
+                'Portfolio Construction',
+                'Insurance',
+                'Real Estate & Homeownership',
+              ];
+              const weekIds = ['week-1', 'week-2', 'week-3', 'week-4', 'week-6', 'week-9', 'week-12', 'week-8', 'week-7', 'week-5'];
+              return [...Array(10)].map((_, i) => {
+              const weekId = weekIds[i];
               
               const isAccessible = isWeekAccessible(weekId);
-              let weekLabel = `Module ${i+1}`;
-              let weekText = null;
+              const topic = topicLabels[i];
+              const weekLabel = `Module ${i+1} - ${topic}`;
               
-              if (i === 0) weekLabel = 'Module 1 - Budgeting';
-              if (i === 1) weekLabel = 'Module 2 - Savings';
-              if (i === 2) weekLabel = 'Module 3 - Credit & Debt';
-              if (i === 3) weekLabel = 'Module 4 - Income & Taxes';
-              if (i === 4) {
-                weekLabel = 'Module 5 - Retirement Planning';
-                weekText = (
-                  <span className="flex items-center group/item">
-                    <FaFileExcel
-                      color={isAccessible ? "#0d1a4b" : "#9ca3af"}
-                      className="w-3.5 h-3.5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:rotate-3"
-                    />
-                    <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px', fontSize: '13px' }}>
-                      Module 5 - Retirement Planning
+              const moduleIconColor = isAccessible ? '#0d1a4b' : '#9ca3af';
+              const ModuleIcon = (
+                <span 
+                  className="flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-105"
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '100px',
+                    background: isAccessible
+                      ? 'linear-gradient(145deg, rgba(245, 158, 11, 0.15) 0%, rgba(13, 26, 75, 0.08) 100%)'
+                      : 'linear-gradient(145deg, rgba(156, 163, 175, 0.2) 0%, rgba(156, 163, 175, 0.08) 100%)',
+                    boxShadow: isAccessible
+                      ? '0 1px 4px rgba(245, 158, 11, 0.1), inset 0 1px 0 rgba(255,255,255,0.5)'
+                      : '0 1px 2px rgba(0,0,0,0.04)',
+                  }}
+                >
+                  <MdMenuBook
+                    style={{ color: moduleIconColor }}
+                    className="w-[14px] h-[14px]"
+                  />
+                </span>
+              );
+              
+              const moduleTextBlock = (
+                <>
+                  <span style={{ color: '#94a3b8' }}>Module {i + 1} – </span>
+                  <span style={{ color: moduleIconColor, fontWeight: '500' }}>{topic}</span>
+                </>
+              );
+              const twoToneLabel = (
+                <span className="flex items-center group/item min-w-0 flex-1">
+                  {ModuleIcon}
+                  <span
+                    className="module-text-marquee-wrap flex-1 min-w-0"
+                    style={{ fontSize: '13px', marginLeft: '5px' }}
+                  >
+                    <span className="module-text-marquee-inner">
+                      {moduleTextBlock}
+                      <span className="module-text-marquee-second">{moduleTextBlock}</span>
                     </span>
                   </span>
-                );
-              }
-              if (i === 5) {
-                weekLabel = 'Module 6 - Markets & Investing';
-                weekText = (
-                  <span className="flex items-center group/item">
-                    <FaFileExcel
-                      color={isAccessible ? "#0d1a4b" : "#9ca3af"}
-                      className="w-3.5 h-3.5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:rotate-3"
-                    />
-                    <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px', fontSize: '13px' }}>
-                      Module 6 - Markets & Investing
-                    </span>
-                  </span>
-                );
-              }
-              if (i === 6) {
-                weekLabel = 'Module 7 - Portfolio Construction';
-                weekText = (
-                  <span className="flex items-center group/item">
-                    <FaFileExcel
-                      color={isAccessible ? "#0d1a4b" : "#9ca3af"}
-                      className="w-3.5 h-3.5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:rotate-3"
-                    />
-                    <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px', fontSize: '13px' }}>
-                      Module 7 - Portfolio Construction
-                    </span>
-                  </span>
-                );
-              }
-              if (i === 7) weekLabel = 'Module 8 - Insurance';
-              if (i === 8) {
-                weekLabel = 'Module 9 - Real Estate';
-                weekText = (
-                  <span className="flex items-center group/item">
-                    <FaFileExcel
-                      color={isAccessible ? "#0d1a4b" : "#9ca3af"}
-                      className="w-3.5 h-3.5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:rotate-3"
-                    />
-                    <span className="ml-2" style={{ color: isAccessible ? "#0d1a4b" : "#9ca3af", marginLeft: '8px', fontSize: '13px' }}>
-                      Module 9 - Real Estate
-                    </span>
-                  </span>
-                );
-              }
+                </span>
+              );
               
               if (!isAccessible && !isAdmin) {
                 // Locked week'ler için de aynı format, sadece disabled
@@ -220,23 +213,15 @@ export const MinimalistSidebar = ({
                     delay={i}
                     isAdminLink={false}
                     disabled={true}
+                    variant="module"
                     style={{
                       fontSize: '13px',
-                      fontWeight: 'normal',
-                      padding: '8px 12px',
-                      borderRadius: '16px',
+                      fontWeight: '500',
                     }}
-                    className="
-                      transition-all duration-200
-                      rounded-2xl
-                    "
+                    className="rounded-2xl"
                     text={
-                      <span className="flex items-center w-full">
-                        <FaFileExcel 
-                          color="#0d1a4b" 
-                          className="w-3.5 h-3.5 transition-all duration-300" 
-                        />
-                        <span style={{marginLeft: '8px', color: '#0d1a4b', fontSize: '13px'}}>{weekLabel}</span>
+                      <span className="flex items-center w-full gap-3">
+                        {twoToneLabel}
                         <span className="ml-auto text-xs" style={{ color: '#9ca3af' }}>🔒</span>
                       </span>
                     }
@@ -250,31 +235,17 @@ export const MinimalistSidebar = ({
                   href={isAccessible ? `/dashboard/excel/${weekId}` : '#'}
                   delay={i}
                   isAdminLink={false}
+                  variant="module"
                   style={{
                     fontSize: '13px',
-                    fontWeight: 'normal',
-                    padding: '8px 12px',
-                    borderRadius: '16px',
+                    fontWeight: '500',
                   }}
-                  className="
-                    hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50
-                    transition-all duration-200
-                    rounded-2xl
-                  "
-                  text={
-                    (i === 4 || i === 5 || i === 6 || i === 8) ? weekText : (
-                      <span className="flex items-center group/item">
-                        <FaFileExcel 
-                          color={isAccessible ? "#0d1a4b" : "#9ca3af"} 
-                          className="w-3.5 h-3.5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:rotate-3" 
-                        />
-                        <span style={{marginLeft: '8px', color: isAccessible ? '#0d1a4b' : '#9ca3af', fontSize: '13px'}}>{weekLabel}</span>
-                      </span>
-                    )
-                  }
+                  className="rounded-2xl"
+                  text={twoToneLabel}
                 />
               );
-            })}
+            });
+            })()}
           </div>
         </div>
       </nav>
@@ -288,9 +259,66 @@ export const MinimalistSidebar = ({
           pointerEvents: sidebarCollapsed ? 'none' : 'auto',
           paddingTop: '24px',
           paddingBottom: '20px',
+          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
         }}
       >
         <div className="flex flex-col items-center w-full px-6">
+            {onSidebarFixedChange && (
+              <div
+                className="relative w-full mb-4"
+                onMouseEnter={() => setShowHideSidebarTooltip(true)}
+                onMouseLeave={() => setShowHideSidebarTooltip(false)}
+              >
+                <label
+                  className="flex items-center gap-2 w-full cursor-pointer select-none"
+                  style={{ fontSize: '12px', color: '#64748b' }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={!sidebarFixed}
+                    onChange={(e) => onSidebarFixedChange(!e.target.checked)}
+                    className="rounded border-slate-300 text-[#0d1a4b] focus:ring-[#0d1a4b]"
+                  />
+                  <span>Hide sidebar</span>
+                </label>
+                {showHideSidebarTooltip && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '0',
+                      marginBottom: '8px',
+                      zIndex: 10000,
+                      background: '#0d1a4b',
+                      color: 'white',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      maxWidth: '260px',
+                      boxShadow: '0 4px 12px rgba(13, 26, 75, 0.3)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      pointerEvents: 'none',
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    When enabled, the sidebar remains closed until opened via the arrow or left-edge hover.
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '20px',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '6px solid transparent',
+                        borderRight: '6px solid transparent',
+                        borderTop: '6px solid #0d1a4b',
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
             <img 
               src={riceLogo} 
               alt="Rice University Logo" 

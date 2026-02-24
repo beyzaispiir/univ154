@@ -920,6 +920,13 @@ const Week3CreditCard = () => {
                     onChange={(e) => {
                       const value = e.target.value.replace('%', '');
                       setAnnualInterestRate(value);
+                      const inputEl = e.target;
+                      const pos = value.length;
+                      requestAnimationFrame(() => {
+                        if (inputEl && document.activeElement === inputEl) {
+                          inputEl.setSelectionRange(pos, pos);
+                        }
+                      });
                     }}
                     style={styles.input}
                     placeholder="%Enter rate"
@@ -1581,6 +1588,13 @@ const Week3CreditCard = () => {
                     } else {
                       setGeneralAnnualRate('');
                     }
+                    const inputEl = e.target;
+                    const pos = sanitized.length;
+                    requestAnimationFrame(() => {
+                      if (inputEl && document.activeElement === inputEl) {
+                        inputEl.setSelectionRange(pos, pos);
+                      }
+                    });
                     }}
                   style={styles.loanInput}
                   placeholder="Enter percentage"

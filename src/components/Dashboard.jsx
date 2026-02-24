@@ -13,7 +13,7 @@ import { BudgetProvider } from '../contexts/BudgetContext'
 import { WeekAccessProvider, useWeekAccess } from '../contexts/WeekAccessContext'
 
 // Import icons
-import { MdDashboard, MdSchool, MdInsertChart, MdChat, MdNotifications, MdUpload, MdDownload, MdBook, MdCheckCircle, MdBarChart, MdAccountBalance, MdTimeline, MdCalendarToday, MdAssignment, MdTrendingUp, MdChevronLeft, MdChevronRight } from 'react-icons/md'
+import { MdDashboard, MdSchool, MdInsertChart, MdChat, MdNotifications, MdUpload, MdDownload, MdBook, MdCheckCircle, MdBarChart, MdAccountBalance, MdTimeline, MdCalendarToday, MdAssignment, MdTrendingUp, MdChevronLeft, MdChevronRight, MdFolderOpen } from 'react-icons/md'
 import { BsCalendar3 } from 'react-icons/bs'
 import { FaChalkboardTeacher } from 'react-icons/fa'
 import { FaFileExcel } from 'react-icons/fa'
@@ -45,7 +45,7 @@ const Avatar = ({ url, name }) => {
 }
 
 // Enhanced SidebarLink with better hover effects and animations
-const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdminLink = false, className = '', disabled = false, onClick }) => {
+const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdminLink = false, className = '', disabled = false, onClick, variant }) => {
   const location = useLocation();
   const isActive = location.pathname === href || 
                    (href === '/dashboard' && location.pathname === '/dashboard/') ||
@@ -61,33 +61,46 @@ const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdmi
     }
   };
 
+  const isModule = variant === 'module';
+  const paddingClass = isModule ? 'px-4' : 'px-[12px] py-[12px]';
+  const activeShadow = isModule
+    ? 'none'
+    : '0 2px 12px rgba(250, 204, 21, 0.2), 0 0 0 1px rgba(250, 204, 21, 0.1)';
+  const hoverShadow = isModule ? '0 2px 12px rgba(0, 0, 0, 0.06)' : '0 2px 8px rgba(0, 0, 0, 0.08)';
+
   return (
     <Link
       to={disabled || href === '#' ? '#' : href}
       onClick={handleClick}
       className={`
-        group flex items-center px-[12px] py-[12px] transition-all duration-300 ease-out rounded-2xl no-underline
-        transform hover:scale-[1.01] hover:translate-x-1
+        group flex items-center ${paddingClass} transition-all duration-300 ease-out no-underline
+        ${isModule ? 'rounded-xl hover:translate-x-0.5' : 'rounded-2xl transform hover:scale-[1.01] hover:translate-x-1'}
         ${disabled ? 'cursor-not-allowed opacity-60' : ''}
+        ${isActive && isModule ? 'module-item-active' : ''}
         ${isActive 
           ? isAdminLink 
             ? 'bg-gradient-to-r from-red-50 to-red-100 text-[#0d1a4b] font-medium' 
-            : 'bg-gradient-to-r from-[#fffde7] to-[#facc15]/20 text-[#0d1a4b] font-medium'
+            : isModule
+              ? 'bg-slate-50/90 text-[#0d1a4b] font-medium'
+              : 'bg-gradient-to-r from-[#fffde7] to-[#facc15]/20 text-[#0d1a4b] font-medium'
           : 'bg-transparent text-[#0d1a4b]/80'
         }
-        ${!disabled ? 'hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50 hover:text-[#0d1a4b]' : ''}
+        ${!disabled && !isModule ? 'hover:bg-gradient-to-r hover:from-[#fffde7] hover:to-yellow-50 hover:text-[#0d1a4b]' : ''}
+        ${!disabled && isModule ? 'hover:bg-slate-100/80 hover:text-[#0d1a4b]' : ''}
         animate-fadeInUp
         ${className}
       `}
       style={{
         animationDelay: `${delay * 100}ms`,
         animationFillMode: 'both',
-        boxShadow: isActive ? '0 2px 12px rgba(250, 204, 21, 0.2), 0 0 0 1px rgba(250, 204, 21, 0.1)' : 'none',
-        borderRadius: '16px',
+        boxShadow: isActive ? activeShadow : 'none',
+        borderRadius: isModule ? '12px' : '16px',
+        ...(isModule ? { paddingTop: '14px', paddingBottom: '14px' } : {}),
+        ...(isModule && isActive ? { borderLeft: '3px solid #64748b' } : {}),
       }}
       onMouseEnter={(e) => {
         if (!isActive) {
-          e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+          e.currentTarget.style.boxShadow = hoverShadow;
         }
       }}
       onMouseLeave={(e) => {
@@ -96,7 +109,7 @@ const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdmi
         }
       }}
     >
-      <span className="flex items-center">
+      <span className="flex items-center flex-1 min-w-0">
         {Icon && (typeof Icon === 'function' ? (
           <Icon 
             className="w-[18px] h-[18px] mr-3 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3" 
@@ -106,17 +119,17 @@ const SidebarLink = ({ icon: Icon, text, href, subText, style, delay = 0, isAdmi
             }}
           />
         ) : Icon)}
-        <span className="font-medium text-[15px] transition-colors duration-300" style={style}>{text}</span>
+        <span className={`font-medium text-[15px] transition-colors duration-300 ${isModule ? 'tracking-tight' : ''}`} style={style}>{text}</span>
       </span>
       {subText && <span className="text-xs text-gray-500 transition-colors duration-300">{subText}</span>}
-      {/* Active indicator - Modern dot */}
+      {/* Active indicator */}
       {isActive && (
         <div 
-          className="ml-auto rounded-full" 
+          className="ml-auto flex-shrink-0 rounded-full" 
           style={{
             width: '6px',
             height: '6px',
-            background: isAdminLink ? '#dc2626' : '#0d1a4b',
+            background: isAdminLink ? '#dc2626' : (isModule ? '#64748b' : '#0d1a4b'),
           }}
         />
       )}
@@ -191,11 +204,32 @@ function DashboardContent() {
 function DashboardContentInner({ isAdmin, user, signOut }) {
   const navigate = useNavigate()
   const [isLoaded, setIsLoaded] = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(true) // Default: collapsed (hidden)
+  const [sidebarFixed, setSidebarFixed] = useState(() => {
+    try {
+      return localStorage.getItem('univ154_sidebar_fixed') !== 'false'
+    } catch {
+      return true
+    }
+  })
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem('univ154_sidebar_fixed') === 'false'
+    } catch {
+      return false
+    }
+  })
   const [sidebarHovered, setSidebarHovered] = useState(false)
   
   // Use week access context
   const { isWeekAccessible } = useWeekAccess()
+
+  const handleSidebarFixedChange = (fixed) => {
+    setSidebarFixed(fixed)
+    setSidebarCollapsed(!fixed)
+    try {
+      localStorage.setItem('univ154_sidebar_fixed', fixed ? 'true' : 'false')
+    } catch (_) {}
+  }
   
   console.log('DashboardContentInner: User:', user);
   console.log('DashboardContentInner: User email:', user?.email);
@@ -262,6 +296,9 @@ function DashboardContentInner({ isAdmin, user, signOut }) {
           FaChalkboardTeacher={FaChalkboardTeacher}
           MdBarChart={MdBarChart}
           FaFileExcel={FaFileExcel}
+          MdMenuBook={MdFolderOpen}
+          sidebarFixed={sidebarFixed}
+          onSidebarFixedChange={handleSidebarFixedChange}
         />
       </div>
  

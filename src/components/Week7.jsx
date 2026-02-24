@@ -582,6 +582,13 @@ const Week7 = () => {
                               const numValue = Number(cleanValue) || 0;
                               if (numValue >= 0 && numValue <= 100) {
                                 setHdhpPlan({...hdhpPlan, coinsuranceRate: numValue});
+                                const inputEl = e.target;
+                                const pos = cleanValue.length;
+                                requestAnimationFrame(() => {
+                                  if (inputEl && document.activeElement === inputEl) {
+                                    inputEl.setSelectionRange(pos, pos);
+                                  }
+                                });
                               }
                             }
                           }}
@@ -603,6 +610,13 @@ const Week7 = () => {
                               const numValue = Number(cleanValue) || 0;
                               if (numValue >= 0 && numValue <= 100) {
                                 setNormalPlan({...normalPlan, coinsuranceRate: numValue});
+                                const inputEl = e.target;
+                                const pos = cleanValue.length;
+                                requestAnimationFrame(() => {
+                                  if (inputEl && document.activeElement === inputEl) {
+                                    inputEl.setSelectionRange(pos, pos);
+                                  }
+                                });
                               }
                             }
                           }}

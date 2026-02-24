@@ -1437,6 +1437,14 @@ export default function SavingsForm() {
                             onChange={(e) => {
                               console.log('Annual Rate Input Changed:', e.target.value);
                               handleUserInputChange(section1.annualRate, e.target.value);
+                              const cleanValue = e.target.value.replace(/[,$%]/g, '').replace(/[^0-9.]/g, '');
+                              const inputEl = e.target;
+                              const pos = cleanValue.length;
+                              requestAnimationFrame(() => {
+                                if (inputEl && document.activeElement === inputEl) {
+                                  inputEl.setSelectionRange(pos, pos);
+                                }
+                              });
                             }}
                             onMouseEnter={(e) => {
                               if (document.activeElement !== e.target) {
@@ -1775,6 +1783,14 @@ export default function SavingsForm() {
                             onChange={(e) => {
                               console.log('Annual Rate Input Changed:', e.target.value);
                               handleUserInputChange(section2.annualRate, e.target.value);
+                              const cleanValue = e.target.value.replace(/[,$%]/g, '').replace(/[^0-9.]/g, '');
+                              const inputEl = e.target;
+                              const pos = cleanValue.length;
+                              requestAnimationFrame(() => {
+                                if (inputEl && document.activeElement === inputEl) {
+                                  inputEl.setSelectionRange(pos, pos);
+                                }
+                              });
                             }}
                             onMouseEnter={(e) => {
                               if (document.activeElement !== e.target) {
