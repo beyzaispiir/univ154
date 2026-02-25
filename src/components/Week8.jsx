@@ -122,7 +122,7 @@ const Week8 = () => {
           <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
             <div style={styles.enhancedHeader}>
-              🧠 Portfolio Construction
+              <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Portfolio Construction</span>
             </div>
             
             {/* Placeholder Content */}

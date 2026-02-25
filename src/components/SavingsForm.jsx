@@ -361,6 +361,38 @@ const styles = {
     alignItems: 'center',
     position: 'relative',
   },
+  // Months field: input + "months" yan yana; baseline + hafif aşağı düzeltme ile görsel hiza
+  monthsFieldWrap: {
+    display: 'flex',
+    alignItems: 'baseline',
+    minHeight: '48px',
+    padding: '0 12px',
+    border: '1px solid #e5e7eb',
+    borderRadius: '8px',
+    backgroundColor: '#fffde7',
+    boxSizing: 'border-box',
+  },
+  monthsInputInline: {
+    flex: 1,
+    minWidth: 0,
+    border: 'none',
+    background: 'transparent',
+    padding: '14px 8px 14px 0',
+    fontSize: '14px',
+    fontWeight: '500',
+    lineHeight: '1.25',
+    textAlign: 'right',
+    outline: 'none',
+  },
+  monthsSuffix: {
+    marginLeft: '8px',
+    marginTop: '3px',
+    fontSize: '13px',
+    fontWeight: '500',
+    color: '#111827',
+    flexShrink: 0,
+    lineHeight: 1,
+  },
   
   // Currency symbol - matching Week 1
   currencySymbol: {
@@ -1050,8 +1082,7 @@ export default function SavingsForm() {
             <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
             <div style={styles.enhancedHeader}>
-              <span style={{fontSize: '24px', marginRight: '10px'}}>💰</span>
-              Savings Planning
+              <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Savings Planning</span>
             </div>
             
             {/* Info Box - matching Week 1 styling */}
@@ -1125,6 +1156,15 @@ export default function SavingsForm() {
           console.log('Section 2 - annualRate2:', annualRate2, 'section2.annualRate:', section2.annualRate);
           const details2 = calculateSavingsDetails(goalAmount2, monthlySavings2, timeToGoal2, section2.calculationMode, annualRate2);
           
+          const syncGoal = (val) => {
+            handleUserInputChange(section1.goalAmount, val);
+            handleUserInputChange(section2.goalAmount, val);
+          };
+          const syncRate = (val) => {
+            handleUserInputChange(section1.annualRate, val);
+            handleUserInputChange(section2.annualRate, val);
+          };
+
           return (
             <div key={`pair-container-${pairIndex}`}>
               {/* Section Divider - except for first pair */}
@@ -1132,19 +1172,12 @@ export default function SavingsForm() {
                 <div style={styles.sectionDivider}></div>
               )}
               
-              {/* Savings Pair */}
-              <div key={`pair-${pairIndex}`} style={{
-                display: 'flex',
-                gap: '64px',
-                marginBottom: '48px',
-                justifyContent: 'center'
-              }}>
-              {/* First Section */}
-              <div 
+              {/* Single Excel-like card - two columns for every savings goal pair */}
+              <div
                 style={{
-                  flex: '0 1 auto',
                   width: '100%',
-                  maxWidth: '500px',
+                  maxWidth: '900px',
+                  margin: '0 auto 48px',
                   border: '1px solid rgba(229, 231, 235, 0.5)',
                   borderRadius: '12px',
                   overflow: 'hidden',
@@ -1152,681 +1185,137 @@ export default function SavingsForm() {
                   backdropFilter: 'blur(8px)',
                   WebkitBackdropFilter: 'blur(8px)',
                   boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08), 0 2px 8px 0 rgba(0, 0, 0, 0.04)',
-                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                  animation: 'fadeIn 0.5s ease-out',
-                  animationDelay: `${pairIndex * 0.1}s`,
-                  animationFillMode: 'both',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
-                  e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08), 0 2px 8px 0 rgba(0, 0, 0, 0.04)';
-                  e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.5)';
                 }}
               >
-              {/* Section Header */}
-              <div style={{...styles.sectionHeader, position: 'relative'}}>
-                <input
-                  style={styles.sectionNameInput}
-                  type="text"
-                  value={sectionName1}
-                  onChange={(e) => {
-                    console.log('Section name input changed:', e.target.value);
-                    handleUserInputChange(section1.sectionName, e.target.value);
-                  }}
-                  onMouseEnter={(e) => {
-                    setShowNameTooltip(`${section1.id}_name`);
-                    e.target.style.borderColor = 'rgba(13, 26, 75, 0.4)';
-                    e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.25) 50%, rgba(13, 26, 75, 0.3) 100%)';
-                    e.target.style.boxShadow = '0 2px 8px 0 rgba(13, 26, 75, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
-                  }}
-                  onMouseLeave={(e) => {
-                    setShowNameTooltip(null);
-                    if (document.activeElement !== e.target) {
-                      e.target.style.borderColor = 'rgba(13, 26, 75, 0.2)';
-                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(30, 58, 138, 0.15) 50%, rgba(13, 26, 75, 0.2) 100%)';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(13, 26, 75, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
-                    } else {
-                      // Keep focus gradient when focused
-                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.3) 50%, rgba(13, 26, 75, 0.35) 100%)';
-                    }
-                  }}
-                  onFocus={(e) => {
-                    setShowNameTooltip(`${section1.id}_name`);
-                    e.target.style.borderColor = '#0d1a4b';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.2), 0 0 0 1px rgba(13, 26, 75, 0.4), 0 2px 4px 0 rgba(13, 26, 75, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
-                    e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.3) 50%, rgba(13, 26, 75, 0.35) 100%)';
-                  }}
-                  onBlur={(e) => {
-                    setShowNameTooltip(null);
-                    e.target.style.borderColor = 'rgba(13, 26, 75, 0.2)';
-                    e.target.style.boxShadow = '0 1px 2px 0 rgba(13, 26, 75, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
-                    e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(30, 58, 138, 0.15) 50%, rgba(13, 26, 75, 0.2) 100%)';
-                  }}
-                  placeholder="Enter your goal name"
-                />
-                {/* Tooltip */}
-                  {showNameTooltip === `${section1.id}_name` && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '100%',
-                      left: '0',
-                      marginTop: '8px',
-                      zIndex: 1000,
-                      background: '#0d1a4b',
-                      color: 'white',
-                      padding: '10px 14px',
-                      borderRadius: '8px',
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      maxWidth: '280px',
-                      boxShadow: '0 4px 12px rgba(13, 26, 75, 0.3)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      pointerEvents: 'none',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      You can change the name of this savings goal
-                      <div style={{
-                        position: 'absolute',
-                        bottom: '100%',
-                        left: '20px',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '6px solid transparent',
-                        borderRight: '6px solid transparent',
-                        borderBottom: '6px solid #0d1a4b',
-                      }}></div>
-                    </div>
-                  )}
-              </div>
-                
-                {/* Section Content */}
-                <div style={{ padding: '34px' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: '30px', rowGap: '0', alignItems: 'start' }}>
-                    {/* Left Column */}
-                    <div>
-                      <div style={{ marginBottom: '16px' }}>
-                        <label style={styles.label}>
-                          Goal Amount
-                        </label>
-                        <div style={styles.inputCellContainer}>
-                          <input
-                            style={styles.input}
-                            type="text"
-                            value={goalAmount1 ? `$${formatNumberForInput(goalAmount1)}` : ''}
-                            onChange={(e) => handleUserInputChange(section1.goalAmount, e.target.value)}
-                            onMouseEnter={(e) => {
-                              if (document.activeElement !== e.target) {
-                                e.target.style.borderColor = '#9ca3af';
-                                e.target.style.backgroundColor = '#ffffff';
-                                e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              if (document.activeElement !== e.target) {
-                                e.target.style.borderColor = '#e5e7eb';
-                                e.target.style.backgroundColor = '#fffde7';
-                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.transform = 'scale(1)';
-                              }
-                            }}
-                            onFocus={(e) => {
-                              e.target.style.borderColor = '#0d1a4b';
-                              e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                              e.target.style.backgroundColor = '#fffef0';
-                            }}
-                            onBlur={(e) => {
-                              e.target.style.borderColor = '#e5e7eb';
-                              e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                              e.target.style.backgroundColor = '#fffde7';
-                            }}
-                            placeholder="Enter goal amount"
-                          />
-                        </div>
-                        {/* Spacer to match height with right column first row */}
-                        {section1.calculationMode === 'time' && (
-                          <div style={styles.percentageInfo}>
-                            &nbsp;
-                          </div>
-                        )}
+                <div style={{ ...styles.sectionHeader, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <span style={{ fontWeight: '700', color: '#111827' }}>{section1.title}</span>
+                </div>
+                  {/* Satır bazlı grid: her satırda sol ve sağ hücre aynı yükseklikte, yamukluk kalmaz */}
+                  <div style={{
+                    padding: '34px',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gridTemplateRows: 'auto auto auto auto',
+                    columnGap: '48px',
+                    rowGap: '20px',
+                    alignItems: 'stretch',
+                  }}>
+                    {/* Satır 1: Goal Amount */}
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <label style={styles.label}>Goal Amount</label>
+                      <div style={styles.inputCellContainer}>
+                        <input
+                          style={styles.input}
+                          type="text"
+                          value={goalAmount1 ? `$${formatNumberForInput(goalAmount1)}` : ''}
+                          onChange={(e) => syncGoal(e.target.value.replace(/[$,\s]/g, ''))}
+                          onFocus={(e) => { e.target.style.borderColor = '#0d1a4b'; e.target.style.backgroundColor = '#fffef0'; }}
+                          onBlur={(e) => { e.target.style.borderColor = '#e5e7eb'; e.target.style.backgroundColor = '#fffde7'; }}
+                          placeholder="Enter goal amount"
+                        />
                       </div>
-                      
-                      {section1.calculationMode === 'time' ? (
-                        <div style={{ marginBottom: '16px' }}>
-                          <label style={styles.label}>
-                            Monthly Savings Amount
-                          </label>
-                          <div style={styles.inputCellContainer}>
-                            <input
-                              style={styles.input}
-                              type="text"
-                              value={monthlySavings1 ? `$${formatNumberForInput(monthlySavings1)}` : ''}
-                              onChange={(e) => handleUserInputChange(section1.monthlySavings, e.target.value)}
-                              onMouseEnter={(e) => {
-                                if (document.activeElement !== e.target) {
-                                  e.target.style.borderColor = '#9ca3af';
-                                  e.target.style.backgroundColor = '#ffffff';
-                                  e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                  e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                if (document.activeElement !== e.target) {
-                                  e.target.style.borderColor = '#e5e7eb';
-                                  e.target.style.backgroundColor = '#fffde7';
-                                  e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                  e.target.style.transform = 'scale(1)';
-                                }
-                              }}
-                              onFocus={(e) => {
-                                e.target.style.borderColor = '#0d1a4b';
-                                e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.backgroundColor = '#fffef0';
-                              }}
-                              onBlur={(e) => {
-                                e.target.style.borderColor = '#e5e7eb';
-                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.backgroundColor = '#fffde7';
-                              }}
-                              placeholder="Enter monthly amount"
-                            />
-                          </div>
-                          <div style={styles.percentageInfo}>
-                            {details1.percentage > 0 ? details1.percentage.toFixed(2) : '0.00'}% of Monthly After Tax Income
-                          </div>
-                        </div>
-                      ) : (
-                        <div style={{ marginBottom: '16px', marginTop: '400px' }}>
-                          <label style={styles.label}>
-                            Time to Achieve Savings Goal
-                          </label>
-                          <div 
-                            style={{ ...styles.inputCellContainer, transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)' }}
-                            onMouseEnter={(e) => {
-                              const input = e.currentTarget.querySelector('input');
-                              if (input && document.activeElement !== input) {
-                                input.style.borderColor = '#9ca3af';
-                                input.style.backgroundColor = '#ffffff';
-                                input.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                e.currentTarget.style.transform = 'translateY(-2px) scale(1.01)';
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              const input = e.currentTarget.querySelector('input');
-                              if (input && document.activeElement !== input) {
-                                input.style.borderColor = '#e5e7eb';
-                                input.style.backgroundColor = '#fffde7';
-                                input.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.currentTarget.style.transform = 'scale(1)';
-                              }
-                            }}
-                          >
-                            <input
-                              style={{ ...styles.input, paddingRight: '70px', transform: 'none' }}
-                              type="number"
-                              min="1"
-                              step="1"
-                              value={timeToGoal1}
-                              onChange={(e) => handleUserInputChange(section1.timeToGoal, e.target.value)}
-                              onFocus={(e) => {
-                                e.target.style.borderColor = '#0d1a4b';
-                                e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.backgroundColor = '#fffef0';
-                              }}
-                              onBlur={(e) => {
-                                e.target.style.borderColor = '#e5e7eb';
-                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.backgroundColor = '#fffde7';
-                              }}
-                              placeholder="Enter months"
-                            />
-                            <span style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', color: '#111827', fontSize: '13px', fontWeight: '500', pointerEvents: 'none' }}>months</span>
-                          </div>
-                        </div>
-                      )}
                     </div>
-                    
-                    {/* Right Column */}
-                    <div>
-                      {section1.calculationMode === 'time' ? (
-                        <div style={{ marginBottom: '16px' }}>
-                          <label style={styles.label}>
-                            Time to Achieve Savings Goal
-                          </label>
-                          <ReadOnlyWithAnimation 
-                            value={details1.timeToGoal} 
-                            format={(val) => `${Math.round(val)} months`}
-                            suffix=" months"
-                            fieldId={`${section1.id}_timeToGoal`}
-                          />
-                          {/* Spacer to match height with percentageInfo in left column */}
-                          <div style={styles.percentageInfo}>
-                            &nbsp;
-                          </div>
-                        </div>
-                      ) : (
-                        <div style={{ marginBottom: '16px' }}>
-                          <label style={styles.label}>
-                            Monthly Savings Amount
-                          </label>
-                          <ReadOnlyWithAnimation 
-                            value={details1.monthlySavings} 
-                            format={(val, formatCurrencyFn) => `$${formatCurrencyFn(val)}`}
-                            fieldId={`${section1.id}_monthlySavings`}
-                          />
-                          <div style={styles.percentageInfo}>
-                            {details1.percentage > 0 ? details1.percentage.toFixed(2) : '0.00'}% of Monthly After Tax Income
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div style={{ marginBottom: '16px' }}>
-                        <label style={styles.label}>
-                          Annual Earning Rate
-                        </label>
-                        <div style={styles.inputCellContainer}>
-                          <input
-                            style={styles.input}
-                            type="text"
-                            value={annualRate1 ? `${annualRate1}%` : ''}
-                            onChange={(e) => {
-                              console.log('Annual Rate Input Changed:', e.target.value);
-                              handleUserInputChange(section1.annualRate, e.target.value);
-                              const cleanValue = e.target.value.replace(/[,$%]/g, '').replace(/[^0-9.]/g, '');
-                              const inputEl = e.target;
-                              const pos = cleanValue.length;
-                              requestAnimationFrame(() => {
-                                if (inputEl && document.activeElement === inputEl) {
-                                  inputEl.setSelectionRange(pos, pos);
-                                }
-                              });
-                            }}
-                            onMouseEnter={(e) => {
-                              if (document.activeElement !== e.target) {
-                                e.target.style.borderColor = '#9ca3af';
-                                e.target.style.backgroundColor = '#ffffff';
-                                e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              if (document.activeElement !== e.target) {
-                                e.target.style.borderColor = '#e5e7eb';
-                                e.target.style.backgroundColor = '#fffde7';
-                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.transform = 'scale(1)';
-                              }
-                            }}
-                            onFocus={(e) => {
-                              e.target.style.borderColor = '#0d1a4b';
-                              e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                              e.target.style.backgroundColor = '#fffef0';
-                            }}
-                            onBlur={(e) => {
-                              e.target.style.borderColor = '#e5e7eb';
-                              e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                              e.target.style.backgroundColor = '#fffde7';
-                            }}
-                            placeholder="Enter rate"
-                          />
-                        </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <label style={styles.label}>Goal Amount</label>
+                      <div style={styles.inputCellContainer}>
+                        <input
+                          style={styles.input}
+                          type="text"
+                          value={goalAmount1 ? `$${formatNumberForInput(goalAmount1)}` : ''}
+                          onChange={(e) => syncGoal(e.target.value.replace(/[$,\s]/g, ''))}
+                          onFocus={(e) => { e.target.style.borderColor = '#0d1a4b'; e.target.style.backgroundColor = '#fffef0'; }}
+                          onBlur={(e) => { e.target.style.borderColor = '#e5e7eb'; e.target.style.backgroundColor = '#fffde7'; }}
+                          placeholder="Enter goal amount"
+                        />
+                      </div>
+                    </div>
+                    {/* Satır 2: Monthly Savings (sol) | Time to Achieve - months (sağ) */}
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <label style={styles.label}>Monthly Savings Amount</label>
+                      <div style={styles.inputCellContainer}>
+                        <input
+                          style={styles.input}
+                          type="text"
+                          value={monthlySavings1 ? `$${formatNumberForInput(monthlySavings1)}` : ''}
+                          onChange={(e) => handleUserInputChange(section1.monthlySavings, e.target.value)}
+                          onFocus={(e) => { e.target.style.borderColor = '#0d1a4b'; e.target.style.backgroundColor = '#fffef0'; }}
+                          onBlur={(e) => { e.target.style.borderColor = '#e5e7eb'; e.target.style.backgroundColor = '#fffde7'; }}
+                          placeholder="Enter monthly amount"
+                        />
+                      </div>
+                      <div style={styles.percentageInfo}>
+                        {details1.percentage > 0 ? details1.percentage.toFixed(2) : '0.00'}% of Monthly After Tax Income
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <label style={styles.label}>Time to Achieve Savings Goal</label>
+                      <div style={styles.monthsFieldWrap}>
+                        <input
+                          style={styles.monthsInputInline}
+                          type="number"
+                          min="1"
+                          step="1"
+                          value={timeToGoal2}
+                          onChange={(e) => handleUserInputChange(section2.timeToGoal, e.target.value)}
+                          onFocus={(e) => { e.currentTarget.parentElement.style.borderColor = '#0d1a4b'; e.currentTarget.parentElement.style.backgroundColor = '#fffef0'; }}
+                          onBlur={(e) => { e.currentTarget.parentElement.style.borderColor = '#e5e7eb'; e.currentTarget.parentElement.style.backgroundColor = '#fffde7'; }}
+                          placeholder="Enter months"
+                        />
+                        <span style={styles.monthsSuffix}>months</span>
+                      </div>
+                    </div>
+                    {/* Satır 3: Annual Rate */}
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <label style={styles.label}>Annual Earning Rate</label>
+                      <div style={styles.inputCellContainer}>
+                        <input
+                          style={styles.input}
+                          type="text"
+                          value={annualRate1 ? `${annualRate1}%` : ''}
+                          onChange={(e) => { const v = e.target.value.replace(/[^0-9.]/g, ''); syncRate(v); }}
+                          onFocus={(e) => { e.target.style.borderColor = '#0d1a4b'; e.target.style.backgroundColor = '#fffef0'; }}
+                          onBlur={(e) => { e.target.style.borderColor = '#e5e7eb'; e.target.style.backgroundColor = '#fffde7'; }}
+                          placeholder="Enter rate"
+                        />
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <label style={styles.label}>Annual Earning Rate</label>
+                      <div style={styles.inputCellContainer}>
+                        <input
+                          style={styles.input}
+                          type="text"
+                          value={annualRate1 ? `${annualRate1}%` : ''}
+                          onChange={(e) => { const v = e.target.value.replace(/[^0-9.]/g, ''); syncRate(v); }}
+                          onFocus={(e) => { e.target.style.borderColor = '#0d1a4b'; e.target.style.backgroundColor = '#fffef0'; }}
+                          onBlur={(e) => { e.target.style.borderColor = '#e5e7eb'; e.target.style.backgroundColor = '#fffde7'; }}
+                          placeholder="Enter rate"
+                        />
+                      </div>
+                    </div>
+                    {/* Satır 4: Time to Achieve (sol) | Monthly Savings (sağ) */}
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <label style={styles.label}>Time to Achieve Savings Goal</label>
+                      <ReadOnlyWithAnimation
+                        value={details1.timeToGoal}
+                        format={(val) => `${Math.round(val)} months`}
+                        suffix=" months"
+                        fieldId={`${section1.id}_timeToGoal`}
+                      />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <label style={styles.label}>Monthly Savings Amount</label>
+                      <ReadOnlyWithAnimation
+                        value={details2.monthlySavings}
+                        format={(val, formatCurrencyFn) => `$${formatCurrencyFn(val)}`}
+                        fieldId={`${section2.id}_monthlySavings`}
+                      />
+                      <div style={styles.percentageInfo}>
+                        {details2.percentage > 0 ? details2.percentage.toFixed(2) : '0.00'}% of Monthly After Tax Income
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Second Section */}
-              <div 
-                style={{
-                  flex: '0 1 auto',
-                  width: '100%',
-                  maxWidth: '500px',
-                  border: '1px solid rgba(229, 231, 235, 0.5)',
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08), 0 2px 8px 0 rgba(0, 0, 0, 0.04)',
-                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                  animation: 'fadeIn 0.5s ease-out',
-                  animationDelay: `${pairIndex * 0.1 + 0.05}s`,
-                  animationFillMode: 'both',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.06)';
-                  e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.8)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 16px 0 rgba(0, 0, 0, 0.08), 0 2px 8px 0 rgba(0, 0, 0, 0.04)';
-                  e.currentTarget.style.border = '1px solid rgba(229, 231, 235, 0.5)';
-                }}
-              >
-                {/* Section Header */}
-                <div style={{...styles.sectionHeader, position: 'relative'}}>
-                  <input
-                    style={styles.sectionNameInput}
-                    type="text"
-                    value={sectionName2}
-                    onChange={(e) => {
-                      console.log('Section name 2 input changed:', e.target.value);
-                      handleUserInputChange(section2.sectionName, e.target.value);
-                    }}
-                    onMouseEnter={(e) => {
-                      setShowNameTooltip(`${section2.id}_name`);
-                      e.target.style.borderColor = 'rgba(13, 26, 75, 0.4)';
-                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.25) 50%, rgba(13, 26, 75, 0.3) 100%)';
-                      e.target.style.boxShadow = '0 2px 8px 0 rgba(13, 26, 75, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
-                    }}
-                    onMouseLeave={(e) => {
-                      setShowNameTooltip(null);
-                      if (document.activeElement !== e.target) {
-                        e.target.style.borderColor = 'rgba(13, 26, 75, 0.2)';
-                        e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(30, 58, 138, 0.15) 50%, rgba(13, 26, 75, 0.2) 100%)';
-                        e.target.style.boxShadow = '0 1px 2px 0 rgba(13, 26, 75, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
-                      } else {
-                        // Keep focus gradient when focused
-                        e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.3) 50%, rgba(13, 26, 75, 0.35) 100%)';
-                      }
-                    }}
-                    onFocus={(e) => {
-                      setShowNameTooltip(`${section2.id}_name`);
-                      e.target.style.borderColor = '#0d1a4b';
-                      e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.2), 0 0 0 1px rgba(13, 26, 75, 0.4), 0 2px 4px 0 rgba(13, 26, 75, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)';
-                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(30, 58, 138, 0.3) 50%, rgba(13, 26, 75, 0.35) 100%)';
-                    }}
-                    onBlur={(e) => {
-                      setShowNameTooltip(null);
-                      e.target.style.borderColor = 'rgba(13, 26, 75, 0.2)';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(13, 26, 75, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5)';
-                      e.target.style.background = 'linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(30, 58, 138, 0.15) 50%, rgba(13, 26, 75, 0.2) 100%)';
-                    }}
-                    placeholder="Enter your goal name"
-                  />
-                  {/* Tooltip */}
-                  {showNameTooltip === `${section2.id}_name` && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '100%',
-                      left: '0',
-                      marginTop: '8px',
-                      zIndex: 1000,
-                      background: '#0d1a4b',
-                      color: 'white',
-                      padding: '10px 14px',
-                      borderRadius: '8px',
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      maxWidth: '280px',
-                      boxShadow: '0 4px 12px rgba(13, 26, 75, 0.3)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      pointerEvents: 'none',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      You can change the name of this savings goal
-                      <div style={{
-                        position: 'absolute',
-                        bottom: '100%',
-                        left: '20px',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '6px solid transparent',
-                        borderRight: '6px solid transparent',
-                        borderBottom: '6px solid #0d1a4b',
-                      }}></div>
-                    </div>
-                  )}
-                </div>
-                
-                {/* sagdaki Section Content */} 
-                <div style={{ padding: '34px' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: '30px', rowGap: '0', alignItems: 'start' }}>
-                    {/* Left Column */}
-                    <div>
-                      <div style={{ marginBottom: '16px' }}>
-                        <label style={styles.label}>
-                          Goal Amount
-                        </label>
-                        <div style={styles.inputCellContainer}>
-                          <input
-                            style={styles.input}
-                            type="text"
-                            value={goalAmount2 ? `$${formatNumberForInput(goalAmount2)}` : ''}
-                            onChange={(e) => handleUserInputChange(section2.goalAmount, e.target.value)}
-                            onMouseEnter={(e) => {
-                              if (document.activeElement !== e.target) {
-                                e.target.style.borderColor = '#9ca3af';
-                                e.target.style.backgroundColor = '#ffffff';
-                                e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              if (document.activeElement !== e.target) {
-                                e.target.style.borderColor = '#e5e7eb';
-                                e.target.style.backgroundColor = '#fffde7';
-                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.transform = 'scale(1)';
-                              }
-                            }}
-                            onFocus={(e) => {
-                              e.target.style.borderColor = '#0d1a4b';
-                              e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                              e.target.style.backgroundColor = '#fffef0';
-                            }}
-                            onBlur={(e) => {
-                              e.target.style.borderColor = '#e5e7eb';
-                              e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                              e.target.style.backgroundColor = '#fffde7';
-                            }}
-                            placeholder="Enter goal amount"
-                          />
-                        </div>
-                        {/* Spacer to match height with right column first row */}
-                        {section2.calculationMode === 'time' && (
-                          <div style={styles.percentageInfo}>
-                            &nbsp;
-                          </div>
-                        )}
-                      </div>
-                      
-                      {section2.calculationMode === 'time' ? (
-                        <div style={{ marginBottom: '16px' }}>
-                          <label style={styles.label}>
-                            Monthly Savings Amount
-                          </label>
-                          <div style={styles.inputCellContainer}>
-                            <input
-                              style={styles.input}
-                              type="text"
-                              value={monthlySavings2 ? `$${formatNumberForInput(monthlySavings2)}` : ''}
-                              onChange={(e) => handleUserInputChange(section2.monthlySavings, e.target.value)}
-                              onMouseEnter={(e) => {
-                                if (document.activeElement !== e.target) {
-                                  e.target.style.borderColor = '#9ca3af';
-                                  e.target.style.backgroundColor = '#ffffff';
-                                  e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                  e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                if (document.activeElement !== e.target) {
-                                  e.target.style.borderColor = '#e5e7eb';
-                                  e.target.style.backgroundColor = '#fffde7';
-                                  e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                  e.target.style.transform = 'scale(1)';
-                                }
-                              }}
-                              onFocus={(e) => {
-                                e.target.style.borderColor = '#0d1a4b';
-                                e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.backgroundColor = '#fffef0';
-                              }}
-                              onBlur={(e) => {
-                                e.target.style.borderColor = '#e5e7eb';
-                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.backgroundColor = '#fffde7';
-                              }}
-                              placeholder="Enter monthly amount"
-                            />
-                          </div>
-                          <div style={styles.percentageInfo}>
-                            {details2.percentage > 0 ? details2.percentage.toFixed(2) : '0.00'}% of Monthly After Tax Income
-                          </div>
-                        </div>
-                      ) : (
-                        <div style={{ marginBottom: '16px', marginTop: '47px' }}> {/* sagdaki columnin time to achieve saving goal input celli margin top degisimi ile degisitiyo */}
-                          <label style={styles.label}>
-                            Time to Achieve Savings Goal
-                          </label>
-                          <div 
-                            style={{ ...styles.inputCellContainer, transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)' }}
-                            onMouseEnter={(e) => {
-                              const input = e.currentTarget.querySelector('input');
-                              if (input && document.activeElement !== input) {
-                                input.style.borderColor = '#9ca3af';
-                                input.style.backgroundColor = '#ffffff';
-                                input.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                e.currentTarget.style.transform = 'translateY(-2px) scale(1.01)';
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              const input = e.currentTarget.querySelector('input');
-                              if (input && document.activeElement !== input) {
-                                input.style.borderColor = '#e5e7eb';
-                                input.style.backgroundColor = '#fffde7';
-                                input.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.currentTarget.style.transform = 'scale(1)';
-                              }
-                            }}
-                          >
-                            <input
-                              style={{ ...styles.input, paddingRight: '70px', transform: 'none' }}
-                              type="number"
-                              min="1"
-                              step="1"
-                              value={timeToGoal2}
-                              onChange={(e) => handleUserInputChange(section2.timeToGoal, e.target.value)}
-                              onFocus={(e) => {
-                                e.target.style.borderColor = '#0d1a4b';
-                                e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.backgroundColor = '#fffef0';
-                              }}
-                              onBlur={(e) => {
-                                e.target.style.borderColor = '#e5e7eb';
-                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.backgroundColor = '#fffde7';
-                              }}
-                              placeholder="Enter months"
-                            />
-                            <span style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', color: '#111827', fontSize: '13px', fontWeight: '500', pointerEvents: 'none' }}>months</span>
-                          </div>
-                          {/* Spacer to match height with percentageInfo in section1 left column */}
-                          <div style={styles.percentageInfo}>
-                            &nbsp;
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Right Column */}
-                    <div>
-                      {section2.calculationMode === 'time' ? (
-                        <div style={{ marginBottom: '16px' }}>
-                          <label style={styles.label}>
-                            Time to Achieve Savings Goal
-                          </label>
-                          <ReadOnlyWithAnimation 
-                            value={details2.timeToGoal} 
-                            format={(val) => `${Math.round(val)} months`}
-                            suffix=" months"
-                            fieldId={`${section2.id}_timeToGoal`}
-                          />
-                          {/* Spacer to match height with percentageInfo in left column */}
-                          <div style={styles.percentageInfo}>
-                            &nbsp;
-                          </div>
-                        </div>
-                      ) : (
-                        <div style={{ marginBottom: '16px' }}>
-                          <label style={styles.label}>
-                            Monthly Savings Amount
-                          </label>
-                          <ReadOnlyWithAnimation 
-                            value={details2.monthlySavings} 
-                            format={(val, formatCurrencyFn) => `$${formatCurrencyFn(val)}`}
-                            fieldId={`${section2.id}_monthlySavings`}
-                          />
-                          <div style={styles.percentageInfo}>
-                            {details2.percentage > 0 ? details2.percentage.toFixed(2) : '0.00'}% of Monthly After Tax Income
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div style={{ marginBottom: '16px', marginTop: '21px'}}> 
-                        <label style={styles.label}>
-                          Annual Earning Rate
-                        </label>
-                        <div style={styles.inputCellContainer}>
-                          <input
-                            style={styles.input}
-                            type="text"
-                            value={annualRate2 ? `${annualRate2}%` : ''}
-                            onChange={(e) => {
-                              console.log('Annual Rate Input Changed:', e.target.value);
-                              handleUserInputChange(section2.annualRate, e.target.value);
-                              const cleanValue = e.target.value.replace(/[,$%]/g, '').replace(/[^0-9.]/g, '');
-                              const inputEl = e.target;
-                              const pos = cleanValue.length;
-                              requestAnimationFrame(() => {
-                                if (inputEl && document.activeElement === inputEl) {
-                                  inputEl.setSelectionRange(pos, pos);
-                                }
-                              });
-                            }}
-                            onMouseEnter={(e) => {
-                              if (document.activeElement !== e.target) {
-                                e.target.style.borderColor = '#9ca3af';
-                                e.target.style.backgroundColor = '#ffffff';
-                                e.target.style.boxShadow = '0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03)';
-                                e.target.style.transform = 'translateY(-2px) scale(1.01)';
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              if (document.activeElement !== e.target) {
-                                e.target.style.borderColor = '#e5e7eb';
-                                e.target.style.backgroundColor = '#fffde7';
-                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                                e.target.style.transform = 'scale(1)';
-                              }
-                            }}
-                            onFocus={(e) => {
-                              e.target.style.borderColor = '#0d1a4b';
-                              e.target.style.boxShadow = '0 0 0 3px rgba(13, 26, 75, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                              e.target.style.backgroundColor = '#fffef0';
-                            }}
-                            onBlur={(e) => {
-                              e.target.style.borderColor = '#e5e7eb';
-                              e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(0, 0, 0, 0.02)';
-                              e.target.style.backgroundColor = '#fffde7';
-                            }}
-                            placeholder="Enter rate"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
             </div>
           );
         })}

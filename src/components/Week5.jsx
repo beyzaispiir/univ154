@@ -756,8 +756,8 @@ const Week5 = () => {
           <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
             <div style={styles.enhancedHeader}>
-            🏠 Real Estate & Investment Planning
-          </div>
+              <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Real Estate & Investment Planning</span>
+            </div>
 
           {/* Reminder Note */}
           <div style={{
@@ -1039,14 +1039,7 @@ const Week5 = () => {
                 paddingBottom: '12px',
                 borderBottom: '2px solid #f1f3f4'
               }}>
-                <div style={{
-                  width: '24px',
-                  height: '24px',
-                  marginRight: '8px',
-                  color: '#002060',
-                  fontSize: '20px'
-                }}>💰</div>
-                <h3 style={{
+                  <h3 style={{
                   fontSize: '14px',
                   fontWeight: '600',
                   color: '#002060',
@@ -1095,13 +1088,6 @@ const Week5 = () => {
               paddingBottom: '12px',
               borderBottom: '2px solid #f1f3f4'
             }}>
-              <div style={{
-                width: '24px',
-                height: '24px',
-                marginRight: '8px',
-                color: '#002060',
-                fontSize: '20px'
-              }}>📊</div>
               <h3 style={{
                 fontSize: '14px',
                 fontWeight: '600',
@@ -1140,7 +1126,6 @@ const Week5 = () => {
             {/* Left Chart: Monthly Payment */}
             <div style={styles.chartCardEnhanced}>
               <div style={styles.chartHeader}>
-                <div style={styles.chartIcon}>📊</div>
                 <h3 style={styles.chartTitle}>Monthly Payment: Interest vs Principal</h3>
               </div>
               <div style={styles.chartContainer}>
@@ -1151,7 +1136,6 @@ const Week5 = () => {
             {/* Right Chart: Bi-Weekly Payment */}
             <div style={styles.chartCardEnhanced}>
               <div style={styles.chartHeader}>
-                <div style={styles.chartIcon}>📈</div>
                 <h3 style={styles.chartTitle}>Bi-Weekly Payment: Interest vs Principal</h3>
               </div>
               <div style={styles.chartContainer}>

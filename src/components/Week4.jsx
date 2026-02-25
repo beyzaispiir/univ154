@@ -391,7 +391,7 @@ const Week4 = () => {
       <div style={styles.sectionContainer}>
         {/* Enhanced Header */}
         <div style={styles.enhancedHeader}>
-          📊 Income Taxes
+          <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Income Taxes</span>
         </div>
         
         {/* Info Box - matching Week 3 styling */}

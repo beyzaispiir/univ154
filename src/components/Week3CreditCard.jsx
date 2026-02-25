@@ -818,7 +818,7 @@ const Week3CreditCard = () => {
       <div style={styles.sectionContainer}>
         {/* Enhanced Header */}
         <div style={styles.enhancedHeader}>
-          💳 Credit & Debt Management
+          <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Credit & Debt Management</span>
           </div>
 
         {/* Info Box - matching Week 1 styling */}
@@ -1074,7 +1074,6 @@ const Week3CreditCard = () => {
               }}
             >
               <div style={styles.summaryCardHeader}>
-                <div style={styles.summaryCardIcon}>💳</div>
               <h3 style={styles.summaryTitle}>User Input Payment</h3>
               </div>
               <div style={styles.summaryTable}>
@@ -1114,7 +1113,6 @@ const Week3CreditCard = () => {
               }}
             >
               <div style={styles.summaryCardHeader}>
-                <div style={styles.summaryCardIcon}>⚠️</div>
               <h3 style={styles.summaryTitle}>Minimum Input Payment</h3>
               </div>
               <div style={styles.summaryTable}>
@@ -1161,7 +1159,6 @@ const Week3CreditCard = () => {
         >
           <div style={styles.chartHeader}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-            <div style={styles.chartIcon}>📊</div>
               <h3 style={{ ...styles.chartTitle, flex: 'none' }}>Debt Payments: Interest vs Principal</h3>
             </div>
             <div style={{ 
@@ -1177,11 +1174,10 @@ const Week3CreditCard = () => {
               transition: 'all 0.2s',
               whiteSpace: 'nowrap'
             }}>
-              <span>🔍</span>
               <span>Click to expand</span>
             </div>
           </div>
-          <div style={{ fontSize: '12px', color: '#666', textAlign: 'center', marginBottom: '10px', fontWeight: '600' }}>User Input Payment</div>
+          <div style={{ fontSize: '15px', color: '#666', textAlign: 'center', marginBottom: '10px', fontWeight: '600' }}>User Input Payment</div>
           <div style={styles.chartContainer}>
             <Bar 
               data={{
@@ -1248,12 +1244,14 @@ const Week3CreditCard = () => {
                 },
                 scales: {
                   x: {
+                    grid: { display: false },
                     title: {
                       display: true,
                       text: 'Month'
                     }
                   },
                   y: {
+                    grid: { display: false },
                     beginAtZero: true,
                     title: {
                       display: true,
@@ -1292,7 +1290,6 @@ const Week3CreditCard = () => {
         >
           <div style={styles.chartHeader}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-            <div style={styles.chartIcon}>📈</div>
               <h3 style={{ ...styles.chartTitle, flex: 'none' }}>Debt Payments: Interest vs Principal</h3>
             </div>
             <div style={{ 
@@ -1308,11 +1305,10 @@ const Week3CreditCard = () => {
               transition: 'all 0.2s',
               whiteSpace: 'nowrap'
             }}>
-              <span>🔍</span>
               <span>Click to expand</span>
             </div>
           </div>
-          <div style={{ fontSize: '12px', color: '#666', textAlign: 'center', marginBottom: '10px', fontWeight: '600' }}>Minimum Payment</div>
+          <div style={{ fontSize: '15px', color: '#666', textAlign: 'center', marginBottom: '10px', fontWeight: '600' }}>Minimum Payment</div>
           <div style={styles.chartContainer}>
             <Bar 
               data={{
@@ -1379,12 +1375,14 @@ const Week3CreditCard = () => {
                 },
                 scales: {
                   x: {
+                    grid: { display: false },
                     title: {
                       display: true,
                       text: 'Month'
                     }
                   },
                   y: {
+                    grid: { display: false },
                     beginAtZero: true,
                     title: {
                       display: true,
@@ -1415,7 +1413,7 @@ const Week3CreditCard = () => {
       <div style={styles.sectionContainer}>
         {/* Enhanced Header */}
         <div style={styles.enhancedHeader}>
-          🏦 General Loans
+          <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>General Loans</span>
         </div>
         
         <div style={styles.generalLoansContent}>
@@ -1638,7 +1636,7 @@ const Week3CreditCard = () => {
                 <span style={styles.loanDetailLabel}>Term</span>
                 <div 
                   id="term-input-container"
-                  style={{ position: 'relative', display: 'flex', alignItems: 'center', transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)' }}
+                  style={{ position: 'relative', display: 'flex', alignItems: 'center', height: '48px', minHeight: '48px', transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)' }}
                   onMouseEnter={(e) => {
                     const input = e.currentTarget.querySelector('input');
                     if (input && document.activeElement !== input) {
@@ -1674,7 +1672,15 @@ const Week3CreditCard = () => {
                     setGeneralTerm(value);
                       }
                   }}
-                    style={{ ...styles.loanInput, paddingRight: '70px', transform: 'none' }}
+                    style={{
+                      ...styles.loanInput,
+                      padding: '14px 52px 14px 16px',
+                      height: '100%',
+                      lineHeight: '20px',
+                      boxSizing: 'border-box',
+                      textAlign: 'right',
+                      transform: 'none',
+                    }}
                   placeholder="Enter months"
                     onFocus={(e) => {
                       e.target.style.borderColor = '#0d1a4b';
@@ -1687,7 +1693,7 @@ const Week3CreditCard = () => {
                       e.target.style.backgroundColor = '#fffde7';
                     }}
                   />
-                  <span style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', color: '#111827', fontSize: '13px', fontWeight: '500', pointerEvents: 'none' }}>months</span>
+                  <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#111827', fontSize: '13px', fontWeight: '500', pointerEvents: 'none', lineHeight: 1 }}>months</span>
                 </div>
               </div>
             </div>
@@ -1743,7 +1749,6 @@ const Week3CreditCard = () => {
           >
           <div style={styles.chartHeader}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-            <div style={styles.chartIcon}>📊</div>
                 <h3 style={{ ...styles.chartTitle, flex: 'none' }}>General Loan: Interest vs Principal</h3>
               </div>
               <div style={{ 
@@ -1759,11 +1764,10 @@ const Week3CreditCard = () => {
                 transition: 'all 0.2s',
                 whiteSpace: 'nowrap'
               }}>
-                <span>🔍</span>
                 <span>Click to expand</span>
               </div>
           </div>
-          <div style={{ fontSize: '12px', color: '#666', textAlign: 'center', marginBottom: '10px', fontWeight: '600' }}>Fixed Monthly Payment</div>
+          <div style={{ fontSize: '15px', color: '#666', textAlign: 'center', marginBottom: '10px', fontWeight: '600' }}>Fixed Monthly Payment</div>
           <div style={styles.chartContainer}>
             <Bar 
               data={{
@@ -1830,12 +1834,14 @@ const Week3CreditCard = () => {
                 },
                 scales: {
                   x: {
+                    grid: { display: false },
                     title: {
                       display: true,
                       text: 'Month'
                     }
                   },
                   y: {
+                    grid: { display: false },
                     beginAtZero: true,
                     title: {
                       display: true,

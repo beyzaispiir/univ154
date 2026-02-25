@@ -282,7 +282,7 @@ const styles = {
     borderRight: 'none',
     textAlign: 'center', 
     fontWeight: '600',
-    fontSize: '13px',
+    fontSize: '17px',
     letterSpacing: '0.01em',
     position: 'sticky',
     top: 0,
@@ -577,39 +577,6 @@ const StatusBadge = ({ status, variant = 'default' }) => {
       {style.icon && <span>{style.icon}</span>}
       {status}
     </span>
-  );
-};
-
-// Comparison Indicator - Visual diff between recommended and budgeted
-const ComparisonIndicator = ({ recommended, budgeted, label }) => {
-  const diff = budgeted - recommended;
-  const diffPercent = recommended > 0 ? ((diff / recommended) * 100) : 0;
-  const isOver = diff > 0;
-  const isUnder = diff < 0;
-  
-  if (Math.abs(diff) < 0.01) return null; // No significant difference
-  
-  return (
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '6px',
-      padding: '4px 10px',
-      borderRadius: '6px',
-      fontSize: '11px',
-      fontWeight: '600',
-      backgroundColor: isOver 
-        ? 'rgba(254, 242, 242, 0.7)' 
-        : 'rgba(240, 253, 244, 0.7)',
-      color: isOver ? '#dc2626' : '#16a34a',
-      border: `1px solid ${isOver ? 'rgba(252, 165, 165, 0.4)' : 'rgba(134, 239, 172, 0.4)'}`,
-      backdropFilter: 'blur(4px)',
-      WebkitBackdropFilter: 'blur(4px)',
-    }}>
-      <span>{isOver ? '↑' : '↓'}</span>
-      <span>{Math.abs(diffPercent).toFixed(1)}%</span>
-      {label && <span style={{ opacity: 0.7 }}>{label}</span>}
-    </div>
   );
 };
 
@@ -1427,8 +1394,7 @@ export default function BudgetForm() {
             <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
             <div style={styles.enhancedHeader}>
-              <span style={{fontSize: '24px', marginRight: '10px'}}>💰</span>
-              Budget Planning
+              <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Budget Planning</span>
             </div>
             <div style={{width: '450px', marginBottom: '20px'}}>
             <h3 style={styles.header}>User Inputted Data</h3>
@@ -1816,12 +1782,6 @@ export default function BudgetForm() {
                                       return calculatedAmount > 0 ? (
                                         <>
                                           <span>{formatCurrency(calculatedAmount)}</span>
-                                          {userAmount > 0 && Math.abs(userAmount - calculatedAmount) > 0.01 && (
-                                            <ComparisonIndicator 
-                                              recommended={calculatedAmount} 
-                                              budgeted={userAmount} 
-                                            />
-                                          )}
                                         </>
                                       ) : '-';
                                     })()}
@@ -2113,12 +2073,6 @@ export default function BudgetForm() {
               paddingBottom: '16px',
               borderBottom: '1px solid #e5e7eb'
             }}>
-              <div style={{
-                width: '20px',
-                height: '20px',
-                marginRight: '10px',
-                color: '#0d1a4b'
-              }}>📊</div>
               <h3 style={{ margin: '0', color: '#111827', fontSize: '20px', fontWeight: '600' }}>Budget Summary</h3>
             </div>
             {/* Budget Utilization Progress Bar */}

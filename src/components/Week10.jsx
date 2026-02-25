@@ -11,7 +11,7 @@ const Week10 = () => {
   return (
     <div style={styles.container}>
       <div style={styles.sectionContainer}>
-        <div style={styles.enhancedHeader}>Insurance (Advanced)</div>
+        <div style={styles.enhancedHeader}><span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Insurance (Advanced)</span></div>
         <div style={styles.placeholderContent}>
           <div style={styles.comingSoon}>Content coming soon</div>
           <p>This module is under development.</p>

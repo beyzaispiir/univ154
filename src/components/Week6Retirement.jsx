@@ -1903,7 +1903,7 @@ export default function Week6Retirement() {
       // Show error message for values exceeding maximum
       setValidationErrors(prev => ({
         ...prev,
-        [key]: `${accountType} plan maximum value is ${maxValue.toFixed(2)}. Please enter a smaller value.`
+        [key]: `${accountType} plan maximum value is ${formatCurrency(maxValue)}. Please enter a smaller value.`
       }));
     } else if (numValue < 0) {
       // Show error message for negative values
@@ -1978,7 +1978,7 @@ export default function Week6Retirement() {
       // Show error message for values exceeding maximum
       setMonthlyPaymentErrors(prev => ({
         ...prev,
-        [key]: `${accountType} plan maximum value is ${maxValue.toFixed(2)}. Please enter a smaller value.`
+        [key]: `${accountType} plan maximum value is ${formatCurrency(maxValue)}. Please enter a smaller value.`
       }));
     } else if (numValue < 0) {
       // Show error message for negative values
@@ -2301,22 +2301,22 @@ export default function Week6Retirement() {
       {
         label: 'Series A',
         data: simA.balances,
-        borderColor: '#2563eb',
-        backgroundColor: 'rgba(37,99,235,0.1)',
+        borderColor: '#d8dee9',
+        backgroundColor: 'rgba(216,222,233,0.45)',
         tension: 0.2,
       },
       {
         label: 'Series B',
         data: simB.balances,
-        borderColor: '#f97316',
-        backgroundColor: 'rgba(249,115,22,0.1)',
+        borderColor: '#94a3b8',
+        backgroundColor: 'rgba(148,163,184,0.3)',
         tension: 0.2,
       },
       {
         label: 'Series C',
         data: simC.balances,
-        borderColor: '#22c55e',
-        backgroundColor: 'rgba(34,197,94,0.1)',
+        borderColor: '#1e293b',
+        backgroundColor: 'rgba(30,41,59,0.3)',
         tension: 0.2,
       },
     ],
@@ -2398,7 +2398,7 @@ export default function Week6Retirement() {
         <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
         <div style={styles.enhancedHeader}>
-              🏦 Retirement Planning
+              <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Retirement Planning</span>
             </div>
 
         {/* Info Box - matching Week 2/3 styling */}
@@ -2859,20 +2859,28 @@ export default function Week6Retirement() {
                     min="0"
                     max="100"
                     step="0.1"
-                    value={`${deferralPercentage}%`}
+                    value={deferralPercentage === '' ? '' : (typeof deferralPercentage === 'string' ? deferralPercentage + '%' : `${deferralPercentage}%`)}
                     onChange={e => {
-                      const cleanValue = e.target.value.replace(/[%,\s]/g, '');
+                      let cleanValue = e.target.value.replace(/[%,\s]/g, '');
+                      cleanValue = cleanValue.replace(/^\./, '').replace(/(\..*)\./g, '$1');
                       const numValue = parseFloat(cleanValue);
-                      if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                      const isEmpty = cleanValue === '';
+                      const isValid = !isNaN(numValue) && numValue >= 0 && numValue <= 100;
+                      const endsWithDot = cleanValue.endsWith('.');
+                      if (isEmpty) {
+                        setDeferralPercentage('');
+                      } else if (endsWithDot && numValue >= 0 && numValue <= 100) {
+                        setDeferralPercentage(cleanValue);
+                      } else if (isValid) {
                         setDeferralPercentage(numValue);
-                        const inputEl = e.target;
-                        const pos = cleanValue.length;
-                        requestAnimationFrame(() => {
-                          if (inputEl && document.activeElement === inputEl) {
-                            inputEl.setSelectionRange(pos, pos);
-                          }
-                        });
                       }
+                      const inputEl = e.target;
+                      const pos = cleanValue.length;
+                      requestAnimationFrame(() => {
+                        if (inputEl && document.activeElement === inputEl) {
+                          inputEl.setSelectionRange(pos, pos);
+                        }
+                      });
                     }}
                     style={{
                       ...styles.input,
@@ -3245,7 +3253,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.traditional_401k_a ? `$${monthlyPayments.traditional_401k_a}` : ''}
+                  value={monthlyPayments.traditional_401k_a !== '' && monthlyPayments.traditional_401k_a != null ? `$${formatCurrency(monthlyPayments.traditional_401k_a)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_401k_a', e.target.value)}
                   style={{
                     ...styles.input,
@@ -3321,7 +3329,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.traditional_401k_b ? `$${monthlyPayments.traditional_401k_b}` : ''}
+                  value={monthlyPayments.traditional_401k_b !== '' && monthlyPayments.traditional_401k_b != null ? `$${formatCurrency(monthlyPayments.traditional_401k_b)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_401k_b', e.target.value)}
                   style={{
                     ...styles.input,
@@ -3397,7 +3405,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', fontWeight: '500' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.traditional_401k_c ? `$${monthlyPayments.traditional_401k_c}` : ''}
+                  value={monthlyPayments.traditional_401k_c !== '' && monthlyPayments.traditional_401k_c != null ? `$${formatCurrency(monthlyPayments.traditional_401k_c)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_401k_c', e.target.value)}
                   style={{
                     ...styles.input,
@@ -3499,19 +3507,11 @@ export default function Week6Retirement() {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <svg width={chartWidth} height={chartHeight} style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-                      {/* Grid lines with dynamic Y-axis values */}
+                      {/* Y-axis value labels (horizontal grid lines removed) */}
                       {yAxisValues.map((value, i) => {
                         const ratio = value / maxValue;
                         return (
                           <g key={i}>
-                            <line
-                              x1={yAxisLabelWidth}
-                              y1={padding + plotHeight * (1 - ratio)}
-                              x2={yAxisLabelWidth + plotWidth}
-                              y2={padding + plotHeight * (1 - ratio)}
-                              stroke="#e0e0e0"
-                              strokeWidth="1"
-                            />
                             <text
                               x={yAxisLabelWidth - 5}
                               y={padding + plotHeight * (1 - ratio) + 4}
@@ -3545,7 +3545,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesA / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#3F7293"
+                        stroke="#d8dee9"
                         strokeWidth="2"
                       />
                       
@@ -3555,7 +3555,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesB / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#D97F3F"
+                        stroke="#94a3b8"
                         strokeWidth="2"
                       />
                       
@@ -3565,7 +3565,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesC / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#5A8D5A"
+                        stroke="#1e293b"
                         strokeWidth="2"
                       />
                     </svg>
@@ -3576,15 +3576,15 @@ export default function Week6Retirement() {
               {/* Legend */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#3F7293' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#d8dee9' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#D97F3F' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#94a3b8' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series B</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#5A8D5A' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#1e293b' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series C</span>
                 </div>
               </div>
@@ -3624,10 +3624,10 @@ export default function Week6Retirement() {
                             <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#fff' : '#f8f9fa' }}>
                               <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'center' }}>{row.age}</td>
                               <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'center' }}>{row.year}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${row.annualContribution.toFixed(2)}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${row.employerMatch.toFixed(2)}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${row.totalContribution.toFixed(2)}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${row.accountBalance.toFixed(2)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${formatCurrency(row.annualContribution)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${formatCurrency(row.employerMatch)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${formatCurrency(row.totalContribution)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${formatCurrency(row.accountBalance)}</td>
                             </tr>
                           ))}
                           {seriesAData.accumulationData.length > 20 && (
@@ -3665,48 +3665,56 @@ export default function Week6Retirement() {
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Metric</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario A</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario B</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario C</th>
                   </tr>
                 </thead>
@@ -3717,8 +3725,8 @@ export default function Week6Retirement() {
                       fontWeight: '600',
                       color: '#4b5563',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       backgroundColor: 'rgba(255, 255, 255, 0.5)'
                     }}>Future Value Retirement Balance</td>
                     <td style={{ 
@@ -3755,7 +3763,7 @@ export default function Week6Retirement() {
                       fontWeight: '600',
                       color: '#4b5563',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
                       borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
                       backgroundColor: 'rgba(255, 255, 255, 0.5)'
                     }}>Value in Today's Dollars</td>
@@ -3866,8 +3874,8 @@ export default function Week6Retirement() {
                           {seriesAData.withdrawalData.slice(0, 20).map((row, index) => (
                             <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#fff' : '#f8f9fa' }}>
                               <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'center' }}>{row.year}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${row.withdrawals.toFixed(2)}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${row.accountBalance.toFixed(2)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${formatCurrency(row.withdrawals)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${formatCurrency(row.accountBalance)}</td>
                             </tr>
                           ))}
                           {seriesAData.withdrawalData.length > 20 && (
@@ -3913,8 +3921,8 @@ export default function Week6Retirement() {
                           {seriesBData.withdrawalData.slice(0, 20).map((row, index) => (
                             <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#fff' : '#f8f9fa' }}>
                               <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'center' }}>{row.year}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${row.withdrawals.toFixed(2)}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${row.accountBalance.toFixed(2)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${formatCurrency(row.withdrawals)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${formatCurrency(row.accountBalance)}</td>
                             </tr>
                           ))}
                           {seriesBData.withdrawalData.length > 20 && (
@@ -3960,8 +3968,8 @@ export default function Week6Retirement() {
                           {seriesCData.withdrawalData.slice(0, 20).map((row, index) => (
                             <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#fff' : '#f8f9fa' }}>
                               <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'center' }}>{row.year}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${row.withdrawals.toFixed(2)}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${row.accountBalance.toFixed(2)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${formatCurrency(row.withdrawals)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${formatCurrency(row.accountBalance)}</td>
                             </tr>
                           ))}
                           {seriesCData.withdrawalData.length > 20 && (
@@ -4011,7 +4019,7 @@ export default function Week6Retirement() {
                     padding: '12px 16px',
                     border: '1px solid rgba(229, 231, 235, 0.6)',
                     borderRadius: '8px',
-                    backgroundColor: '#ffb3ba',
+                    backgroundColor: '#e5e7eb',
                     fontSize: '15px',
                     textAlign: 'center',
                     cursor: 'not-allowed',
@@ -4173,7 +4181,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.traditional401kAgeA}
               </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditional401kPV('A').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateTraditional401kPV('A'))}</div>
               </div>
               <div style={{
                 backgroundColor: 'rgba(249, 250, 251, 0.8)',
@@ -4303,7 +4311,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.traditional401kAgeB}
               </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditional401kPV('B').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateTraditional401kPV('B'))}</div>
               </div>
               <div style={{
                 backgroundColor: 'rgba(249, 250, 251, 0.8)',
@@ -4433,7 +4441,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.traditional401kAgeC}
             </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditional401kPV('C').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateTraditional401kPV('C'))}</div>
             </div>
           </div>
 
@@ -4470,10 +4478,10 @@ export default function Week6Retirement() {
                             <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#fff' : '#f8f9fa' }}>
                               <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'center' }}>{row.age}</td>
                               <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'center' }}>{row.year}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${row.annualContribution.toFixed(2)}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${row.employerMatch.toFixed(2)}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${row.totalContribution.toFixed(2)}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${row.accountBalance.toFixed(2)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${formatCurrency(row.annualContribution)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${formatCurrency(row.employerMatch)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right' }}>${formatCurrency(row.totalContribution)}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '4px', textAlign: 'right', fontWeight: '600' }}>${formatCurrency(row.accountBalance)}</td>
                             </tr>
                           ))}
                           {seriesBData.accumulationData.length > 20 && (
@@ -4557,19 +4565,11 @@ export default function Week6Retirement() {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <svg width={chartWidth} height={chartHeight} style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-                      {/* Grid lines with dynamic Y-axis values */}
+                      {/* Y-axis value labels (horizontal grid lines removed) */}
                       {yAxisValues.map((value, i) => {
                         const ratio = value / extendedMaxValue;
                         return (
                           <g key={i}>
-                            <line
-                              x1={yAxisLabelWidth}
-                              y1={padding + plotHeight * (1 - ratio)}
-                              x2={yAxisLabelWidth + plotWidth}
-                              y2={padding + plotHeight * (1 - ratio)}
-                              stroke="#e0e0e0"
-                              strokeWidth="1"
-                            />
                             <text
                               x={yAxisLabelWidth - 5}
                               y={padding + plotHeight * (1 - ratio) + 4}
@@ -4611,7 +4611,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesA / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesA / extendedMaxValue)}
-                              fill="#3F7293"
+                              fill="#d8dee9"
                               opacity="0.8"
                             />
                             
@@ -4621,7 +4621,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesB / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesB / extendedMaxValue)}
-                              fill="#D97F3F"
+                              fill="#94a3b8"
                               opacity="0.8"
                             />
                             
@@ -4631,7 +4631,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesC / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesC / extendedMaxValue)}
-                              fill="#5A8D5A"
+                              fill="#1e293b"
                               opacity="0.8"
                             />
                           </g>
@@ -4645,15 +4645,15 @@ export default function Week6Retirement() {
               {/* Legend */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#3F7293' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#d8dee9' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#D97F3F' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#94a3b8' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series B</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#5A8D5A' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#1e293b' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series C</span>
                 </div>
               </div>
@@ -4982,7 +4982,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.roth_401k_a ? `$${monthlyPayments.roth_401k_a}` : ''}
+                  value={monthlyPayments.roth_401k_a !== '' && monthlyPayments.roth_401k_a != null ? `$${formatCurrency(monthlyPayments.roth_401k_a)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_401k_a', e.target.value)}
                   style={{
                     ...styles.input,
@@ -5056,7 +5056,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.roth_401k_b ? `$${monthlyPayments.roth_401k_b}` : ''}
+                  value={monthlyPayments.roth_401k_b !== '' && monthlyPayments.roth_401k_b != null ? `$${formatCurrency(monthlyPayments.roth_401k_b)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_401k_b', e.target.value)}
                   style={{
                     ...styles.input,
@@ -5130,7 +5130,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.roth_401k_c ? `$${monthlyPayments.roth_401k_c}` : ''}
+                  value={monthlyPayments.roth_401k_c !== '' && monthlyPayments.roth_401k_c != null ? `$${formatCurrency(monthlyPayments.roth_401k_c)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_401k_c', e.target.value)}
                   style={{
                     ...styles.input,
@@ -5230,19 +5230,11 @@ export default function Week6Retirement() {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <svg width={chartWidth} height={chartHeight} style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-                      {/* Grid lines with dynamic Y-axis values */}
+                      {/* Y-axis value labels (horizontal grid lines removed) */}
                       {yAxisValues.map((value, i) => {
                         const ratio = value / maxValue;
                         return (
                           <g key={i}>
-                            <line
-                              x1={yAxisLabelWidth}
-                              y1={padding + plotHeight * (1 - ratio)}
-                              x2={yAxisLabelWidth + plotWidth}
-                              y2={padding + plotHeight * (1 - ratio)}
-                              stroke="#e0e0e0"
-                              strokeWidth="1"
-                            />
                             <text
                               x={yAxisLabelWidth - 5}
                               y={padding + plotHeight * (1 - ratio) + 4}
@@ -5276,7 +5268,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesA / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#3F7293"
+                        stroke="#d8dee9"
                         strokeWidth="2"
                       />
                       
@@ -5286,7 +5278,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesB / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#D97F3F"
+                        stroke="#94a3b8"
                         strokeWidth="2"
                       />
                       
@@ -5296,7 +5288,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesC / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#5A8D5A"
+                        stroke="#1e293b"
                         strokeWidth="2"
                       />
                     </svg>
@@ -5307,15 +5299,15 @@ export default function Week6Retirement() {
               {/* Legend */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#3F7293' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#d8dee9' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#D97F3F' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#94a3b8' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series B</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#5A8D5A' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#1e293b' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series C</span>
                 </div>
               </div>
@@ -5481,48 +5473,56 @@ export default function Week6Retirement() {
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Metric</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario A</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario B</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario C</th>
                   </tr>
                 </thead>
@@ -5533,8 +5533,8 @@ export default function Week6Retirement() {
                       fontWeight: '600',
                       color: '#4b5563',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       backgroundColor: 'rgba(255, 255, 255, 0.5)'
                     }}>Future Value Retirement Balance</td>
                     <td style={{ 
@@ -5571,7 +5571,7 @@ export default function Week6Retirement() {
                       fontWeight: '600',
                       color: '#4b5563',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
                       borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
                       backgroundColor: 'rgba(255, 255, 255, 0.5)'
                     }}>Value in Today's Dollars</td>
@@ -5686,7 +5686,7 @@ export default function Week6Retirement() {
                     padding: '12px 16px',
                     border: '1px solid rgba(229, 231, 235, 0.6)',
                     borderRadius: '8px',
-                    backgroundColor: '#ffb3ba',
+                    backgroundColor: '#e5e7eb',
                     fontSize: '15px',
                     textAlign: 'center',
                     cursor: 'not-allowed',
@@ -5848,7 +5848,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.roth401kAgeA}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRoth401kPV('A').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateRoth401kPV('A'))}</div>
               </div>
               <div style={{
                 backgroundColor: 'rgba(249, 250, 251, 0.8)',
@@ -5978,7 +5978,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.roth401kAgeB}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRoth401kPV('B').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateRoth401kPV('B'))}</div>
               </div>
               <div style={{
                 backgroundColor: 'rgba(249, 250, 251, 0.8)',
@@ -6108,7 +6108,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.roth401kAgeC}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRoth401kPV('C').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateRoth401kPV('C'))}</div>
               </div>
       </div>
 
@@ -6177,19 +6177,11 @@ export default function Week6Retirement() {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <svg width={chartWidth} height={chartHeight} style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-                      {/* Grid lines with dynamic Y-axis values */}
+                      {/* Y-axis value labels (horizontal grid lines removed) */}
                       {yAxisValues.map((value, i) => {
                         const ratio = value / extendedMaxValue;
                         return (
                           <g key={i}>
-                            <line
-                              x1={yAxisLabelWidth}
-                              y1={padding + plotHeight * (1 - ratio)}
-                              x2={yAxisLabelWidth + plotWidth}
-                              y2={padding + plotHeight * (1 - ratio)}
-                              stroke="#e0e0e0"
-                              strokeWidth="1"
-                            />
                             <text
                               x={yAxisLabelWidth - 5}
                               y={padding + plotHeight * (1 - ratio) + 4}
@@ -6231,7 +6223,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesA / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesA / extendedMaxValue)}
-                              fill="#3F7293"
+                              fill="#d8dee9"
                               opacity="0.8"
                             />
                             
@@ -6241,7 +6233,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesB / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesB / extendedMaxValue)}
-                              fill="#D97F3F"
+                              fill="#94a3b8"
                               opacity="0.8"
                             />
                             
@@ -6251,7 +6243,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesC / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesC / extendedMaxValue)}
-                              fill="#5A8D5A"
+                              fill="#1e293b"
                               opacity="0.8"
                             />
                           </g>
@@ -6265,15 +6257,15 @@ export default function Week6Retirement() {
               {/* Legend */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#3F7293' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#d8dee9' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#D97F3F' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#94a3b8' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series B</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#5A8D5A' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#1e293b' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series C</span>
                 </div>
               </div>
@@ -6604,7 +6596,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.traditional_ira_a ? `$${monthlyPayments.traditional_ira_a}` : ''}
+                  value={monthlyPayments.traditional_ira_a !== '' && monthlyPayments.traditional_ira_a != null ? `$${formatCurrency(monthlyPayments.traditional_ira_a)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_ira_a', e.target.value)}
                   style={{
                     ...styles.input,
@@ -6678,7 +6670,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.traditional_ira_b ? `$${monthlyPayments.traditional_ira_b}` : ''}
+                  value={monthlyPayments.traditional_ira_b !== '' && monthlyPayments.traditional_ira_b != null ? `$${formatCurrency(monthlyPayments.traditional_ira_b)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_ira_b', e.target.value)}
                   style={{
                     ...styles.input,
@@ -6752,7 +6744,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.traditional_ira_c ? `$${monthlyPayments.traditional_ira_c}` : ''}
+                  value={monthlyPayments.traditional_ira_c !== '' && monthlyPayments.traditional_ira_c != null ? `$${formatCurrency(monthlyPayments.traditional_ira_c)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('traditional_ira_c', e.target.value)}
                   style={{
                     ...styles.input,
@@ -6852,19 +6844,11 @@ export default function Week6Retirement() {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <svg width={chartWidth} height={chartHeight} style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-                      {/* Grid lines with dynamic Y-axis values */}
+                      {/* Y-axis value labels (horizontal grid lines removed) */}
                       {yAxisValues.map((value, i) => {
                         const ratio = value / maxValue;
                         return (
                           <g key={i}>
-                            <line
-                              x1={yAxisLabelWidth}
-                              y1={padding + plotHeight * (1 - ratio)}
-                              x2={yAxisLabelWidth + plotWidth}
-                              y2={padding + plotHeight * (1 - ratio)}
-                              stroke="#e0e0e0"
-                              strokeWidth="1"
-                            />
                             <text
                               x={yAxisLabelWidth - 5}
                               y={padding + plotHeight * (1 - ratio) + 4}
@@ -6898,7 +6882,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesA / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#3F7293"
+                        stroke="#d8dee9"
                         strokeWidth="2"
                       />
                       
@@ -6908,7 +6892,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesB / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#D97F3F"
+                        stroke="#94a3b8"
                         strokeWidth="2"
                       />
                       
@@ -6918,7 +6902,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesC / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#5A8D5A"
+                        stroke="#1e293b"
                         strokeWidth="2"
                       />
                     </svg>
@@ -6929,15 +6913,15 @@ export default function Week6Retirement() {
               {/* Legend */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#3F7293' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#d8dee9' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#D97F3F' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#94a3b8' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series B</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#5A8D5A' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#1e293b' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series C</span>
                 </div>
               </div>
@@ -7086,48 +7070,56 @@ export default function Week6Retirement() {
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Metric</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario A</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario B</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario C</th>
                   </tr>
                 </thead>
@@ -7138,8 +7130,8 @@ export default function Week6Retirement() {
                       fontWeight: '600',
                       color: '#4b5563',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       backgroundColor: 'rgba(255, 255, 255, 0.5)'
                     }}>Future Value Retirement Balance</td>
                     <td style={{ 
@@ -7176,7 +7168,7 @@ export default function Week6Retirement() {
                       fontWeight: '600',
                       color: '#4b5563',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
                       borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
                       backgroundColor: 'rgba(255, 255, 255, 0.5)'
                     }}>Value in Today's Dollars</td>
@@ -7291,7 +7283,7 @@ export default function Week6Retirement() {
                     padding: '12px 16px',
                     border: '1px solid rgba(229, 231, 235, 0.6)',
                     borderRadius: '8px',
-                    backgroundColor: '#ffb3ba',
+                    backgroundColor: '#e5e7eb',
                     fontSize: '15px',
                     textAlign: 'center',
                     cursor: 'not-allowed',
@@ -7453,7 +7445,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.traditionalIRAAgeA}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditionalIRAPV('A').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateTraditionalIRAPV('A'))}</div>
               </div>
               <div style={{
                 backgroundColor: 'rgba(249, 250, 251, 0.8)',
@@ -7583,7 +7575,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.traditionalIRAAgeB}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditionalIRAPV('B').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateTraditionalIRAPV('B'))}</div>
               </div>
               <div style={{
                 backgroundColor: 'rgba(249, 250, 251, 0.8)',
@@ -7713,7 +7705,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.traditionalIRAAgeC}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateTraditionalIRAPV('C').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateTraditionalIRAPV('C'))}</div>
               </div>
       </div>
 
@@ -7783,19 +7775,11 @@ export default function Week6Retirement() {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <svg width={chartWidth} height={chartHeight} style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-                      {/* Grid lines with dynamic Y-axis values */}
+                      {/* Y-axis value labels (horizontal grid lines removed) */}
                       {yAxisValues.map((value, i) => {
                         const ratio = value / extendedMaxValue;
                         return (
                           <g key={i}>
-                            <line
-                              x1={yAxisLabelWidth}
-                              y1={padding + plotHeight * (1 - ratio)}
-                              x2={yAxisLabelWidth + plotWidth}
-                              y2={padding + plotHeight * (1 - ratio)}
-                              stroke="#e0e0e0"
-                              strokeWidth="1"
-                            />
                             <text
                               x={yAxisLabelWidth - 5}
                               y={padding + plotHeight * (1 - ratio) + 4}
@@ -7837,7 +7821,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesA / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesA / extendedMaxValue)}
-                              fill="#3F7293"
+                              fill="#d8dee9"
                               opacity="0.8"
                             />
                             
@@ -7847,7 +7831,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesB / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesB / extendedMaxValue)}
-                              fill="#D97F3F"
+                              fill="#94a3b8"
                               opacity="0.8"
                             />
                             
@@ -7857,7 +7841,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesC / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesC / extendedMaxValue)}
-                              fill="#5A8D5A"
+                              fill="#1e293b"
                               opacity="0.8"
                             />
                           </g>
@@ -7871,7 +7855,7 @@ export default function Week6Retirement() {
               {/* Legend */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#3F7293' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#d8dee9' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -8210,7 +8194,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.roth_ira_a ? `$${monthlyPayments.roth_ira_a}` : ''}
+                  value={monthlyPayments.roth_ira_a !== '' && monthlyPayments.roth_ira_a != null ? `$${formatCurrency(monthlyPayments.roth_ira_a)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_ira_a', e.target.value)}
                   style={{
                     ...styles.input,
@@ -8284,7 +8268,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.roth_ira_b ? `$${monthlyPayments.roth_ira_b}` : ''}
+                  value={monthlyPayments.roth_ira_b !== '' && monthlyPayments.roth_ira_b != null ? `$${formatCurrency(monthlyPayments.roth_ira_b)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_ira_b', e.target.value)}
                   style={{
                     ...styles.input,
@@ -8358,7 +8342,7 @@ export default function Week6Retirement() {
                 <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Monthly Payment</div>
                 <input
                   type="text"
-                  value={monthlyPayments.roth_ira_c ? `$${monthlyPayments.roth_ira_c}` : ''}
+                  value={monthlyPayments.roth_ira_c !== '' && monthlyPayments.roth_ira_c != null ? `$${formatCurrency(monthlyPayments.roth_ira_c)}` : ''}
                   onChange={(e) => handleMonthlyPaymentChange('roth_ira_c', e.target.value)}
                   style={{
                     ...styles.input,
@@ -8458,19 +8442,11 @@ export default function Week6Retirement() {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <svg width={chartWidth} height={chartHeight} style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-                      {/* Grid lines with dynamic Y-axis values */}
+                      {/* Y-axis value labels (horizontal grid lines removed) */}
                       {yAxisValues.map((value, i) => {
                         const ratio = value / maxValue;
                         return (
                           <g key={i}>
-                            <line
-                              x1={yAxisLabelWidth}
-                              y1={padding + plotHeight * (1 - ratio)}
-                              x2={yAxisLabelWidth + plotWidth}
-                              y2={padding + plotHeight * (1 - ratio)}
-                              stroke="#e0e0e0"
-                              strokeWidth="1"
-                            />
                             <text
                               x={yAxisLabelWidth - 5}
                               y={padding + plotHeight * (1 - ratio) + 4}
@@ -8504,7 +8480,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesA / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#3F7293"
+                        stroke="#d8dee9"
                         strokeWidth="2"
                       />
                       
@@ -8514,7 +8490,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesB / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#D97F3F"
+                        stroke="#94a3b8"
                         strokeWidth="2"
                       />
                       
@@ -8524,7 +8500,7 @@ export default function Week6Retirement() {
                           `${yAxisLabelWidth + (plotWidth / (chartData.length - 1)) * i},${padding + plotHeight * (1 - d.seriesC / maxValue)}`
                         ).join(' ')}
                         fill="none"
-                        stroke="#5A8D5A"
+                        stroke="#1e293b"
                         strokeWidth="2"
                       />
                     </svg>
@@ -8535,15 +8511,15 @@ export default function Week6Retirement() {
               {/* Legend */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#3F7293' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#d8dee9' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#D97F3F' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#94a3b8' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series B</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#5A8D5A' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#1e293b' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series C</span>
                 </div>
               </div>
@@ -8694,48 +8670,56 @@ export default function Week6Retirement() {
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Metric</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario A</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario B</th>
                     <th style={{ 
                       padding: '12px 16px', 
                       textAlign: 'center', 
                       backgroundColor: 'rgba(249, 250, 251, 0.8)',
                       borderTop: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       fontWeight: '700',
                       color: '#374151',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      whiteSpace: 'nowrap'
                     }}>Scenario C</th>
                   </tr>
                 </thead>
@@ -8746,8 +8730,8 @@ export default function Week6Retirement() {
                       fontWeight: '600',
                       color: '#4b5563',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
+                      borderBottom: '2px solid #d1d5db',
                       backgroundColor: 'rgba(255, 255, 255, 0.5)'
                     }}>Future Value Retirement Balance</td>
                     <td style={{ 
@@ -8784,7 +8768,7 @@ export default function Week6Retirement() {
                       fontWeight: '600',
                       color: '#4b5563',
                       borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
-                      borderRight: '1px solid rgba(229, 231, 235, 0.8)',
+                      borderRight: '2px solid #d1d5db',
                       borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
                       backgroundColor: 'rgba(255, 255, 255, 0.5)'
                     }}>Value in Today's Dollars</td>
@@ -8899,7 +8883,7 @@ export default function Week6Retirement() {
                     padding: '12px 16px',
                     border: '1px solid rgba(229, 231, 235, 0.6)',
                     borderRadius: '8px',
-                    backgroundColor: '#ffb3ba',
+                    backgroundColor: '#e5e7eb',
                     fontSize: '15px',
                     textAlign: 'center',
                     cursor: 'not-allowed',
@@ -9061,7 +9045,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.rothIRAAgeA}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRothIRAPV('A').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateRothIRAPV('A'))}</div>
               </div>
               <div style={{
                 backgroundColor: 'rgba(249, 250, 251, 0.8)',
@@ -9191,7 +9175,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.rothIRAAgeB}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRothIRAPV('B').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateRothIRAPV('B'))}</div>
               </div>
               <div style={{
                 backgroundColor: 'rgba(249, 250, 251, 0.8)',
@@ -9321,7 +9305,7 @@ export default function Week6Retirement() {
                     {retirementPlanningErrors.rothIRAAgeC}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${calculateRothIRAPV('C').toFixed(2)}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', fontWeight: '500' }}>PV of First Payment: ${formatCurrency(calculateRothIRAPV('C'))}</div>
               </div>
       </div>
 
@@ -9391,19 +9375,11 @@ export default function Week6Retirement() {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <svg width={chartWidth} height={chartHeight} style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-                      {/* Grid lines with dynamic Y-axis values */}
+                      {/* Y-axis value labels (horizontal grid lines removed) */}
                       {yAxisValues.map((value, i) => {
                         const ratio = value / extendedMaxValue;
                         return (
                           <g key={i}>
-                            <line
-                              x1={yAxisLabelWidth}
-                              y1={padding + plotHeight * (1 - ratio)}
-                              x2={yAxisLabelWidth + plotWidth}
-                              y2={padding + plotHeight * (1 - ratio)}
-                              stroke="#e0e0e0"
-                              strokeWidth="1"
-                            />
                             <text
                               x={yAxisLabelWidth - 5}
                               y={padding + plotHeight * (1 - ratio) + 4}
@@ -9445,7 +9421,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesA / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesA / extendedMaxValue)}
-                              fill="#3F7293"
+                              fill="#d8dee9"
                               opacity="0.8"
                             />
                             
@@ -9455,7 +9431,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesB / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesB / extendedMaxValue)}
-                              fill="#D97F3F"
+                              fill="#94a3b8"
                               opacity="0.8"
                             />
                             
@@ -9465,7 +9441,7 @@ export default function Week6Retirement() {
                               y={padding + plotHeight * (1 - d.seriesC / extendedMaxValue)}
                               width={barWidth / 3}
                               height={plotHeight * (d.seriesC / extendedMaxValue)}
-                              fill="#5A8D5A"
+                              fill="#1e293b"
                               opacity="0.8"
                             />
                           </g>
@@ -9479,7 +9455,7 @@ export default function Week6Retirement() {
               {/* Legend */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '12px', height: '2px', backgroundColor: '#3F7293' }}></div>
+                  <div style={{ width: '12px', height: '2px', backgroundColor: '#d8dee9' }}></div>
                   <span style={{ fontSize: '11px', color: '#666' }}>Series A</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>

@@ -336,7 +336,7 @@ const Week7 = () => {
           <div style={styles.sectionContainer}>
             {/* Enhanced Header */}
             <div style={styles.enhancedHeader}>
-              🛡️ Insurance & Risk Management
+              <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Insurance & Risk Management</span>
             </div>
             
           {/* Expected Annual Medical Expenses Input */}
