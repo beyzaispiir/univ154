@@ -16,6 +16,20 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 // Helpers for input handling (Retirement-style: allow empty, decimals where needed)
 const sanitizeAge = (v) => v.replace(/\D/g, '').slice(0, 3); // digits only, 22-100
+
+// Only allow values in 22–100 or valid prefixes while typing (reject 0–21, 101+ in onChange)
+const isAllowedAgeValue = (v) => {
+  if (v === '') return true;
+  const num = parseInt(v, 10);
+  if (isNaN(num)) return false;
+  if (num > 100) return false;
+  if (v === '1' || v === '10') return true; // only valid prefix for 100
+  if (v.length === 1 && v >= '2' && v <= '9') return true; // prefix for 22–99 (must be before num < 22)
+  if (num < 22) return false; // reject 0, 10–21 (20, 21, 11–19, 10)
+  if (num >= 22 && num <= 100) return true;
+  if (v.length === 2 && v >= '22' && v <= '99') return true;
+  return false;
+};
 const sanitizeCurrency = (v) => {
   const clean = v.replace(/[^0-9.]/g, '');
   const idx = clean.indexOf('.');
@@ -39,6 +53,27 @@ const Week9 = () => {
   const [withdrawStartAge, setWithdrawStartAge] = useState('45');
   const [withdrawEndAge, setWithdrawEndAge] = useState('100');
   const [yearlyWithdrawalPct, setYearlyWithdrawalPct] = useState('4');
+
+  // Age 22–100 validation: show red message and clamp on blur
+  const [ageError, setAgeError] = useState('');
+  const validateAge = (v, setter) => {
+    if (v === '') return;
+    if (v === '1' || v === '10') {
+      setter('100');
+      setAgeError('');
+      return;
+    }
+    const num = parseInt(v, 10);
+    if (num < minAge) {
+      setter(String(minAge));
+      setAgeError('Age must be less than or equal to 100.');
+    } else if (num > maxAge) {
+      setter(String(maxAge));
+      setAgeError('Age must be less than or equal to 100.');
+    } else {
+      setAgeError('');
+    }
+  };
 
   // Portfolio allocation: returnPct and allocationPct as string (allow decimals, empty)
   const [equities, setEquities] = useState({ returnPct: '8', allocationPct: '90' });
@@ -527,8 +562,14 @@ const Week9 = () => {
                       value={contribStartAge}
                       onChange={(e) => {
                         const v = sanitizeAge(e.target.value);
-                        setContribStartAge(v);
+                        if (isAllowedAgeValue(v)) {
+                          setContribStartAge(v);
+                          setAgeError('');
+                        } else {
+                          setAgeError('Age must be less than or equal to 100.');
+                        }
                       }}
+                      onBlur={() => validateAge(contribStartAge, setContribStartAge)}
                       style={{ ...styles.inputYellow, width: 100, marginLeft: styles.rowLabelInputGap }}
                     />
                   </div>
@@ -541,8 +582,14 @@ const Week9 = () => {
                       value={contribEndAge}
                       onChange={(e) => {
                         const v = sanitizeAge(e.target.value);
-                        setContribEndAge(v);
+                        if (isAllowedAgeValue(v)) {
+                          setContribEndAge(v);
+                          setAgeError('');
+                        } else {
+                          setAgeError('Age must be less than or equal to 100.');
+                        }
                       }}
+                      onBlur={() => validateAge(contribEndAge, setContribEndAge)}
                       style={{ ...styles.inputYellow, width: 100, marginLeft: styles.rowLabelInputGap }}
                     />
                   </div>
@@ -562,6 +609,9 @@ const Week9 = () => {
                     />
                   </div>
                 </div>
+                {ageError ? (
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>{ageError}</div>
+                ) : null}
 
                 <div style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(229, 231, 235, 0.6), transparent)', margin: '32px 0' }} />
 
@@ -577,8 +627,14 @@ const Week9 = () => {
                       value={withdrawStartAge}
                       onChange={(e) => {
                         const v = sanitizeAge(e.target.value);
-                        setWithdrawStartAge(v);
+                        if (isAllowedAgeValue(v)) {
+                          setWithdrawStartAge(v);
+                          setAgeError('');
+                        } else {
+                          setAgeError('Age must be less than or equal to 100.');
+                        }
                       }}
+                      onBlur={() => validateAge(withdrawStartAge, setWithdrawStartAge)}
                       style={{ ...styles.inputYellow, width: 100, marginLeft: styles.rowLabelInputGap }}
                     />
                   </div>
@@ -591,8 +647,14 @@ const Week9 = () => {
                       value={withdrawEndAge}
                       onChange={(e) => {
                         const v = sanitizeAge(e.target.value);
-                        setWithdrawEndAge(v);
+                        if (isAllowedAgeValue(v)) {
+                          setWithdrawEndAge(v);
+                          setAgeError('');
+                        } else {
+                          setAgeError('Age must be less than or equal to 100.');
+                        }
                       }}
+                      onBlur={() => validateAge(withdrawEndAge, setWithdrawEndAge)}
                       style={{ ...styles.inputYellow, width: 100, marginLeft: styles.rowLabelInputGap }}
                     />
                   </div>
@@ -611,6 +673,9 @@ const Week9 = () => {
                     />
                   </div>
                 </div>
+                {ageError ? (
+                  <div style={{ fontSize: '11px', color: '#dc3545', marginTop: '8px', fontWeight: '500' }}>{ageError}</div>
+                ) : null}
               </div>
 
               {/* Right column: Portfolio Allocation */}
