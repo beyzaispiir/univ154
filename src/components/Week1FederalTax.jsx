@@ -171,7 +171,47 @@ export default function Week1FederalTax() {
   const formatPercent = (num) => (num * 100).toFixed(1) + '%';
 
   return (
-    <div style={styles.container}>
+    <>
+    <style>{`
+      .week1-federal-page .week1f-lift-surface,
+      .week1-federal-page .week1f-card,
+      .week1-federal-page .week1f-metric-card,
+      .week1-federal-page .week1f-input,
+      .week1-federal-page .week1f-data-table tbody tr {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .week1-federal-page .week1f-lift-surface:hover,
+      .week1-federal-page .week1f-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), 0 6px 18px rgba(15, 23, 42, 0.08) !important;
+        border-color: rgba(148, 163, 184, 0.45) !important;
+      }
+      .week1-federal-page .week1f-metric-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(148, 163, 184, 0.55) !important;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+      }
+      .week1-federal-page .week1f-input:hover {
+        border-color: #9ca3af !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+        transform: translateY(-1px);
+      }
+      .week1-federal-page .week1f-data-table tbody tr:hover {
+        transform: translateY(-1px);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .week1-federal-page .week1f-lift-surface,
+        .week1-federal-page .week1f-card,
+        .week1-federal-page .week1f-metric-card,
+        .week1-federal-page .week1f-input,
+        .week1-federal-page .week1f-data-table tbody tr {
+          transition: none !important;
+          transform: none !important;
+        }
+      }
+    `}</style>
+    <div style={styles.container} className="week1-federal-page">
       <h2 style={styles.header}>Federal Tax</h2>
       
       {/* Input Section - Cell O2 and P2 - Modern Card */}
@@ -182,11 +222,12 @@ export default function Week1FederalTax() {
         borderRadius: '10px',
         boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
         border: '1px solid #e5e7eb'
-      }}>
+      }} className="week1f-card week1f-lift-surface">
         <h3 style={{ marginBottom: '16px', color: '#111827', fontSize: '18px', fontWeight: '600' }}>User Taxable Income</h3>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
           <label style={{ fontWeight: '500', color: '#374151', fontSize: '14px' }}>User Taxable Income (O2):</label>
           <input
+            className="week1f-input"
             style={styles.inputCell}
             type="number"
             value={taxableIncome}
@@ -200,9 +241,9 @@ export default function Week1FederalTax() {
       </div>
 
       {/* Main Federal Tax Calculation Table - Columns O-S */}
-      <div style={{ marginBottom: '30px' }}>
+      <div style={{ marginBottom: '30px' }} className="week1f-lift-surface">
         <div style={styles.sectionTitle}>Federal Income Tax Calculation</div>
-        <table style={styles.table}>
+        <table style={styles.table} className="week1f-data-table">
           <thead>
             <tr>
               <th style={styles.th}>Tax Rate<br/>(Column O)</th>
@@ -260,7 +301,7 @@ export default function Week1FederalTax() {
         boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
         border: '1px solid #e5e7eb',
         marginTop: '32px'
-      }}>
+      }} className="week1f-card week1f-lift-surface">
         <h3 style={{ marginBottom: '24px', color: '#111827', fontSize: '20px', fontWeight: '600' }}>Tax Payment Summary</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
           <div style={{ 
@@ -270,7 +311,7 @@ export default function Week1FederalTax() {
             borderRadius: '10px',
             border: '1px solid #e5e7eb',
             boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-          }}>
+          }} className="week1f-metric-card">
             <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#6b7280' }}>Total Federal Income Tax</div>
             <div style={{ fontSize: '28px', fontWeight: '600', color: '#0d1a4b', marginBottom: '8px' }}>
               {formatCurrency(totalFederalIncomeTax)}
@@ -286,7 +327,7 @@ export default function Week1FederalTax() {
             borderRadius: '10px',
             border: '1px solid #e5e7eb',
             boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-          }}>
+          }} className="week1f-metric-card">
             <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#6b7280' }}>Federal Social Security Tax Payment</div>
             <div style={{ fontSize: '28px', fontWeight: '600', color: '#0d1a4b', marginBottom: '8px' }}>
               {formatCurrency(socialSecurityTax)}
@@ -302,7 +343,7 @@ export default function Week1FederalTax() {
             borderRadius: '10px',
             border: '1px solid #e5e7eb',
             boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-          }}>
+          }} className="week1f-metric-card">
             <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#6b7280' }}>Federal Medicare Tax Payment</div>
             <div style={{ fontSize: '28px', fontWeight: '600', color: '#0d1a4b', marginBottom: '8px' }}>
               {formatCurrency(medicareTax)}
@@ -320,7 +361,7 @@ export default function Week1FederalTax() {
           backgroundColor: '#f0f9ff', 
           borderRadius: '10px',
           border: '1px solid #bfdbfe'
-        }}>
+        }} className="week1f-metric-card">
           <h4 style={{ marginBottom: '12px', color: '#1e40af', fontSize: '16px', fontWeight: '600' }}>Key Excel Cell References:</h4>
           <div style={{ fontSize: '13px', color: '#475569', lineHeight: '1.8' }}>
             <div><strong style={{color: '#1e40af'}}>P2:</strong> ='Week 1 - Summary'!C22 (User Taxable Income)</div>
@@ -332,5 +373,6 @@ export default function Week1FederalTax() {
         </div>
       </div>
     </div>
+    </>
   );
 }

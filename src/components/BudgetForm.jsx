@@ -1389,6 +1389,58 @@ export default function BudgetForm() {
 
     return (
         <div style={styles.container}>
+            <style>{`
+              .week1-user-input-card,
+              .week1-user-input-note,
+              .week1-user-input-row,
+              .week1-user-input-summary,
+              .week1-user-input-control {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              }
+              .week1-user-input-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), 0 6px 18px rgba(15, 23, 42, 0.08);
+              }
+              .week1-user-input-note:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(13, 26, 75, 0.12) !important;
+                border-color: rgba(13, 26, 75, 0.25) !important;
+                background-color: rgba(13, 26, 75, 0.08) !important;
+              }
+              .week1-user-input-row:hover {
+                transform: translateX(3px);
+                background-color: rgba(248, 250, 252, 0.7);
+                border-radius: 8px;
+              }
+              .week1-user-input-control:hover:not(:focus) {
+                border-color: #9ca3af !important;
+                background-color: #ffffff !important;
+                box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+                transform: translateY(-2px) scale(1.01) !important;
+              }
+              .week1-user-input-control:focus {
+                border-color: #0d1a4b !important;
+                background-color: #fffef0 !important;
+                box-shadow: 0 0 0 3px rgba(13, 26, 75, 0.12) !important;
+                transform: translateY(-1px) scale(1.01) !important;
+                outline: none;
+              }
+              .week1-user-input-summary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 22px rgba(22, 101, 52, 0.2);
+                border-color: rgba(22, 101, 52, 0.35) !important;
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .week1-user-input-card,
+                .week1-user-input-note,
+                .week1-user-input-row,
+                .week1-user-input-summary,
+                .week1-user-input-control {
+                  transition: none !important;
+                  transform: none !important;
+                }
+              }
+            `}</style>
         
             {/* Section Container - matching Week 3 layered design */}
             <div style={styles.sectionContainer}>
@@ -1396,9 +1448,24 @@ export default function BudgetForm() {
             <div style={styles.enhancedHeader}>
               <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Budget Planning</span>
             </div>
-            <div style={{width: '450px', marginBottom: '20px'}}>
+            <div
+              className="week1-user-input-card"
+              style={{
+                width: '450px',
+                marginBottom: '20px',
+                padding: '8px 10px 14px',
+                borderRadius: '12px',
+                border: '1px solid rgba(229, 231, 235, 0.55)',
+                backgroundColor: 'rgba(255, 255, 255, 0.65)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
+              }}
+            >
             <h3 style={styles.header}>User Inputted Data</h3>
-            <div style={{
+            <div
+              className="week1-user-input-note"
+              style={{
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
@@ -1418,10 +1485,11 @@ export default function BudgetForm() {
                 <div>Taxes calculated based on single taxpayer filing status</div>
             </div>
             {userInputFields.map(field => (
-            <div key={field.id} style={{ display: 'flex', justifyContent: 'space-between', margin: '8px 0', alignItems: 'center' }}>
+            <div key={field.id} className="week1-user-input-row" style={{ display: 'flex', justifyContent: 'space-between', margin: '8px 0', alignItems: 'center', padding: '4px 8px' }}>
                 <label style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>{field.label}</label>
                 {field.id === 'location' ? (
                   <select
+                    className="week1-user-input-control"
                     style={styles.selectInput}
                     value={topInputs[field.id]}
                     onChange={e => handleTopInputChange(field.id, e.target.value)}
@@ -1432,6 +1500,7 @@ export default function BudgetForm() {
                   </select>
                 ) : field.id === 'residenceInNYC' ? (
                   <select
+                    className="week1-user-input-control"
                     style={styles.selectInput}
                     value={topInputs[field.id]}
                     onChange={e => handleTopInputChange(field.id, e.target.value)}
@@ -1443,6 +1512,7 @@ export default function BudgetForm() {
                   </select>
                 ) : field.id === 'housingCosts' ? (
                   <select
+                    className="week1-user-input-control"
                     style={styles.selectInput}
                     value={topInputs[field.id]}
                     onChange={e => handleTopInputChange(field.id, e.target.value)}
@@ -1455,6 +1525,7 @@ export default function BudgetForm() {
                   </select>
                 ) : (
                   <input
+                    className="week1-user-input-control"
                     style={styles.topInput}
                     type="text"
                     value={field.id === 'preTaxIncome' && topInputs[field.id] ? formatNumberForInput(topInputs[field.id]) : (topInputs[field.id] || '')}
@@ -1468,7 +1539,7 @@ export default function BudgetForm() {
             ))}
             
             {/* Monthly Pre-Tax Income - Row 14 equivalent */}
-            <div style={{...styles.afterTaxRow, flexGrow: 1, marginTop: '10px', backgroundColor: '#e8f5e9'}}>
+            <div className="week1-user-input-summary" style={{...styles.afterTaxRow, flexGrow: 1, marginTop: '10px', backgroundColor: '#e8f5e9'}}>
               <span>Monthly Pre-Tax Income</span>
               <span>${formatCurrency(parseFloat(topInputs.preTaxIncome || 0) / 12)}</span>
             </div>

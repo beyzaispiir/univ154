@@ -640,6 +640,55 @@ const Week9 = () => {
         .week9-no-spinner {
           -moz-appearance: textfield;
         }
+        .week9-markets-page input,
+        .week9-lift-surface,
+        .week9-info-surface,
+        .week9-data-table tbody tr {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .week9-markets-page input {
+          transform: scale(1);
+          will-change: transform, box-shadow, border-color, background-color;
+        }
+        .week9-markets-page input:hover:not(:focus) {
+          border-color: #9ca3af !important;
+          background-color: #ffffff !important;
+          box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+          transform: translateY(-2px) scale(1.01) !important;
+        }
+        .week9-markets-page input:focus {
+          border-color: #0d1a4b !important;
+          background-color: #fffef0 !important;
+          box-shadow: 0 0 0 3px rgba(13, 26, 75, 0.12) !important;
+          transform: translateY(-1px) scale(1.01) !important;
+          outline: none;
+        }
+        .week9-lift-surface:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), 0 6px 18px rgba(15, 23, 42, 0.08) !important;
+          border-color: rgba(148, 163, 184, 0.45) !important;
+        }
+        .week9-info-surface:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(13, 26, 75, 0.12);
+          border-color: rgba(13, 26, 75, 0.25) !important;
+          background-color: rgba(13, 26, 75, 0.08) !important;
+        }
+        .week9-data-table tbody tr:hover {
+          transform: translateY(-1px);
+        }
+        .week9-data-table tbody tr:hover td {
+          background-color: rgba(248, 250, 252, 0.95) !important;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .week9-markets-page input,
+          .week9-lift-surface,
+          .week9-info-surface,
+          .week9-data-table tbody tr {
+            transition: none !important;
+            transform: none !important;
+          }
+        }
       `}</style>
       <div style={{
         position: 'fixed',
@@ -664,12 +713,12 @@ const Week9 = () => {
       </div>
 
       <div style={styles.container}>
-        <div style={styles.sectionContainer}>
+        <div style={styles.sectionContainer} className="week9-markets-page week9-lift-surface">
           <div style={styles.enhancedHeader}>
             <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Brokerage Account</span>
           </div>
 
-          <div style={styles.infoBox}>
+          <div style={styles.infoBox} className="week9-info-surface">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d1a4b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
               <circle cx="12" cy="12" r="10"/>
               <line x1="12" y1="16" x2="12" y2="12"/>
@@ -681,7 +730,7 @@ const Week9 = () => {
           </div>
 
           {/* Sub-card: Contributions, Withdrawals & Portfolio Allocation */}
-          <div style={styles.subCard}>
+          <div style={styles.subCard} className="week9-lift-surface">
           {/* Top row: Contributions and Withdrawals side by side */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '100px', alignItems: 'flex-start', marginBottom: 30 }}>
               {/* Contributions column */}
@@ -820,7 +869,7 @@ const Week9 = () => {
             <div style={{ width: '100%' }}>
                 <div style={{ ...styles.subHeader, marginTop: '8px' }}>Portfolio Allocation</div>
                 <div style={styles.titleUnderline} />
-                <table style={styles.table}>
+                <table style={styles.table} className="week9-data-table">
                   <thead>
                     <tr>
                       <th style={{ ...styles.th, textAlign: 'left' }}>Asset</th>
@@ -1074,7 +1123,7 @@ const Week9 = () => {
           </div>
 
           {/* Sub-card: Brokerage Account Balance chart - overflow hidden so graph stays inside */}
-          <div style={{ ...styles.subCard, padding: '36px', minHeight: '560px', overflow: 'hidden', boxSizing: 'border-box' }}>
+          <div style={{ ...styles.subCard, padding: '36px', minHeight: '560px', overflow: 'hidden', boxSizing: 'border-box' }} className="week9-lift-surface">
             <div style={{ ...styles.chartWrapper, marginTop: 0, marginBottom: 0 }}>
               <div style={{ height: 420, width: '100%', maxWidth: '100%', position: 'relative', overflow: 'hidden', boxSizing: 'border-box' }}>
                 <Line data={chartData} options={chartOptions} />
@@ -1083,10 +1132,10 @@ const Week9 = () => {
           </div>
 
           {/* Sub-card: Account Summary */}
-          <div style={styles.subCard}>
+          <div style={styles.subCard} className="week9-lift-surface">
             <div style={{ ...styles.subHeader, marginTop: 0, marginBottom: 20, textAlign: 'center' }}>Account Summary</div>
             <div style={{ width: '100%', overflowX: 'auto', display: 'flex', justifyContent: 'center' }}>
-              <table style={{ ...styles.table, minWidth: 560, width: 'auto', margin: '0 auto' }}>
+              <table style={{ ...styles.table, minWidth: 560, width: 'auto', margin: '0 auto' }} className="week9-data-table">
                 <thead>
                   <tr>
                     <th style={{ ...styles.th, textAlign: 'left', width: 240, maxWidth: 240 }}>Metric</th>

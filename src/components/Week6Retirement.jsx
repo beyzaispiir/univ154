@@ -2419,6 +2419,48 @@ export default function Week6Retirement() {
 
   return (
     <>
+      <style>{`
+        .week6-retirement-page input,
+        .week6-retirement-page table tbody tr,
+        .week6-main-surface > div[style*="box-shadow"] {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .week6-main-surface > div[style*="box-shadow"]:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), 0 6px 18px rgba(15, 23, 42, 0.08) !important;
+          border-color: rgba(148, 163, 184, 0.45) !important;
+        }
+        .week6-retirement-page .week6-info-surface:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(13, 26, 75, 0.12);
+          border-color: rgba(13, 26, 75, 0.25) !important;
+          background-color: rgba(13, 26, 75, 0.08) !important;
+        }
+        .week6-retirement-page input:hover:not(:focus) {
+          border-color: #9ca3af !important;
+          background-color: #ffffff !important;
+          box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+          transform: translateY(-2px) scale(1.01) !important;
+        }
+        .week6-retirement-page input:focus {
+          border-color: #0d1a4b !important;
+          background-color: #fffef0 !important;
+          box-shadow: 0 0 0 3px rgba(13, 26, 75, 0.12) !important;
+          transform: translateY(-1px) scale(1.01) !important;
+          outline: none;
+        }
+        .week6-retirement-page table tbody tr:hover {
+          transform: translateY(-1px);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .week6-retirement-page input,
+          .week6-retirement-page table tbody tr,
+          .week6-main-surface > div[style*="box-shadow"] {
+            transition: none !important;
+            transform: none !important;
+          }
+        }
+      `}</style>
       {/* Modern info alert for editable fields - guaranteed right top corner */}
       {/* Modern info alert for editable fields - guaranteed right top corner */}
       <div style={{
@@ -2443,15 +2485,15 @@ export default function Week6Retirement() {
         You can only enter data in the open (yellow) fields.
       </div>
 
-      <div style={styles.container}>
-        <div style={styles.sectionContainer}>
+      <div style={styles.container} className="week6-retirement-page">
+        <div style={styles.sectionContainer} className="week6-main-surface">
             {/* Enhanced Header */}
         <div style={styles.enhancedHeader}>
               <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Retirement Planning</span>
             </div>
 
         {/* Info Box - matching Week 2/3 styling */}
-        <div style={styles.infoBox}>
+        <div style={styles.infoBox} className="week6-info-surface">
           <svg 
             width="20" 
             height="20" 

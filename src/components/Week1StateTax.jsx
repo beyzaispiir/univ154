@@ -210,7 +210,32 @@ export default function Week1StateTax() {
   const pretaxTotalCityTax = nycCalculations?.reduce((sum, calc) => sum + calc.pretaxStateIncomeTax, 0) || 0;
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+    <>
+    <style>{`
+      .week1-state-page .week1st-surface,
+      .week1-state-page table tbody tr {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .week1-state-page .week1st-surface:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), 0 6px 18px rgba(15, 23, 42, 0.08) !important;
+        border-color: rgba(148, 163, 184, 0.45) !important;
+      }
+      .week1-state-page table tbody tr:hover {
+        transform: translateY(-1px);
+      }
+      .week1-state-page table tbody tr:hover td {
+        background-color: rgba(248, 250, 252, 0.92) !important;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .week1-state-page .week1st-surface,
+        .week1-state-page table tbody tr {
+          transition: none !important;
+          transform: none !important;
+        }
+      }
+    `}</style>
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }} className="week1-state-page">
       <h1 style={{ color: '#2c3e50', marginBottom: '30px' }}>State Tax</h1>
       
       {/* Taxable Income Input Section */}
@@ -220,7 +245,7 @@ export default function Week1StateTax() {
         marginBottom: '20px',
         border: '1px solid #dee2e6',
         borderRadius: '5px'
-      }}>
+      }} className="week1st-surface">
         <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Taxable Income (C2)</h3>
         <p style={{ margin: '0', color: '#6c757d' }}>
           <strong>Formula:</strong> ='Week 1 - Summary'!C22
@@ -231,7 +256,7 @@ export default function Week1StateTax() {
       </div>
 
       {/* Main State Tax Table */}
-      <div style={{ marginBottom: '30px' }}>
+      <div style={{ marginBottom: '30px' }} className="week1st-surface">
         <h2 style={{ color: '#2c3e50', marginBottom: '15px' }}>State Tax Calculation</h2>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ 
@@ -314,7 +339,7 @@ export default function Week1StateTax() {
       </div>
 
       {/* Totals Section */}
-      <div style={{ marginBottom: '30px' }}>
+      <div style={{ marginBottom: '30px' }} className="week1st-surface">
         <h2 style={{ color: '#2c3e50', marginBottom: '15px' }}>Tax Totals</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '15px' }}>
           <div style={{ 
@@ -322,7 +347,7 @@ export default function Week1StateTax() {
             padding: '15px', 
             border: '1px solid #dee2e6',
             borderRadius: '5px'
-          }}>
+          }} className="week1st-surface">
             <h4 style={{ margin: '0 0 10px 0', color: '#495057' }}>Suggested - Total State Taxes</h4>
             <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold', color: '#28a745' }}>
               ${suggestedTotalStateTax.toFixed(2)}
@@ -337,7 +362,7 @@ export default function Week1StateTax() {
             padding: '15px', 
             border: '1px solid #dee2e6',
             borderRadius: '5px'
-          }}>
+          }} className="week1st-surface">
             <h4 style={{ margin: '0 0 10px 0', color: '#495057' }}>User - Total State Taxes</h4>
             <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold', color: '#007bff' }}>
               ${userTotalStateTax.toFixed(2)}
@@ -352,7 +377,7 @@ export default function Week1StateTax() {
             padding: '15px', 
             border: '1px solid #dee2e6',
             borderRadius: '5px'
-          }}>
+          }} className="week1st-surface">
             <h4 style={{ margin: '0 0 10px 0', color: '#495057' }}>0 Pretax - Total State Taxes</h4>
             <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold', color: '#6f42c1' }}>
               ${pretaxTotalStateTax.toFixed(2)}
@@ -366,7 +391,7 @@ export default function Week1StateTax() {
 
       {/* NYC City Tax Section (if applicable) */}
       {selectedState === 'NY' && residenceInNYC && nycCalculations && (
-        <div style={{ marginBottom: '30px' }}>
+        <div style={{ marginBottom: '30px' }} className="week1st-surface">
           <h2 style={{ color: '#2c3e50', marginBottom: '15px' }}>2025 NY City Data</h2>
           
           {/* NYC Suggested Table */}
@@ -502,7 +527,7 @@ export default function Week1StateTax() {
                 padding: '15px', 
                 border: '1px solid #dee2e6',
                 borderRadius: '5px'
-              }}>
+              }} className="week1st-surface">
                 <h4 style={{ margin: '0 0 10px 0', color: '#495057' }}>Suggested - Total City Taxes</h4>
                 <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold', color: '#28a745' }}>
                   ${suggestedTotalCityTax.toFixed(2)}
@@ -517,7 +542,7 @@ export default function Week1StateTax() {
                 padding: '15px', 
                 border: '1px solid #dee2e6',
                 borderRadius: '5px'
-              }}>
+              }} className="week1st-surface">
                 <h4 style={{ margin: '0 0 10px 0', color: '#495057' }}>User - Total City Taxes</h4>
                 <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold', color: '#007bff' }}>
                   ${userTotalCityTax.toFixed(2)}
@@ -532,7 +557,7 @@ export default function Week1StateTax() {
                 padding: '15px', 
                 border: '1px solid #dee2e6',
                 borderRadius: '5px'
-              }}>
+              }} className="week1st-surface">
                 <h4 style={{ margin: '0 0 10px 0', color: '#495057' }}>0 Pretax - Total City Taxes</h4>
                 <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold', color: '#6f42c1' }}>
                   ${pretaxTotalCityTax.toFixed(2)}
@@ -553,7 +578,7 @@ export default function Week1StateTax() {
         border: '1px solid #dee2e6',
         borderRadius: '5px',
         marginTop: '30px'
-      }}>
+      }} className="week1st-surface">
         <h3 style={{ margin: '0 0 15px 0', color: '#495057' }}>Key Excel Formulas Implemented</h3>
         <div style={{ fontSize: '12px', color: '#6c757d' }}>
           <p><strong>State Tracker (E):</strong> =IF(B7="Week 1 - Budgeting"!$E$8,1,0)</p>
@@ -565,5 +590,6 @@ export default function Week1StateTax() {
         </div>
       </div>
     </div>
+    </>
   );
 }

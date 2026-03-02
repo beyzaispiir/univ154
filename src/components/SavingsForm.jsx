@@ -1077,16 +1077,80 @@ export default function SavingsForm() {
 
     try {
         return (
-            <div style={styles.container}>
+            <>
+            <style>{`
+              .week2-savings-page .week2-lift-surface,
+              .week2-savings-page .week2-info-surface,
+              .week2-savings-page .week2-income-surface,
+              .week2-savings-page .week2-pair-card,
+              .week2-savings-page .week2-animated-input,
+              .week2-savings-page .week2-months-wrap {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              }
+              .week2-savings-page .week2-lift-surface:hover,
+              .week2-savings-page .week2-pair-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), 0 6px 18px rgba(15, 23, 42, 0.08) !important;
+                border-color: rgba(148, 163, 184, 0.45) !important;
+              }
+              .week2-savings-page .week2-info-surface:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(13, 26, 75, 0.12);
+                border-color: rgba(13, 26, 75, 0.25) !important;
+                background-color: rgba(13, 26, 75, 0.08) !important;
+              }
+              .week2-savings-page .week2-income-surface:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(22, 101, 52, 0.2);
+                border-color: rgba(22, 101, 52, 0.35) !important;
+              }
+              .week2-savings-page .week2-animated-input:hover:not(:focus) {
+                border-color: #9ca3af !important;
+                background-color: #ffffff !important;
+                box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+                transform: translateY(-2px) scale(1.01);
+              }
+              .week2-savings-page .week2-animated-input:focus {
+                border-color: #0d1a4b !important;
+                background-color: #fffef0 !important;
+                box-shadow: 0 0 0 3px rgba(13, 26, 75, 0.12) !important;
+                transform: translateY(-1px) scale(1.01);
+                outline: none;
+              }
+              .week2-savings-page .week2-months-wrap:hover {
+                border-color: #9ca3af !important;
+                background-color: #ffffff !important;
+                box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 26, 75, 0.05), inset 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+                transform: translateY(-2px) scale(1.01);
+              }
+              .week2-savings-page .week2-months-wrap:focus-within {
+                border-color: #0d1a4b !important;
+                background-color: #fffef0 !important;
+                box-shadow: 0 0 0 3px rgba(13, 26, 75, 0.12) !important;
+                transform: translateY(-1px) scale(1.01);
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .week2-savings-page .week2-lift-surface,
+                .week2-savings-page .week2-info-surface,
+                .week2-savings-page .week2-income-surface,
+                .week2-savings-page .week2-pair-card,
+                .week2-savings-page .week2-animated-input,
+                .week2-savings-page .week2-months-wrap {
+                  transition: none !important;
+                  transform: none !important;
+                }
+              }
+            `}</style>
+            <div style={styles.container} className="week2-savings-page">
             {/* Section Container - matching Week 1 layered design */}
-            <div style={styles.sectionContainer}>
+            <div style={styles.sectionContainer} className="week2-lift-surface">
             {/* Enhanced Header */}
             <div style={styles.enhancedHeader}>
               <span style={{ fontSize: '26px', letterSpacing: '-0.02em' }}>Savings Planning</span>
             </div>
             
             {/* Info Box - matching Week 1 styling */}
-            <div style={styles.infoBox}>
+            <div style={styles.infoBox} className="week2-info-surface">
               <InfoIcon />
               <div>
                 <strong>How it works:</strong> Enter your goal amount and either monthly savings amount (to calculate time) or time period (to calculate monthly savings needed). You can customize the annual earning rate for each savings goal.
@@ -1119,7 +1183,9 @@ export default function SavingsForm() {
               
               return annualAfterTaxIncome && typeof annualAfterTaxIncome === 'number' && annualAfterTaxIncome > 0;
             })() && (
-              <div style={{
+              <div
+                className="week2-income-surface"
+                style={{
                 ...styles.afterTaxRow,
                 marginBottom: '48px',
                 marginTop: '48px',
@@ -1174,6 +1240,7 @@ export default function SavingsForm() {
               
               {/* Single Excel-like card - two columns for every savings goal pair */}
               <div
+                className="week2-pair-card week2-lift-surface"
                 style={{
                   width: '100%',
                   maxWidth: '900px',
@@ -1205,6 +1272,7 @@ export default function SavingsForm() {
                       <label style={styles.label}>Goal Amount</label>
                       <div style={styles.inputCellContainer}>
                         <input
+                          className="week2-animated-input"
                           style={styles.input}
                           type="text"
                           value={goalAmount1 ? `$${formatNumberForInput(goalAmount1)}` : ''}
@@ -1219,6 +1287,7 @@ export default function SavingsForm() {
                       <label style={styles.label}>Goal Amount</label>
                       <div style={styles.inputCellContainer}>
                         <input
+                          className="week2-animated-input"
                           style={styles.input}
                           type="text"
                           value={goalAmount1 ? `$${formatNumberForInput(goalAmount1)}` : ''}
@@ -1234,6 +1303,7 @@ export default function SavingsForm() {
                       <label style={styles.label}>Monthly Savings Amount</label>
                       <div style={styles.inputCellContainer}>
                         <input
+                          className="week2-animated-input"
                           style={styles.input}
                           type="text"
                           value={monthlySavings1 ? `$${formatNumberForInput(monthlySavings1)}` : ''}
@@ -1249,8 +1319,9 @@ export default function SavingsForm() {
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                       <label style={styles.label}>Time to Achieve Savings Goal</label>
-                      <div style={styles.monthsFieldWrap}>
+                      <div style={styles.monthsFieldWrap} className="week2-months-wrap">
                         <input
+                          className="week2-months-input"
                           style={styles.monthsInputInline}
                           type="number"
                           min="1"
@@ -1269,6 +1340,7 @@ export default function SavingsForm() {
                       <label style={styles.label}>Annual Earning Rate</label>
                       <div style={styles.inputCellContainer}>
                         <input
+                          className="week2-animated-input"
                           style={styles.input}
                           type="text"
                           value={annualRate1 ? `${annualRate1}%` : ''}
@@ -1283,6 +1355,7 @@ export default function SavingsForm() {
                       <label style={styles.label}>Annual Earning Rate</label>
                       <div style={styles.inputCellContainer}>
                         <input
+                          className="week2-animated-input"
                           style={styles.input}
                           type="text"
                           value={annualRate1 ? `${annualRate1}%` : ''}
@@ -1322,6 +1395,7 @@ export default function SavingsForm() {
             </div>
             {/* Close sectionContainer */}
             </div>
+            </>
         );
     } catch (error) {
         console.error('Error rendering SavingsForm:', error);

@@ -87,11 +87,43 @@ export default function Week1Summary() {
   const formatCurrency = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
-    <div style={styles.container}>
+    <>
+    <style>{`
+      .week1-summary-page .week1s-lift-surface,
+      .week1-summary-page .week1s-ref-card,
+      .week1-summary-page .week1s-data-table tbody tr {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .week1-summary-page .week1s-lift-surface:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), 0 6px 18px rgba(15, 23, 42, 0.08) !important;
+        border-color: rgba(148, 163, 184, 0.45) !important;
+      }
+      .week1-summary-page .week1s-ref-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(148, 163, 184, 0.55) !important;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+      }
+      .week1-summary-page .week1s-data-table tbody tr:hover {
+        transform: translateY(-1px);
+      }
+      .week1-summary-page .week1s-data-table tbody tr:hover td {
+        background-color: rgba(248, 250, 252, 0.92);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .week1-summary-page .week1s-lift-surface,
+        .week1-summary-page .week1s-ref-card,
+        .week1-summary-page .week1s-data-table tbody tr {
+          transition: none !important;
+          transform: none !important;
+        }
+      }
+    `}</style>
+    <div style={styles.container} className="week1-summary-page">
       <h2 style={styles.header}>Summary</h2>
       
       {/* Main Summary Table */}
-      <table style={styles.table}>
+      <table style={styles.table} className="week1s-data-table week1s-lift-surface">
         <thead>
           <tr>
             <th style={styles.th}>Suggested</th>
@@ -264,7 +296,7 @@ export default function Week1Summary() {
       {/* 0 Pretax Expenses Section */}
       <div style={{ marginTop: '30px' }}>
         <div style={styles.sectionTitle}>0 Pretax Expenses Section</div>
-        <table style={styles.table}>
+        <table style={styles.table} className="week1s-data-table week1s-lift-surface">
           <thead>
             <tr>
               <th style={styles.th}>Description</th>
@@ -344,7 +376,7 @@ export default function Week1Summary() {
         borderRadius: '10px',
         boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
         border: '1px solid #e5e7eb'
-      }}>
+      }} className="week1s-lift-surface">
         <h3 style={{ marginBottom: '20px', color: '#111827', fontSize: '18px', fontWeight: '600' }}>Critical Cell References for Other Sheets</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
           <div style={{
@@ -352,7 +384,7 @@ export default function Week1Summary() {
             backgroundColor: '#fafafa',
             borderRadius: '8px',
             border: '1px solid #e5e7eb',
-          }}>
+          }} className="week1s-ref-card">
             <h4 style={{ color: '#0d1a4b', marginBottom: '12px', fontSize: '15px', fontWeight: '600' }}>Referenced by Budgeting Sheet:</h4>
             <div style={{ fontSize: '13px', color: '#475569', lineHeight: '1.8' }}>
               <div><strong style={{color: '#1e40af'}}>C18:</strong> Suggested After Tax Income → Monthly Income formulas</div>
@@ -364,7 +396,7 @@ export default function Week1Summary() {
             backgroundColor: '#fafafa',
             borderRadius: '8px',
             border: '1px solid #e5e7eb',
-          }}>
+          }} className="week1s-ref-card">
             <h4 style={{ color: '#0d1a4b', marginBottom: '12px', fontSize: '15px', fontWeight: '600' }}>Referenced by Federal Tax Sheet:</h4>
             <div style={{ fontSize: '13px', color: '#475569', lineHeight: '1.8' }}>
               <div><strong style={{color: '#1e40af'}}>C4:</strong> Pre-tax Income → Social Security/Medicare calculations</div>
@@ -374,5 +406,6 @@ export default function Week1Summary() {
         </div>
       </div>
     </div>
+    </>
   );
 }
