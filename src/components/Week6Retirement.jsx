@@ -372,6 +372,25 @@ export default function Week6Retirement() {
   // State for validation errors in retirement planning inputs
   const [retirementPlanningErrors, setRetirementPlanningErrors] = useState({});
 
+  const sanitizeRetirementPlanningInputs = (inputs = {}) => {
+    const parsedRetirementAge = Number.parseInt(inputs.retirementAge, 10);
+    const safeRetirementAge = Number.isFinite(parsedRetirementAge)
+      ? Math.min(Math.max(parsedRetirementAge, 31), 100)
+      : 65;
+
+    const maxContributionStartAge = Math.max(safeRetirementAge - 1, 0);
+    const parsedContributionStartAge = Number.parseInt(inputs.contributionStartAge, 10);
+    const safeContributionStartAge = Number.isFinite(parsedContributionStartAge)
+      ? Math.min(Math.max(parsedContributionStartAge, 0), maxContributionStartAge)
+      : 22;
+
+    return {
+      ...inputs,
+      contributionStartAge: safeContributionStartAge,
+      retirementAge: safeRetirementAge
+    };
+  };
+
   // Auto-save function (without alert)
   const autoSaveWeek6 = () => {
     try {
@@ -397,7 +416,10 @@ export default function Week6Retirement() {
         
         // Load retirement planning inputs
         if (week6Data.retirementPlanningInputs) {
-          setRetirementPlanningInputs(week6Data.retirementPlanningInputs);
+          setRetirementPlanningInputs(prev => sanitizeRetirementPlanningInputs({
+            ...prev,
+            ...week6Data.retirementPlanningInputs
+          }));
         }
         
         // Load monthly payments
@@ -409,6 +431,20 @@ export default function Week6Retirement() {
       }
     }
   }, []); // Only run on mount
+
+  useEffect(() => {
+    const sanitized = sanitizeRetirementPlanningInputs(retirementPlanningInputs);
+    const startAgeChanged = String(sanitized.contributionStartAge) !== String(retirementPlanningInputs.contributionStartAge);
+    const retirementAgeChanged = String(sanitized.retirementAge) !== String(retirementPlanningInputs.retirementAge);
+
+    if (startAgeChanged || retirementAgeChanged) {
+      setRetirementPlanningInputs(prev => ({
+        ...prev,
+        contributionStartAge: sanitized.contributionStartAge,
+        retirementAge: sanitized.retirementAge
+      }));
+    }
+  }, [retirementPlanningInputs.contributionStartAge, retirementPlanningInputs.retirementAge]);
 
   // Auto-save with debounce (500ms delay)
   useEffect(() => {
@@ -2010,17 +2046,30 @@ export default function Week6Retirement() {
       return;
     }
     
-    const numValue = parseFloat(cleanValue);
-    
-    // Always update the input value, but show error if invalid
-    setRetirementPlanningInputs(prev => ({
-      ...prev,
-      [key]: cleanValue
-    }));
+    const isAgeField = key === 'contributionStartAge' || key === 'retirementAge';
+    const updatedInputs = isAgeField
+      ? sanitizeRetirementPlanningInputs({ ...retirementPlanningInputs, [key]: cleanValue })
+      : { ...retirementPlanningInputs, [key]: cleanValue };
+    const valueToStore = updatedInputs[key];
+    const numValue = parseFloat(valueToStore);
+
+    // Keep invalid age values from breaking calculations by storing clamped values
+    if (isAgeField) {
+      setRetirementPlanningInputs(prev => ({
+        ...prev,
+        contributionStartAge: updatedInputs.contributionStartAge,
+        retirementAge: updatedInputs.retirementAge
+      }));
+    } else {
+      setRetirementPlanningInputs(prev => ({
+        ...prev,
+        [key]: valueToStore
+      }));
+    }
 
     // Keep cursor before the % (or other suffix) so user can keep typing naturally
-    if (inputEl && cleanValue !== '') {
-      const pos = cleanValue.length;
+    if (inputEl && valueToStore !== '') {
+      const pos = String(valueToStore).length;
       requestAnimationFrame(() => {
         if (inputEl && document.activeElement === inputEl) {
           inputEl.setSelectionRange(pos, pos);
@@ -2032,14 +2081,14 @@ export default function Week6Retirement() {
     let errorMessage = '';
     
     if (key === 'contributionStartAge') {
-      const retirementAge = parseFloat(retirementPlanningInputs.retirementAge) || 65;
+      const retirementAge = parseFloat(updatedInputs.retirementAge) || 65;
       // Contribution age should be less than retirement age (not equal)
       const maxContributionAge = Math.min(retirementAge, 100);
       if (numValue >= maxContributionAge) {
         errorMessage = `Contribution Start Age must be less than ${maxContributionAge} years.`;
       }
     } else if (key === 'retirementAge') {
-      const contributionAge = parseFloat(retirementPlanningInputs.contributionStartAge) || 22;
+      const contributionAge = parseFloat(updatedInputs.contributionStartAge) || 22;
       // Retirement age should always be max 100, and min should be 30 (exclusive)
       const minRetirementAge = Math.max(contributionAge, 30);
       if (numValue <= minRetirementAge || numValue > 100) {
