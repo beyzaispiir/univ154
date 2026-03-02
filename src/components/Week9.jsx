@@ -252,8 +252,8 @@ const Week9 = () => {
       {
         label: 'Scenario 1',
         data: chartSeries1,
-        borderColor: '#2563eb',
-        backgroundColor: 'rgba(37, 99, 235, 0.05)',
+        borderColor: '#d8dee9',
+        backgroundColor: 'rgba(216,222,233,0.45)',
         fill: false,
         tension: 0.2,
         pointRadius: 0,
@@ -263,8 +263,8 @@ const Week9 = () => {
       {
         label: 'Scenario 2',
         data: chartSeries2,
-        borderColor: '#ea580c',
-        backgroundColor: 'rgba(234, 88, 12, 0.05)',
+        borderColor: '#94a3b8',
+        backgroundColor: 'rgba(148,163,184,0.3)',
         fill: false,
         tension: 0.2,
         pointRadius: 0,
@@ -274,8 +274,8 @@ const Week9 = () => {
       {
         label: 'Scenario 3',
         data: chartSeries3,
-        borderColor: '#16a34a',
-        backgroundColor: 'rgba(22, 163, 74, 0.05)',
+        borderColor: '#1e293b',
+        backgroundColor: 'rgba(30,41,59,0.3)',
         fill: false,
         tension: 0.2,
         pointRadius: 0,
