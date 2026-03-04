@@ -244,7 +244,9 @@ const styles = {
     justifyContent: 'space-between', 
     padding: '16px 20px', 
     border: '2px solid rgba(134, 239, 172, 0.5)',
-    width: '480px', 
+    width: '100%',
+    maxWidth: '100%',
+    boxSizing: 'border-box',
     marginTop: '16px', 
     borderRadius: '12px',
     fontWeight: '600',
@@ -1539,7 +1541,7 @@ export default function BudgetForm() {
             ))}
             
             {/* Monthly Pre-Tax Income - Row 14 equivalent */}
-            <div className="week1-user-input-summary" style={{...styles.afterTaxRow, flexGrow: 1, marginTop: '10px', backgroundColor: '#e8f5e9'}}>
+            <div className="week1-user-input-summary" style={{...styles.afterTaxRow, marginTop: '10px', backgroundColor: '#e8f5e9'}}>
               <span>Monthly Pre-Tax Income</span>
               <span>${formatCurrency(parseFloat(topInputs.preTaxIncome || 0) / 12)}</span>
             </div>
