@@ -13,7 +13,6 @@ import Week4 from './components/Week4'
 import Week5 from './components/Week5'
 import Week6Retirement from './components/Week6Retirement'
 import Week7 from './components/Week7'
-import Week8 from './components/Week8'
 import Week9 from './components/Week9'
 import Week12 from './components/Week12'
 import WeekAccessAdmin from './components/WeekAccessAdmin'
@@ -144,8 +143,6 @@ function App() {
             <Route path="excel/week-6/*" element={<Week6Retirement />} />
             <Route path="excel/week-7" element={<Week7 />} />
             <Route path="excel/week-7/*" element={<Week7 />} />
-            <Route path="excel/week-8" element={<Week8 />} />
-            <Route path="excel/week-8/*" element={<Week8 />} />
             <Route path="excel/week-9" element={<Week9 />} />
             <Route path="excel/week-9/*" element={<Week9 />} />
             <Route path="excel/week-12" element={<Week12 />} />

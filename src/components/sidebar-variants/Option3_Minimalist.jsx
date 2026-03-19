@@ -148,12 +148,11 @@ export const MinimalistSidebar = ({
                 'Retirement Planning',
                 'Markets & Investing',
                 'Constructing The Goal',
-                'Portfolio Construction',
                 'Insurance',
                 'Real Estate & Homeownership',
               ];
-              const weekIds = ['week-1', 'week-2', 'week-3', 'week-4', 'week-6', 'week-9', 'week-12', 'week-8', 'week-7', 'week-5'];
-              return [...Array(10)].map((_, i) => {
+              const weekIds = ['week-1', 'week-2', 'week-3', 'week-4', 'week-6', 'week-9', 'week-12', 'week-7', 'week-5'];
+              return weekIds.map((_, i) => {
               const weekId = weekIds[i];
               
               const isAccessible = isWeekAccessible(weekId);

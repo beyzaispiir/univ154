@@ -2,6 +2,18 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
 const WeekAccessContext = createContext();
+const SUPPORTED_WEEK_IDS = ['week-1', 'week-2', 'week-3', 'week-4', 'week-5', 'week-6', 'week-7', 'week-9', 'week-12'];
+
+const createDefaultWeekSettings = () => {
+  const defaults = {};
+  SUPPORTED_WEEK_IDS.forEach((weekId) => {
+    defaults[weekId] = {
+      isAvailable: weekId === 'week-1',
+      releaseDate: null
+    };
+  });
+  return defaults;
+};
 
 export const useWeekAccess = () => {
   return useContext(WeekAccessContext);
@@ -33,23 +45,16 @@ export const WeekAccessProvider = ({ children, user, isAdmin }) => {
           if (globalError) {
             console.error('Error fetching global week settings:', globalError);
           } else {
-            const globalMap = {};
+            const globalMap = createDefaultWeekSettings();
             if (globalSettings && globalSettings.length > 0) {
               globalSettings.forEach(item => {
-                globalMap[item.week_id] = {
-                  isAvailable: item.is_globally_available,
-                  releaseDate: item.release_date
-                };
+                if (SUPPORTED_WEEK_IDS.includes(item.week_id)) {
+                  globalMap[item.week_id] = {
+                    isAvailable: item.is_globally_available,
+                    releaseDate: item.release_date
+                  };
+                }
               });
-            } else {
-              // Initialize with default settings if none exist
-              for (let i = 1; i <= 10; i++) {
-                const weekId = `week-${i}`;
-                globalMap[weekId] = {
-                  isAvailable: i === 1, // Only week 1 available by default
-                  releaseDate: null
-                };
-              }
             }
             setGlobalWeekSettings(globalMap);
           }
@@ -60,16 +65,7 @@ export const WeekAccessProvider = ({ children, user, isAdmin }) => {
         }
       } catch (error) {
         console.error('Error in fetchData:', error);
-        // Initialize with default settings on error
-        const defaultSettings = {};
-        for (let i = 1; i <= 10; i++) {
-          const weekId = `week-${i}`;
-          defaultSettings[weekId] = {
-            isAvailable: i === 1,
-            releaseDate: null
-          };
-        }
-        setGlobalWeekSettings(defaultSettings);
+        setGlobalWeekSettings(createDefaultWeekSettings());
       } finally {
         setIsLoading(false);
       }
@@ -89,7 +85,7 @@ export const WeekAccessProvider = ({ children, user, isAdmin }) => {
   const getAccessibleWeeks = () => {
     if (!user) return [];
     if (isAdmin) {  // Use the prop instead of calling isUserAdmin
-      return Array.from({ length: 10 }, (_, i) => `week-${i + 1}`);
+      return SUPPORTED_WEEK_IDS;
     }
     return Object.keys(globalWeekSettings).filter(weekId => 
       globalWeekSettings[weekId]?.isAvailable === true
@@ -103,15 +99,16 @@ export const WeekAccessProvider = ({ children, user, isAdmin }) => {
     }
 
     try {
-      // UPDATE instead of INSERT - this is the fix!
       const { error } = await supabase
         .from('global_week_settings')
-        .update({
+        .upsert({
+          week_id: weekId,
           is_globally_available: isAvailable,
           release_date: releaseDate,
           updated_at: new Date().toISOString()
-        })
-        .eq('week_id', weekId); // WHERE clause
+        }, {
+          onConflict: 'week_id'
+        });
 
       if (error) throw error;
 
@@ -138,28 +135,32 @@ export const WeekAccessProvider = ({ children, user, isAdmin }) => {
     }
 
     try {
-      // Use UPDATE for each week instead of UPSERT to avoid duplicate key errors
-      for (const [weekId, isAvailable] of Object.entries(updates)) {
-        const { error } = await supabase
-          .from('global_week_settings')
-          .update({
-            is_globally_available: isAvailable,
-            updated_at: new Date().toISOString()
-          })
-          .eq('week_id', weekId);
+      const rows = Object.entries(updates).map(([weekId, isAvailable]) => ({
+        week_id: weekId,
+        is_globally_available: isAvailable,
+        release_date: globalWeekSettings[weekId]?.releaseDate ?? null,
+        updated_at: new Date().toISOString()
+      }));
 
-        if (error) throw error;
-      }
+      const { error } = await supabase
+        .from('global_week_settings')
+        .upsert(rows, {
+          onConflict: 'week_id'
+        });
+
+      if (error) throw error;
 
       // Update local state
-      const newGlobalSettings = { ...globalWeekSettings };
-      Object.entries(updates).forEach(([weekId, isAvailable]) => {
-        newGlobalSettings[weekId] = {
-          isAvailable,
-          releaseDate: newGlobalSettings[weekId]?.releaseDate || null
-        };
+      setGlobalWeekSettings(prev => {
+        const newGlobalSettings = { ...prev };
+        Object.entries(updates).forEach(([weekId, isAvailable]) => {
+          newGlobalSettings[weekId] = {
+            isAvailable,
+            releaseDate: newGlobalSettings[weekId]?.releaseDate || null
+          };
+        });
+        return newGlobalSettings;
       });
-      setGlobalWeekSettings(newGlobalSettings);
 
       return { success: true };
     } catch (error) {
